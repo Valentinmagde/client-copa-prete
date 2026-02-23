@@ -1,0 +1,249 @@
+$flaticon-font: "flaticon";
+
+@font-face {
+    font-family: $flaticon-font;
+    src: url("./flaticon.ttf?990556c59ed2b8a765a80a6838c9dec8") format("truetype"),
+url("./flaticon.woff?990556c59ed2b8a765a80a6838c9dec8") format("woff"),
+url("./flaticon.woff2?990556c59ed2b8a765a80a6838c9dec8") format("woff2"),
+url("./flaticon.eot?990556c59ed2b8a765a80a6838c9dec8#iefix") format("embedded-opentype"),
+url("./flaticon.svg?990556c59ed2b8a765a80a6838c9dec8#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon-map: (
+    "calendar": "\f101",
+    "calendar-1": "\f102",
+    "expert": "\f103",
+    "subfolder": "\f104",
+    "subfolder-1": "\f105",
+    "lavatory": "\f106",
+    "gender": "\f107",
+    "pdf": "\f108",
+    "cloud-computing": "\f109",
+    "download": "\f10a",
+    "phone-call": "\f10b",
+    "call": "\f10c",
+    "telephone": "\f10d",
+    "call-1": "\f10e",
+    "outgoing-call": "\f10f",
+    "email": "\f110",
+    "email-1": "\f111",
+    "pin": "\f112",
+    "gps": "\f113",
+    "clock": "\f114",
+    "deadline": "\f115",
+    "technical-support": "\f116",
+    "bank": "\f117",
+    "conveyor": "\f118",
+    "healthcare": "\f119",
+    "sketch": "\f11a",
+    "headhunting": "\f11b",
+    "research": "\f11c",
+    "human-resources": "\f11d",
+    "recruiting": "\f11e",
+    "advertising": "\f11f",
+    "personal-wealth": "\f120",
+    "company": "\f121",
+    "job-search": "\f122",
+    "communities": "\f123",
+    "recruitment": "\f124",
+    "play-button": "\f125",
+    "placeholder": "\f126",
+    "growth": "\f127",
+    "human-resources-1": "\f128",
+    "human-resources-2": "\f129",
+    "job-search-1": "\f12a",
+    "recruitment-3": "\f12b",
+    "recruitment-4": "\f12c",
+    "candidate-management": "\f12d",
+    "share": "\f12e",
+    "human-resources-3": "\f12f",
+    "recruitment-6": "\f130",
+    "recruitment-7": "\f131",
+    "interview": "\f132",
+    "user": "\f133",
+    "budget": "\f134",
+    "house": "\f135",
+    "human-resources-4": "\f136",
+    "restaurant": "\f137",
+    "telecommunication": "\f138",
+);
+
+.flaticon-calendar:before {
+    content: map-get($flaticon-map, "calendar");
+}
+.flaticon-calendar-1:before {
+    content: map-get($flaticon-map, "calendar-1");
+}
+.flaticon-expert:before {
+    content: map-get($flaticon-map, "expert");
+}
+.flaticon-subfolder:before {
+    content: map-get($flaticon-map, "subfolder");
+}
+.flaticon-subfolder-1:before {
+    content: map-get($flaticon-map, "subfolder-1");
+}
+.flaticon-lavatory:before {
+    content: map-get($flaticon-map, "lavatory");
+}
+.flaticon-gender:before {
+    content: map-get($flaticon-map, "gender");
+}
+.flaticon-pdf:before {
+    content: map-get($flaticon-map, "pdf");
+}
+.flaticon-cloud-computing:before {
+    content: map-get($flaticon-map, "cloud-computing");
+}
+.flaticon-download:before {
+    content: map-get($flaticon-map, "download");
+}
+.flaticon-phone-call:before {
+    content: map-get($flaticon-map, "phone-call");
+}
+.flaticon-call:before {
+    content: map-get($flaticon-map, "call");
+}
+.flaticon-telephone:before {
+    content: map-get($flaticon-map, "telephone");
+}
+.flaticon-call-1:before {
+    content: map-get($flaticon-map, "call-1");
+}
+.flaticon-outgoing-call:before {
+    content: map-get($flaticon-map, "outgoing-call");
+}
+.flaticon-email:before {
+    content: map-get($flaticon-map, "email");
+}
+.flaticon-email-1:before {
+    content: map-get($flaticon-map, "email-1");
+}
+.flaticon-pin:before {
+    content: map-get($flaticon-map, "pin");
+}
+.flaticon-gps:before {
+    content: map-get($flaticon-map, "gps");
+}
+.flaticon-clock:before {
+    content: map-get($flaticon-map, "clock");
+}
+.flaticon-deadline:before {
+    content: map-get($flaticon-map, "deadline");
+}
+.flaticon-technical-support:before {
+    content: map-get($flaticon-map, "technical-support");
+}
+.flaticon-bank:before {
+    content: map-get($flaticon-map, "bank");
+}
+.flaticon-conveyor:before {
+    content: map-get($flaticon-map, "conveyor");
+}
+.flaticon-healthcare:before {
+    content: map-get($flaticon-map, "healthcare");
+}
+.flaticon-sketch:before {
+    content: map-get($flaticon-map, "sketch");
+}
+.flaticon-headhunting:before {
+    content: map-get($flaticon-map, "headhunting");
+}
+.flaticon-research:before {
+    content: map-get($flaticon-map, "research");
+}
+.flaticon-human-resources:before {
+    content: map-get($flaticon-map, "human-resources");
+}
+.flaticon-recruiting:before {
+    content: map-get($flaticon-map, "recruiting");
+}
+.flaticon-advertising:before {
+    content: map-get($flaticon-map, "advertising");
+}
+.flaticon-personal-wealth:before {
+    content: map-get($flaticon-map, "personal-wealth");
+}
+.flaticon-company:before {
+    content: map-get($flaticon-map, "company");
+}
+.flaticon-job-search:before {
+    content: map-get($flaticon-map, "job-search");
+}
+.flaticon-communities:before {
+    content: map-get($flaticon-map, "communities");
+}
+.flaticon-recruitment:before {
+    content: map-get($flaticon-map, "recruitment");
+}
+.flaticon-play-button:before {
+    content: map-get($flaticon-map, "play-button");
+}
+.flaticon-placeholder:before {
+    content: map-get($flaticon-map, "placeholder");
+}
+.flaticon-growth:before {
+    content: map-get($flaticon-map, "growth");
+}
+.flaticon-human-resources-1:before {
+    content: map-get($flaticon-map, "human-resources-1");
+}
+.flaticon-human-resources-2:before {
+    content: map-get($flaticon-map, "human-resources-2");
+}
+.flaticon-job-search-1:before {
+    content: map-get($flaticon-map, "job-search-1");
+}
+.flaticon-recruitment-3:before {
+    content: map-get($flaticon-map, "recruitment-3");
+}
+.flaticon-recruitment-4:before {
+    content: map-get($flaticon-map, "recruitment-4");
+}
+.flaticon-candidate-management:before {
+    content: map-get($flaticon-map, "candidate-management");
+}
+.flaticon-share:before {
+    content: map-get($flaticon-map, "share");
+}
+.flaticon-human-resources-3:before {
+    content: map-get($flaticon-map, "human-resources-3");
+}
+.flaticon-recruitment-6:before {
+    content: map-get($flaticon-map, "recruitment-6");
+}
+.flaticon-recruitment-7:before {
+    content: map-get($flaticon-map, "recruitment-7");
+}
+.flaticon-interview:before {
+    content: map-get($flaticon-map, "interview");
+}
+.flaticon-user:before {
+    content: map-get($flaticon-map, "user");
+}
+.flaticon-budget:before {
+    content: map-get($flaticon-map, "budget");
+}
+.flaticon-house:before {
+    content: map-get($flaticon-map, "house");
+}
+.flaticon-human-resources-4:before {
+    content: map-get($flaticon-map, "human-resources-4");
+}
+.flaticon-restaurant:before {
+    content: map-get($flaticon-map, "restaurant");
+}
+.flaticon-telecommunication:before {
+    content: map-get($flaticon-map, "telecommunication");
+}
