@@ -1,5 +1,5 @@
+import type { Language } from "@/components/common/LanguageSwitcher";
 import { useState, useEffect } from "react";
-import type { Language } from "../components/common/language-switcher";
 
 export const useLanguage = (initialLanguage: Language = "fr") => {
   const [language, setLanguage] = useState<Language>(initialLanguage);

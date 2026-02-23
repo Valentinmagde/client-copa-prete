@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, type JSX } from "react";
 import Slider from "react-slick";
 // import ProgressBar from "react-animated-progress-bar";
 import Header from "../components/layout/Header";

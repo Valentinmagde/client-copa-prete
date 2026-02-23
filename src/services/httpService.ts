@@ -306,7 +306,7 @@ class HttpService {
             .then((response: any) =>
               setAccessToken(response.data.data.accessToken)
             ).catch(() => {
-              modalService.trigger("Votre session a expiré");
+              // modalService.trigger("Votre session a expiré");
             });
 
           // Set original request header

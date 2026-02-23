@@ -1,4 +1,4 @@
-import { IParams } from "./params";
+import type { IParams } from "./params";
 
 export interface IGenericOptions {
     url: string;

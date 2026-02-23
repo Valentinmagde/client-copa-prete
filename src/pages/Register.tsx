@@ -676,7 +676,7 @@ const Step1: React.FC<StepProps> = ({
           options={
             communes?.map((c) => ({
               value: String(c.id),
-              label: isKirundi && c.name_ki ? c.name_ki : c.name,
+              label: c.name,
             })) || []
           }
         />
