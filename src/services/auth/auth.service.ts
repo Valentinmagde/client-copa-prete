@@ -31,7 +31,7 @@ const AuthService = {
     password: string,
     lang: string = "en"
   ): Promise<any> => {
-    return await httpService.service().post(`/v1/${lang}/auth/login`, {
+    return await httpService.service().post(`/auth/login?lang=${lang}`, {
       email,
       password,
     });
@@ -39,6 +39,14 @@ const AuthService = {
 
   signup: async(data: any, lang: string = 'rn') => {
     return httpService.service().post(`auth/register?lang=${lang}`, data);
+  },
+
+  resendVerificationEmail: async(email: string, lang: string = 'rn') => {
+    return httpService.service().post(`auth/resend-verification?lang=${lang}`, { email });
+  },
+
+  verifyEmail: async(data: any, lang: string = 'rn') => {
+    return httpService.service().post(`auth/verify-email?lang=${lang}`, data);
   },
 
   /**

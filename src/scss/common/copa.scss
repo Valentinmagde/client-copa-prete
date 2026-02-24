@@ -1,0 +1,199 @@
+// _copa.scss
+// Importez dans style.scss : @import "pages/copa";
+//
+// Le Dashboard utilise désormais 100 % les classes du framework existant
+// (sidebar job-sidebar, candidate-widget, candidate-timeline, overview-box,
+//  ttm-progress-bar, action-section, featured-icon-box, widget-download…).
+//
+// Ce fichier ne contient QUE les extensions nécessaires aux pages d'auth
+// (Login, Register, VerifyEmail) qui n'ont pas d'équivalent dans le framework.
+
+@keyframes copa-spin  { to { transform: rotate(360deg); } }
+@keyframes copa-pop   { 0%{transform:scale(.6);opacity:0} 60%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
+@keyframes copa-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.7)} }
+@keyframes copa-dot   { 0%,80%,100%{transform:scale(.7);background:rgba(119,119,119,.18)} 40%{transform:scale(1);background:$theme-SkinColor} }
+
+// ─── Utilitaires formulaires ─────────────────────────────────────────────────
+
+.copa-error-msg {
+  display: block;
+  font-size: 12px; color: #dc3545;
+  margin: -8px 0 6px 2px; font-weight: 500;
+}
+
+.copa-input-invalid {
+  label input, label select, label textarea { border-color: #dc3545 !important; }
+}
+
+.copa-label-row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px; font-weight: 600; color: $bodyfont-Color; margin-bottom: 4px;
+}
+
+.copa-spinner {
+  width: 15px; height: 15px;
+  border: 2px solid rgba(255,255,255,.3); border-top-color: $theme-WhiteColor;
+  border-radius: 50%; animation: copa-spin .65s linear infinite;
+  display: inline-block; vertical-align: middle; margin-right: 6px;
+  &--dark { border-color: rgba(0,0,0,.12); border-top-color: $bodyfont-Color; }
+}
+
+// ─── Séparateur  ── ou ── ────────────────────────────────────────────────────
+
+.copa-separator {
+  display: flex; align-items: center; gap: 12px; margin: 18px 0;
+  &::before, &::after { content:''; flex:1; height:1px; background:rgba(119,119,119,.18); }
+  span { font-size:11px; color:$bodyfont-Color; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
+}
+
+// ─── Remember me ─────────────────────────────────────────────────────────────
+
+.copa-remember-row {
+  display: flex; align-items: center; justify-content: space-between; margin: 2px 0;
+  label {
+    display: flex !important; align-items: center; gap: 8px;
+    width: auto !important; margin: 0 !important;
+    cursor: pointer; font-weight: 400; font-size: 13px; color: $bodyfont-Color;
+    input[type="checkbox"] { width: auto; height: auto; padding: 0; }
+  }
+}
+
+// ─── Bouton Google ────────────────────────────────────────────────────────────
+
+.copa-google-btn {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 12px 20px; background: $theme-WhiteColor;
+  border: 1px solid rgba(119,119,119,.22); border-radius: 3px;
+  font-size: 14px; font-weight: 600; color: $bodyfont-Color;
+  cursor: pointer; transition: all .2s; font-family: $bodyfont;
+  &:hover { border-color: rgba(119,119,119,.45); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  &:disabled { opacity: .6; cursor: not-allowed; }
+}
+
+// ─── Stepper (Register) ───────────────────────────────────────────────────────
+
+.copa-stepper { display:flex; align-items:flex-start; justify-content:center; margin-bottom:32px; }
+
+.copa-step {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  &__dot {
+    width:36px; height:36px; border-radius:50%;
+    border:2px solid rgba(119,119,119,.25); background:$theme-WhiteColor;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; color:rgba(119,119,119,.65);
+    position:relative; z-index:1; transition:all .3s;
+    svg { width:14px; height:14px; }
+  }
+  &__label { font-size:12px; font-weight:600; color:rgba(119,119,119,.75); white-space:nowrap; text-align:center; }
+  &.is-done {
+    .copa-step__dot { background:#2E7D52; border-color:#2E7D52; color:$theme-WhiteColor; }
+    .copa-step__label { color:#2E7D52; }
+  }
+  &.is-active {
+    .copa-step__dot { background:$theme-SkinColor; border-color:$theme-SkinColor; color:$theme-WhiteColor; box-shadow:0 0 0 4px rgba($theme-SkinColor,.15); }
+    .copa-step__label { color:$theme-SkinColor; }
+  }
+}
+
+.copa-step-line {
+  flex:1; min-width:40px; height:1.5px;
+  background:rgba(119,119,119,.18); margin:18px 0 0; border-radius:1px;
+  position:relative; overflow:hidden;
+  &::after { content:''; position:absolute; inset:0; background:#2E7D52; transform:scaleX(0); transform-origin:left; transition:transform .4s ease; }
+  &.is-filled::after { transform:scaleX(1); }
+}
+
+.copa-dot-pulse { width:10px; height:10px; border-radius:50%; background:$theme-WhiteColor; animation:copa-pulse 1.5s ease-in-out infinite; }
+
+// ─── Radio cards (statut entreprise) ─────────────────────────────────────────
+
+.copa-radio-cards {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:10px 0 5px;
+  @media(max-width:576px){ grid-template-columns:1fr; }
+}
+
+.copa-radio-card {
+  position:relative; border:1.5px solid rgba(119,119,119,.2); border-radius:6px;
+  padding:16px 14px 14px; cursor:pointer; display:flex; flex-direction:column; gap:3px;
+  background:$theme-WhiteColor; transition:border-color .2s, box-shadow .2s;
+  input { position:absolute; opacity:0; pointer-events:none; }
+  &:hover { border-color:$theme-SkinColor; }
+  &.is-selected { border-color:$theme-SkinColor; box-shadow:0 0 0 3px rgba($theme-SkinColor,.1); }
+  &__check {
+    position:absolute; top:9px; right:9px; width:20px; height:20px; border-radius:50%;
+    border:1.5px solid rgba(119,119,119,.2); background:#f5f5f5;
+    display:flex; align-items:center; justify-content:center; transition:all .2s;
+    svg { width:10px; height:10px; opacity:0; color:$theme-WhiteColor; transition:opacity .15s; }
+  }
+  &.is-selected &__check { background:$theme-SkinColor; border-color:$theme-SkinColor; svg { opacity:1; } }
+  &__icon { font-size:22px; margin-bottom:4px; }
+  &__name { font-size:13px; font-weight:700; color:$theme-DarkColor; }
+  &__desc { font-size:11px; color:$bodyfont-Color; line-height:1.4; }
+}
+
+// ─── Checkboxes custom (Step 3 Register) ─────────────────────────────────────
+
+.copa-checklist { display:flex; flex-direction:column; gap:10px; }
+
+.copa-check-row {
+  display:grid; grid-template-columns:22px 1fr; gap:0 12px; align-items:start;
+  padding:14px 18px; background:$theme-WhiteColor;
+  border:1.5px solid rgba(119,119,119,.18); border-radius:6px;
+  cursor:pointer; transition:border-color .2s;
+  input { position:absolute; opacity:0; pointer-events:none; }
+  &:hover   { border-color:$theme-SkinColor; }
+  &.is-checked { border-color:$theme-SkinColor; }
+  &.is-invalid { border-color:#dc3545; }
+  &__box {
+    width:20px; height:20px; border:2px solid rgba(119,119,119,.28); border-radius:4px;
+    background:$theme-WhiteColor; display:flex; align-items:center; justify-content:center;
+    transition:all .15s; margin-top:2px;
+    svg { width:10px; height:10px; opacity:0; color:$theme-WhiteColor; stroke-width:3; }
+  }
+  &.is-checked &__box { background:$theme-SkinColor; border-color:$theme-SkinColor; svg { opacity:1; } }
+  &__text { font-size:13px; color:$bodyfont-Color; line-height:1.5; }
+  &__link { font-size:12px; color:$theme-SkinColor; font-weight:600; text-decoration:none; display:block; margin-top:3px; &:hover { color:$theme-DarkColor; } }
+  &__error { grid-column:2; font-size:11.5px; color:#dc3545; font-weight:500; margin-top:3px; }
+}
+
+.copa-validation-banner {
+  display:flex; gap:12px; align-items:flex-start;
+  padding:14px 18px; background:rgba($theme-SkinColor,.05);
+  border-radius:6px; border-left:3px solid $theme-SkinColor; margin-bottom:16px;
+  svg { width:18px; height:18px; color:$theme-SkinColor; flex-shrink:0; margin-top:3px; }
+  strong { display:block; font-size:13px; color:$theme-DarkColor; margin-bottom:2px; }
+  p { font-size:12px; color:$bodyfont-Color; margin:0; }
+}
+
+// ─── Verify Email ─────────────────────────────────────────────────────────────
+
+.copa-verify-icon {
+  width:80px; height:80px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center; margin-bottom:18px;
+  svg { width:34px; height:34px; }
+  &--loading { background:rgba($theme-SkinColor,.08); color:$theme-SkinColor; }
+  &--success { background:#E8F5EE; border:2px solid #2E7D52; color:#2E7D52; animation:copa-pop .5s cubic-bezier(.22,1,.36,1) both; }
+  &--error   { background:rgba($theme-SkinColor,.08); border:2px solid $theme-SkinColor; color:$theme-SkinColor; }
+  &--invalid { background:#FDECEA; border:2px solid #dc3545; color:#dc3545; }
+}
+
+.copa-ring-spinner {
+  width:36px; height:36px;
+  border:3px solid rgba($theme-SkinColor,.18); border-top-color:$theme-SkinColor;
+  border-radius:50%; animation:copa-spin .8s linear infinite;
+}
+
+.copa-loading-dots {
+  display:flex; gap:6px; justify-content:center; margin-top:8px;
+  span { width:7px; height:7px; border-radius:50%; background:rgba(119,119,119,.2); animation:copa-dot 1.4s ease-in-out infinite; }
+  span:nth-child(2) { animation-delay:.2s; }
+  span:nth-child(3) { animation-delay:.4s; }
+}
+
+.copa-verify-footer {
+  margin-top:14px; padding-top:14px;
+  border-top:1px solid rgba(119,119,119,.12);
+  font-size:12px; color:$bodyfont-Color;
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  svg { width:14px; height:14px; }
+}

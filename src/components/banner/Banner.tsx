@@ -119,7 +119,7 @@ const Banner: React.FC<BannerProps> = () => {
                     </Link>
                     <Link
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
-                      to="/contact_01"
+                      to="#"
                     >
                       En savoir plus
                     </Link>
@@ -175,7 +175,7 @@ const Banner: React.FC<BannerProps> = () => {
                     </Link>
                     <Link
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
-                      to="/contact_01"
+                      to="#"
                     >
                       En savoir plus
                     </Link>

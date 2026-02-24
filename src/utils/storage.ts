@@ -122,14 +122,14 @@ export function removeUserLogin(): void {
  *
  * @returns {void}
  */
-export function setAdminInfo(adminInfo: any): void {
+export function setUser(adminInfo: any): void {
   Cookies.set("adminInfo", JSON.stringify(adminInfo));
 }
 
 /**
  * Get user's informations from localstorage.
  */
-export function getAdminInfo(): any {
+export function getUser(): any {
   return JSON.parse(Cookies.get("adminInfo") || "{}");
 }
 
@@ -166,7 +166,7 @@ export function getUserRoles(): string[] {
  * @returns {boolean} true|false.
  */
 export function isAuthenticatedCs(): boolean {
-  return !!getAccessTokenCs() && !!getRefreshTokenCs() && !!getAdminInfo();
+  return !!getAccessTokenCs() && !!getRefreshTokenCs() && !!getUser();
 }
 
 /**

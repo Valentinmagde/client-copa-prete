@@ -1385,12 +1385,11 @@ const AboutUs: React.FC = () => {
       {/* google_map end */}
 
       {/* action-section */}
-      <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">
+      {/* <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
               <div className="d-md-flex align-items-center justify-content-between">
-                {/* featured-icon-box */}
                 <div className="featured-icon-box icon-align-before-content style2">
                   <div className="featured-icon">
                     <div className="ttm-icon ttm-icon_element-onlytxt ttm-icon_element-color-white ttm-icon_element-size-xl">
@@ -1409,7 +1408,6 @@ const AboutUs: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                {/* featured-icon-box end */}
                 <a
                   className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
                   href={import.meta.env.PUBLIC_URL + "/"}
@@ -1420,7 +1418,7 @@ const AboutUs: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       {/* action-section end */}
 
       <Footer />

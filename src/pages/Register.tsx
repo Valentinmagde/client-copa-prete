@@ -41,20 +41,7 @@ interface FormData {
   acceptNotifications: boolean;
 }
 
-interface StepProps {
-  formData: FormData;
-  updateFormData: <K extends keyof FormData>(
-    field: K,
-    value: FormData[K],
-  ) => void;
-  errors: Partial<Record<keyof FormData, string>>;
-  provinces?: Province[];
-  communes?: Commune[];
-  sectors?: Sector[];
-  loading?: { provinces: boolean; communes: boolean; sectors: boolean };
-}
-
-const initialFormData: FormData = {
+const INITIAL: FormData = {
   entrepreneurType: "",
   firstName: "",
   lastName: "",
@@ -80,1486 +67,1115 @@ const initialFormData: FormData = {
   acceptNotifications: false,
 };
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+const STEPS = [
+  { num: 1, label: "Informations personnelles" },
+  { num: 2, label: "Votre entreprise" },
+  { num: 3, label: "Validation & envoi" },
+];
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 const Register: React.FC = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const isKi = lang === "rn";
+
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState<FormData>(INITIAL);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
     {},
   );
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [communes, setCommunes] = useState<Commune[]>([]);
   const [sectors, setSectors] = useState<Sector[]>([]);
-  const [loading, setLoading] = useState({
-    provinces: false,
-    communes: false,
-    sectors: false,
-  });
+  const [loadProv, setLoadProv] = useState(false);
+  const [loadComm, setLoadComm] = useState(false);
+  const [loadSect, setLoadSect] = useState(false);
 
   useEffect(() => {
-    const fetchProvinces = async () => {
-      setLoading((p) => ({ ...p, provinces: true }));
+    (async () => {
+      setLoadProv(true);
+      setLoadSect(true);
       try {
         setProvinces(await ReferenceService.getAllPovinces(lang));
-      } catch (e) {
-        console.error(e);
       } finally {
-        setLoading((p) => ({ ...p, provinces: false }));
+        setLoadProv(false);
       }
-    };
-    const fetchSectors = async () => {
-      setLoading((p) => ({ ...p, sectors: true }));
       try {
         setSectors(await ReferenceService.getBusinessSectors(true, lang));
-      } catch (e) {
-        console.error(e);
       } finally {
-        setLoading((p) => ({ ...p, sectors: false }));
+        setLoadSect(false);
       }
-    };
-    fetchProvinces();
-    fetchSectors();
+    })();
   }, []);
 
   useEffect(() => {
-    const fetchCommunes = async () => {
-      if (!formData.provinceId) {
-        setCommunes([]);
-        return;
-      }
-      setLoading((p) => ({ ...p, communes: true }));
+    if (!form.provinceId) {
+      setCommunes([]);
+      return;
+    }
+    (async () => {
+      setLoadComm(true);
       try {
         const res: Commune[] = await ReferenceService.getCommunesByProvince(
-          formData.provinceId,
+          form.provinceId,
           lang,
         );
         setCommunes(res);
-        if (
-          formData.communeId &&
-          !res.some((c: Commune) => c.id === formData.communeId)
-        )
-          updateFormData("communeId", "");
-      } catch (e) {
-        console.error(e);
+        if (form.communeId && !res.some((c) => c.id === form.communeId))
+          upd("communeId", "");
       } finally {
-        setLoading((p) => ({ ...p, communes: false }));
+        setLoadComm(false);
       }
-    };
-    fetchCommunes();
-  }, [formData.provinceId]);
+    })();
+  }, [form.provinceId]);
 
-  const updateFormData = <K extends keyof FormData>(
-    field: K,
-    value: FormData[K],
-  ) => {
-    setFormData((p) => ({ ...p, [field]: value }));
-    if (errors[field]) setErrors((p) => ({ ...p, [field]: undefined }));
+  const upd = <K extends keyof FormData>(k: K, v: FormData[K]) => {
+    setForm((p) => ({ ...p, [k]: v }));
+    if (errors[k]) setErrors((p) => ({ ...p, [k]: undefined }));
   };
 
-  const validateStep1 = (): boolean => {
-    const e: Partial<Record<keyof FormData, string>> = {};
-    if (!formData.entrepreneurType) e.entrepreneurType = t("required");
-    if (!formData.firstName.trim()) e.firstName = t("required");
-    if (!formData.lastName.trim()) e.lastName = t("required");
-    if (!formData.gender) e.gender = t("required");
-    if (!formData.birthDate) e.birthDate = t("required");
+  // ── Validation ──
+  const validateStep1 = () => {
+    const e: typeof errors = {};
+    if (!form.entrepreneurType) e.entrepreneurType = t("required");
+    if (!form.firstName.trim()) e.firstName = t("required");
+    if (!form.lastName.trim()) e.lastName = t("required");
+    if (!form.gender) e.gender = t("required");
+    if (!form.birthDate) e.birthDate = t("required");
     else if (
-      new Date().getFullYear() - new Date(formData.birthDate).getFullYear() <
+      new Date().getFullYear() - new Date(form.birthDate).getFullYear() <
       18
     )
       e.birthDate = t("birthDateInvalid");
-    if (!formData.email) e.email = t("required");
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+    if (!form.email) e.email = t("required");
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       e.email = t("emailInvalid");
-    if (!formData.phone) e.phone = t("required");
-    if (!formData.provinceId) e.provinceId = t("required");
-    if (!formData.communeId) e.communeId = t("required");
-    if (!formData.password) e.password = t("required");
-    else if (formData.password.length < 8) e.password = t("passwordMinLength");
-    else if (!/[A-Z]/.test(formData.password))
-      e.password = t("passwordUppercase");
-    else if (!/\d/.test(formData.password)) e.password = t("passwordNumber");
-    if (formData.password !== formData.confirmPassword)
+    if (!form.phone) e.phone = t("required");
+    if (!form.provinceId) e.provinceId = t("required");
+    if (!form.communeId) e.communeId = t("required");
+    if (!form.password) e.password = t("required");
+    else if (form.password.length < 8) e.password = t("passwordMinLength");
+    else if (!/[A-Z]/.test(form.password)) e.password = t("passwordUppercase");
+    else if (!/\d/.test(form.password)) e.password = t("passwordNumber");
+    if (form.password !== form.confirmPassword)
       e.confirmPassword = t("passwordMismatch");
     setErrors(e);
-    return Object.keys(e).length === 0;
+    return !Object.keys(e).length;
   };
 
-  const validateStep2 = (): boolean => {
-    const e: Partial<Record<keyof FormData, string>> = {};
-    if (!formData.companyStatus) e.companyStatus = t("required");
-    if (
-      formData.companyStatus === "formal" ||
-      formData.companyStatus === "informal"
-    ) {
-      if (!formData.companyName.trim()) e.companyName = t("required");
-      if (!formData.creationYear) e.creationYear = t("required");
-      else if (
-        formData.creationYear < 1900 ||
-        formData.creationYear > new Date().getFullYear()
-      )
-        e.creationYear = t("creationYearInvalid");
-      if (!formData.sectorId) e.sectorId = t("required");
-      if (!formData.activityDescription.trim())
+  const validateStep2 = () => {
+    const e: typeof errors = {};
+    if (!form.companyStatus) e.companyStatus = t("required");
+    if (form.companyStatus === "formal" || form.companyStatus === "informal") {
+      if (!form.companyName.trim()) e.companyName = t("required");
+      if (!form.creationYear) e.creationYear = t("required");
+      if (!form.sectorId) e.sectorId = t("required");
+      if (!form.activityDescription.trim())
         e.activityDescription = t("required");
-      else if (formData.activityDescription.length < 100)
+      else if (form.activityDescription.length < 20)
         e.activityDescription = t("descriptionMinLength");
-      if (!formData.employeeCount) e.employeeCount = t("required");
-      if (formData.nif && !/^\d{9,13}$/.test(formData.nif))
-        e.nif = t("nifInvalid");
+      if (!form.employeeCount) e.employeeCount = t("required");
+      if (form.nif && !/^\d{9,13}$/.test(form.nif)) e.nif = t("nifInvalid");
     }
     setErrors(e);
-    return Object.keys(e).length === 0;
+    return !Object.keys(e).length;
   };
 
-  const validateStep3 = (): boolean => {
-    const e: Partial<Record<keyof FormData, string>> = {};
-    if (!formData.acceptTerms) e.acceptTerms = t("acceptTermsRequired");
-    if (!formData.acceptPrivacy) e.acceptPrivacy = t("acceptPrivacyRequired");
-    if (!formData.certifyAccuracy) e.certifyAccuracy = t("certifyRequired");
+  const validateStep3 = () => {
+    const e: typeof errors = {};
+    if (!form.acceptTerms) e.acceptTerms = t("acceptTermsRequired");
+    if (!form.acceptPrivacy) e.acceptPrivacy = t("acceptPrivacyRequired");
+    if (!form.certifyAccuracy) e.certifyAccuracy = t("certifyRequired");
     setErrors(e);
-    return Object.keys(e).length === 0;
+    return !Object.keys(e).length;
   };
 
-  const handleSubmit = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-    if (currentStep === 1 && validateStep1()) {
-      setCurrentStep(2);
+  const handleNext = async () => {
+    if (step === 1 && validateStep1()) {
+      setStep(2);
       window.scrollTo(0, 0);
-    } else if (currentStep === 2 && validateStep2()) {
-      setCurrentStep(3);
+    } else if (step === 2 && validateStep2()) {
+      setStep(3);
       window.scrollTo(0, 0);
-    } else if (currentStep === 3 && validateStep3()) {
-      setIsSubmitting(true);
+    } else if (step === 3 && validateStep3()) {
+      setSubmitting(true);
       try {
         await AuthService.signup(
           {
             step1: {
-              entrepreneurType: formData.entrepreneurType,
-              firstName: formData.firstName,
-              lastName: formData.lastName,
-              gender: formData.gender,
-              birthDate: formData.birthDate,
-              email: formData.email,
-              phone: formData.phone,
-              provinceId: formData.provinceId,
-              communeId: formData.communeId,
-              password: formData.password,
-              passwordConfirmation: formData.confirmPassword,
+              entrepreneurType: form.entrepreneurType,
+              firstName: form.firstName,
+              lastName: form.lastName,
+              gender: form.gender,
+              birthDate: form.birthDate,
+              email: form.email,
+              phone: form.phone,
+              provinceId: form.provinceId,
+              communeId: form.communeId,
+              password: form.password,
+              passwordConfirmation: form.confirmPassword,
             },
             step2: {
-              companyStatus: formData.companyStatus,
-              companyExists:
-                formData.companyStatus !== "project" ? "yes" : "no",
-              companyName: formData.companyName,
-              nif: formData.nif,
-              creationYear: formData.creationYear,
-              sectorId: formData.sectorId,
-              activityDescription: formData.activityDescription,
-              employeeCount: formData.employeeCount,
-              annualRevenue: formData.annualRevenue,
+              companyStatus: form.companyStatus,
+              companyExists: form.companyStatus !== "project" ? "yes" : "no",
+              companyName: form.companyName,
+              nif: form.nif,
+              creationYear: form.creationYear,
+              sectorId: form.sectorId,
+              activityDescription: form.activityDescription,
+              employeeCount: form.employeeCount,
+              annualRevenue: form.annualRevenue,
             },
             step3: {
-              acceptCGU: formData.acceptTerms,
-              acceptPrivacyPolicy: formData.acceptPrivacy,
-              certifyAccuracy: formData.certifyAccuracy,
-              optInNotifications: formData.acceptNotifications,
+              acceptCGU: form.acceptTerms,
+              acceptPrivacyPolicy: form.acceptPrivacy,
+              certifyAccuracy: form.certifyAccuracy,
+              optInNotifications: form.acceptNotifications,
             },
           },
           lang,
         );
-        setIsSuccess(true);
-        toast.success(t("registrationSuccessMessage"));
-        resetForm();
+        setSuccess(true);
       } catch (err) {
-        toast.error(err as string);
+        toast.error(err);
         console.error(err);
       } finally {
-        setIsSubmitting(false);
+        setSubmitting(false);
       }
     }
   };
 
-  const resetForm = () => {
-    setFormData(initialFormData);
-    setCurrentStep(1);
-    setIsSuccess(false);
-    setErrors({});
-  };
+  // ─── Écran succès ─────────────────────────────────────────────────────────
 
-  const handlePrevious = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-      window.scrollTo(0, 0);
-    }
-  };
-  const handleReset = () => {
-    setFormData(initialFormData);
-    setCurrentStep(1);
-    setIsSuccess(false);
-    setErrors({});
-  };
-
-  const stepsMeta = [
-    { num: 1, label: t("basicInformation") },
-    { num: 2, label: t("companyInformation") },
-    { num: 3, label: t("validation") },
-  ];
-
-  // if (isSuccess) {
-  //   return (
-  //     <div className="site-main">
-  //       <Header />
-  //       <PageHeader title={t("creatingCopaAccount")} breadcrumb={t("registration")} />
-  //       <section className="rg-section">
-  //         <div className="rg-container rg-container--narrow">
-  //           <div className="rg-success">
-  //             <div className="rg-success__ring">
-  //               <svg
-  //                 viewBox="0 0 24 24"
-  //                 fill="none"
-  //                 stroke="currentColor"
-  //                 strokeWidth="2.5"
-  //               >
-  //                 <path
-  //                   d="M20 6L9 17l-5-5"
-  //                   strokeLinecap="round"
-  //                   strokeLinejoin="round"
-  //                 />
-  //               </svg>
-  //             </div>
-  //             <h2>{t("successTitle")}</h2>
-  //             <p>{t("successMessage").replace("{email}", formData.email)}</p>
-  //             <div className="rg-success__actions">
-  //               <Link to="/login" className="rg-btn rg-btn--primary">
-  //                 {t("signIn")}
-  //               </Link>
-  //               <button onClick={handleReset} className="rg-btn rg-btn--ghost">
-  //                 {t("createNewAccount")}
-  //               </button>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </section>
-  //       <Footer />
-  //       <Styles />
-  //     </div>
-  //   );
-  // }
-
-  return (
-    <div className="site-main">
-      <Header />
-      <PageHeader title={t("creatingCopaAccount")} breadcrumb={t("registration")} />
-      <section className="rg-section">
-        <div className="rg-container container">
-          {/* ── Stepper ── */}
-          <div className="rg-stepper">
-            {stepsMeta.map((s, i) => (
-              <React.Fragment key={s.num}>
-                <div
-                  className={`rg-step ${currentStep === s.num ? "is-active" : ""} ${currentStep > s.num ? "is-done" : ""}`}
-                >
-                  <div className="rg-step__dot">
-                    {currentStep > s.num ? (
+  if (success)
+    return (
+      <div className="site-main">
+        <Header />
+        <PageHeader title={t("registration")} breadcrumb={t("registration")} />
+        <div className="ttm-row clearfix">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-6 col-md-8">
+                <div className="p-50 p-lg-20 box-shadow text-center">
+                  <div className="layer-content">
+                    <div className="copa-verify-icon copa-verify-icon--success mx-auto">
                       <svg
-                        viewBox="0 0 12 12"
+                        viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2.5"
                       >
                         <path
-                          d="M2 6l3 3 5-5"
+                          d="M20 6L9 17l-5-5"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                       </svg>
-                    ) : (
-                      <span>{s.num}</span>
-                    )}
-                  </div>
-                  <span className="rg-step__label">{s.label}</span>
-                </div>
-                {i < stepsMeta.length - 1 && (
-                  <div
-                    className={`rg-step__line ${currentStep > s.num ? "is-filled" : ""}`}
-                  />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-
-          {/* ── Card ── */}
-          <div className="rg-card">
-            <div className="rg-card__head">
-              <div className="rg-card__head-left">
-                <p className="rg-card__eyebrow">Étape {currentStep} sur 3</p>
-                <h2 className="rg-card__title">
-                  {stepsMeta[currentStep - 1].label}
-                </h2>
-              </div>
-              <div className="rg-card__progress-ring">
-                <svg viewBox="0 0 44 44">
-                  <circle
-                    cx="22"
-                    cy="22"
-                    r="18"
-                    fill="none"
-                    stroke="#EEF0F4"
-                    strokeWidth="3.5"
-                  />
-                  <circle
-                    cx="22"
-                    cy="22"
-                    r="18"
-                    fill="none"
-                    stroke="#1A3A5C"
-                    strokeWidth="3.5"
-                    strokeDasharray={`${(currentStep / 3) * 113} 113`}
-                    strokeLinecap="round"
-                    transform="rotate(-90 22 22)"
-                    style={{ transition: "stroke-dasharray 0.5s ease" }}
-                  />
-                  <text
-                    x="22"
-                    y="27"
-                    textAnchor="middle"
-                    fontSize="10"
-                    fontWeight="700"
-                    fill="#1A3A5C"
-                  >
-                    {Math.round((currentStep / 3) * 100)}%
-                  </text>
-                </svg>
-              </div>
-            </div>
-
-            <div className="rg-divider" />
-
-            <form onSubmit={handleSubmit} noValidate className="rg-card__body">
-              {currentStep === 1 && (
-                <Step1
-                  formData={formData}
-                  updateFormData={updateFormData}
-                  errors={errors}
-                  provinces={provinces}
-                  communes={communes}
-                  loading={loading}
-                />
-              )}
-              {currentStep === 2 && (
-                <Step2
-                  formData={formData}
-                  updateFormData={updateFormData}
-                  errors={errors}
-                  sectors={sectors}
-                />
-              )}
-              {currentStep === 3 && (
-                <Step3
-                  formData={formData}
-                  updateFormData={updateFormData}
-                  errors={errors}
-                />
-              )}
-            </form>
-
-            <div className="rg-divider" />
-
-            <div className="rg-card__foot">
-              <div className="rg-card__foot-left">
-                {currentStep === 1 && (
-                  <p className="rg-card__login-hint">
-                    {t("alreadyHaveAccount")}{" "}
-                    <Link to="/login" className="rg-link">
+                    </div>
+                    <h3 className="mb-15">{t("registrationSuccessTitle")}</h3>
+                    <p
+                      className="mb-30"
+                      style={{ fontSize: 14, color: "#777" }}
+                    >
+                      {t("registrationSuccessMessage").replace("{email}", form.email)}
+                    </p>
+                    <Link
+                      to="/login"
+                      className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor me-2"
+                    >
                       {t("signIn")}
                     </Link>
-                  </p>
-                )}
-              </div>
-              <div className="rg-card__foot-right">
-                {currentStep > 1 && (
-                  <button
-                    type="button"
-                    onClick={handlePrevious}
-                    className="rg-btn rg-btn--ghost"
-                  >
-                    <svg
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setForm(INITIAL);
+                        setStep(1);
+                        setSuccess(false);
+                      }}
+                      className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
                     >
-                      <path d="M10 3L5 8l5 5" strokeLinecap="round" />
-                    </svg>
-                    {t("previous")}
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={handleSubmit}
-                  className="rg-btn rg-btn--primary"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <span className="rg-spinner" />
-                  ) : currentStep === 3 ? (
-                    <>
-                      <svg
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                      >
-                        <path d="M2 8l4 4 8-8" strokeLinecap="round" />
-                      </svg>
-                      {t("createAccount")}
-                    </>
-                  ) : (
-                    <>
-                      {t("next")}
-                      <svg
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M6 3l5 5-5 5" strokeLinecap="round" />
-                      </svg>
-                    </>
-                  )}
-                </button>
+                      {t("createNewAccount")}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+        <Footer />
+      </div>
+    );
+
+  // ─── Rendu principal ──────────────────────────────────────────────────────
+
+  return (
+    <div className="site-main">
+      <Header />
+      <PageHeader
+        title={t("creatingCopaAccount")}
+        breadcrumb={t("registration")}
+      />
+
+      <div className="ttm-row clearfix">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-8 col-lg-9 col-md-11">
+              {/* ── Stepper copa ── */}
+              <div className="copa-stepper">
+                {STEPS.map((s, i) => (
+                  <React.Fragment key={s.num}>
+                    <div
+                      className={`copa-step ${step === s.num ? "is-active" : ""} ${step > s.num ? "is-done" : ""}`}
+                    >
+                      <div className="copa-step__dot">
+                        {step > s.num ? (
+                          <svg
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                          >
+                            <path d="M2 6l3 3 5-5" strokeLinecap="round" />
+                          </svg>
+                        ) : step === s.num ? (
+                          <span className="copa-dot-pulse" />
+                        ) : (
+                          <span>{s.num}</span>
+                        )}
+                      </div>
+                      <span className="copa-step__label">{s.label}</span>
+                    </div>
+                    {i < STEPS.length - 1 && (
+                      <div
+                        className={`copa-step-line ${step > s.num ? "is-filled" : ""}`}
+                      />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+
+              {/* ── Carte ── */}
+              <div className="bg-theme-GreyColor p-50 p-lg-20 box-shadow">
+                <div className="layer-content">
+                  {/* En-tête étape */}
+                  <div className="d-flex justify-content-between align-items-center mb-30">
+                    <div>
+                      <p
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.1em",
+                          color: "#999",
+                          margin: "0 0 4px",
+                        }}
+                      >
+                        Étape {step} sur 3
+                      </p>
+                      <h4 style={{ margin: 0 }}>{STEPS[step - 1].label}</h4>
+                    </div>
+                    {/* Anneau de progression */}
+                    <svg
+                      viewBox="0 0 44 44"
+                      style={{ width: 44, height: 44, flexShrink: 0 }}
+                    >
+                      <circle
+                        cx="22"
+                        cy="22"
+                        r="18"
+                        fill="none"
+                        stroke="#dde2ea"
+                        strokeWidth="3.5"
+                      />
+                      <circle
+                        cx="22"
+                        cy="22"
+                        r="18"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3.5"
+                        strokeDasharray={`${(step / 3) * 113} 113`}
+                        strokeLinecap="round"
+                        transform="rotate(-90 22 22)"
+                        className="text-theme-SkinColor"
+                        style={{ transition: "stroke-dasharray 0.5s ease" }}
+                      />
+                      <text
+                        x="22"
+                        y="27"
+                        textAnchor="middle"
+                        fontSize="10"
+                        fontWeight="700"
+                        fill="currentColor"
+                        className="text-theme-SkinColor"
+                      >
+                        {Math.round((step / 3) * 100)}%
+                      </text>
+                    </svg>
+                  </div>
+
+                  {/* Formulaire — wrap-form register_form (framework) */}
+                  <form
+                    className="wrap-form register_form"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleNext();
+                    }}
+                    noValidate
+                  >
+                    <div className="row">
+                      {/* ════════ ÉTAPE 1 ════════ */}
+                      {step === 1 && (
+                        <>
+                          <div className="col-12">
+                            <label
+                              className={
+                                errors.entrepreneurType
+                                  ? "copa-input-invalid"
+                                  : ""
+                              }
+                            >
+                              <i className="ti ti-id-badge" />
+                              <select
+                                value={form.entrepreneurType}
+                                onChange={(e) =>
+                                  upd("entrepreneurType", e.target.value as any)
+                                }
+                              >
+                                <option value="">
+                                  {t("selectYourStatus")}
+                                </option>
+                                <option value="burundian">
+                                  {t("burundianEntrepreneur")}
+                                </option>
+                                <option value="refugee">
+                                  {t("refugeeEntrepreneur")}
+                                </option>
+                              </select>
+                            </label>
+                            {errors.entrepreneurType && (
+                              <span className="copa-error-msg">
+                                {errors.entrepreneurType}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.firstName ? "copa-input-invalid" : ""
+                              }
+                            >
+                              <i className="ti ti-user" />
+                              <input
+                                type="text"
+                                value={form.firstName}
+                                onChange={(e) =>
+                                  upd("firstName", e.target.value)
+                                }
+                                placeholder={t("firstName")}
+                              />
+                            </label>
+                            {errors.firstName && (
+                              <span className="copa-error-msg">
+                                {errors.firstName}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.lastName ? "copa-input-invalid" : ""
+                              }
+                            >
+                              <i className="ti ti-user" />
+                              <input
+                                type="text"
+                                value={form.lastName}
+                                onChange={(e) =>
+                                  upd("lastName", e.target.value)
+                                }
+                                placeholder={t("lastName")}
+                              />
+                            </label>
+                            {errors.lastName && (
+                              <span className="copa-error-msg">
+                                {errors.lastName}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.gender ? "copa-input-invalid" : ""
+                              }
+                            >
+                              <i className="ti ti-anchor" />
+                              <select
+                                value={form.gender}
+                                onChange={(e) =>
+                                  upd("gender", e.target.value as any)
+                                }
+                              >
+                                <option value="">
+                                  {t("selectYourGender")}
+                                </option>
+                                <option value="M">{t("male")}</option>
+                                <option value="F">{t("female")}</option>
+                              </select>
+                            </label>
+                            {errors.gender && (
+                              <span className="copa-error-msg">
+                                {errors.gender}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.birthDate ? "copa-input-invalid" : ""
+                              }
+                            >
+                              <i className="ti ti-calendar" />
+                              <input
+                                type="date"
+                                value={form.birthDate}
+                                onChange={(e) =>
+                                  upd("birthDate", e.target.value)
+                                }
+                                max={
+                                  new Date(
+                                    new Date().setFullYear(
+                                      new Date().getFullYear() - 18,
+                                    ),
+                                  )
+                                    .toISOString()
+                                    .split("T")[0]
+                                }
+                              />
+                            </label>
+                            {errors.birthDate && (
+                              <span className="copa-error-msg">
+                                {errors.birthDate}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.email ? "copa-input-invalid" : ""
+                              }
+                            >
+                              <i className="ti ti-email" />
+                              <input
+                                type="email"
+                                value={form.email}
+                                onChange={(e) => upd("email", e.target.value)}
+                                placeholder={t("email")}
+                              />
+                            </label>
+                            {errors.email && (
+                              <span className="copa-error-msg">
+                                {errors.email}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.phone ? "copa-input-invalid" : ""
+                              }
+                            >
+                              <i className="ti ti-mobile" />
+                              <input
+                                type="tel"
+                                value={form.phone}
+                                onChange={(e) => upd("phone", e.target.value)}
+                                placeholder={t("phoneNumber")}
+                              />
+                            </label>
+                            {errors.phone && (
+                              <span className="copa-error-msg">
+                                {errors.phone}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.provinceId ? "copa-input-invalid" : ""
+                              }
+                            >
+                              <i className="ti ti-map" />
+                              <select
+                                value={String(form.provinceId)}
+                                onChange={(e) =>
+                                  upd(
+                                    "provinceId",
+                                    e.target.value ? +e.target.value : "",
+                                  )
+                                }
+                              >
+                                <option value="">
+                                  {loadProv
+                                    ? t("loading")
+                                    : t("selectProvince")}
+                                </option>
+                                {provinces.map((p) => (
+                                  <option key={p.id} value={p.id}>
+                                    {p.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                            {errors.provinceId && (
+                              <span className="copa-error-msg">
+                                {errors.provinceId}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.communeId ? "copa-input-invalid" : ""
+                              }
+                            >
+                              <i className="ti ti-map-alt" />
+                              <select
+                                value={String(form.communeId)}
+                                onChange={(e) =>
+                                  upd(
+                                    "communeId",
+                                    e.target.value ? +e.target.value : "",
+                                  )
+                                }
+                                disabled={!form.provinceId}
+                              >
+                                <option value="">
+                                  {loadComm
+                                    ? t("loading")
+                                    : !form.provinceId
+                                      ? t("selectProvinceFirst")
+                                      : t("selectCommune")}
+                                </option>
+                                {communes.map((c) => (
+                                  <option key={c.id} value={c.id}>
+                                    {isKi && c.name_ki ? c.name_ki : c.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                            {errors.communeId && (
+                              <span className="copa-error-msg">
+                                {errors.communeId}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.password ? "copa-input-invalid" : ""
+                              }
+                            >
+                              <i className="ti ti-lock" />
+                              <input
+                                type="password"
+                                value={form.password}
+                                onChange={(e) =>
+                                  upd("password", e.target.value)
+                                }
+                                placeholder={t("password")}
+                              />
+                            </label>
+                            {errors.password && (
+                              <span className="copa-error-msg">
+                                {errors.password}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="col-lg-6">
+                            <label
+                              className={
+                                errors.confirmPassword
+                                  ? "copa-input-invalid"
+                                  : ""
+                              }
+                            >
+                              <i className="ti ti-lock" />
+                              <input
+                                type="password"
+                                value={form.confirmPassword}
+                                onChange={(e) =>
+                                  upd("confirmPassword", e.target.value)
+                                }
+                                placeholder={t("confirmPassword")}
+                              />
+                            </label>
+                            {errors.confirmPassword && (
+                              <span className="copa-error-msg">
+                                {errors.confirmPassword}
+                              </span>
+                            )}
+                          </div>
+                        </>
+                      )}
+
+                      {/* ════════ ÉTAPE 2 ════════ */}
+                      {step === 2 && (
+                        <>
+                          <div className="col-12">
+                            <p
+                              style={{
+                                fontSize: 13,
+                                fontWeight: 600,
+                                color: "#444",
+                                marginBottom: 10,
+                              }}
+                            >
+                              {t("haveCompany")}{" "}
+                              <span style={{ color: "#dc3545" }}>*</span>
+                            </p>
+                            {/* Radio cards copa */}
+                            <div className="copa-radio-cards">
+                              {[
+                                {
+                                  value: "formal",
+                                  icon: "ti-home",
+                                  name: t("formalCompany"),
+                                  desc: "Entreprise officielle enregistrée",
+                                },
+                                {
+                                  value: "informal",
+                                  icon: "ti-bag",
+                                  name: t("informalCompany"),
+                                  desc: "Activité non enregistrée",
+                                },
+                                {
+                                  value: "project",
+                                  icon: "ti-face-sad",
+                                  name: t("projectCompany"),
+                                  desc: "Projet en cours de création",
+                                },
+                              ].map((s) => (
+                                <label
+                                  key={s.value}
+                                  className={`copa-radio-card ${form.companyStatus === s.value ? "is-selected" : ""}`}
+                                >
+                                  <input
+                                    type="radio"
+                                    name="status"
+                                    value={s.value}
+                                    checked={form.companyStatus === s.value}
+                                    onChange={(e) =>
+                                      upd(
+                                        "companyStatus",
+                                        e.target.value as any,
+                                      )
+                                    }
+                                  />
+                                  <span className="copa-radio-card__check">
+                                    <svg
+                                      viewBox="0 0 10 10"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2.5"
+                                    >
+                                      <path
+                                        d="M1.5 5l2.5 2.5 5-5"
+                                        strokeLinecap="round"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <span className="copa-radio-card__icon">
+                                    {/* <i className={`ti ${s.icon}`}></i> */}
+                                  </span>
+                                  <span className="copa-radio-card__name">
+                                    {s.name}
+                                  </span>
+                                  <span className="copa-radio-card__desc">
+                                    {s.desc}
+                                  </span>
+                                </label>
+                              ))}
+                            </div>
+                            {errors.companyStatus && (
+                              <span className="copa-error-msg">
+                                {errors.companyStatus}
+                              </span>
+                            )}
+                          </div>
+
+                          {(form.companyStatus === "formal" ||
+                            form.companyStatus === "informal") && (
+                            <>
+                              <div className="col-lg-6">
+                                <label
+                                  className={
+                                    errors.companyName
+                                      ? "copa-input-invalid"
+                                      : ""
+                                  }
+                                >
+                                  <i className="ti ti-briefcase" />
+                                  <input
+                                    type="text"
+                                    value={form.companyName}
+                                    onChange={(e) =>
+                                      upd("companyName", e.target.value)
+                                    }
+                                    placeholder={t("companyName")}
+                                  />
+                                </label>
+                                {errors.companyName && (
+                                  <span className="copa-error-msg">
+                                    {errors.companyName}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="col-lg-6">
+                                <label
+                                  className={
+                                    errors.nif ? "copa-input-invalid" : ""
+                                  }
+                                >
+                                  <i className="ti ti-id-badge" />
+                                  <input
+                                    type="text"
+                                    value={form.nif}
+                                    onChange={(e) => upd("nif", e.target.value)}
+                                    placeholder={t("nif")}
+                                  />
+                                </label>
+                                {errors.nif && (
+                                  <span className="copa-error-msg">
+                                    {errors.nif}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="col-lg-6">
+                                <label
+                                  className={
+                                    errors.creationYear
+                                      ? "copa-input-invalid"
+                                      : ""
+                                  }
+                                >
+                                  <i className="ti ti-calendar" />
+                                  <input
+                                    type="number"
+                                    value={String(form.creationYear)}
+                                    onChange={(e) =>
+                                      upd(
+                                        "creationYear",
+                                        e.target.value ? +e.target.value : "",
+                                      )
+                                    }
+                                    placeholder={t("creationYear")}
+                                  />
+                                </label>
+                                {errors.creationYear && (
+                                  <span className="copa-error-msg">
+                                    {errors.creationYear}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="col-lg-6">
+                                <label
+                                  className={
+                                    errors.sectorId ? "copa-input-invalid" : ""
+                                  }
+                                >
+                                  <i className="ti ti-briefcase" />
+                                  <select
+                                    value={String(form.sectorId)}
+                                    onChange={(e) =>
+                                      upd(
+                                        "sectorId",
+                                        e.target.value ? +e.target.value : "",
+                                      )
+                                    }
+                                  >
+                                    <option value="">
+                                      {loadSect
+                                        ? t("loading")
+                                        : t("selectSector")}
+                                    </option>
+                                    {sectors.map((s) => (
+                                      <option key={s.id} value={s.id}>
+                                        {isKi && s.nameRn ? s.nameRn : s.nameFr}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </label>
+                                {errors.sectorId && (
+                                  <span className="copa-error-msg">
+                                    {errors.sectorId}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="col-12">
+                                <label
+                                  className={
+                                    errors.activityDescription
+                                      ? "copa-input-invalid"
+                                      : ""
+                                  }
+                                >
+                                  <textarea
+                                    rows={4}
+                                    value={form.activityDescription}
+                                    onChange={(e) =>
+                                      upd("activityDescription", e.target.value)
+                                    }
+                                    placeholder={t("activityDescription")}
+                                    style={{ paddingLeft: 15 }}
+                                  />
+                                </label>
+                                {errors.activityDescription && (
+                                  <span className="copa-error-msg">
+                                    {errors.activityDescription}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="col-lg-6">
+                                <label
+                                  className={
+                                    errors.employeeCount
+                                      ? "copa-input-invalid"
+                                      : ""
+                                  }
+                                >
+                                  <i className="fa fa-users" />
+                                  <input
+                                    type="number"
+                                    value={String(form.employeeCount)}
+                                    onChange={(e) =>
+                                      upd(
+                                        "employeeCount",
+                                        e.target.value ? +e.target.value : "",
+                                      )
+                                    }
+                                    placeholder={t("employeeCount")}
+                                  />
+                                </label>
+                                {errors.employeeCount && (
+                                  <span className="copa-error-msg">
+                                    {errors.employeeCount}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="col-lg-6">
+                                <label>
+                                  <i className="ti ti-money" />
+                                  <input
+                                    type="number"
+                                    value={String(form.annualRevenue)}
+                                    onChange={(e) =>
+                                      upd(
+                                        "annualRevenue",
+                                        e.target.value ? +e.target.value : "",
+                                      )
+                                    }
+                                    placeholder={t("annualRevenue")}
+                                  />
+                                </label>
+                              </div>
+                            </>
+                          )}
+                        </>
+                      )}
+
+                      {/* ════════ ÉTAPE 3 ════════ */}
+                      {step === 3 && (
+                        <>
+                          <div className="col-12">
+                            {/* Bannière info — copa */}
+                            <div className="copa-validation-banner">
+                              <svg
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                              <div>
+                                <strong>
+                                  Dernière étape — vérifiez vos informations
+                                </strong>
+                                <p>
+                                  Lisez et cochez chaque case pour soumettre
+                                  votre inscription.
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Checkboxes copa */}
+                            <div className="copa-checklist">
+                              {[
+                                {
+                                  key: "acceptTerms" as const,
+                                  label: t("acceptTerms"),
+                                  link: "/conditions-utilisation",
+                                  required: true,
+                                },
+                                {
+                                  key: "acceptPrivacy" as const,
+                                  label: t("acceptPrivacy"),
+                                  link: "/politique-confidentialite",
+                                  required: true,
+                                },
+                                {
+                                  key: "certifyAccuracy" as const,
+                                  label: t("certifyAccuracy"),
+                                  link: null,
+                                  required: true,
+                                },
+                                {
+                                  key: "acceptNotifications" as const,
+                                  label: t("acceptNotifications"),
+                                  link: null,
+                                  required: false,
+                                },
+                              ].map((item) => (
+                                <label
+                                  key={item.key}
+                                  className={`copa-check-row ${form[item.key] ? "is-checked" : ""} ${errors[item.key] ? "is-invalid" : ""}`}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={form[item.key] as boolean}
+                                    onChange={(e) =>
+                                      upd(item.key, e.target.checked as any)
+                                    }
+                                  />
+                                  <span className="copa-check-row__box">
+                                    <svg
+                                      viewBox="0 0 10 10"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2.5"
+                                    >
+                                      <path
+                                        d="M1.5 5l2.5 2.5 5-5"
+                                        strokeLinecap="round"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <span className="copa-check-row__text">
+                                    {item.label}
+                                    {item.required && (
+                                      <span style={{ color: "#dc3545" }}>
+                                        {" "}
+                                        *
+                                      </span>
+                                    )}
+                                    {item.link && (
+                                      <a
+                                        href={item.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="copa-check-row__link"
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        Lire →
+                                      </a>
+                                    )}
+                                    {errors[item.key] && (
+                                      <span className="copa-check-row__error">
+                                        {errors[item.key]}
+                                      </span>
+                                    )}
+                                  </span>
+                                </label>
+                              ))}
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      {/* ════════ Navigation ════════ */}
+                      <div className="col-12 mt-25">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div>
+                            {step === 1 && (
+                              <p style={{ fontSize: 13, margin: 0 }}>
+                                Déjà un compte ?{" "}
+                                <Link
+                                  to="/login"
+                                  className="text-theme-SkinColor fw-bold"
+                                >
+                                  Se connecter
+                                </Link>
+                              </p>
+                            )}
+                          </div>
+                          <div className="d-flex" style={{ gap: 10 }}>
+                            {step > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setStep(step - 1);
+                                  window.scrollTo(0, 0);
+                                }}
+                                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
+                              >
+                                ← {t("previous")}
+                              </button>
+                            )}
+                            <button
+                              type="submit"
+                              disabled={submitting}
+                              className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                            >
+                              {submitting ? (
+                                <>
+                                  <span className="copa-spinner" />
+                                  Envoi en cours…
+                                </>
+                              ) : step === 3 ? (
+                                `✓ ${t("createAccount")}`
+                              ) : (
+                                `${t("next")} →`
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <Footer />
-      <Styles />
     </div>
   );
 };
-
-// ─── Step 1 ───────────────────────────────────────────────────────────────────
-
-const Step1: React.FC<StepProps> = ({
-  formData,
-  updateFormData,
-  errors,
-  provinces,
-  communes,
-  loading,
-}) => {
-  const { t, i18n } = useTranslation();
-  const isKirundi = i18n.language === "rn";
-
-  return (
-    <div className="rg-grid">
-      <Field label={t("youAre")} error={errors.entrepreneurType} required>
-        <Sel
-          value={formData.entrepreneurType}
-          onChange={(v) => updateFormData("entrepreneurType", v as any)}
-          invalid={!!errors.entrepreneurType}
-          placeholder={t("selectYourStatus")}
-          options={[
-            { value: "burundian", label: t("burundianEntrepreneur") },
-            { value: "refugee", label: t("refugeeEntrepreneur") },
-          ]}
-        />
-      </Field>
-
-      <Field label={t("firstName")} error={errors.firstName} required>
-        <Inp
-          type="text"
-          value={formData.firstName}
-          onChange={(v) => updateFormData("firstName", v)}
-          invalid={!!errors.firstName}
-          placeholder={t("firstName")}
-          icon="user"
-        />
-      </Field>
-
-      <Field label={t("lastName")} error={errors.lastName} required>
-        <Inp
-          type="text"
-          value={formData.lastName}
-          onChange={(v) => updateFormData("lastName", v)}
-          invalid={!!errors.lastName}
-          placeholder={t("lastName")}
-          icon="user"
-        />
-      </Field>
-
-      <Field label={t("gender")} error={errors.gender} required>
-        <Sel
-          value={formData.gender}
-          onChange={(v) => updateFormData("gender", v as any)}
-          invalid={!!errors.gender}
-          placeholder={t("selectYourGender")}
-          options={[
-            { value: "M", label: t("male") },
-            { value: "F", label: t("female") },
-          ]}
-        />
-      </Field>
-
-      <Field label={t("birthDate")} error={errors.birthDate} required>
-        <Inp
-          type="date"
-          value={formData.birthDate}
-          onChange={(v) => updateFormData("birthDate", v)}
-          invalid={!!errors.birthDate}
-          max={
-            new Date(new Date().setFullYear(new Date().getFullYear() - 18))
-              .toISOString()
-              .split("T")[0]
-          }
-          icon="calendar"
-        />
-      </Field>
-
-      <Field label={t("email")} error={errors.email} required>
-        <Inp
-          type="email"
-          value={formData.email}
-          onChange={(v) => updateFormData("email", v)}
-          invalid={!!errors.email}
-          placeholder={t("email")}
-          icon="mail"
-        />
-      </Field>
-
-          <div className="rg-col-full">
-      <Field label={t("phoneNumber")} error={errors.phone} required>
-        <Inp
-          type="tel"
-          value={formData.phone}
-          onChange={(v) => updateFormData("phone", v)}
-          invalid={!!errors.phone}
-          placeholder={t("phoneNumber")}
-          icon="phone"
-        />
-      </Field></div>
-
-      <Field label={t("selectProvince")} error={errors.provinceId} required>
-        <Sel
-          value={String(formData.provinceId)}
-          onChange={(v) => updateFormData("provinceId", v ? parseInt(v) : "")}
-          invalid={!!errors.provinceId}
-          placeholder={loading?.provinces ? t("loading") : t("selectProvince")}
-          options={
-            provinces?.map((p) => ({ value: String(p.id), label: p.name })) ||
-            []
-          }
-        />
-      </Field>
-
-      <Field label={t("selectCommune")} error={errors.communeId} required>
-        <Sel
-          value={String(formData.communeId)}
-          onChange={(v) => updateFormData("communeId", v ? parseInt(v) : "")}
-          invalid={!!errors.communeId}
-          disabled={!formData.provinceId}
-          placeholder={
-            loading?.communes
-              ? t("loading")
-              : !formData.provinceId
-                ? t("selectProvinceFirst")
-                : t("selectCommune")
-          }
-          options={
-            communes?.map((c) => ({
-              value: String(c.id),
-              label: c.name,
-            })) || []
-          }
-        />
-      </Field>
-
-      <Field
-        label={t("password")}
-        error={errors.password}
-        required
-        hint={t("passwordHint")}
-      >
-        <Inp
-          type="password"
-          value={formData.password}
-          onChange={(v) => updateFormData("password", v)}
-          invalid={!!errors.password}
-          placeholder={t("password")}
-          icon="lock"
-        />
-      </Field>
-
-      <Field
-        label={t("confirmPassword")}
-        error={errors.confirmPassword}
-        required
-      >
-        <Inp
-          type="password"
-          value={formData.confirmPassword}
-          onChange={(v) => updateFormData("confirmPassword", v)}
-          invalid={!!errors.confirmPassword}
-          placeholder={t("confirmPassword")}
-          icon="lock"
-        />
-      </Field>
-    </div>
-  );
-};
-
-// ─── Step 2 ───────────────────────────────────────────────────────────────────
-
-const Step2: React.FC<StepProps> = ({
-  formData,
-  updateFormData,
-  errors,
-  sectors,
-}) => {
-  const { t, i18n } = useTranslation();
-  const isKirundi = i18n.language === "rn";
-  const hasCompany =
-    formData.companyStatus === "formal" ||
-    formData.companyStatus === "informal";
-
-  const statuses = [
-    {
-      value: "formal",
-      label: t("formalCompany"),
-      icon: "🏛️",
-      desc: "Entreprise officielle enregistrée",
-    },
-    {
-      value: "informal",
-      label: t("informalCompany"),
-      icon: "🤝",
-      desc: "Activité non enregistrée",
-    },
-    {
-      value: "project",
-      label: t("projectCompany"),
-      icon: "💡",
-      desc: "Projet en cours de création",
-    },
-  ];
-
-  return (
-    <div className="rg-grid">
-      <div className="rg-col-full">
-        <label className="rg-label">
-          {t("haveCompany")} <span className="rg-required">*</span>
-        </label>
-        <div className="rg-status-cards">
-          {statuses.map((s) => (
-            <label
-              key={s.value}
-              className={`rg-status-card ${formData.companyStatus === s.value ? "is-selected" : ""}`}
-            >
-              <input
-                type="radio"
-                name="companyStatus"
-                value={s.value}
-                checked={formData.companyStatus === s.value}
-                onChange={(e) =>
-                  updateFormData("companyStatus", e.target.value as any)
-                }
-              />
-              <span className="rg-status-card__check">
-                <svg
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="M1.5 5l2.5 2.5 5-5" strokeLinecap="round" />
-                </svg>
-              </span>
-              {/* <span className="rg-status-card__icon">{s.icon}</span> */}
-              <span className="rg-status-card__name">{s.label}</span>
-              <span className="rg-status-card__desc">{s.desc}</span>
-            </label>
-          ))}
-        </div>
-        {errors.companyStatus && (
-          <span className="rg-error-msg">{errors.companyStatus}</span>
-        )}
-      </div>
-
-      {hasCompany && (
-        <>
-          <Field label={t("companyName")} error={errors.companyName} required>
-            <Inp
-              type="text"
-              value={formData.companyName}
-              onChange={(v) => updateFormData("companyName", v)}
-              invalid={!!errors.companyName}
-              placeholder={t("companyName")}
-              icon="building"
-            />
-          </Field>
-
-          <Field label={t("nif")} error={errors.nif} required>
-            <Inp
-              type="text"
-              value={formData.nif}
-              onChange={(v) => updateFormData("nif", v)}
-              invalid={!!errors.nif}
-              placeholder={t("nif")}
-              icon="id"
-            />
-          </Field>
-
-          <Field label={t("creationYear")} error={errors.creationYear} required>
-            <Inp
-              type="number"
-              value={String(formData.creationYear)}
-              onChange={(v) =>
-                updateFormData("creationYear", v ? parseInt(v) : "")
-              }
-              invalid={!!errors.creationYear}
-              placeholder={t("creationYear")}
-              icon="calendar"
-            />
-          </Field>
-
-          <Field label={t("selectSector")} error={errors.sectorId} required>
-            <Sel
-              value={String(formData.sectorId)}
-              onChange={(v) => updateFormData("sectorId", v ? parseInt(v) : "")}
-              invalid={!!errors.sectorId}
-              placeholder={t("selectSector")}
-              options={
-                sectors?.map((s) => ({
-                  value: String(s.id),
-                  label: isKirundi && s.nameRn ? s.nameRn : s.nameFr,
-                })) || []
-              }
-            />
-          </Field>
-
-          <div className="rg-col-full">
-            <Field
-              label={t("activityDescription")}
-              error={errors.activityDescription}
-              required
-            >
-              <div
-                className={`rg-textarea-wrap ${errors.activityDescription ? "is-invalid" : ""}`}
-              >
-                <textarea
-                  rows={4}
-                  value={formData.activityDescription}
-                  onChange={(e) =>
-                    updateFormData("activityDescription", e.target.value)
-                  }
-                  placeholder={t("activityDescription")}
-                />
-              </div>
-            </Field>
-          </div>
-
-          <Field
-            label={t("employeeCount")}
-            error={errors.employeeCount}
-            required
-          >
-            <Inp
-              type="number"
-              value={String(formData.employeeCount)}
-              onChange={(v) =>
-                updateFormData("employeeCount", v ? parseInt(v) : "")
-              }
-              invalid={!!errors.employeeCount}
-              placeholder={t("employeeCount")}
-              icon="users"
-            />
-          </Field>
-
-          <Field label={t("annualRevenue")}>
-            <Inp
-              type="number"
-              value={String(formData.annualRevenue)}
-              onChange={(v) =>
-                updateFormData("annualRevenue", v ? parseInt(v) : "")
-              }
-              placeholder={t("annualRevenue")}
-              icon="money"
-            />
-          </Field>
-        </>
-      )}
-    </div>
-  );
-};
-
-// ─── Step 3 ───────────────────────────────────────────────────────────────────
-
-const Step3: React.FC<StepProps> = ({ formData, updateFormData, errors }) => {
-  const { t } = useTranslation();
-
-  const items = [
-    {
-      key: "acceptTerms" as keyof FormData,
-      label: t("acceptTerms"),
-      link: "/terms",
-      required: true,
-    },
-    {
-      key: "acceptPrivacy" as keyof FormData,
-      label: t("acceptPrivacy"),
-      link: "/privacy",
-      required: true,
-    },
-    {
-      key: "certifyAccuracy" as keyof FormData,
-      label: t("certifyAccuracy"),
-      link: null,
-      required: true,
-    },
-    {
-      key: "acceptNotifications" as keyof FormData,
-      label: t("acceptNotifications"),
-      link: null,
-      required: false,
-    },
-  ];
-
-  return (
-    <div className="rg-validation">
-      <div className="rg-validation__banner">
-        <svg viewBox="0 0 20 20" fill="currentColor">
-          <path
-            fillRule="evenodd"
-            d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z"
-            clipRule="evenodd"
-          />
-        </svg>
-        <div>
-          <strong>Dernière étape</strong>
-          <p>
-            Veuillez lire et accepter les conditions pour finaliser votre
-            inscription.
-          </p>
-        </div>
-      </div>
-
-      <div className="rg-checklist">
-        {items.map((item) => (
-          <label
-            key={item.key}
-            className={`rg-check-row ${(errors as any)[item.key] ? "is-invalid" : ""} ${(formData[item.key] as boolean) ? "is-checked" : ""}`}
-          >
-            <input
-              type="checkbox"
-              checked={formData[item.key] as boolean}
-              onChange={(e) =>
-                updateFormData(item.key, e.target.checked as any)
-              }
-            />
-            <span className="rg-check-box">
-              <svg
-                viewBox="0 0 10 10"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <path d="M1.5 5l2.5 2.5 5-5" strokeLinecap="round" />
-              </svg>
-            </span>
-            <span className="rg-check-text">
-              <span className="rg-check-main">
-                {item.label}
-                {item.required && <span className="rg-required"> *</span>}
-              </span>
-              {item.link && (
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rg-check-link"
-                >
-                  Lire la politique →
-                </a>
-              )}
-            </span>
-            {(errors as any)[item.key] && (
-              <span className="rg-check-error">
-                {(errors as any)[item.key]}
-              </span>
-            )}
-          </label>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// ─── Shared UI Primitives ─────────────────────────────────────────────────────
-
-const ICONS: Record<string, React.ReactNode> = {
-  user: (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <circle cx="8" cy="5.5" r="2.5" />
-      <path d="M2 14c0-3 2.7-5.5 6-5.5s6 2.5 6 5.5" strokeLinecap="round" />
-    </svg>
-  ),
-  mail: (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <rect x="1" y="3" width="14" height="10" rx="2" />
-      <path d="M1 5l7 5 7-5" strokeLinecap="round" />
-    </svg>
-  ),
-  phone: (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <path
-        d="M3 2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-.71.95L5.5 5.5a9 9 0 004 4l.55-.79A1 1 0 0111 8h2a1 1 0 011 1v2a1 1 0 01-1 1C7.4 12 4 8.6 4 3a1 1 0 01-1-1z"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
-  lock: (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <rect x="3" y="7" width="10" height="8" rx="1" />
-      <path d="M5 7V5a3 3 0 016 0v2" strokeLinecap="round" />
-    </svg>
-  ),
-  calendar: (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <rect x="1" y="3" width="14" height="12" rx="2" />
-      <path d="M1 7h14M5 1v4M11 1v4" strokeLinecap="round" />
-    </svg>
-  ),
-  building: (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <path d="M2 14V6l6-4 6 4v8H2z" />
-      <path d="M6 14v-4h4v4" />
-    </svg>
-  ),
-  id: (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <rect x="1" y="4" width="14" height="8" rx="1" />
-      <path d="M5 8h6M5 10h3" strokeLinecap="round" />
-    </svg>
-  ),
-  users: (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <circle cx="5.5" cy="5" r="2.5" />
-      <circle cx="10.5" cy="5" r="2.5" />
-      <path d="M0 14c0-3 2.5-5 5.5-5s5.5 2 5.5 5" strokeLinecap="round" />
-      <path d="M10.5 9c3 0 5.5 2 5.5 5" strokeLinecap="round" />
-    </svg>
-  ),
-  money: (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <circle cx="8" cy="8" r="7" />
-      <path
-        d="M8 4v8M6 6h3a1 1 0 010 2H7a1 1 0 000 2h3"
-        strokeLinecap="round"
-      />
-    </svg>
-  ),
-};
-
-const Inp: React.FC<{
-  type: string;
-  value: string;
-  onChange: (v: string) => void;
-  invalid?: boolean;
-  placeholder?: string;
-  icon?: string;
-  max?: string;
-}> = ({ type, value, onChange, invalid, placeholder, icon, max }) => (
-  <div className={`rg-input-wrap ${invalid ? "is-invalid" : ""}`}>
-    {icon && <span className="rg-input-icon">{ICONS[icon]}</span>}
-    <input
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      max={max}
-    />
-  </div>
-);
-
-const Sel: React.FC<{
-  value: string;
-  onChange: (v: string) => void;
-  invalid?: boolean;
-  disabled?: boolean;
-  placeholder: string;
-  options: { value: string; label: string }[];
-}> = ({ value, onChange, invalid, disabled, placeholder, options }) => (
-  <div className={`rg-select-wrap ${invalid ? "is-invalid" : ""}`}>
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      disabled={disabled}
-    >
-      <option value="">{placeholder}</option>
-      {options.map((o) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </select>
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M4 6l4 4 4-4" strokeLinecap="round" />
-    </svg>
-  </div>
-);
-
-const Field: React.FC<{
-  label: string;
-  error?: string;
-  hint?: string;
-  required?: boolean;
-  children: React.ReactNode;
-}> = ({ label, error, hint, required, children }) => (
-  <div className="rg-field">
-    <label className="rg-label">
-      {label}
-      {required && <span className="rg-required"> *</span>}
-    </label>
-    {children}
-    {hint && <p className="rg-hint">{hint}</p>}
-    {error && <span className="rg-error-msg">{error}</span>}
-  </div>
-);
-
-const FieldSection: React.FC<{ label: string }> = ({ label }) => (
-  <div className="rg-section-label">{label}</div>
-);
-
-// ─── Styles ───────────────────────────────────────────────────────────────────
-
-const Styles: React.FC = () => (
-  <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Lora:wght@600;700&display=swap');
-
-    :root {
-      --c-navy:    #1A3A5C;
-      --c-navy-dk: #0F2540;
-      --c-accent:  #C97B2E;
-      --c-green:   #2E7D52;
-      --c-red:     #C0392B;
-      --c-bg:      #F7F7F7;
-      --c-white:   #FFFFFF;
-      --c-border:  rgba(0,0,0,.04);
-      --c-text:    #1C2B3A;
-      --c-muted:   #6B7A90;
-      --c-shadow:  0 0 8px 0 rgba(0,0,0,.08);
-      --r:         12px;
-      --r-sm:      8px;
-    }
-
-    .rg-section {
-      // font-family: 'DM Sans', sans-serif;
-      background: var(--c-bg);
-      padding: 100px 0 80px;
-      min-height: 70vh;
-    }
-
-    // .rg-container { max-width: 780px; margin: 0 auto; padding: 0 20px; }
-    .rg-container--narrow { max-width: 540px; }
-
-    /* ── Stepper ── */
-    .rg-stepper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 32px;
-    }
-
-    .rg-step { display: flex; align-items: center; gap: 10px; }
-
-    .rg-step__dot {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      border: 2px solid var(--c-border);
-      background: var(--c-white);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700;
-      color: var(--c-muted);
-      transition: all 0.3s;
-    }
-
-    .rg-step__dot svg { width: 14px; height: 14px; }
-
-    .rg-step.is-active .rg-step__dot {
-      border-color: var(--c-navy);
-      background: var(--c-navy);
-      color: #fff;
-      box-shadow: 0 0 0 4px rgba(26,58,92,0.15);
-    }
-
-    .rg-step.is-done .rg-step__dot {
-      border-color: var(--c-green);
-      background: var(--c-green);
-      color: #fff;
-    }
-
-    .rg-step__label { font-size: 13px; font-weight: 600; color: var(--c-muted); white-space: nowrap; }
-    .rg-step.is-active .rg-step__label { color: var(--c-navy); }
-    .rg-step.is-done .rg-step__label { color: var(--c-green); }
-
-    .rg-step__line {
-      flex: 1;
-      min-width: 40px;
-      height: 2px;
-      background: var(--c-border);
-      margin: 0 12px;
-      border-radius: 1px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .rg-step__line::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: var(--c-green);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.4s ease;
-    }
-
-    .rg-step__line.is-filled::after { transform: scaleX(1); }
-
-    /* ── Card ── */
-    .rg-card {
-      background: var(--c-white);
-      border-radius: 0.25rem;
-      box-shadow: var(--c-shadow);
-      // border: 1px solid var(--c-border);
-      overflow: hidden;
-    }
-
-    .rg-card__head { padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; }
-
-    .rg-card__eyebrow {
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.1em; color: var(--c-muted); margin: 0 0 6px;
-    }
-
-    .rg-card__title {
-      // font-family: 'Lora', serif;
-      font-size: 22px;
-      font-weight: 700; color: var(--c-text); margin: 0;
-    }
-
-    .rg-card__progress-ring { width: 44px; height: 44px; }
-
-    .rg-divider { height: 1px; background: var(--c-border); }
-
-    .rg-card__body { padding: 36px 40px; }
-
-    .rg-card__foot {
-      padding: 20px 40px;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      background: #FAFBFC;
-    }
-
-    .rg-card__foot-right { display: flex; gap: 10px; }
-    .rg-card__login-hint { font-size: 13px; color: var(--c-muted); margin: 0; }
-    .rg-link { color: var(--c-navy); font-weight: 600; text-decoration: none; }
-    .rg-link:hover { color: var(--c-accent); }
-
-    /* ── Fields Grid ── */
-    .rg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; }
-    .rg-col-full { grid-column: 1 / -1; }
-
-    .rg-section-label {
-      font-size: 10.5px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.12em; color: var(--c-navy);
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--c-navy);
-      display: inline-block;
-    }
-
-    .rg-field { display: flex; flex-direction: column; gap: 6px; }
-    .rg-label { font-size: 13px; font-weight: 600; color: var(--c-text); }
-    .rg-required { color: var(--c-red); }
-    .rg-hint { font-size: 11.5px; color: var(--c-muted); margin: 2px 0 0; }
-    .rg-error-msg { font-size: 11.5px; color: var(--c-red); font-weight: 500; margin-top: 2px; }
-
-    /* ── Input ── */
-    .rg-input-wrap, .rg-select-wrap { position: relative; display: flex; align-items: center; }
-
-    .rg-input-icon {
-      position: absolute; left: 12px;
-      width: 15px; height: 15px;
-      color: var(--c-muted);
-      pointer-events: none;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .rg-input-icon svg { width: 15px; height: 15px; }
-
-    .rg-input-wrap input {
-      width: 100%;
-      padding: 10px 14px 10px 36px;
-      font-size: 14px;
-      // font-family: 'DM Sans', sans-serif;
-      color: var(--c-text);
-      background: var(--c-bg);
-      border: 1px solid var(--c-border);
-      border-radius: var(--r-sm);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-    }
-
-    .rg-input-wrap.is-invalid input { border-color: var(--c-red); }
-    // .rg-input-wrap input:focus { border-color: var(--c-navy); background: #fff; box-shadow: 0 0 0 3px rgba(26,58,92,0.09); }
-
-    /* ── Select ── */
-    .rg-select-wrap select {
-      width: 100%;
-      padding: 10px 36px 10px 14px;
-      font-size: 14px;
-      // font-family: 'DM Sans', sans-serif;
-      color: var(--c-text);
-      background: var(--c-bg);
-      border: 1px solid var(--c-border);
-      border-radius: var(--r-sm);
-      outline: none; appearance: none; -webkit-appearance: none; cursor: pointer;
-      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-    }
-
-    .rg-select-wrap > svg { position: absolute; right: 12px; width: 14px; height: 14px; color: var(--c-muted); pointer-events: none; }
-    .rg-select-wrap.is-invalid select { border-color: var(--c-red); }
-    // .rg-select-wrap select:focus { border-color: var(--c-navy); background: #fff; box-shadow: 0 0 0 3px rgba(26,58,92,0.09); }
-    .rg-select-wrap select:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    /* ── Textarea ── */
-    .rg-textarea-wrap textarea {
-      width: 100%;
-      padding: 11px 14px;
-      font-size: 14px;
-      // font-family: 'DM Sans', sans-serif;
-      color: var(--c-text);
-      background: var(--c-bg);
-      border: 1px solid var(--c-border);
-      border-radius: var(--r-sm);
-      outline: none; resize: vertical; min-height: 100px; line-height: 1.6;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .rg-textarea-wrap.is-invalid textarea { border-color: var(--c-red); }
-    // .rg-textarea-wrap textarea:focus { border-color: var(--c-navy); background: #fff; box-shadow: 0 0 0 3px rgba(26,58,92,0.09); }
-
-    /* ── Status Cards ── */
-    .rg-status-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; }
-
-    .rg-status-card {
-      position: relative;
-      border: 1px solid var(--c-border);
-      border-radius: var(--r);
-      padding: 18px 16px 16px;
-      cursor: pointer;
-      display: flex; flex-direction: column; gap: 3px;
-      background: var(--c-bg);
-      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-    }
-
-    .rg-status-card input { position: absolute; opacity: 0; }
-    .rg-status-card:hover { border-color: #aab5c4; background: #fff; }
-    // .rg-status-card.is-selected { border-color: var(--c-navy); background: #fff; box-shadow: 0 0 0 3px rgba(26,58,92,0.08); }
-
-    .rg-status-card__check {
-      position: absolute; top: 10px; right: 10px;
-      width: 20px; height: 20px; border-radius: 50%;
-      border: 1px solid var(--c-border); background: var(--c-bg);
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .rg-status-card__check svg { width: 10px; height: 10px; opacity: 0; color: #fff; transition: opacity 0.15s; }
-    .rg-status-card.is-selected .rg-status-card__check { background: var(--c-navy); border-color: var(--c-navy); }
-    .rg-status-card.is-selected .rg-status-card__check svg { opacity: 1; }
-
-    .rg-status-card__icon { font-size: 24px; margin-bottom: 6px; }
-    .rg-status-card__name { font-size: 13px; font-weight: 700; color: var(--c-text); }
-    .rg-status-card__desc { font-size: 11px; color: var(--c-muted); line-height: 1.4; }
-
-    /* ── Validation ── */
-    .rg-validation { display: flex; flex-direction: column; gap: 12px; }
-
-    .rg-validation__banner {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 16px 20px;
-      background: #EFF3F8;
-      border-radius: var(--r-sm);
-      border-left: 3px solid var(--c-navy);
-      margin-bottom: 8px;
-    }
-
-    .rg-validation__banner svg { width: 20px; height: 20px; color: var(--c-navy); flex-shrink: 0; margin-top: 1px; }
-    .rg-validation__banner strong { display: block; font-size: 14px; color: var(--c-text); margin-bottom: 2px; }
-    .rg-validation__banner p { font-size: 12.5px; color: var(--c-muted); margin: 0; }
-
-    .rg-checklist { display: flex; flex-direction: column; gap: 10px; }
-
-    .rg-check-row {
-      display: grid;
-      grid-template-columns: 22px 1fr;
-      grid-template-rows: auto auto;
-      gap: 0 12px;
-      align-items: start;
-      padding: 14px 18px;
-      background: var(--c-bg);
-      border: 1px solid var(--c-border);
-      border-radius: var(--r-sm);
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    .rg-check-row:hover { border-color: #aab5c4; }
-    .rg-check-row.is-checked { border-color: var(--c-navy); background: #F4F7FB; }
-    .rg-check-row.is-invalid { border-color: var(--c-red); }
-    .rg-check-row input { position: absolute; opacity: 0; pointer-events: none; }
-
-    .rg-check-box {
-      width: 20px; height: 20px;
-      border: 2px solid var(--c-border); border-radius: 5px; background: #fff;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s; margin-top: 1px;
-    }
-
-    .rg-check-box svg { width: 10px; height: 10px; opacity: 0; transition: opacity 0.15s; color: #fff; stroke-width: 3; }
-    .rg-check-row.is-checked .rg-check-box { background: var(--c-navy); border-color: var(--c-navy); }
-    .rg-check-row.is-checked .rg-check-box svg { opacity: 1; }
-
-    .rg-check-text { display: flex; flex-direction: column; gap: 3px; }
-    .rg-check-main { font-size: 13.5px; color: var(--c-text); font-weight: 500; line-height: 1.4; }
-    .rg-check-link { font-size: 12px; color: var(--c-navy); font-weight: 600; text-decoration: none; }
-    .rg-check-link:hover { color: var(--c-accent); }
-    .rg-check-error { grid-column: 2; font-size: 11.5px; color: var(--c-red); font-weight: 500; margin-top: 4px; }
-
-    /* ── Buttons ── */
-    .rg-btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 10px 22px;
-      border-radius: var(--r-sm);
-      font-size: 14px; font-weight: 700;
-      // font-family: 'DM Sans', sans-serif;
-      cursor: pointer; transition: all 0.18s;
-      border: none; text-decoration: none; line-height: 1;
-    }
-
-    .rg-btn svg { width: 15px; height: 15px; }
-
-    .rg-btn--primary {
-      background: var(--c-navy); color: #fff;
-      box-shadow: 0 2px 8px rgba(26,58,92,0.28);
-    }
-
-    .rg-btn--primary:hover:not(:disabled) {
-      background: var(--c-navy-dk);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(26,58,92,0.32);
-    }
-
-    .rg-btn--primary:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .rg-btn--ghost {
-      background: transparent; color: var(--c-text);
-      border: 1px solid var(--c-border);
-    }
-
-    .rg-btn--ghost:hover { border-color: var(--c-navy); color: var(--c-navy); }
-
-    .rg-spinner {
-      width: 15px; height: 15px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: rg-spin 0.65s linear infinite;
-    }
-
-    @keyframes rg-spin { to { transform: rotate(360deg); } }
-
-    /* ── Success ── */
-    .rg-success {
-      background: var(--c-white); border-radius: 18px;
-      box-shadow: var(--c-shadow); border: 1px solid var(--c-border);
-      padding: 60px 48px; text-align: center; margin-top: 24px;
-    }
-
-    .rg-success__ring {
-      width: 68px; height: 68px; border-radius: 50%;
-      background: #E8F5EE; border: 3px solid var(--c-green);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 22px; color: var(--c-green);
-    }
-
-    .rg-success__ring svg { width: 32px; height: 32px; }
-    .rg-success h2 { 
-      // font-family: 'Lora', serif;
-      font-size: 24px; color: var(--c-text); margin: 0 0 10px; }
-    .rg-success p { font-size: 14.5px; color: var(--c-muted); margin: 0 0 28px; line-height: 1.6; }
-    .rg-success__actions { display: flex; gap: 10px; justify-content: center; }
-
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-      .rg-card__head, .rg-card__body, .rg-card__foot { padding-left: 24px; padding-right: 24px; }
-      .rg-grid { grid-template-columns: 1fr; }
-      .rg-status-cards { grid-template-columns: 1fr; }
-      .rg-step__label { display: none; }
-      .rg-step.is-active .rg-step__label { display: block; }
-      .rg-success { padding: 40px 24px; }
-    }
-  `}</style>
-);
 
 export default Register;

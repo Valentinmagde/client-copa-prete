@@ -12,7 +12,7 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
       <Header />
 
       {/* PageHeader */}
-      <PageHeader title="blog details" breadcrumb="blog" />
+      <PageHeader title="Détails de l'article" breadcrumb="Détails-article" />
       {/* PageHeader end */}
 
       <div className="ttm-row sidebar ttm-sidebar clearfix">
@@ -28,7 +28,7 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                     <img
                       className="img-fluid"
                       src="https://via.placeholder.com/1200x800?text=1200x800+blog-01-1200x800.jpg"
-                      alt="blog-img"
+                      alt="image-blog"
                     />
                   </div>
                 </div>
@@ -43,64 +43,65 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                           className="img-fluid"
                           height="80"
                           width="80"
-                          alt="author"
+                          alt="auteur"
                         />
-                        By: Edward Samuel
+                        Par: Édouard Samuel
                       </span>
                       <span className="ttm-meta-line comment-links">
-                        <i className="fa fa-comments"></i>03 Comments
+                        <i className="fa fa-comments"></i>03 Commentaires
                       </span>
                       <span className="ttm-meta-line date">
-                        <i className="fa fa-calendar"></i>17 Apr 2021
+                        <i className="fa fa-calendar"></i>17 Avr 2021
                       </span>
                     </div>
                   </div>
                   <div className="entry-content">
                     <div className="ttm-box-desc-text">
                       <p>
-                        Lorem Ipsum is simply dummy text of the printting and
-                        typesetting industry. Lorem Ipsum contary io on hasbeen
-                        the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book.
+                        Lorem Ipsum est simplement un texte factice de
+                        l'industrie de l'impression et de la composition. Lorem
+                        Ipsum est le texte factice standard de l'industrie
+                        depuis les années 1500, quand un imprimeur inconnu a
+                        pris une galère de caractères et l'a brouillé pour en
+                        faire un spécimen de livre.
                       </p>
 
                       <p>
-                        Contary typesetting industry. Lorem Ipsum on hasbeen the
-                        industry's standard live youmgdummy text ever the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled.
+                        L'industrie de la composition typographique. Lorem Ipsum
+                        est le texte factice standard de l'industrie depuis les
+                        années 1500, quand un imprimeur inconnu a pris une
+                        galère de caractères et l'a brouillé.
                       </p>
 
                       <blockquote>
                         <div className="qoute-text">
-                          Mpsum is simply dummy text of the printing and
-                          conatary typesg industy. Lorem Ipsum on hasbeen the
-                          industry's standard dummy te
+                          Mpsum est simplement un texte factice de l'impression
+                          et de la composition typographique. Lorem Ipsum est le
+                          texte factice standard de l'industrie.
                         </div>
                         <cite>Alex Sam Martin</cite>
                       </blockquote>
 
                       <p>
-                        Contary is simply dummy text of the printting and
-                        contary to popular typesetti dustry. Lorem Ipsum on has
-                        been the industry's standard dummy text ever since the
-                        1500s, when loream an unknown printer took a galley of
-                        type and scrambled it to make a type specimen book.
+                        L'industrie de l'impression et de la composition
+                        typographique. Lorem Ipsum est le texte factice standard
+                        de l'industrie depuis les années 1500, quand un
+                        imprimeur inconnu a pris une galère de caractères et l'a
+                        brouillé pour en faire un spécimen de livre.
                       </p>
 
                       <div className="d-md-flex align-items-center mb-20">
                         <img
                           className="img-fluid alignleft"
                           src="https://via.placeholder.com/332x324?text=single-img-07-332x324.jpg"
-                          alt="single-07"
+                          alt="image-07"
                         />
                         <div className="pt-10 pb-15">
-                          <h3>Compatible Data</h3>
+                          <h3>Données Compatibles</h3>
                           <p>
-                            Lorem ipsum dolor sit contary amet, consectetur
-                            adipiscing elit, sed do loream eiusmod tempor
-                            incididu labore et dolore magna aliqua.{" "}
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit, sed do eiusmod tempor incididunt ut labore et
+                            dolore magna aliqua.
                           </p>
                           <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
                             <li>
@@ -130,26 +131,29 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                           </ul>
                         </div>
                       </div>
-                      <h3>Is Business Tech Accessible To All Employees?</h3>
+                      <h3>
+                        La technologie d'entreprise est-elle accessible à tous
+                        les employés ?
+                      </h3>
                       <p>
-                        We offers the highest level of comfort and relaxation.
-                        Large selection of rooms loram and apartments for every
-                        taste and for every need. Qualified staff, delicious
-                        dinners, bar, drinks, relaxation area and underground
-                        loream ipsum parking.
+                        Nous offrons le plus haut niveau de confort et de
+                        détente. Un large choix de chambres et d'appartements
+                        pour tous les goûts et pour tous les besoins. Personnel
+                        qualifié, délicieux dîners, bar, boissons, espace
+                        détente et parking souterrain.
                       </p>
                       <div className="social-media-block">
                         <div className="d-sm-flex justify-content-between">
                           <div className="ttm_tag_lists mt-15">
                             <span className="ttm-tags-links-title">
-                              <i className="fa fa-tags"></i>Tags:
+                              <i className="fa fa-tags"></i>Tags :
                             </span>
                             <span className="ttm-tags-links">
-                              Damage, Maintenance, Roof
+                              Dommages, Entretien, Toiture
                             </span>
                           </div>
                           <div className="ttm-social-share-wrapper mt-15">
-                            <h6 className="pr-10">Share : </h6>
+                            <h6 className="pr-10">Partager : </h6>
                             <ul className="social-icons">
                               <li>
                                 <a
@@ -186,7 +190,7 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                         <div id="comments" className="comments-area">
                           <div className="comment-respond">
                             <h3 className="comment-reply-title">
-                              Leave a Reply
+                              Laisser un commentaire
                             </h3>
                             <form
                               id="comment_form"
@@ -198,7 +202,7 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                                     <input
                                       type="text"
                                       name="first_name"
-                                      placeholder="First Name"
+                                      placeholder="Prénom"
                                     />
                                   </label>
                                 </div>
@@ -207,7 +211,7 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                                     <input
                                       type="text"
                                       name="last_name"
-                                      placeholder="Last Name"
+                                      placeholder="Nom"
                                     />
                                   </label>
                                 </div>
@@ -225,7 +229,7 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                                     <input
                                       type="tel"
                                       name="phone_number"
-                                      placeholder="Phone"
+                                      placeholder="Téléphone"
                                     />
                                   </label>
                                 </div>
@@ -234,7 +238,7 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                                     <input
                                       type="text"
                                       name="address"
-                                      placeholder="Address"
+                                      placeholder="Adresse"
                                     />
                                   </label>
                                 </div>
@@ -254,7 +258,7 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                                       type="submit"
                                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
                                     >
-                                      send a message
+                                      Envoyer le message
                                     </button>
                                   </label>
                                 </div>
@@ -276,11 +280,11 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                 <aside className="widget widget-search">
                   <form role="search" className="search-form">
                     <label>
-                      <span className="screen-reader-text">Search for:</span>
+                      <span className="screen-reader-text">Rechercher :</span>
                       <input
                         type="search"
                         className="input-text"
-                        placeholder="Your Keyword...."
+                        placeholder="Votre mot-clé...."
                         value=""
                         onChange={() => {}}
                       />
@@ -292,57 +296,57 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                 </aside>
 
                 <aside className="widget widget-Categories with-title">
-                  <h3 className="widget-title">Categories</h3>
+                  <h3 className="widget-title">Catégories</h3>
                   <ul>
                     <li>
                       <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
-                        Digital Marketing
+                        Marketing Digital
                       </a>
                     </li>
                     <li>
                       <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
-                        Search Engine Optimization
+                        Optimisation SEO
                       </a>
                     </li>
                     <li>
                       <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
-                        UI/UX Design Task
+                        Conception UI/UX
                       </a>
                     </li>
                     <li>
                       <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
-                        Web development
+                        Développement Web
                       </a>
                     </li>
                     <li>
                       <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
-                        Digital Marketing
+                        Marketing Digital
                       </a>
                     </li>
                     <li>
                       <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
-                        Investment
+                        Investissement
                       </a>
                     </li>
                   </ul>
                 </aside>
 
                 <aside className="widget widget-recent-post with-title">
-                  <h3 className="widget-title">Recent Posts</h3>
+                  <h3 className="widget-title">Articles Récents</h3>
                   <ul>
                     <li>
                       <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
                         <img
                           className="img-fluid"
                           src="https://via.placeholder.com/150x150?text=150x150+b_thumbb-01.jpg"
-                          alt="post-img"
+                          alt="image-post"
                         />
                       </a>
                       <div className="post-detail">
                         <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
-                          How Sources Utilize Sleuth Skill Beyond Work
+                          Comment les enquêteurs utilisent leurs compétences
                         </a>
-                        <span className="post-date">October 10, 2020</span>
+                        <span className="post-date">10 Octobre 2020</span>
                       </div>
                     </li>
                     <li>
@@ -350,14 +354,14 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                         <img
                           className="img-fluid"
                           src="https://via.placeholder.com/150x150?text=150x150+b_thumbb-02.jpg"
-                          alt="post-img"
+                          alt="image-post"
                         />
                       </a>
                       <div className="post-detail">
                         <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
-                          Let's Create Your Own Competitive News Feeder For Free
+                          Créez votre propre fil d'actualités compétitif
                         </a>
-                        <span className="post-date">October 10, 2020</span>
+                        <span className="post-date">10 Octobre 2020</span>
                       </div>
                     </li>
                     <li>
@@ -365,14 +369,14 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                         <img
                           className="img-fluid"
                           src="https://via.placeholder.com/150x150?text=150x150+b_thumbb-03.jpg"
-                          alt="post-img"
+                          alt="image-post"
                         />
                       </a>
                       <div className="post-detail">
                         <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
-                          Remote Hiring Trends Report 2021: Review Hire Process
+                          Tendances du recrutement à distance 2021
                         </a>
-                        <span className="post-date">October 10, 2020</span>
+                        <span className="post-date">10 Octobre 2020</span>
                       </div>
                     </li>
                   </ul>
@@ -393,48 +397,48 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                       <div className="ttm-icon ttm-icon_element-onlytxt ttm-icon_element-style-round ttm-icon_element-color-skincolor ttm-icon_element-size-xl">
                         <i className="far fa-comments"></i>
                       </div>
-                      <h3>Do You Need Any Help?</h3>
+                      <h3>Besoin d'aide ?</h3>
                       <div className="ttm-horizontal_sep width-100 mt-25 mb-25"></div>
                       <ul>
                         <li>+1 800 556 77 894</li>
-                        <li>info@yourmailexample.com</li>
+                        <li>info@votreemail.com</li>
                       </ul>
                       <a
                         className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
                         href={import.meta.env.PUBLIC_URL + "/"}
                       >
-                        appoinments!
+                        Prendre rendez-vous !
                       </a>
                     </div>
                   </div>
                 </aside>
 
                 <aside className="widget tagcloud-widget with-title">
-                  <h3 className="widget-title">Popular Tags</h3>
+                  <h3 className="widget-title">Tags Populaires</h3>
                   <div className="tagcloud">
                     <a
                       href={import.meta.env.PUBLIC_URL + "/blog_details"}
                       className="tag-cloud-link"
                     >
-                      Agency
+                      Agence
                     </a>
                     <a
                       href={import.meta.env.PUBLIC_URL + "/blog_details"}
                       className="tag-cloud-link"
                     >
-                      Business
+                      Affaires
                     </a>
                     <a
                       href={import.meta.env.PUBLIC_URL + "/blog_details"}
                       className="tag-cloud-link"
                     >
-                      Corporate
+                      Entreprise
                     </a>
                     <a
                       href={import.meta.env.PUBLIC_URL + "/blog_details"}
                       className="tag-cloud-link"
                     >
-                      Creative
+                      Créatif
                     </a>
                     <a
                       href={import.meta.env.PUBLIC_URL + "/blog_details"}
@@ -446,7 +450,7 @@ const BlogDetails: React.FC<BlogDetailsProps> = () => {
                       href={import.meta.env.PUBLIC_URL + "/blog_details"}
                       className="tag-cloud-link"
                     >
-                      inspiration
+                      Inspiration
                     </a>
                     <a
                       href={import.meta.env.PUBLIC_URL + "/blog_details"}

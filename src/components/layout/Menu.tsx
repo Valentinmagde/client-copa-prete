@@ -36,7 +36,7 @@ const Menu: React.FC<MenuProps> = () => {
               <Link to="/copa-presentation" className="mega-menu-link">{t("copaPresentation")}</Link>
             </li>
             <li>
-              <Link to="/partners" className="mega-menu-link">{t("ourPartners")}</Link>
+              <Link to="#" className="mega-menu-link">{t("ourPartners")}</Link>
             </li>
           </ul>
         </li>
@@ -59,7 +59,7 @@ const Menu: React.FC<MenuProps> = () => {
               <Link to="/eligibility-criteria">{t("eligibilityCriteria")}</Link>
             </li>
             <li>
-              <Link to="/previous-editions">{t("previousEditions")}</Link>
+              <Link to="#">{t("previousEditions")}</Link>
             </li>
           </ul>
         </li>

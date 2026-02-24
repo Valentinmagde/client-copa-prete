@@ -1,16 +1,56 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "./Menu";
 import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
 import LanguageSwitcher from "../common/LanguageSwitcher";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  isAuthenticatedCs,
+  getUser,
+  clearLocalAuthData,
+  getAccessTokenCs,
+} from "../../utils/storage";
+import { toast } from "react-toastify";
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   const { language, changeLanguage } = useLanguage("fr");
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<any>(null);
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+
+  // Vérifier l'authentification au chargement et après chaque action
+  const checkAuth = () => {
+    const auth = isAuthenticatedCs();
+    setIsAuthenticated(auth);
+
+    if (auth) {
+      const userData = getUser();
+      setUser(userData);
+    } else {
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+
+    // Écouter les changements de stockage (pour la déconnexion dans d'autres onglets)
+    const handleStorageChange = () => {
+      checkAuth();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   // Sticky header function
   const handleSticky = (): void => {
@@ -35,6 +75,39 @@ const Header: React.FC<HeaderProps> = () => {
     console.log("Job search submitted");
   };
 
+  const handleLogout = async () => {
+    try {
+      // Optionnel : Appeler l'API de déconnexion
+      // await AuthService.signout();
+
+      clearLocalAuthData();
+      toast.success(t("logoutSuccess"));
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error(t("logoutError"));
+    }
+  };
+
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  // Fermer le dropdown quand on clique ailleurs
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const dropdown = document.querySelector(".user-dropdown");
+      if (dropdown && !dropdown.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <header id="masthead" className="header ttm-header-style-03">
       {/* topbar */}
@@ -48,21 +121,21 @@ const Header: React.FC<HeaderProps> = () => {
                     <div className="top_bar_icon">
                       <i className="flaticon flaticon-phone-call"></i>
                     </div>
-                    <span>(+01)123 456 789</span>
+                    <span>(+257) 62 44 72 55</span>
                   </div>
                   <div className="top_bar_contact_item">
                     <div className="top_bar_icon">
                       <i className="flaticon flaticon-email"></i>
                     </div>
                     <span>
-                      <a href={`mailto:info@example.com`}>info@example.com</a>
+                      <a href={`mailto:info@example.com`}>contact@copa-prete.bi</a>
                     </span>
                   </div>
                   <div className="top_bar_contact_item">
                     <div className="top_bar_icon">
                       <i className="flaticon flaticon-placeholder"></i>
                     </div>
-                    <span>Suite 20 Golden Street USA</span>
+                    <span>Chaussée d'Uvira, Bujumbura.</span>
                   </div>
                 </div>
 
@@ -147,18 +220,78 @@ const Header: React.FC<HeaderProps> = () => {
                     />
                   </div>
 
+                  {/* Auth Buttons - Conditional Rendering */}
                   <div className="header_btn membership_btn">
-                    <div className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-icon-btn-left ttm-btn-color-grey text-theme-DarkColor d-flex align-items-center">
-                      <i className="far fa-user fa-sm text-theme-DarkColor"></i>
-                      <a href={import.meta.env.PUBLIC_URL + "/register"}>
-                        {t("signup")}
-                      </a>
-                      <span className="ml-10 mr-10 alert-heading">/</span>
-                      <i className="ti ti-lock fa-sm text-theme-DarkColor"></i>
-                      <a href={import.meta.env.PUBLIC_URL + "/login"}>
-                        {t("login")}
-                      </a>
-                    </div>
+                    {!isAuthenticated ? (
+                      // Non connecté - Afficher Signup/Login
+                      <div className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-icon-btn-left ttm-btn-color-grey text-theme-DarkColor d-flex align-items-center">
+                        <i className="ti ti-user text-theme-DarkColor"></i>
+                        <Link to="/register">{t("signup")}</Link>
+                        <span className="ml-10 mr-10 alert-heading">/</span>
+                        <i className="ti ti-lock fa-sm text-theme-DarkColor"></i>
+                        <Link to="/login">{t("login")}</Link>
+                      </div>
+                    ) : (
+                      // Connecté - Afficher le menu utilisateur
+                      <div className="user-menu-container">
+                        <div
+                          className="user-dropdown-trigger d-flex align-items-center"
+                          onClick={handleDropdownToggle}
+                        >
+                          <div className="user-avatar">
+                            {user?.firstName?.charAt(0)}
+                            {user?.lastName?.charAt(0)}
+                          </div>
+                          <span className="user-name ms-2">
+                            {user?.firstName || t("user")}
+                          </span>
+                          <i
+                            className={`ti ti-chevron-${dropdownOpen ? "up" : "down"} ms-2`}
+                          ></i>
+                        </div>
+
+                        {dropdownOpen && (
+                          <div className="user-dropdown">
+                            <div className="dropdown-header">
+                              <strong>
+                                {user?.firstName} {user?.lastName}
+                              </strong>
+                              <small>{user?.email}</small>
+                            </div>
+                            <div className="dropdown-divider"></div>
+                            <Link
+                              to="/espace-mpme/dashboard"
+                              className="dropdown-item"
+                            >
+                              <i className="ti ti-dashboard"></i>
+                              {t("dashboard")}
+                            </Link>
+                            <Link
+                              to="/espace-mpme/mon-profil/informations"
+                              className="dropdown-item"
+                            >
+                              <i className="ti ti-user"></i>
+                              {t("myProfile")}
+                            </Link>
+                            <Link
+                              to="#"
+                              className="dropdown-item"
+                            >
+                              <i className="ti ti-bell"></i>
+                              {t("notifications")}
+                            </Link>
+                            <div className="dropdown-divider"></div>
+                            <button
+                              onClick={handleLogout}
+                              className="dropdown-item logout-btn"
+                            >
+                              <i className="ti ti-power-off"></i>
+                              {t("logout")}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
                 {/* site-navigation end */}
@@ -169,46 +302,142 @@ const Header: React.FC<HeaderProps> = () => {
       </div>
       {/* site-header-menu end */}
 
-      {/* <div className="serach_bar bg-theme-SkinColor pt-20">
-        <div className="container">
-          <form
-            id="b_search_Form"
-            className="b_search_Form wrap-form d-block"
-            method="post"
-            action="#"
-            data-mailchimp="true"
-            onSubmit={handleSearchSubmit}
-          >
-            <div className="row row-equal-height ttm-boxes-spacing-20px">
-              <div className="col-md">
-                <label>
-                  <input type="text" id="keywords" placeholder="Keywords (e.g. Job Title)" />
-                </label>
-              </div>
-              <div className="col-md">
-                <label>
-                  <input type="text" id="locations" placeholder="Locations (e.g. City, Counter)" />
-                </label>
-              </div>
-              <div className="col-md">
-                <label>
-                  <input type="text" id="industry" placeholder="Industry (e.g. Design, Art)" />
-                </label>
-              </div>
-              <div className="col-lg-2">
-                <label>
-                  <button
-                    className="submit ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-grey"
-                    type="submit"
-                  >
-                    Find Job
-                  </button>
-                </label>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div> */}
+      <style>{`
+        .user-menu-container {
+          position: relative;
+        }
+
+        .user-dropdown-trigger {
+          cursor: pointer;
+          padding: 8px 12px;
+          border-radius: 30px;
+          background: #f8f9fa;
+          transition: all 0.3s;
+          display: flex;
+          align-items: center;
+        }
+
+        .user-dropdown-trigger:hover {
+          background: #e9ecef;
+        }
+
+        .user-avatar {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, var(--theme-SkinColor, #1f4e79) 0%, #0f2540 100%);
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 14px;
+          text-transform: uppercase;
+        }
+
+        .user-name {
+          font-size: 14px;
+          font-weight: 500;
+          color: #333;
+        }
+
+        .user-dropdown {
+          position: absolute;
+          top: calc(100% + 10px);
+          right: 0;
+          width: 240px;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+          border: 1px solid #e9ecef;
+          z-index: 1000;
+          animation: dropdownFade 0.2s ease;
+        }
+
+        @keyframes dropdownFade {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .dropdown-header {
+          padding: 15px 16px;
+          background: #f8f9fa;
+          border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-header strong {
+          display: block;
+          font-size: 14px;
+          color: #333;
+        }
+
+        .dropdown-header small {
+          display: block;
+          font-size: 12px;
+          color: #666;
+          margin-top: 3px;
+        }
+
+        .dropdown-divider {
+          height: 1px;
+          background: #e9ecef;
+          margin: 5px 0;
+        }
+
+        .dropdown-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 16px;
+          color: #333;
+          text-decoration: none;
+          transition: all 0.2s;
+          font-size: 13px;
+          width: 100%;
+          border: none;
+          background: none;
+          cursor: pointer;
+          text-align: left;
+        }
+
+        .dropdown-item i {
+          width: 18px;
+          font-size: 14px;
+          color: #666;
+        }
+
+        .dropdown-item:hover {
+          background: #f1f3f4;
+          color: var(--theme-SkinColor, #1f4e79);
+        }
+
+        .dropdown-item:hover i {
+          color: var(--theme-SkinColor, #1f4e79);
+        }
+
+        .logout-btn {
+          color: #dc3545;
+        }
+
+        .logout-btn i {
+          color: #dc3545;
+        }
+
+        .logout-btn:hover {
+          background: #fee;
+          color: #dc3545;
+        }
+
+        .logout-btn:hover i {
+          color: #dc3545;
+        }
+      `}</style>
     </header>
   );
 };

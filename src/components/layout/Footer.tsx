@@ -109,7 +109,7 @@ const Footer: React.FC<FooterProps> = () => {
                   </li>
                   <li className="pb-0 border-bottom-0">
                     <div className="post-detail">
-                      <Link to="/our-partners">
+                      <Link to="#">
                         {t("ourPartners")}
                       </Link>
                     </div>
@@ -145,7 +145,7 @@ const Footer: React.FC<FooterProps> = () => {
                   </li>
                   <li className="pb-0 border-bottom-0">
                     <div className="post-detail">
-                      <Link to="/previous-editions">
+                      <Link to="#">
                         {t("previousEditions")}
                       </Link>
                     </div>
@@ -167,21 +167,21 @@ const Footer: React.FC<FooterProps> = () => {
                   </li>
                   <li className="pb-0 border-bottom-0">
                     <div className="post-detail">
-                      <Link to="/practical-guide">
+                      <Link to="#">
                         {t("practicalGuides")}
                       </Link>
                     </div>
                   </li>
                   <li className="pb-0 border-bottom-0">
                     <div className="post-detail">
-                      <Link to="/downloadable-templates">
+                      <Link to="#">
                         {t("downloadableTemplates")}
                       </Link>
                     </div>
                   </li>
                   <li className="pb-0 border-bottom-0">
                     <div className="post-detail">
-                      <Link to="/video-tutorials">
+                      <Link to="#">
                         {t("videoTutorials")}
                       </Link>
                     </div>

@@ -24,6 +24,7 @@ import blog1 from "../assets/img/blog/2.png";
 import blog2 from "../assets/img/blog/3.png";
 import blog3 from "../assets/img/blog/4.png";
 import blog4 from "../assets/img/blog/5.png";
+import { Link } from "react-router-dom";
 
 // Define types
 interface SliderElement {
@@ -307,12 +308,12 @@ const Home: React.FC = () => {
                   </li>
                 </ul>
               </div> */}
-              <a
+              <Link
                 className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark"
-                href={import.meta.env.PUBLIC_URL + "/"}
+                to="/"
               >
                 En savoir plus
-              </a>
+              </Link>
             </div>
             <div className="col-lg-6 col-md-9 col-sm-10 col-12 mx-auto">
               <div className="mr-40 ml-20 pb-60">
@@ -365,12 +366,12 @@ const Home: React.FC = () => {
               {/* section title end */}
             </div>
             <div className="col-lg-6 col-md-4">
-              <a
+              <Link
                 className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark mb-15"
-                href={import.meta.env.PUBLIC_URL + "/"}
+                to={"#"}
               >
                 Découvrir le processus complet
-              </a>
+              </Link>
             </div>
             <div className="col-lg-6">
               <div className="featuredbox-number pr-30 pr-lg-0 pb-lg-50 pt-md-20">
@@ -822,9 +823,9 @@ const Home: React.FC = () => {
                 <div className="featured-content">
                   <div className="featured-title">
                     <h3>
-                      <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
+                      <Link to={"/blog_details"}>
                         Vos réunions sont-elles ennuyeuses ? Essayez ces 10 conseils
-                      </a>
+                      </Link>
                     </h3>
                   </div>
                   <div className="post-meta">
@@ -838,12 +839,12 @@ const Home: React.FC = () => {
                       Quoi que vous fassiez en matière de planification ou d'animation, l'objectif doit être axé sur le soutien.
                     </p>
                   </div>
-                  <a
+                  <Link
                     className="ttm-btn btn-inline ttm-btn-size-md ttm-btn-color-darkgrey"
-                    href={import.meta.env.PUBLIC_URL + "/blog_details"}
+                    to={"/blog_details"}
                   >
                     Lire la suite!
-                  </a>
+                  </Link>
                 </div>
               </div>
               {/* featured-imagebox-post end */}
@@ -873,9 +874,9 @@ const Home: React.FC = () => {
                 <div className="featured-content">
                   <div className="featured-title">
                     <h3>
-                      <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
+                      <Link to={"/blog_details"}>
                         Vous déménagez votre entreprise dans un autre État ?
-                      </a>
+                      </Link>
                     </h3>
                   </div>
                   <div className="post-meta">
@@ -889,12 +890,12 @@ const Home: React.FC = () => {
                       Un chef d'entreprise doit prendre en compte des questions qui vont au-delà du simple choix d'un déménagement !
                     </p>
                   </div>
-                  <a
+                  <Link
                     className="ttm-btn btn-inline ttm-btn-size-md ttm-btn-color-darkgrey"
-                    href={import.meta.env.PUBLIC_URL + "/blog_details"}
+                    to={"/blog_details"}
                   >
                     Lire la suite!
-                  </a>
+                  </Link>
                 </div>
               </div>
               {/* featured-imagebox-post end */}
@@ -924,9 +925,9 @@ const Home: React.FC = () => {
                 <div className="featured-content">
                   <div className="featured-title">
                     <h3>
-                      <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
+                      <Link to={"/blog_details"}>
                         La honte : a-t-elle sa place au travail ?
-                      </a>
+                      </Link>
                     </h3>
                   </div>
                   <div className="post-meta">
@@ -940,12 +941,12 @@ const Home: React.FC = () => {
                       Cela peut être inné ou externe, et les résultats peuvent être toute fois surprenants...
                     </p>
                   </div>
-                  <a
+                  <Link
                     className="ttm-btn btn-inline ttm-btn-size-md ttm-btn-color-darkgrey"
-                    href={import.meta.env.PUBLIC_URL + "/blog_details"}
+                    to={"/blog_details"}
                   >
                     Lire la suite!
-                  </a>
+                  </Link>
                 </div>
               </div>
               {/* featured-imagebox-post end */}
@@ -975,9 +976,9 @@ const Home: React.FC = () => {
                 <div className="featured-content">
                   <div className="featured-title">
                     <h3>
-                      <a href={import.meta.env.PUBLIC_URL + "/blog_details"}>
+                      <Link to={"/blog_details"}>
                         Comment gérer la négativité chez les anciens ?
-                      </a>
+                      </Link>
                     </h3>
                   </div>
                   <div className="post-meta">
@@ -991,12 +992,12 @@ const Home: React.FC = () => {
                       Quoi que vous fassiez en matière de planification ou d'animation, l'objectif doit être axé sur le soutien.
                     </p>
                   </div>
-                  <a
+                  <Link
                     className="ttm-btn btn-inline ttm-btn-size-md ttm-btn-color-darkgrey"
-                    href={import.meta.env.PUBLIC_URL + "/blog_details"}
+                    to={"/blog_details"}
                   >
                     Lire la suite!
-                  </a>
+                  </Link>
                 </div>
               </div>
               {/* featured-imagebox-post end */}
