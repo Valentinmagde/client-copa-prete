@@ -351,7 +351,7 @@ class ProfileHeader extends Component<ProfileHeaderProps, ProfileHeaderState> {
           </div>
         </div>
 
-        <style jsx>{`
+        <style>{`
           .profile-avatar-container {
             position: relative;
             width: 100px;

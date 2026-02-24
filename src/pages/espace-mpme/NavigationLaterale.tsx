@@ -69,7 +69,7 @@ const NavigationLaterale: React.FC<NavigationLateraleProps> = ({ activePage }) =
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .profile-sidebar { position: sticky; top: 100px; }
         .widget-nav-menu ul li a {
           display: flex; align-items: center; gap: 10px;

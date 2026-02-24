@@ -8,7 +8,7 @@ const ReferenceService = {
     return httpService.service().get<Province[]>(`reference/provinces?lang=${lang}`);
   },
 
-  getCommunesByProvince: async (provinceId: number, lang: string = 'rn') => {
+  getCommunesByProvince: async (provinceId: any, lang: string = 'rn') => {
     return httpService.service().get<Commune[]>(`reference/provinces/${provinceId}/communes?lang=${lang}`);
   },
 

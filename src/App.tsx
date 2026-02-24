@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import Blog from "./pages/Blog";
 import BlogDetails from "./pages/BlogDetails";
-import Contact from "./pages/Contact";
+import Contact from "./pages/Contact1";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ScrollToTop from "./components/layout/Gotop";
@@ -16,14 +16,14 @@ import MonProfilDocuments from "./pages/espace-mpme/mon-profil/Documents";
 import MonPlanAffairesRedaction from "./pages/espace-mpme/mon-plan-affaires/RedactionPlan";
 import MonPlanAffairesSoumission from "./pages/espace-mpme/mon-plan-affaires/SoumissionPlan";
 import Dashboard from "./pages/espace-mpme/Dashboard";
-import AboutPrete from "./pages/AboutPRETE";
-import AboutCopa from "./pages/AboutCOPA";
+import AboutCopa from "./pages/AboutCopa";
 import COPA_Comment_Participer from "./pages/COPACommentParticiper";
 import COPA_Calendrier from "./pages/COPACalendrier";
 import COPA_Criteres_Eligibilite from "./pages/COPACriteresEligibilite";
 import Formations_Catalogue from "./pages/FormationsCatalogue";
 import Contact_Plainte from "./pages/ContactPlainte";
 import Ressources_FAQ from "./pages/FAQ";
+import AboutPrete from "./pages/AboutPrete";
 
 const App: React.FC = () => {
   return (

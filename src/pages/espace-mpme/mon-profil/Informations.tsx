@@ -53,6 +53,53 @@ const completionSteps = [
   },
 ];
 
+interface MonProfilState {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  birthDate: string;
+  phone: string;
+  email: string;
+  province: string;
+  commune: string;
+  companyName: string;
+  nif: string;
+  companyStatus: string;
+  sector: string;
+  creationYear: string;
+  employeeCount: string;
+  annualRevenue: string;
+  activityDescription: string;
+
+  saving: boolean;
+  saveSuccess: boolean;
+
+  nationality: string;
+  idNumber: string;
+  address: string;
+  gpsLat: string;
+  gpsLng: string;
+
+  legalForm: string;
+  rcNumber: string;
+  secondarySector: string;
+  womenEmployees: string;
+  tempEmployees: string;
+  revenueN1: string;
+  revenueN2: string;
+  clientsCount: string;
+  suppliersCount: string;
+
+  isWomanLed: boolean;
+  isYoungEntrepreneur: boolean;
+  isRefugeeEntrepreneur: boolean;
+  climateImpact: boolean;
+
+  photoPreview: string | null;
+  uploading: boolean;
+  uploadError: string | null;
+}
+
 class MonProfilInformations extends Component {
   private fileInputRef: RefObject<HTMLInputElement>;
 
@@ -197,7 +244,7 @@ class MonProfilInformations extends Component {
   };
 
   removePhoto = async () => {
-    if (!this.state.photoPreview) return;
+    // if (!this?.state?.photoPreview) return;
 
     try {
       this.setState({ uploading: true });
@@ -1225,7 +1272,7 @@ class MonProfilInformations extends Component {
         </section>
 
         <Footer />
-        <style jsx>{`
+        <style>{`
           .profile-avatar-container {
             position: relative;
             width: 100px;

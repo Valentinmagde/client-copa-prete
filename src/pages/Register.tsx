@@ -671,7 +671,7 @@ const Register: React.FC = () => {
                                 </option>
                                 {communes.map((c) => (
                                   <option key={c.id} value={c.id}>
-                                    {isKi && c.name_ki ? c.name_ki : c.name}
+                                    {isKi && c.name}
                                   </option>
                                 ))}
                               </select>

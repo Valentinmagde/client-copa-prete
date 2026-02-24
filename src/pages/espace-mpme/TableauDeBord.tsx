@@ -4,11 +4,12 @@ import { useTranslation } from "react-i18next";
 import Header from "../../components/layout/Header";
 import PageHeader from "../../components/layout/PageHeader";
 import Footer from "../../components/layout/Footer";
-import { useAuth } from "../../hooks/useAuth";
-import ApiService from "../../services/api.service";
-import { formatDate } from "../../utils/formatters";
+// import { useAuth } from "../../hooks/useAuth";
+// import ApiService from "../../services/api.service";
+// import { formatDate } from "../../utils/formatters";
 import TimelineParcours from "../../components/espace-mpme/TimelineParcours";
 import CarteStatut from "../../components/espace-mpme/CarteStatut";
+// import { getUser } from "@/utils/storage";
 
 interface DashboardData {
   user: { firstName: string; lastName: string };
@@ -21,15 +22,15 @@ interface DashboardData {
 
 const TableauDeBord: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  // const { user } = getUser();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const response = await ApiService.get('/mpme/tableau-de-bord');
-        setData(response.data);
+        // const response = await ApiService.get('/mpme/tableau-de-bord');
+        // setData(response.data);
       } catch (error) {
         console.error("Erreur chargement tableau de bord:", error);
       } finally {
@@ -169,7 +170,7 @@ const TableauDeBord: React.FC = () => {
                     <li key={notif.id}>
                       <div className="post-detail">
                         <Link to={notif.lien || "#"}>{notif.titre}</Link>
-                        <span className="post-date">{formatDate(notif.date)}</span>
+                        <span className="post-date">{notif.date}</span>
                       </div>
                     </li>
                   ))}
@@ -212,7 +213,7 @@ const TableauDeBord: React.FC = () => {
       </div>
 
       <Footer />
-      <style jsx>{`
+      <style>{`
         .dashboard-welcome-section { padding: 60px 0 30px; }
         .dashboard-welcome-box { 
           background: linear-gradient(135deg, var(--c-navy) 0%, var(--c-navy-dk) 100%);

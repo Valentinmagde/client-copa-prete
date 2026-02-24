@@ -44,7 +44,7 @@ const ChecklistSoumission: React.FC<ChecklistSoumissionProps> = ({ data }) => {
         })}
       </ul>
 
-      <style jsx>{`
+      <style>{`
         .checklist-container { margin: 20px 0; }
         .checklist {
           list-style: none; padding: 0; margin: 0;
