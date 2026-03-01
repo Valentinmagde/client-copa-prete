@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import slide1 from "../../assets/img/slider/04.png";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // Define props interface (empty but can be extended)
 interface BannerProps {}
@@ -26,6 +27,8 @@ interface SlickSettings {
 }
 
 const Banner: React.FC<BannerProps> = () => {
+  const { t } = useTranslation();
+
   const slick_slider: SlickSettings = {
     dots: false,
     arrow: false,
@@ -87,12 +90,9 @@ const Banner: React.FC<BannerProps> = () => {
             <div className="row">
               <div className="col-lg-12">
                 <div className="slide__content--headings ttm-textcolor-white text-center">
-                  {/* <h3 data-animation="animate__fadeInDown">
-                    Empowering, Inspiring, Rising.
-                  </h3> */}
                   <div className="d-flex align-items-center justify-content-center">
                     <h2 data-animation="animate__fadeInDown">
-                      COPA – Concours de Plans d'Affaires
+                      {t("bannerTitle")}
                     </h2>
                   </div>
                   <div className="mt-20 mb-40 mb-md-15">
@@ -102,10 +102,7 @@ const Banner: React.FC<BannerProps> = () => {
                           data-animation="animate__fadeInDown"
                           className="d-none d-md-block"
                         >
-                          Transformez votre idée en entreprise prospère. Le COPA
-                          accompagne les MPME burundaises avec des formations,
-                          un accompagnement personnalisé et des subventions pour
-                          concrétiser vos ambitions.
+                          {t("bannerDescription")}
                         </p>
                       </div>
                     </div>
@@ -115,13 +112,13 @@ const Banner: React.FC<BannerProps> = () => {
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor me-3"
                       to="/register"
                     >
-                      Participez au COPA
+                      {t("bannerParticipate")}
                     </Link>
                     <Link
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
                       to="#"
                     >
-                      En savoir plus
+                      {t("bannerLearnMore")}
                     </Link>
                   </div>
                 </div>
@@ -143,12 +140,9 @@ const Banner: React.FC<BannerProps> = () => {
             <div className="row">
               <div className="col-lg-12">
                 <div className="slide__content--headings ttm-textcolor-white text-center">
-                  {/* <h3 data-animation="animate__fadeInDown">
-                    Empowering, Inspiring, Rising.
-                  </h3> */}
                   <div className="d-flex align-items-center justify-content-center">
                     <h2 data-animation="animate__fadeInDown">
-                      COPA – Concours de Plans d'Affaires
+                      {t("bannerTitle")}
                     </h2>
                   </div>
                   <div className="mt-20 mb-40 mb-md-15">
@@ -158,10 +152,7 @@ const Banner: React.FC<BannerProps> = () => {
                           data-animation="animate__fadeInDown"
                           className="d-none d-md-block"
                         >
-                          Transformez votre idée en entreprise prospère. Le COPA
-                          accompagne les MPME burundaises avec des formations,
-                          un accompagnement personnalisé et des subventions pour
-                          concrétiser vos ambitions.
+                          {t("bannerDescription")}
                         </p>
                       </div>
                     </div>
@@ -171,13 +162,13 @@ const Banner: React.FC<BannerProps> = () => {
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor me-3"
                       to="/register"
                     >
-                      Participez au COPA
+                      {t("bannerParticipate")}
                     </Link>
                     <Link
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
                       to="#"
                     >
-                      En savoir plus
+                      {t("bannerLearnMore")}
                     </Link>
                   </div>
                 </div>

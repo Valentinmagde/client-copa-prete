@@ -165,6 +165,15 @@
   p { font-size:12px; color:$bodyfont-Color; margin:0; }
 }
 
+.copa-note-banner {
+  display:flex; gap:12px; align-items:flex-start;
+  padding:14px 18px; background:rgba(#dc3545,.05);
+  border-radius:6px; border-left:3px solid #dc3545; margin-bottom:16px;
+  svg { width:18px; height:18px; color:#dc3545; flex-shrink:0; margin-top:3px; }
+  strong { display:block; font-size:13px; color:$theme-DarkColor; margin-bottom:2px; }
+  p { font-size:12px; color:$bodyfont-Color; margin:0; }
+}
+
 // ─── Verify Email ─────────────────────────────────────────────────────────────
 
 .copa-verify-icon {

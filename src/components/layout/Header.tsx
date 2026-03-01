@@ -259,27 +259,27 @@ const Header: React.FC<HeaderProps> = () => {
                               <small>{user?.email}</small>
                             </div>
                             <div className="dropdown-divider"></div>
-                            <Link
+                            {/* <Link
                               to="/espace-mpme/dashboard"
                               className="dropdown-item"
                             >
                               <i className="ti ti-dashboard"></i>
                               {t("dashboard")}
-                            </Link>
+                            </Link> */}
                             <Link
-                              to="/espace-mpme/mon-profil/informations"
+                              to="/profile"
                               className="dropdown-item"
                             >
                               <i className="ti ti-user"></i>
                               {t("myProfile")}
                             </Link>
-                            <Link
+                            {/* <Link
                               to="#"
                               className="dropdown-item"
                             >
                               <i className="ti ti-bell"></i>
                               {t("notifications")}
-                            </Link>
+                            </Link> */}
                             <div className="dropdown-divider"></div>
                             <button
                               onClick={handleLogout}

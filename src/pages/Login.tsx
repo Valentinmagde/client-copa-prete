@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
@@ -17,6 +17,8 @@ declare global {
 const Login: React.FC = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const [params]   = useSearchParams();
+  const email      = params.get("email");
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -32,17 +34,20 @@ const Login: React.FC = () => {
   const [apiError, setApiError] = useState<string | null>(null);
   const location = useLocation();
 
-const from = (location.state as any)?.from?.pathname || "/espace-mpme/dashboard";
+  const from =
+    (location.state as any)?.from?.pathname || "/profile";
 
-  // Initialiser Google Sign-In
-  React.useEffect(() => {
-    // Charger le script Google si nécessaire
+  useEffect(() => {
     if (!window.google) {
       const script = document.createElement("script");
       script.src = "https://accounts.google.com/gsi/client";
       script.async = true;
       script.defer = true;
       document.body.appendChild(script);
+    }
+
+    if (email) {
+      setIdentifier(email);
     }
   }, []);
 
@@ -62,33 +67,26 @@ const from = (location.state as any)?.from?.pathname || "/espace-mpme/dashboard"
     setApiError(null);
 
     try {
-      // Utiliser votre AuthService.signin
       const response = await AuthService.signin(
         identifier,
         password,
         i18n.language,
       );
 
-      // La réponse devrait contenir accessToken et refreshToken
       const { accessToken, refreshToken, user } = response;
 
-      // Stocker les tokens avec vos utilitaires
       setAccessToken(accessToken);
 
-      // Si "remember" est coché, stocker le refresh token
-      // if (remember) {
-        setRefreshToken(refreshToken);
-      // }
+      setRefreshToken(refreshToken);
 
-      // Stocker les informations utilisateur
       if (user) {
         setUser(user);
       }
 
       toast.success(t("loginSuccess"));
-
-      // Rediriger vers la page précédente ou dashboard
-      navigate(from, { replace: true });
+      setInterval(() => {
+        navigate(from, { replace: true });
+      }, 2000);
     } catch (err: any) {
       console.error("Login error:", err);
 
@@ -175,172 +173,156 @@ const from = (location.state as any)?.from?.pathname || "/espace-mpme/dashboard"
       <PageHeader title={t("login")} breadcrumb={t("login")} />
 
       {/* Section — classes framework */}
-      <div className="ttm-row clearfix">
+      <div className="ttm-row login-section clearfix">
         <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-5 col-lg-6 col-md-8 col-sm-12">
-              {/* Carte — p-50 + box-shadow du framework */}
-              <div className="bg-theme-GreyColor p-50 p-lg-20 box-shadow">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="bg-theme-GreyColor ttm-col-bgcolor-yes ttm-bg rounded p-50 p-lg-20">
+                <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
                 <div className="layer-content">
-                  {/* En-tête */}
-                  <div className="text-center mb-30">
-                    {/* ttm-icon framework */}
-                    {/* <span className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-skincolor ttm-icon_element-style-rounded ttm-icon_element-size-md mx-auto mb-20">
-                      <i className="ti ti-user" />
-                    </span> */}
-                    <h4 className="mb-0">{t("loginTitle")}</h4>
+                  <div className="text-center mb-20">
+                    <h3>{t("loginTitle")}</h3>
                   </div>
 
-                  <div className="sep_holder text-center mb-25">
-                    <span className="sep_line" />
-                  </div>
-
-                  {/* Formulaire — wrap-form login_form (framework) */}
-                  <form
-                    className="wrap-form login_form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                  >
-                    <div className="row">
-                      {/* Identifiant */}
-                      <div className="col-12">
-                        <label
-                          className={
-                            errors.identifier ? "copa-input-invalid" : ""
-                          }
-                        >
-                          <i className="ti ti-user" />
-                          <input
-                            type="text"
-                            value={identifier}
-                            onChange={(e) => {
-                              setIdentifier(e.target.value);
-                              setErrors((p) => ({
-                                ...p,
-                                identifier: undefined,
-                              }));
-                            }}
-                            placeholder={t("identifierPlaceholder")}
-                            autoComplete="username"
-                          />
-                        </label>
-                        {errors.identifier && (
-                          <span className="copa-error-msg">
-                            {errors.identifier}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Mot de passe */}
-                      <div className="col-12">
-                        {/* <div className="copa-label-row">
-                          <span>
-                            Mot de passe{" "}
-                            <span style={{ color: "#dc3545" }}>*</span>
-                          </span>
-                          <Link
-                            to="/mot-de-passe-oublie"
-                            className="text-theme-SkinColor"
-                            style={{ fontSize: 12, fontWeight: 600 }}
+                  <div className="ttm-tabs ttm-tab-style-02">
+                    <form
+                      className="login_form wrap-form"
+                      onSubmit={handleSubmit}
+                      noValidate
+                    >
+                      <div className="row">
+                        {/* Identifiant */}
+                        <div className="col-12">
+                          <label
+                            className={
+                              errors.identifier ? "copa-input-invalid" : ""
+                            }
                           >
-                            Mot de passe oublié ?
-                          </Link>
-                        </div> */}
-                        <label
-                          className={
-                            errors.password ? "copa-input-invalid" : ""
-                          }
-                        >
-                          <i className="ti ti-lock" />
-                          <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => {
-                              setPassword(e.target.value);
-                              setErrors((p) => ({ ...p, password: undefined }));
-                            }}
-                            placeholder={t("passwordPlaceholder")}
-                            autoComplete="current-password"
-                          />
-                        </label>
-                        {errors.password && (
-                          <span className="copa-error-msg">
-                            {errors.password}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Se souvenir de moi */}
-                      {/* <div className="col-12">
-                        <div className="copa-remember-row">
-                          <label>
+                            <i className="ti ti-user" />
                             <input
-                              type="checkbox"
-                              checked={remember}
-                              onChange={(e) => setRemember(e.target.checked)}
+                              type="text"
+                              value={identifier}
+                              onChange={(e) => {
+                                setIdentifier(e.target.value);
+                                setErrors((p) => ({
+                                  ...p,
+                                  identifier: undefined,
+                                }));
+                              }}
+                              placeholder={t("identifierPlaceholder")}
+                              autoComplete="username"
                             />
-                            <span>Se souvenir de moi</span>
                           </label>
+                          {errors.identifier && (
+                            <span className="copa-error-msg">
+                              {errors.identifier}
+                            </span>
+                          )}
                         </div>
-                      </div> */}
-                      <div className="col-lg-12">
-                        <label className="mt-0">
-                          <div className="d-md-flex align-items-center justify-content-between">
-                            <div className="cookies-checkbox mt-15">
-                              <div className="d-flex flex-row justify-content-start">
-                                <input
-                                  className="w-auto mr-10 mt-5"
-                                  id="cookies-consent"
-                                  name="cookies-consent"
-                                  type="checkbox"
-                                  value="yes"
-                                />
-                                <span>{t("rememberMe")}</span>
+
+                        {/* Mot de passe */}
+                        <div className="col-12">
+                          <label
+                            className={
+                              errors.password ? "copa-input-invalid" : ""
+                            }
+                          >
+                            <i className="ti ti-lock" />
+                            <input
+                              type="password"
+                              value={password}
+                              onChange={(e) => {
+                                setPassword(e.target.value);
+                                setErrors((p) => ({
+                                  ...p,
+                                  password: undefined,
+                                }));
+                              }}
+                              placeholder={t("passwordPlaceholder")}
+                              autoComplete="current-password"
+                            />
+                          </label>
+                          {errors.password && (
+                            <span className="copa-error-msg">
+                              {errors.password}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Se souvenir de moi */}
+                        {/* <div className="col-12">
+                          <div className="copa-remember-row">
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={remember}
+                                onChange={(e) => setRemember(e.target.checked)}
+                              />
+                              <span>Se souvenir de moi</span>
+                            </label>
+                          </div>
+                        </div> */}
+                        <div className="col-lg-12">
+                          <label className="mt-0">
+                            <div className="d-md-flex align-items-center justify-content-between">
+                              <div className="cookies-checkbox mt-15">
+                                <div className="d-flex flex-row justify-content-start align-items-center">
+                                  <input
+                                    className="w-auto mr-10"
+                                    id="cookies-consent"
+                                    name="cookies-consent"
+                                    type="checkbox"
+                                    value="yes"
+                                  />
+                                  <span>{t("rememberMe")}</span>
+                                </div>
+                              </div>
+                              <div className="mt-15">
+                                <p>
+                                  <Link to="#" className="text-theme-SkinColor">
+                                    {t("forgotPassword")}
+                                  </Link>
+                                </p>
                               </div>
                             </div>
-                            <div className="mt-15">
-                              <p>
-                                <a href="#" className="text-theme-SkinColor">
-                                  {t("forgotPassword")}
-                                </a>
-                              </p>
-                            </div>
-                          </div>
-                        </label>
-                      </div>
+                          </label>
+                        </div>
 
-                      {/* Bouton principal — ttm-btn framework */}
-                      <div className="col-12">
-                        <label className="mb-0">
-                          <button
-                            type="submit"
-                            className="submit w-100 ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
-                            disabled={isSubmitting}
-                          >
-                            {isSubmitting ? (
-                              <>
-                                <span className="copa-spinner" />
-                                {t("loggingIn")}
-                              </>
-                            ) : (
-                              t("loginButton")
-                            )}
-                          </button>
-                        </label>
-                      </div>
-
-                      {/* ── ou ── */}
-                      <div className="col-12">
-                        <div className="copa-separator">
-                          <span>{t("or")}</span>
+                        {/* Bouton principal — ttm-btn framework */}
+                        <div className="col-12">
+                          <label className="mb-0">
+                            <button
+                              type="submit"
+                              className="submit w-100 ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                              disabled={isSubmitting}
+                            >
+                              {isSubmitting ? (
+                                <>
+                                  <span className="copa-spinner" />
+                                  {t("loggingIn")}
+                                </>
+                              ) : (
+                                t("loginButton")
+                              )}
+                            </button>
+                          </label>
                         </div>
                       </div>
+                    </form>
+                  </div>
 
-                      {/* Bouton Google — style copa (fond blanc, bordure) */}
-                      <div className="col-12">
+                  <div className="col-12">
+                    <div className="copa-separator">
+                      <span>{t("verifyEmail.or")}</span>
+                    </div>
+                  </div>
+
+                  <div className="login-social-buttons">
+                    <div className="row">
+                      <div className="col-md-12">
                         <button
-                          type="button"
-                          className="copa-google-btn"
+                          id="login-with-google"
+                          className="social-account-button w-100 google-button d-flex align-items-center justify-content-center"
                           onClick={handleGoogleLogin}
                           disabled={googleLoading}
                         >
@@ -375,23 +357,23 @@ const from = (location.state as any)?.from?.pathname || "/espace-mpme/dashboard"
                                   fill="#EA4335"
                                 />
                               </svg>
-                              {t("loginWithGoogle")}
                             </>
                           )}
+                          <span className="ml-10">{t("loginWithGoogle")}</span>
                         </button>
                       </div>
                     </div>
-                  </form>
+                  </div>
 
-                  {/* Pied */}
                   <div className="sep_holder text-center mt-25 mb-20">
                     <span className="sep_line" />
                   </div>
+
                   <p className="text-center mb-0" style={{ fontSize: 13 }}>
                     {t("noAccount")}{" "}
                     <Link
-                      to="/inscription"
-                      className="text-theme-SkinColor fw-bold"
+                      to="/register"
+                      className="text-theme-SkinColor"
                     >
                       {t("registerFree")}
                     </Link>

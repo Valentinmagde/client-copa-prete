@@ -29,7 +29,7 @@ const AuthService = {
   signin: async (
     email: string,
     password: string,
-    lang: string = "en"
+    lang: string = "en",
   ): Promise<any> => {
     return await httpService.service().post(`/auth/login?lang=${lang}`, {
       email,
@@ -37,15 +37,21 @@ const AuthService = {
     });
   },
 
-  signup: async(data: any, lang: string = 'rn') => {
+  signup: async (data: any, lang: string = "rn") => {
     return httpService.service().post(`auth/register?lang=${lang}`, data);
   },
 
-  resendVerificationEmail: async(email: string, lang: string = 'rn') => {
-    return httpService.service().post(`auth/resend-verification?lang=${lang}`, { email });
+  registerMpme: async (data: any, lang: string = "rn") => {
+    return httpService.service().post(`auth/register-mpme?lang=${lang}`, data);
   },
 
-  verifyEmail: async(data: any, lang: string = 'rn') => {
+  resendVerificationEmail: async (email: string, lang: string = "rn") => {
+    return httpService
+      .service()
+      .post(`auth/resend-verification?lang=${lang}`, { email });
+  },
+
+  verifyEmail: async (data: any, lang: string = "rn") => {
     return httpService.service().post(`auth/verify-email?lang=${lang}`, data);
   },
 
@@ -79,7 +85,7 @@ const AuthService = {
    */
   refreshToken: async (
     refreshToken: string,
-    lang: string = "en"
+    lang: string = "en",
   ): Promise<any> => {
     return await httpService
       .service()

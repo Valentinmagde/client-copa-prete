@@ -74,7 +74,7 @@ const VerifyEmail: React.FC = () => {
             {t("verifyEmail.successDesc2")}
           </p>
           <Link
-            to="/login"
+            to={`/login?email=${encodeURIComponent(email)}`}
             className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
           >
             {t("verifyEmail.goToLogin")}
@@ -115,8 +115,8 @@ const VerifyEmail: React.FC = () => {
           </div>
 
           <div className="copa-separator"><span>{t("verifyEmail.or")}</span></div>
-          <Link to="/inscription" className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor">
-            Nouvelle inscription
+          <Link to="/register" className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor">
+            {t("verifyEmail.backToRegister")}
           </Link>
         </>;
 
@@ -133,7 +133,7 @@ const VerifyEmail: React.FC = () => {
           <Link to="/inscription" className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor me-2">
             {t("verifyEmail.backToRegister")}
           </Link>
-          <Link to="/login" className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor">
+          <Link to={`/login?email=${encodeURIComponent(email)}`} className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor">
             {t("verifyEmail.goToLogin")}
           </Link>
         </>;
@@ -145,27 +145,18 @@ const VerifyEmail: React.FC = () => {
       <Header />
       <PageHeader title="Vérification de l'email" breadcrumb="Vérification" />
 
-      <div className="ttm-row clearfix">
+      <div className="ttm-row login-section clearfix">
         <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-5 col-lg-6 col-md-8">
-
-              <div className="bg-theme-GreyColor p-50 p-lg-20 box-shadow text-center">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="bg-theme-GreyColor ttm-col-bgcolor-yes ttm-bg rounded p-50 p-lg-20 text-center">
                 <div className="layer-content">
-
                   {renderContent()}
-
-                  {/* Pied — note spam */}
                   <div className="copa-verify-footer mt-20">
-                    {/* <svg viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
-                    </svg> */}
                     <span>{t("verifyEmail.footerNote")}</span>
                   </div>
-
                 </div>
               </div>
-
             </div>
           </div>
         </div>
