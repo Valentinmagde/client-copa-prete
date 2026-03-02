@@ -60,6 +60,7 @@ interface BeneficiaryData {
   profileCompletionPercentage: number;
   profileCompletionStep: string;
   profileCompletedAt: string | null;
+  companyType: string;
   user: {
     id: number;
     email: string;
@@ -108,9 +109,9 @@ const INITIAL_FORM: FormData = {
   activityDescription: "",
   employeeCount: "",
   annualRevenue: "",
-  acceptTerms: false,
-  acceptPrivacy: false,
-  certifyAccuracy: false,
+  acceptTerms: true,
+  acceptPrivacy: true,
+  certifyAccuracy: true,
   acceptNotifications: false,
 };
 
@@ -325,8 +326,7 @@ const Profile: React.FC = () => {
       annualRevenue: data.company?.revenueYearN1
         ? Number(data.company.revenueYearN1)
         : "",
-      companyStatus:
-        (data.company?.companyType as CompanyStatusType) || "project",
+      companyStatus: (data.companyType as CompanyStatusType),
       acceptTerms: consentMap.get("TERMS_AND_CONDITIONS") || false,
       acceptPrivacy: consentMap.get("PRIVACY_POLICY") || false,
       certifyAccuracy: consentMap.get("CERTIFY_ACCURACY") || false,
