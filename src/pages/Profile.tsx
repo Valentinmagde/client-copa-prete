@@ -493,7 +493,11 @@ const Profile: React.FC = () => {
       // Recharger les données pour avoir le nouveau pourcentage
       await loadBeneficiaryData();
 
-      toast.success(t("stepSaved", { step: currentStep }));
+      if(currentStep === 3) {
+        toast.success(t("profileUpdated"));
+      } else {
+        toast.success(t("stepSaved", { step: currentStep }));
+      }
     } catch (error: any) {
       console.error("Erreur sauvegarde:", error);
       toast.error(error.response?.data?.message || t("errorSavingStep"));
@@ -743,11 +747,7 @@ const Profile: React.FC = () => {
                             {currentStep === 3 && (
                               <button
                                 type="button"
-                                onClick={() => {
-                                  if (validateStep(3)) {
-                                    toast.success(t("profileUpdated"));
-                                  }
-                                }}
+                                onClick={saveCurrentStep}
                                 className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
                               >
                                 ✓ {t("updateProfile")}
