@@ -471,7 +471,7 @@ const Profile: React.FC = () => {
           },
           step2: {
             companyStatus: form.companyStatus,
-            companyExists: form.companyStatus !== "project" ? "yes" : "no",
+            companyExists: form.companyStatus && form.companyStatus !== "project" ? "yes" : "no",
             companyName: form.companyName,
             nif: form.nif,
             creationYear: form.creationYear,
