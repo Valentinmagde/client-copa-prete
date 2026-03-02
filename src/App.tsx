@@ -69,6 +69,7 @@ const App: React.FC = () => {
         <Route path="/faq" element={<Ressources_FAQ />} />
         <Route path="/submit-complaint" element={<Contact_Plainte />} />
         <Route path="/contact-us" element={<Contact />} />
+        <Route path="/about-us" element={<AboutUs />} />
       </Routes>
     </div>
   );

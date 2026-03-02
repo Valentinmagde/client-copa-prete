@@ -1,18 +1,21 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
+import blog1 from "../assets/img/slider/03.png";
 
-// Define props interface (empty but can be extended)
 interface ContactProps {}
 
 const Contact: React.FC<ContactProps> = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="site-main">
       <Header />
 
       {/* PageHeader */}
-      <PageHeader title="Contact us" breadcrumb="Contact 02" />
+      <PageHeader title={t('contactPage.pageTitle')} breadcrumb={t('contactPage.breadcrumb')} />
       {/* PageHeader end */}
 
       {/* grid-section */}
@@ -25,9 +28,12 @@ const Contact: React.FC<ContactProps> = () => {
               <div className="section-title title-style-center_text pt-15">
                 <div className="title-header">
                   <h3>
-                    Our <span className="text-theme-SkinColor">Offices!</span>
+                    {t('contactPage.offices.title').split(' ')[0]}{' '}
+                    <span className="text-theme-SkinColor">
+                      {t('contactPage.offices.title').split(' ')[1] || ''}
+                    </span>
                   </h3>
-                  <h2 className="title">How Can We Help?</h2>
+                  <h2 className="title">{t('contactPage.offices.subtitle')}</h2>
                 </div>
               </div>
               {/* section title end */}
@@ -36,27 +42,34 @@ const Contact: React.FC<ContactProps> = () => {
               <div className="featured-icon-box bg-theme-GreyColor">
                 <div className="featured-content p-30">
                   <div className="featured-title">
-                    <h3>United States</h3>
+                    <h3>{t('contactPage.offices.address.title')}</h3>
                   </div>
                   <div className="featured-desc">
                     <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
                       <li className="pb-0">
                         <i className="fas fa-map-marker-alt"></i>
                         <div className="ttm-list-li-content">
-                          123 King Street,Melbourne Victoria 5000,New York.
+                          {t('contactPage.offices.address.value')}
                         </div>
                       </li>
-                      <div className="ttm-horizontal_sep width-100 mt-15 mb-15"></div>
-                      <li className="pb-0">
-                        <i className="fas fa-phone-alt"></i>
-                        <div className="ttm-list-li-content">+123 456 7890</div>
-                      </li>
-                      <div className="ttm-horizontal_sep width-100 mt-15 mb-15"></div>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="featured-icon-box bg-theme-GreyColor">
+                <div className="featured-content p-30">
+                  <div className="featured-title">
+                    <h3>{t('contactPage.offices.email.title')}</h3>
+                  </div>
+                  <div className="featured-desc">
+                    <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
                       <li>
                         <i className="fa fa-envelope"></i>
                         <div className="ttm-list-li-content">
-                          <a href="mailto:info@example.com">
-                            Email:info@example.com
+                          <a href={`mailto:${t('contactPage.offices.email.value')}`}>
+                            {t('contactPage.offices.email.title')}:{t('contactPage.offices.email.value')}
                           </a>
                         </div>
                       </li>
@@ -69,62 +82,13 @@ const Contact: React.FC<ContactProps> = () => {
               <div className="featured-icon-box bg-theme-GreyColor">
                 <div className="featured-content p-30">
                   <div className="featured-title">
-                    <h3>Australia</h3>
+                    <h3>{t('contactPage.offices.phone.title')}</h3>
                   </div>
                   <div className="featured-desc">
                     <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
                       <li className="pb-0">
-                        <i className="fas fa-map-marker-alt"></i>
-                        <div className="ttm-list-li-content">
-                          123 King Street,Melbourne Victoria 5000,New York.
-                        </div>
-                      </li>
-                      <div className="ttm-horizontal_sep width-100 mt-15 mb-15"></div>
-                      <li className="pb-0">
                         <i className="fas fa-phone-alt"></i>
-                        <div className="ttm-list-li-content">+123 456 7890</div>
-                      </li>
-                      <div className="ttm-horizontal_sep width-100 mt-15 mb-15"></div>
-                      <li>
-                        <i className="fa fa-envelope"></i>
-                        <div className="ttm-list-li-content">
-                          <a href="mailto:info@example.com">
-                            Email:info@example.com
-                          </a>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <div className="featured-icon-box bg-theme-GreyColor">
-                <div className="featured-content p-30">
-                  <div className="featured-title">
-                    <h3>Canada</h3>
-                  </div>
-                  <div className="featured-desc">
-                    <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
-                      <li className="pb-0">
-                        <i className="fas fa-map-marker-alt"></i>
-                        <div className="ttm-list-li-content">
-                          123 King Street,Melbourne Victoria 5000,New York.
-                        </div>
-                      </li>
-                      <div className="ttm-horizontal_sep width-100 mt-15 mb-15"></div>
-                      <li className="pb-0">
-                        <i className="fas fa-phone-alt"></i>
-                        <div className="ttm-list-li-content">+123 456 7890</div>
-                      </li>
-                      <div className="ttm-horizontal_sep width-100 mt-15 mb-15"></div>
-                      <li>
-                        <i className="fa fa-envelope"></i>
-                        <div className="ttm-list-li-content">
-                          <a href="mailto:info@example.com">
-                            Email:info@example.com
-                          </a>
-                        </div>
+                        <div className="ttm-list-li-content">{t('contactPage.offices.phone.value')}</div>
                       </li>
                     </ul>
                   </div>
@@ -148,8 +112,7 @@ const Contact: React.FC<ContactProps> = () => {
                 <div
                   className="ttm-col-wrapper-bg-layer ttm-bg-layer"
                   style={{
-                    backgroundImage:
-                      "url(https://via.placeholder.com/875x583?text=875x583+col-bgimage-7.jpg)",
+                    backgroundImage: `url(${blog1})`,
                   }}
                 ></div>
                 <div className="layer-content"></div>
@@ -169,10 +132,12 @@ const Contact: React.FC<ContactProps> = () => {
                   <div className="section-title title-style-center_text">
                     <div className="title-header">
                       <h3>
-                        Let's Get{" "}
-                        <span className="text-theme-SkinColor">in Touch</span>
+                        {t('contactPage.form.title').split(' ')[0]}{' '}
+                        <span className="text-theme-SkinColor">
+                          {t('contactPage.form.title').split(' ').slice(1).join(' ')}
+                        </span>
                       </h3>
-                      <h2 className="title">Request a Callback</h2>
+                      <h2 className="title">{t('contactPage.form.subtitle')}</h2>
                     </div>
                   </div>
                   {/* section title end */}
@@ -183,7 +148,7 @@ const Contact: React.FC<ContactProps> = () => {
                           <input
                             name="name"
                             type="text"
-                            placeholder="Your Name"
+                            placeholder={t('contactPage.form.name')}
                             required={true}
                           />
                         </label>
@@ -193,7 +158,7 @@ const Contact: React.FC<ContactProps> = () => {
                           <input
                             name="email"
                             type="text"
-                            placeholder="Your Email"
+                            placeholder={t('contactPage.form.email')}
                             required={true}
                           />
                         </label>
@@ -203,7 +168,7 @@ const Contact: React.FC<ContactProps> = () => {
                           <input
                             name="subject"
                             type="text"
-                            placeholder="Subject"
+                            placeholder={t('contactPage.form.subject')}
                             required={true}
                           />
                         </label>
@@ -213,7 +178,7 @@ const Contact: React.FC<ContactProps> = () => {
                           <input
                             name="phone"
                             type="text"
-                            placeholder="Phone Number"
+                            placeholder={t('contactPage.form.phone')}
                             required={true}
                           />
                         </label>
@@ -223,7 +188,7 @@ const Contact: React.FC<ContactProps> = () => {
                           <textarea
                             name="message"
                             rows={5}
-                            placeholder="Message"
+                            placeholder={t('contactPage.form.message')}
                             required={true}
                           ></textarea>
                         </label>
@@ -233,7 +198,7 @@ const Contact: React.FC<ContactProps> = () => {
                       className="submit ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor w-100"
                       type="submit"
                     >
-                      send a message!
+                      {t('contactPage.form.button')}
                     </button>
                   </form>
                 </div>
@@ -248,10 +213,10 @@ const Contact: React.FC<ContactProps> = () => {
       {/* map-section */}
       <section>
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5344649.376490554!2d-105.18790339813212!3d39.4391730825603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited%20States!5e0!3m2!1sen!2sin!4v1626439456246!5m2!1sen!2sin"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510828.4918479198!2d29.27765787173545!3d-3.3614236!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19c183f3d2d9d4b7%3A0x9b0d7e8b9f1c6a1!2sBujumbura%2C%20Burundi!5e0!3m2!1sen!2sbi!4v1626439456246!5m2!1sen!2sbi"
           width="100%"
           height="550"
-          title="United States Map"
+          title={t('contactPage.map.title')}
           loading="lazy"
         ></iframe>
       </section>

@@ -265,5 +265,323 @@
   "bannerTitle": "COPA – Concours de Plans d'Affaires",
   "bannerDescription": "Transformez votre idée en entreprise prospère. Le COPA accompagne les MPME burundaises avec des formations, un accompagnement personnalisé et des subventions pour concrétiser vos ambitions.",
   "bannerParticipate": "Participez au COPA",
-  "bannerLearnMore": "En savoir plus"
+  "bannerLearnMore": "En savoir plus",
+  "aboutprete": {
+    "pageTitle": "Présentation du PRETE",
+    "breadcrumb": "À propos",
+    "project": {
+      "title": "Le Projet pour l'Emploi et la Transformation Économique",
+      "description": "Le PRETE est un projet du Gouvernement du Burundi, financé par la Banque mondiale, qui vise à stimuler la croissance économique inclusive et la création d'emplois dans le pays. D'un montant de 100 millions USD, le projet s'étend sur une période de 5 ans (2024-2028).",
+      "fundedBy": "Financé par",
+      "fundedByValue": "Banque mondiale — Gouvernement du Burundi",
+      "duration": "Durée du projet",
+      "durationValue": "2024 – 2028 (5 ans)"
+    },
+    "tabs": {
+      "objectives": "Nos objectifs",
+      "components": "Les composantes du PRETE",
+      "values": "Valeurs fondamentales"
+    },
+    "objectives": {
+      "list": [
+        "Renforcer les capacités des micro, petites et moyennes entreprises (MPME)",
+        "Améliorer l'environnement des affaires au Burundi",
+        "Faciliter l'accès au financement pour les entrepreneurs",
+        "Promouvoir l'inclusion économique des femmes et des réfugiés",
+        "Soutenir les investissements respectueux du climat"
+      ]
+    },
+    "components": {
+      "title": "Structure du projet",
+      "subtitle": "Les composantes du PRETE",
+      "list": [
+        {
+          "num": "01",
+          "title": "Développement des MPME",
+          "desc": "Renforcement des capacités des petites et moyennes entreprises burundaises à travers la sous-composante 1.2 « Amélioration des capacités des MPME » qui porte le programme COPA."
+        },
+        {
+          "num": "02",
+          "title": "Amélioration de l'environnement des affaires",
+          "desc": "Réformes structurelles pour simplifier les procédures administratives, réduire les coûts d'entrée sur le marché et renforcer la protection des investisseurs."
+        },
+        {
+          "num": "03",
+          "title": "Accès au financement",
+          "desc": "Développement des mécanismes de financement pour les MPME, notamment via des garanties partielles de crédit et des subventions de contrepartie (matching grants)."
+        },
+        {
+          "num": "04",
+          "title": "Inclusion économique",
+          "desc": "Programmes ciblés pour intégrer les femmes, les jeunes et les réfugiés dans le tissu économique burundais à travers des formations et un accompagnement adapté."
+        }
+      ]
+    },
+    "stats": [
+      { "label": "Budget total du projet", "suffix": "M$" },
+      { "label": "Durée du programme", "suffix": "ans" },
+      { "label": "Bénéficiaires attendus", "suffix": "+" },
+      { "label": "Croissance PIB ciblée", "suffix": "%" }
+    ],
+    "copa": {
+      "title": "Sous-composante 1.2",
+      "subtitle": "Le COPA : mécanisme phare du PRETE",
+      "description": "La sous-composante 1.2 « Amélioration des capacités des MPME » porte le <strong>Concours de Plans d'Affaires (COPA)</strong>, le mécanisme central d'appui aux entrepreneurs burundais.",
+      "description2": "Le COPA combine formation, mentorat et financement pour offrir un accompagnement complet aux porteurs de projets viables et innovants.",
+      "buttons": {
+        "discover": "Découvrir le COPA",
+        "participate": "Comment participer ?"
+      },
+      "stats": {
+        "title": "Le COPA en chiffres",
+        "items": [
+          "Programme de 5 ans (2024–2028)",
+          "Subventions de contrepartie (matching grants)",
+          "Formations gratuites en présentiel et en ligne",
+          "Accompagnement personnalisé par des experts",
+          "Priorité femmes, jeunes, réfugiés, climat"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Prêt à rejoindre le programme COPA ?",
+      "description": "Inscrivez-vous dès maintenant et bénéficiez d'un accompagnement complet pour développer votre entreprise.",
+      "button": "S'inscrire maintenant"
+    }
+  },
+  "aboutcopa": {
+    "pageTitle": "Présentation du COPA",
+    "breadcrumb": "À propos / COPA",
+    "intro": {
+      "title": "Le COPA",
+      "subtitle": "Le Concours de Plans d'Affaires",
+      "description1": "Le COPA (Concours de Plans d'Affaires) est le mécanisme phare de la sous-composante 1.2 du PRETE. Il s'agit d'un programme complet d'accompagnement des entrepreneurs burundais, combinant <strong>formation, mentorat et financement</strong>.",
+      "description2": "Le COPA offre aux porteurs de projets viables une opportunité unique de développer leurs compétences et d'accéder à un financement non remboursable pour concrétiser leur vision entrepreneuriale.",
+      "buttons": {
+        "eligibility": "Vérifier mon éligibilité",
+        "howTo": "Comment participer ?"
+      },
+      "whyParticipate": {
+        "title": "Pourquoi participer ?",
+        "list": [
+          "Formations gratuites en entrepreneuriat",
+          "Subvention non remboursable (matching grant)",
+          "Accompagnement personnalisé par des experts",
+          "Visibilité et reconnaissance nationale",
+          "Accès à un réseau d'entrepreneurs",
+          "Renforcement de votre dossier d'entreprise"
+        ]
+      }
+    },
+    "pillars": {
+      "section": {
+        "title": "Notre approche",
+        "subtitle": "Le COPA repose sur trois piliers"
+      },
+      "list": [
+        {
+          "num": "01",
+          "title": "Formation",
+          "desc": "Renforcement des compétences entrepreneuriales et de gestion à travers des modules adaptés, disponibles en présentiel ou en ligne."
+        },
+        {
+          "num": "02",
+          "title": "Compétition",
+          "desc": "Évaluation transparente et équitable des plans d'affaires par des experts indépendants, selon une grille de critères objective."
+        },
+        {
+          "num": "03",
+          "title": "Financement",
+          "desc": "Attribution de subventions de contrepartie (matching grants) aux lauréats pour concrétiser leurs projets d'entreprise."
+        }
+      ]
+    },
+    "targets": {
+      "section": {
+        "title": "Qui peut participer ?",
+        "subtitle": "Le COPA est ouvert à tous",
+        "description": "Le COPA est ouvert à toutes les MPME formelles ou en voie de formalisation, avec une attention particulière pour les groupes prioritaires suivants :"
+      },
+      "list": [
+        {
+          "icon": "👩‍💼",
+          "label": "Femmes entrepreneurs",
+          "desc": "Entreprises dirigées par des femmes avec points bonus à l'évaluation"
+        },
+        {
+          "icon": "🌍",
+          "label": "Entrepreneurs réfugiés",
+          "desc": "Réfugiés enregistrés au Burundi éligibles au programme"
+        },
+        {
+          "icon": "🎓",
+          "label": "Jeunes (18–35 ans)",
+          "desc": "Jeunes porteurs de projets innovants et viables"
+        },
+        {
+          "icon": "🌿",
+          "label": "Impact environnemental",
+          "desc": "Projets à impact positif sur le climat et l'environnement"
+        }
+      ],
+      "button": "Consulter tous les critères d'éligibilité"
+    },
+    "steps": {
+      "section": {
+        "title": "Le parcours",
+        "subtitle": "Les étapes du programme COPA"
+      },
+      "list": [
+        { "step": "1", "label": "Inscription", "link": "/inscription" },
+        {
+          "step": "2",
+          "label": "Profil complet",
+          "link": "/espace-mpme/mon-profil"
+        },
+        { "step": "3", "label": "Formations", "link": "/formations/catalogue" },
+        {
+          "step": "4",
+          "label": "Plan d'affaires",
+          "link": "/espace-mpme/mon-plan-affaires/redaction"
+        },
+        { "step": "5", "label": "Évaluation", "link": null },
+        { "step": "6", "label": "Subvention", "link": null }
+      ],
+      "access": "Accéder"
+    },
+    "cta": {
+      "title": "Prêt à participer au Concours de Plans d'Affaires ?",
+      "description": "Créez votre compte et commencez votre parcours COPA dès aujourd'hui.",
+      "button": "S'inscrire maintenant"
+    }
+  },
+  "contactPage": {
+    "pageTitle": "Contactez-nous",
+    "breadcrumb": "Contact",
+    "offices": {
+      "title": "Nos Bureaux",
+      "subtitle": "Comment pouvons-nous vous aider ?",
+      "address": {
+        "title": "Adresse",
+        "value": "Chaussée d'Uvira, Bujumbura"
+      },
+      "email": {
+        "title": "Email",
+        "value": "contact@copa-prete.bi"
+      },
+      "phone": {
+        "title": "Téléphone",
+        "value": "(+257) 62 44 72 55"
+      }
+    },
+    "form": {
+      "title": "Restons en Contact",
+      "subtitle": "Demander un rappel",
+      "name": "Votre Nom",
+      "email": "Votre Email",
+      "subject": "Sujet",
+      "phone": "Numéro de Téléphone",
+      "message": "Message",
+      "button": "Envoyer un message !"
+    },
+    "map": {
+      "title": "Carte du Burundi"
+    }
+  },
+  "blog": {
+    "pageTitle": "Actualités",
+    "breadcrumb": "Actualités",
+    "posts": [
+      {
+        "date": "18 Mars 2020",
+        "category": "Affaires",
+        "author": "Jean Dupont",
+        "comments": "0 Commentaires",
+        "title": "Comment les enquêteurs utilisent leurs compétences au-delà du travail",
+        "excerpt": "Si vous êtes curieux de savoir comment vous pourriez autrement vous aider ou aider les autres avec des compétences de recherche en dehors des travaux normaux liés aux besoins et aux pipelines, vos collègues ont récemment reçu une inspiration ingénieuse. C'était la troisième personne qui a pu lui poser une question !",
+        "link": "/blog-details"
+      },
+      {
+        "date": "18 Mars 2020",
+        "category": "Affaires",
+        "author": "Jean Dupont",
+        "comments": "0 Commentaires",
+        "title": "Créez votre propre fil d'actualités compétitif gratuitement",
+        "excerpt": "Microsoft Outlook et diverses applications de lecture de flux dédiées existent, et il existe même des logiciels d'intelligence concurrentielle payants, mais que faire si vous vouliez un référentiel central gratuit construit au fil du temps et pouvant être partagé avec certains collègues ? Les changements de personnel valent la peine pour la recherche de talents.",
+        "link": "/blog-details"
+      },
+      {
+        "date": "18 Mars 2020",
+        "category": "Affaires",
+        "author": "Jean Dupont",
+        "comments": "0 Commentaires",
+        "title": "Rapport 2021 sur les tendances du recrutement à distance",
+        "excerpt": "80 % des responsables RH mondiaux révèlent que leur processus d'entretien et d'embauche est désormais entièrement à distance. Découvrez plus de tendances et d'informations exploitables dans ce rapport pour apprendre comment investir dans un meilleur processus de recrutement à distance aujourd'hui. Le monde reçoit plus de 140 millions de visiteurs uniques par mois.",
+        "link": "/blog-details"
+      }
+    ],
+    "pagination": {
+      "next": "Suivant",
+      "page": "Page"
+    },
+    "sidebar": {
+      "search": {
+        "title": "Rechercher",
+        "placeholder": "Votre mot-clé....",
+        "button": "Rechercher"
+      },
+      "categories": {
+        "title": "Catégories",
+        "list": [
+          "Marketing Digital",
+          "Optimisation pour les moteurs de recherche",
+          "Conception UI/UX",
+          "Développement Web",
+          "Investissement"
+        ]
+      },
+      "recentPosts": {
+        "title": "Articles Récents",
+        "list": [
+          {
+            "title": "Comment les enquêteurs utilisent leurs compétences",
+            "date": "10 Octobre 2020",
+            "link": "/blog-details"
+          },
+          {
+            "title": "Créez votre propre fil d'actualités compétitif",
+            "date": "10 Octobre 2020",
+            "link": "/blog-details"
+          },
+          {
+            "title": "Tendances du recrutement à distance 2021",
+            "date": "10 Octobre 2020",
+            "link": "/blog-details"
+          }
+        ]
+      },
+      "helpBanner": {
+        "title": "Besoin d'aide ?",
+        "phone": "+1 800 556 77 894",
+        "email": "info@votreemail.com",
+        "button": "Prendre rendez-vous !"
+      },
+      "popularTags": {
+        "title": "Tags Populaires",
+        "list": [
+          "Agence",
+          "Affaires",
+          "Entreprise",
+          "Créatif",
+          "Design",
+          "Inspiration",
+          "Marketing",
+          "Startup"
+        ]
+      }
+    },
+    "buttons": {
+      "readMore": "Lire la suite"
+    }
+  }
 }

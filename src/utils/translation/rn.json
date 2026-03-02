@@ -259,5 +259,320 @@
   "bannerTitle": "COPA – Irushanwa rya gahunda z'ubucuruzi",
   "bannerDescription": "Hindura igitekerezo cawe mu bucuruzi bukora. COPA ifasha ibicuruzwa bikiri binini canke bitoyi mu Burundi kwiga, kuronka ubufasha n'inkunga kugira ngo mushobore kugera ku ntego zanyu.",
   "bannerParticipate": "Witabe COPA",
-  "bannerLearnMore": "Menya vyinshi"
+  "bannerLearnMore": "Menya vyinshi",
+  "aboutprete": {
+    "pageTitle": "Ivyasha PRETE",
+    "breadcrumb": "Ivyerekeye",
+    "project": {
+      "title": "Umushinga w'Akazi n'Iterambere ry'Ubukungu",
+      "description": "PRETE ni umushinga wa Leta y'Uburundi, ufashwa na Banki y'Isi, ufise intego yo guteza imbere iterambere ry'ubukungu no kurema akazi mu gihugu. Ufise ingengo y'imari ingana miliyoni 100 z'amadolari y'Amerika, kandi uzomara imyaka 5 (2024-2028).",
+      "fundedBy": "Ufashwa na",
+      "fundedByValue": "Banki y'Isi — Leta y'Uburundi",
+      "duration": "Igihe c'umushinga",
+      "durationValue": "2024 – 2028 (imyaka 5)"
+    },
+    "tabs": {
+      "objectives": "Intego zacu",
+      "components": "Ibigize PRETE",
+      "values": "Indobanurusange"
+    },
+    "objectives": {
+      "list": [
+        "Gushigikira ubushobozi bw'ibigo bito n'ibiciriritse",
+        "Kunoza ibihe vy'ubucuruzi mu Burundi",
+        "Kworoshya abacuruzi kubona inkunga",
+        "Guteza imbere ubwingenzi bw'abakenyezi n'impunzi mu bukungu",
+        "Gushigikira ishoramari ririnda imihindagurikire y'ikirere"
+      ]
+    },
+    "components": {
+      "title": "Imiterere y'umushinga",
+      "subtitle": "Ibigize PRETE",
+      "list": [
+        {
+          "num": "01",
+          "title": "Iterambere ry'ibigo bito",
+          "desc": "Gushigikira ubushobozi bw'ibigo bito n'ibiciriritse mu Burundi biciye mu gice ca 1.2 'Kunoza ubushobozi bw'ibigo' ari naco gitwara gahunda ya COPA."
+        },
+        {
+          "num": "02",
+          "title": "Kunoza ibihe vy'ubucuruzi",
+          "desc": "Ivugurura ry'imigenderanire yo kugabanya ingendo, kworoshya kwandikisha ibigo no kurinda abashora imari."
+        },
+        {
+          "num": "03",
+          "title": "Ukubona inkunga",
+          "desc": "Guteza imbere uburyo bw'inkunga ku bigo bito n'ibiciriritse, harimwo ingwara ndende n'inkunga itishyurwa."
+        },
+        {
+          "num": "04",
+          "title": "Ubwingenzi mu bukungu",
+          "desc": "Gahunda zifise intego yo kwinjiza abakenyezi, urubyiruko n'impunzi mu bukungu bw'Uburundi."
+        }
+      ]
+    },
+    "stats": [
+      { "label": "Ingengo y'imari yose", "suffix": "M$" },
+      { "label": "Igihe c'umushinga", "suffix": "y" },
+      { "label": "Abazoronka akazi", "suffix": "+" },
+      { "label": "Intego y'ikura ry'ubukungu", "suffix": "%" }
+    ],
+    "copa": {
+      "title": "Igice ca 1.2",
+      "subtitle": "COPA: gahunda nyamukuru ya PRETE",
+      "description": "Igice ca 1.2 'Kunoza ubushobozi bw'ibigo' gitwara <strong>COPA</strong>, iyambere mu gushigikira abacuruzi b'Uburundi.",
+      "description2": "COPA ikoranya amahugurwa, ubuyobozi n'inkunga kugira ngo ishigikiye abafise imishinga myiza n'ishobora gutsimbataza.",
+      "buttons": {
+        "discover": "Menya COPA",
+        "participate": "Nigute watangura?"
+      },
+      "stats": {
+        "title": "COPA mu mibare",
+        "items": [
+          "Gahunda y'imyaka 5 (2024–2028)",
+          "Inkunga itishyurwa",
+          "Amahugurwa y'ubuntu",
+          "Ubuyobozi bwihariye n'abahanga",
+          "Uburinganire: abakenyezi, urubyiruko, impunzi, ikirere"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Uriteguriye kwinjira muri gahunda ya COPA?",
+      "description": "Iyandikishe ubu kugira ngo uhabwe ubufasha bukwiye bwo guteza imbere ubucuruzi bwawe.",
+      "button": "Iyandikishe ubu"
+    }
+  },
+  "aboutcopa": {
+    "pageTitle": "Ivyasha COPA",
+    "breadcrumb": "Ivyerekeye / COPA",
+    "intro": {
+      "title": "COPA",
+      "subtitle": "Irirushanwa ry'Imishinga y'Ubucuruzi",
+      "description1": "COPA niryo shingiro rikomeye mu gice ca 1.2 ca PRETE. Ni gahunda yuzuye yo gufasha abacuruzi b'Uburundi, ikoranya <strong>amahugurwa, ubuyobozi n'inkunga</strong>.",
+      "description2": "COPA iha abafise imishinga myiza umwanya wo guteza imbere ubumenyi bwabo no kubona inkunga itishyurwa kugira ngo bashobore kurangiza intego zabo.",
+      "buttons": {
+        "eligibility": "Raba niba ufise uburenganzira",
+        "howTo": "Nigute watangura?"
+      },
+      "whyParticipate": {
+        "title": "Kuki witabira?",
+        "list": [
+          "Amahugurwa y'ubuntu mu bucuruzi",
+          "Inkunga itishyurwa",
+          "Ubuyobozi bwihariye n'abahanga",
+          "Kumenyekana mu gihugu",
+          "Kwinjira mu muryango w'abacuruzi",
+          "Guteza imbere dosiye yawe y'ubucuruzi"
+        ]
+      }
+    },
+    "pillars": {
+      "section": {
+        "title": "Ingingo z'ibanze",
+        "subtitle": "COPA ishingiye ku ngingo 3"
+      },
+      "list": [
+        {
+          "num": "01",
+          "title": "Amahugurwa",
+          "desc": "Guteza imbere ubumenyi mu bucuruzi n'ubuyobozi binyuze mu mahugurwa akwiye, haba mu maso no kuri interineti."
+        },
+        {
+          "num": "02",
+          "title": "Irirushanwa",
+          "desc": "Isuzuma ry'umutekano ry'ibikorwa ry'ubucuruzi n'abahanga, hakurikijwe amategeko."
+        },
+        {
+          "num": "03",
+          "title": "Inkunga",
+          "desc": "Ihabwa abatsinze kugira ngo bashobore kurangiza imishinga yabo y'ubucuruzi."
+        }
+      ]
+    },
+    "targets": {
+      "section": {
+        "title": "Ni nde ashobora kwitabira?",
+        "subtitle": "COPA irakirira abantu bose",
+        "description": "COPA irakirira amasosiyete yose yemewe n'amategeko, kandi yitaye cyane ku matsinda akurikira:"
+      },
+      "list": [
+        {
+          "icon": "👩‍💼",
+          "label": "Abacuruzi b'abakenyezi",
+          "desc": "Amasosiyete ayobowe n'abakenyezi"
+        },
+        {
+          "icon": "🌍",
+          "label": "Abacuruzi b'impunzi",
+          "desc": "Impunzi zanditswe mu Burundi"
+        },
+        {
+          "icon": "🎓",
+          "label": "Urubyiruko (18–35)",
+          "desc": "Urubyiruko rufise imishinga myiza"
+        },
+        {
+          "icon": "🌿",
+          "label": "ibidukikije",
+          "desc": "Imishinga ifasha ikirere n'ibidukikije"
+        }
+      ],
+      "button": "Raba ibisabwa byose"
+    },
+    "steps": {
+      "section": {
+        "title": "Inzira",
+        "subtitle": "Intambwe z'igahunda ya COPA"
+      },
+      "list": [
+        { "step": "1", "label": "Kwiyandikisha", "link": "/inscription" },
+        {
+          "step": "2",
+          "label": "Dosiye yuzuye",
+          "link": "/espace-mpme/mon-profil"
+        },
+        { "step": "3", "label": "Amahugurwa", "link": "/formations/catalogue" },
+        {
+          "step": "4",
+          "label": "Umushinga",
+          "link": "/espace-mpme/mon-plan-affaires/redaction"
+        },
+        { "step": "5", "label": "Isuzuma", "link": null },
+        { "step": "6", "label": "Inkunga", "link": null }
+      ],
+      "access": "Kwinjira"
+    },
+    "cta": {
+      "title": "Uriteguriye kwitabira Irirushanwa ry'Imishinga?",
+      "description": "Fungura konte yawe utangire urugendo rwawe muri COPA uyu munsi.",
+      "button": "Iyandikishe ubu"
+    }
+  },
+  "contactPage": {
+    "pageTitle": "Twandikire",
+    "breadcrumb": "Aho twaboneka",
+    "offices": {
+      "title": "Ibiro Vyacu",
+      "subtitle": "Tugufashe gute?",
+      "address": {
+        "title": "Aho tuboneka",
+        "value": "Chaussée d'Uvira, Bujumbura"
+      },
+      "email": {
+        "title": "Imeri",
+        "value": "contact@copa-prete.bi"
+      },
+      "phone": {
+        "title": "Telefone",
+        "value": "(+257) 62 44 72 55"
+      }
+    },
+    "form": {
+      "title": "Twumvikane",
+      "subtitle": "Saba ko twoguhamura",
+      "name": "Izina ryawe",
+      "email": "Imeri yawe",
+      "subject": "Ikiganiro",
+      "phone": "Numero ya telefone",
+      "message": "Ubutumwa",
+      "button": "Ohereza ubutumwa !"
+    },
+    "map": {
+      "title": "Ikarita y'Uburundi"
+    }
+  },
+  "blog": {
+    "pageTitle": "Amakuru",
+    "breadcrumb": "Amakuru",
+    "posts": [
+      {
+        "date": "18 Werurwe 2020",
+        "category": "Ubucuruzi",
+        "author": "Jean Dupont",
+        "comments": "0 Iboneza",
+        "title": "Uko abashakashatsi bakoresha ubumenyi bwabo hanze y'akazi",
+        "excerpt": "Niba ufise icumbiro ryo kumenya uko wofasha wenyene canke abandi n'ubumenyi bw'ubushakashatsi hanze y'akazi, abagenzi bawe ubuhinga baronse ubumenyi bushasha.",
+        "link": "/blog-details"
+      },
+      {
+        "date": "18 Werurwe 2020",
+        "category": "Ubucuruzi",
+        "author": "Jean Dupont",
+        "comments": "0 Iboneza",
+        "title": "Rema ifoto yawe y'amakuru y'ubucuruzi ku buntu",
+        "excerpt": "Microsoft Outlook hamwe n'ibindi bikoresho biraraho, ariko ushobora kwiyubakira ikigega c'amakuru ku buntu kugira ngo usangire n'abagenzi bawe.",
+        "link": "/blog-details"
+      },
+      {
+        "date": "18 Werurwe 2020",
+        "category": "Ubucuruzi",
+        "author": "Jean Dupont",
+        "comments": "0 Iboneza",
+        "title": "Raporo 2021 y'uburyo bushasha bwo gushaka abakozi",
+        "excerpt": "80% y'abayobozi b'isi yose barerekana ko inzira yabo yo gufata abakozi ubu ikorwa kure. Muri raporo, ushobora kubona ukuri kwinshi n'ubumenyi bushobora gufasha kunoza inzira yawe.",
+        "link": "/blog-details"
+      }
+    ],
+    "pagination": {
+      "next": "Ikurikira",
+      "page": "Urupapuro"
+    },
+    "sidebar": {
+      "search": {
+        "title": "Gushakisha",
+        "placeholder": "Ijambo ryawe nyamukuru....",
+        "button": "Shakisha"
+      },
+      "categories": {
+        "title": "Ibyiciro",
+        "list": [
+          "Ubucuruzi",
+          "Iterambere ry'urubuga",
+          "Igishushanyo",
+          "Ubushakashatsi",
+          "Ishoramari"
+        ]
+      },
+      "recentPosts": {
+        "title": "Ivyanditswe vuba",
+        "list": [
+          {
+            "title": "Uko abashakashatsi bakoresha ubumenyi",
+            "date": "10 Gitugutu 2020",
+            "link": "/blog-details"
+          },
+          {
+            "title": "Rema ifoto yawe y'amakuru y'ubucuruzi",
+            "date": "10 Gitugutu 2020",
+            "link": "/blog-details"
+          },
+          {
+            "title": "Uburyo bushasha bwo gushaka abakozi 2021",
+            "date": "10 Gitugutu 2020",
+            "link": "/blog-details"
+          }
+        ]
+      },
+      "helpBanner": {
+        "title": "Urafise ikibazo?",
+        "phone": "+1 800 556 77 894",
+        "email": "info@imeriyawe.com",
+        "button": "Gena ikaze!"
+      },
+      "popularTags": {
+        "title": "Amajambo akunzwe",
+        "list": [
+          "Ubucuruzi",
+          "Isosiyete",
+          "Igishushanyo",
+          "Ubumenyi",
+          "Gutangaza"
+        ]
+      }
+    },
+    "buttons": {
+      "readMore": "Soma vyinshi"
+    }
+  }
 }

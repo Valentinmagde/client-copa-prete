@@ -1,255 +1,390 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import CountUp from 'react-countup';
-import Header from '../components/layout/Header';
-import PageHeader from '../components/layout/PageHeader';
-import Footer from '../components/layout/Footer';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useTranslation, Trans } from "react-i18next";
+import CountUp from "react-countup";
+import Header from "../components/layout/Header";
+import PageHeader from "../components/layout/PageHeader";
+import Footer from "../components/layout/Footer";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import about1 from "../assets/img/about/06.png";
+import about2 from "../assets/img/about/04.png";
+import about3 from "../assets/img/about/05.png";
 
-const objectives = [
-  { icon: 'flaticon-recruiting', text: 'Renforcer les capacités des micro, petites et moyennes entreprises (MPME)' },
-  { icon: 'flaticon-job-1',      text: "Améliorer l'environnement des affaires au Burundi" },
-  { icon: 'flaticon-money',      text: "Faciliter l'accès au financement pour les entrepreneurs" },
-  { icon: 'flaticon-research',   text: "Promouvoir l'inclusion économique des femmes et des réfugiés" },
-  { icon: 'flaticon-leaves',     text: 'Soutenir les investissements respectueux du climat' },
-];
+const AboutPrete: React.FC = () => {
+  const { t } = useTranslation();
 
-const components = [
-  {
-    num: '01',
-    title: 'Développement des MPME',
-    desc: "Renforcement des capacités des petites et moyennes entreprises burundaises à travers la sous-composante 1.2 « Amélioration des capacités des MPME » qui porte le programme COPA.",
-    highlight: true,
-  },
-  {
-    num: '02',
-    title: "Amélioration de l'environnement des affaires",
-    desc: "Réformes structurelles pour simplifier les procédures administratives, réduire les coûts d'entrée sur le marché et renforcer la protection des investisseurs.",
-    highlight: false,
-  },
-  {
-    num: '03',
-    title: 'Accès au financement',
-    desc: "Développement des mécanismes de financement pour les MPME, notamment via des garanties partielles de crédit et des subventions de contrepartie (matching grants).",
-    highlight: false,
-  },
-  {
-    num: '04',
-    title: 'Inclusion économique',
-    desc: "Programmes ciblés pour intégrer les femmes, les jeunes et les réfugiés dans le tissu économique burundais à travers des formations et un accompagnement adapté.",
-    highlight: false,
-  },
-];
+  const objectives = t("aboutprete.objectives.list", {
+    returnObjects: true,
+  }) as string[];
+  const components = t("aboutprete.components.list", {
+    returnObjects: true,
+  }) as any[];
+  const stats = t("aboutprete.stats", { returnObjects: true }) as any[];
+  const copaStats = t("aboutprete.copa.stats.items", {
+    returnObjects: true,
+  }) as string[];
 
-const stats = [
-  { end: 100, suffix: 'M$',  label: 'Budget total du projet' },
-  { end: 5,   suffix: 'ans', label: 'Durée du programme (2024–2028)' },
-  { end: 10000, suffix: '+', label: 'Bénéficiaires attendus' },
-  { end: 18,  suffix: '%',   label: 'Croissance PIB ciblée' },
-];
+  return (
+    <div className="site-main">
+      <Header />
+      <PageHeader
+        title={t("aboutprete.pageTitle")}
+        breadcrumb={t("aboutprete.breadcrumb")}
+      />
 
-const AboutPrete: React.FC = () => (
-  <div className="site-main">
-    <Header />
-    <PageHeader title="Présentation du PRETE" breadcrumb="À propos" />
-
-    {/* intro-section */}
-    <section className="ttm-row about-section clearfix">
-      <div className="container">
-        <div className="row align-items-center">
-          <div className="col-lg-6">
-            <div className="section-title">
-              <div className="title-header">
-                <h3>Le <span className="text-theme-SkinColor">Projet</span></h3>
-                <h2 className="title">Le Projet pour l'Emploi et la Transformation Économique</h2>
+      {/* about-section */}
+      <section className="ttm-row about-section clearfix">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6">
+              <div className="section-title">
+                <div className="title-header">
+                  <h3>
+                    {t("aboutprete.tabs.objectives").split(" ")[0]}{" "}
+                    <span className="text-theme-SkinColor">
+                      {t("aboutprete.tabs.objectives").split(" ")[1]}
+                    </span>
+                  </h3>
+                  <h2 className="title">{t("aboutprete.project.title")}</h2>
+                </div>
+                <div className="title-desc">
+                  <p>{t("aboutprete.project.description")}</p>
+                </div>
               </div>
-              <div className="title-desc">
-                <p>Le PRETE est un projet du Gouvernement du Burundi, financé par la Banque mondiale, qui vise à stimuler la croissance économique inclusive et la création d'emplois dans le pays.</p>
-                <p className="mt-15">D'un montant de <strong>100 millions USD</strong>, le projet s'étend sur une période de <strong>5 ans (2024–2028)</strong> et cible en priorité les micro, petites et moyennes entreprises burundaises.</p>
+
+              <div className="ttm-tabs ttm-tab-style-01">
+                <Tabs>
+                  <TabList className="tabs">
+                    <Tab className="tab">
+                      <a className="tab-1" tabIndex={0}>
+                        {t("aboutprete.tabs.objectives")}
+                      </a>
+                    </Tab>
+                    <Tab className="tab">
+                      <a className="tab-2" tabIndex={0}>
+                        {t("aboutprete.tabs.components")}
+                      </a>
+                    </Tab>
+                  </TabList>
+
+                  <div className="content-tab">
+                    <TabPanel>
+                      <div className="row">
+                        <div className="col-lg-12 col-md-12">
+                          <div className="pt-15">
+                            <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
+                              {objectives.map((objective, index) => (
+                                <li key={index}>
+                                  <i className="far fa-check-circle"></i>
+                                  <div className="ttm-list-li-content">
+                                    {objective}
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </TabPanel>
+
+                    <TabPanel>
+                      <div className="row">
+                        <div className="col-lg-12 col-md-12">
+                          <div className="pt-15">
+                            <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
+                              {components.map((comp, index) => (
+                                <li key={index}>
+                                  <i className="far fa-check-circle"></i>
+                                  <div className="ttm-list-li-content">
+                                    {comp.title}
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </TabPanel>
+                  </div>
+                </Tabs>
               </div>
+
+              {/* <div className="d-flex align-items-center mt-30">
+                <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-skincolor ttm-icon_element-size-sm ttm-icon_element-style-round mb-0">
+                  <i className="fa fa-university"></i>
+                </div>
+                <div className="pl-15">
+                  <h6 className="mb-5">{t("aboutprete.project.fundedBy")}</h6>
+                  <p className="featured-desc mb-0 fw-bold">
+                    {t("aboutprete.project.fundedByValue")}
+                  </p>
+                </div>
+              </div> */}
+
+              {/* <div className="ttm-horizontal_sep width-100 mt-20 mb-20"></div> */}
+
+              {/* <div className="d-flex align-items-center">
+                <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-skincolor ttm-icon_element-size-sm ttm-icon_element-style-round mb-0">
+                  <i className="fa fa-calendar"></i>
+                </div>
+                <div className="pl-15">
+                  <h6 className="mb-5">{t("aboutprete.project.duration")}</h6>
+                  <p className="featured-desc mb-0">
+                    {t("aboutprete.project.durationValue")}
+                  </p>
+                </div>
+              </div> */}
             </div>
-            <div className="d-flex align-items-center mt-30">
-              <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-skincolor ttm-icon_element-size-sm ttm-icon_element-style-round mb-0">
-                <i className="fa fa-university"></i>
-              </div>
-              <div className="pl-15">
-                <h6 className="mb-5">Financé par</h6>
-                <p className="featured-desc mb-0 fw-bold">Banque mondiale — Gouvernement du Burundi</p>
-              </div>
-            </div>
-            <div className="ttm-horizontal_sep width-100 mt-20 mb-20"></div>
-            <div className="d-flex align-items-center">
-              <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-skincolor ttm-icon_element-size-sm ttm-icon_element-style-round mb-0">
-                <i className="fa fa-calendar"></i>
-              </div>
-              <div className="pl-15">
-                <h6 className="mb-5">Durée du projet</h6>
-                <p className="featured-desc mb-0">2024 – 2028 (5 ans)</p>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-6">
-            <div className="ttm-col-bgcolor-yes ttm-bg bg-theme-GreyColor z-index-2 p-40 ml-30 ml-lg-0 mt-lg-30">
-              <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
-              <div className="layer-content">
-                <h4 className="mb-25" style={{ color:'var(--theme-DarkColor)' }}>Nos <span className="text-theme-SkinColor">objectifs</span></h4>
-                <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
-                  {objectives.map((obj, i) => (
-                    <li key={i} className="pb-10">
-                      <i className="far fa-check-circle"></i>
-                      <div className="ttm-list-li-content">{obj.text}</div>
-                    </li>
-                  ))}
-                </ul>
+
+            <div className="col-lg-6">
+              <div className="mr-30 mt-30 mt-lg-60 mb-lg-30">
+                <div className="d-flex">
+                  <img src={about1} className="img-fluid" alt="single_05" />
+                  <div className="flex-basis-auto ml_180 mr_30 mt_30 z-index_1">
+                    <img src={about2} className="img-fluid" alt="dot-pattern" />
+                  </div>
+                  <div className="d-flex justify-content-end flex-column ml_180 mr_30 mb_35 z-index_1">
+                    <img src={about3} className="img-fluid" alt="dot-pattern" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    {/* intro-section end */}
+      </section>
 
-    {/* stats-section */}
-    <section className="ttm-row bg-theme-DarkColor text-theme-WhiteColor clearfix" style={{ padding:'50px 0' }}>
-      <div className="container">
-        <div className="row text-center">
-          {stats.map((s, i) => (
-            <div key={i} className="col-lg-3 col-md-6 mb-30 mb-lg-0">
-              <div className="ttm-fid inside ttm-fid-view-topicon">
-                <div className="ttm-fid-contents">
-                  <h4 className="text-theme-SkinColor">
-                    <CountUp start={0} end={s.end} duration={3} delay={0.5} />
-                    {s.suffix}
+      {/* Stats Section */}
+      {/* <section
+        className="ttm-row bg-theme-DarkColor text-theme-WhiteColor clearfix"
+        style={{ padding: "50px 0" }}
+      >
+        <div className="container">
+          <div className="row text-center">
+            {stats.map((stat, index) => (
+              <div key={index} className="col-lg-3 col-md-6 mb-30 mb-lg-0">
+                <div className="ttm-fid inside ttm-fid-view-topicon">
+                  <div className="ttm-fid-contents">
+                    <h4 className="text-theme-SkinColor">
+                      <CountUp
+                        start={0}
+                        end={
+                          index === 0
+                            ? 100
+                            : index === 1
+                              ? 5
+                              : index === 2
+                                ? 10000
+                                : 18
+                        }
+                        duration={3}
+                        delay={0.5}
+                      />
+                      {stat.suffix}
+                    </h4>
+                    <h3 className="ttm-fid-title">{stat.label}</h3>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section> */}
+
+      {/* Components Section */}
+      {/* <section className="ttm-row team-section bg-theme-GreyColor clearfix">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="section-title title-style-center_text">
+                <div className="title-header">
+                  <h3>
+                    {t("aboutprete.components.title").split(" ")[0]}{" "}
+                    <span className="text-theme-SkinColor">
+                      {t("aboutprete.components.title").split(" ")[1]}
+                    </span>
+                  </h3>
+                  <h2 className="title">
+                    {t("aboutprete.components.subtitle")}
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            {components.map((comp, index) => (
+              <div key={index} className="col-lg-6 col-md-6 mb-30">
+                <div
+                  className={`featured-icon-box icon-align-before-content ${index === 0 ? "bg-theme-SkinColor text-theme-WhiteColor" : "bg-theme-WhiteColor"}`}
+                  style={{
+                    padding: "30px",
+                    borderRadius: "4px",
+                    height: "100%",
+                    boxShadow: "0 2px 12px rgba(0,0,0,.06)",
+                  }}
+                >
+                  <div className="featured-icon">
+                    <div
+                      className={`ttm-icon ttm-icon_element-fill ttm-icon_element-size-md ttm-icon_element-style-rounded ${index === 0 ? "ttm-icon_element-color-white" : "ttm-icon_element-color-skincolor"}`}
+                    >
+                      <span style={{ fontSize: "20px", fontWeight: 900 }}>
+                        {comp.num}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="featured-content">
+                    <div className="featured-title">
+                      <h3 style={{ color: index === 0 ? "#fff" : "inherit" }}>
+                        {t("aboutprete.components.subtitle")} {comp.num}
+                      </h3>
+                      <h5
+                        className={
+                          index === 0 ? "text-white" : "text-theme-SkinColor"
+                        }
+                        style={{ fontSize: "14px", marginTop: "5px" }}
+                      >
+                        {comp.title}
+                      </h5>
+                    </div>
+                    <div className="featured-desc">
+                      <p
+                        style={{
+                          color:
+                            index === 0 ? "rgba(255,255,255,.85)" : "inherit",
+                        }}
+                      >
+                        {comp.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section> */}
+
+      {/* COPA Highlight */}
+      {/* <section className="ttm-row clearfix">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-lg-7">
+              <div className="section-title">
+                <div className="title-header">
+                  <h3>
+                    {t("aboutprete.copa.title")}{" "}
+                    <span className="text-theme-SkinColor">1.2</span>
+                  </h3>
+                  <h2 className="title">{t("aboutprete.copa.subtitle")}</h2>
+                </div>
+                <div className="title-desc">
+                  <p>
+                    <Trans i18nKey="aboutprete.copa.description">
+                      La sous-composante 1.2 « Amélioration des capacités des
+                      MPME » porte le
+                      <strong>Concours de Plans d'Affaires (COPA)</strong>, le
+                      mécanisme central d'appui aux entrepreneurs burundais.
+                    </Trans>
+                  </p>
+                  <p className="mt-15">{t("aboutprete.copa.description2")}</p>
+                </div>
+              </div>
+              <div className="mt-30">
+                <Link
+                  to="/copa/presentation"
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor mr-15"
+                >
+                  {t("aboutprete.copa.buttons.discover")}
+                </Link>
+                <Link
+                  to="/copa/comment-participer"
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
+                >
+                  {t("aboutprete.copa.buttons.participate")}
+                </Link>
+              </div>
+            </div>
+            <div className="col-lg-5">
+              <div
+                className="ttm-col-bgcolor-yes ttm-bg bg-theme-SkinColor text-theme-WhiteColor p-40 ml-30 ml-lg-0 mt-lg-30"
+                style={{ borderRadius: "4px" }}
+              >
+                <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
+                <div className="layer-content">
+                  <h4 className="text-white mb-20">
+                    {t("aboutprete.copa.stats.title")}
                   </h4>
-                  <h3 className="ttm-fid-title">{s.label}</h3>
+                  <ul
+                    className="ttm-list ttm-list-style-icon"
+                    style={
+                      { "--list-icon-color": "#fff" } as React.CSSProperties
+                    }
+                  >
+                    {copaStats.map((item, index) => (
+                      <li key={index} className="pb-10">
+                        <span style={{ marginRight: "10px", fontSize: "16px" }}>
+                          {index === 0
+                            ? "🎯"
+                            : index === 1
+                              ? "💰"
+                              : index === 2
+                                ? "📚"
+                                : index === 3
+                                  ? "👥"
+                                  : "🌱"}
+                        </span>
+                        <div
+                          className="ttm-list-li-content"
+                          style={{ color: "rgba(255,255,255,.9)" }}
+                        >
+                          {item}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-    {/* stats-section end */}
-
-    {/* components-section */}
-    <section className="ttm-row team-section bg-theme-GreyColor clearfix">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-12">
-            <div className="section-title title-style-center_text">
-              <div className="title-header">
-                <h3>Structure du <span className="text-theme-SkinColor">projet</span></h3>
-                <h2 className="title">Les composantes du PRETE</h2>
               </div>
             </div>
           </div>
         </div>
-        <div className="row">
-          {components.map((comp, i) => (
-            <div key={i} className="col-lg-6 col-md-6 mb-30">
-              <div className={`featured-icon-box icon-align-before-content ${comp.highlight ? 'bg-theme-SkinColor text-theme-WhiteColor' : 'bg-theme-WhiteColor'}`}
-                style={{ padding: '30px', borderRadius: '4px', height: '100%', boxShadow: '0 2px 12px rgba(0,0,0,.06)' }}>
-                <div className="featured-icon">
-                  <div className={`ttm-icon ttm-icon_element-fill ttm-icon_element-size-md ttm-icon_element-style-rounded ${comp.highlight ? 'ttm-icon_element-color-white' : 'ttm-icon_element-color-skincolor'}`}>
-                    <span style={{ fontSize: '20px', fontWeight: 900 }}>{comp.num}</span>
-                  </div>
-                </div>
-                <div className="featured-content">
-                  <div className="featured-title">
-                    <h3 style={{ color: comp.highlight ? '#fff' : 'inherit' }}>Composante {comp.num}</h3>
-                    <h5 className={comp.highlight ? 'text-white' : 'text-theme-SkinColor'} style={{ fontSize: '14px', marginTop: '5px' }}>{comp.title}</h5>
-                  </div>
-                  <div className="featured-desc">
-                    <p style={{ color: comp.highlight ? 'rgba(255,255,255,.85)' : 'inherit' }}>{comp.desc}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-    {/* components-section end */}
+      </section> */}
 
-    {/* copa-highlight */}
-    <section className="ttm-row clearfix">
-      <div className="container">
-        <div className="row align-items-center">
-          <div className="col-lg-7">
-            <div className="section-title">
-              <div className="title-header">
-                <h3>Sous-composante <span className="text-theme-SkinColor">1.2</span></h3>
-                <h2 className="title">Le COPA : mécanisme phare du PRETE</h2>
-              </div>
-              <div className="title-desc">
-                <p>La sous-composante 1.2 « Amélioration des capacités des MPME » porte le <strong>Concours de Plans d'Affaires (COPA)</strong>, le mécanisme central d'appui aux entrepreneurs burundais.</p>
-                <p className="mt-15">Le COPA combine formation, mentorat et financement pour offrir un accompagnement complet aux porteurs de projets viables et innovants.</p>
-              </div>
-            </div>
-            <div className="mt-30">
-              <Link to="/copa/presentation" className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor mr-15">
-                Découvrir le COPA
-              </Link>
-              <Link to="/copa/comment-participer" className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor">
-                Comment participer ?
-              </Link>
-            </div>
-          </div>
-          <div className="col-lg-5">
-            <div className="ttm-col-bgcolor-yes ttm-bg bg-theme-SkinColor text-theme-WhiteColor p-40 ml-30 ml-lg-0 mt-lg-30" style={{ borderRadius: '4px' }}>
-              <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
-              <div className="layer-content">
-                <h4 className="text-white mb-20">Le COPA en chiffres</h4>
-                <ul className="ttm-list ttm-list-style-icon" style={{ '--list-icon-color': '#fff' } as React.CSSProperties}>
-                  {[
-                    ['🎯', 'Programme de 5 ans (2024–2028)'],
-                    ['💰', 'Subventions de contrepartie (matching grants)'],
-                    ['📚', 'Formations gratuites en présentiel et en ligne'],
-                    ['👥', 'Accompagnement personnalisé par des experts'],
-                    ['🌱', 'Priorité femmes, jeunes, réfugiés, climat'],
-                  ].map(([icon, text], i) => (
-                    <li key={i} className="pb-10">
-                      <span style={{ marginRight: '10px', fontSize: '16px' }}>{icon}</span>
-                      <div className="ttm-list-li-content" style={{ color: 'rgba(255,255,255,.9)' }}>{text}</div>
-                    </li>
-                  ))}
-                </ul>
+      {/* CTA Section */}
+      {/* <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="d-md-flex align-items-center justify-content-between">
+                <div className="featured-icon-box icon-align-before-content style2">
+                  <div className="featured-icon">
+                    <div className="ttm-icon ttm-icon_element-onlytxt ttm-icon_element-color-white ttm-icon_element-size-xl">
+                      <i className="flaticon flaticon-recruitment-5"></i>
+                    </div>
+                  </div>
+                  <div className="featured-content">
+                    <div className="featured-title">
+                      <h3>{t("aboutprete.cta.title")}</h3>
+                    </div>
+                    <div className="featured-desc">
+                      <p>{t("aboutprete.cta.description")}</p>
+                    </div>
+                  </div>
+                </div>
+                <Link
+                  to="/inscription"
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
+                >
+                  {t("aboutprete.cta.button")}
+                </Link>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    {/* copa-highlight end */}
+      </section> */}
 
-    {/* action-section */}
-    {/* <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-12">
-            <div className="d-md-flex align-items-center justify-content-between">
-              <div className="featured-icon-box icon-align-before-content style2">
-                <div className="featured-icon">
-                  <div className="ttm-icon ttm-icon_element-onlytxt ttm-icon_element-color-white ttm-icon_element-size-xl">
-                    <i className="flaticon flaticon-recruitment-5"></i>
-                  </div>
-                </div>
-                <div className="featured-content">
-                  <div className="featured-title"><h3>Prêt à rejoindre le programme COPA ?</h3></div>
-                  <div className="featured-desc"><p>Inscrivez-vous dès maintenant et bénéficiez d'un accompagnement complet pour développer votre entreprise.</p></div>
-                </div>
-              </div>
-              <Link to="/inscription" className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white">
-                S'inscrire maintenant
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> */}
-    {/* action-section end */}
-
-    <Footer />
-  </div>
-);
+      <Footer />
+    </div>
+  );
+};
 
 export default AboutPrete;
