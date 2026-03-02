@@ -254,11 +254,11 @@ const Profile: React.FC = () => {
         mapBeneficiaryToForm(response);
 
         // Déterminer l'étape courante en fonction du pourcentage de complétion
-        if (response.profileCompletionPercentage < 33) {
+        if (response.profileCompletionPercentage <= 33) {
           setCurrentStep(1);
-        } else if (response.profileCompletionPercentage < 67) {
+        } else if (response.profileCompletionPercentage <= 67) {
           setCurrentStep(2);
-        } else if (response.profileCompletionPercentage < 100) {
+        } else if (response.profileCompletionPercentage <= 100) {
           setCurrentStep(3);
         } else {
           setCurrentStep(3); // Dernière étape mais tout est complet
