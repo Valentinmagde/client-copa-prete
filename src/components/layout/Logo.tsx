@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/img/logo1.jpg";
+import logo from "../../assets/img/logo.jpeg";
 import { Link } from "react-router-dom";
 
 // Define props interface (empty but can be extended)

@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "@/services/auth/auth.service";
 import { toast } from "react-toastify";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 interface FormData {
   firstName: string;
@@ -109,42 +111,42 @@ const Register: React.FC = () => {
 
   const handleGoogleSubmit = async () => {
     setIsGoogleSubmitting(true);
-    
-        try {
-          if (window.google) {
-            const client = window.google.accounts.oauth2.initTokenClient({
-              client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-              scope: "email profile",
-              callback: async (response: any) => {
-                if (response.access_token) {
-                  try {
-                    // À implémenter dans votre AuthService
-                    // const loginResponse = await AuthService.loginWithGoogle(response.access_token, i18n.language);
-    
-                    toast.success(t("loginSuccess"));
-                    navigate(from, { replace: true });
-                  } catch (err: any) {
-                    console.error("Google login error:", err);
-                    setApiError(t("googleRegistrationError"));
-                    toast.error(t("googleRegistrationError"));
-                  }
-                }
-                setIsGoogleSubmitting(false);
-              },
-            });
-    
-            client.requestAccessToken();
-          } else {
-            // Fallback: redirection vers OAuth classique
-            // window.location.href = `${import.meta.env.VITE_API_URL}/v1/${i18n.language}/auth/google`;
-            toast.error(t("googleRegistrationError"));
-          }
-        } catch (err) {
-          console.error("Google login error:", err);
-          setApiError(t("googleRegistrationError"));
-          toast.error(t("googleRegistrationError"));
-          setIsGoogleSubmitting(false);
-        }
+
+    try {
+      if (window.google) {
+        const client = window.google.accounts.oauth2.initTokenClient({
+          client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+          scope: "email profile",
+          callback: async (response: any) => {
+            if (response.access_token) {
+              try {
+                // À implémenter dans votre AuthService
+                // const loginResponse = await AuthService.loginWithGoogle(response.access_token, i18n.language);
+
+                toast.success(t("loginSuccess"));
+                navigate(from, { replace: true });
+              } catch (err: any) {
+                console.error("Google login error:", err);
+                setApiError(t("googleRegistrationError"));
+                toast.error(t("googleRegistrationError"));
+              }
+            }
+            setIsGoogleSubmitting(false);
+          },
+        });
+
+        client.requestAccessToken();
+      } else {
+        // Fallback: redirection vers OAuth classique
+        // window.location.href = `${import.meta.env.VITE_API_URL}/v1/${i18n.language}/auth/google`;
+        toast.error(t("googleRegistrationError"));
+      }
+    } catch (err) {
+      console.error("Google login error:", err);
+      setApiError(t("googleRegistrationError"));
+      toast.error(t("googleRegistrationError"));
+      setIsGoogleSubmitting(false);
+    }
   };
 
   return (
@@ -234,6 +236,22 @@ const Register: React.FC = () => {
                           <label
                             className={errors.phone ? "copa-input-invalid" : ""}
                           >
+                            <PhoneInput
+                              country={"bi"}
+                              // onlyCountries={["bi"]}
+                              value={form.phone}
+                              onChange={(phone) => upd("phone", phone)}
+                              autoFormat={true}
+                              placeholder={t("phoneNumber")}
+                              // disableDropdown={true}
+                              enableSearch={true}
+                              countryCodeEditable={false}
+                              disableSearchIcon={true}
+                            />
+                          </label>
+                          {/* <label
+                            className={errors.phone ? "copa-input-invalid" : ""}
+                          >
                             <i className="ti ti-mobile" />
                             <input
                               type="tel"
@@ -241,7 +259,7 @@ const Register: React.FC = () => {
                               onChange={(e) => upd("phone", e.target.value)}
                               placeholder={t("phoneNumber")}
                             />
-                          </label>
+                          </label> */}
                           {errors.phone && (
                             <span className="copa-error-msg">
                               {errors.phone}

@@ -45,6 +45,7 @@
   "companyInformation": "Informations sur l'entreprise",
   "validation": "Validation",
   "submit": "Soumettre",
+  "submitApplication": "Soumettre ma candidature",
   "accountCreated": "Compte créé",
   "accountCreatedMessage": "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.",
   "youAre": "Vous êtes",
@@ -182,7 +183,7 @@
   "privacyPolicy": "Politique de confidentialité",
   "youMustAcceptTermsAndConditions": "Vous devez accepter les conditions d'utilisation et la politique de confidentialité",
   "profileNoteTitle": "Finalisez votre profil — validez votre inscription",
-  "profileNote": "Veuillez compléter votre profil afin de pouvoir participer au programme COPA",
+  "profileNote": "Veuillez compléter votre profil afin de participer au programme COPA",
   "validationAndSend": "Validation & envoi",
   "updateProfile": "Mettre à jour le profil",
   "update": "Mettre à jour",
@@ -583,5 +584,18 @@
     "buttons": {
       "readMore": "Lire la suite"
     }
+  },
+  "applicationSubmitted": {
+    "title": "Confirmation de candidature",
+    "breadcrumb": "Participation COPA",
+    "congratulations": "Félicitations {{name}} !",
+    "message": "Votre profil d'entrepreneur a bien été enregistré.",
+    "notification": "Vous serez notifié(e) par email et SMS dès la publication des résultats de présélection.",
+    "downloadButton": "Télécharger la confirmation",
+    "dashboardLink": "Accéder à mon espace",
+    "printButton": "Imprimer",
+    "saveButton": "Enregistrer",
+    "shareButton": "Partager",
+    "homeLink": "Retour à l'accueil"
   }
 }

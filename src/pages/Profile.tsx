@@ -13,7 +13,58 @@ import { toast } from "react-toastify";
 import BeneficiaryService from "@/services/beneficiary/beneficiary.service";
 import { getUser } from "@/utils/storage";
 import { validateEmail, validateNif, validatePhone } from "@/utils/validators";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/material_green.css";
+import { French } from "flatpickr/dist/l10n/fr";
+
+const KirundiLocale = {
+  weekdays: {
+    shorthand: ["cu", "mbe", "kab", "gtu", "kan", "gnu", "gnd"],
+    longhand: [
+      "Ku cyumweru",
+      "Kuwa mbere",
+      "Kuwa kabiri",
+      "Kuwa gatatu",
+      "Kuwa kane",
+      "Kuwa gatanu",
+      "Kuwa gatandatu",
+    ],
+  },
+  months: {
+    shorthand: [
+      "Nzero",
+      "Ruhuhuma",
+      "Ntwarante",
+      "Ndamukiza",
+      "Rusama",
+      "Ruheshi",
+      "Mukakaro",
+      "Myandagaro",
+      "Nyakanga",
+      "Gitugutu",
+      "Munyonyo",
+      "Kigarama",
+    ],
+    longhand: [
+      "Nzero",
+      "Ruhuhuma",
+      "Ntwarante",
+      "Ndamukiza",
+      "Rusama",
+      "Ruheshi",
+      "Mukakaro",
+      "Myandagaro",
+      "Nyakanga",
+      "Gitugutu",
+      "Munyonyo",
+      "Kigarama",
+    ],
+  },
+  firstDayOfWeek: 1,
+};
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -183,6 +234,7 @@ const Profile: React.FC = () => {
   const lang = i18n.language;
   const isKi = lang === "rn";
   const user = getUser();
+  const navigate = useNavigate();
 
   // State
   const [beneficiary, setBeneficiary] = useState<BeneficiaryData | null>(null);
@@ -202,7 +254,8 @@ const Profile: React.FC = () => {
     communes: false,
     sectors: false,
   });
-
+  const maxDate = new Date();
+  maxDate.setFullYear(maxDate.getFullYear() - 18);
   // ─── Chargement initial ─────────────────────────────────────────────────
 
   useEffect(() => {
@@ -253,16 +306,20 @@ const Profile: React.FC = () => {
         setBeneficiary(response);
         mapBeneficiaryToForm(response);
 
-        // Déterminer l'étape courante en fonction du pourcentage de complétion
-        if (response.profileCompletionPercentage <= 33) {
-          setCurrentStep(1);
-        } else if (response.profileCompletionPercentage <= 67) {
-          setCurrentStep(2);
-        } else if (response.profileCompletionPercentage <= 100) {
-          setCurrentStep(3);
-        } else {
-          setCurrentStep(3); // Dernière étape mais tout est complet
+        if ((response.isProfileComplete)) {
+          navigate("/application-submitted", { replace: true });
         }
+
+        // Déterminer l'étape courante en fonction du pourcentage de complétion
+        // if (response.profileCompletionPercentage <= 33) {
+        //   setCurrentStep(1);
+        // } else if (response.profileCompletionPercentage <= 67) {
+        //   setCurrentStep(2);
+        // } else if (response.profileCompletionPercentage <= 100) {
+        //   setCurrentStep(3);
+        // } else {
+        //   setCurrentStep(3); // Dernière étape mais tout est complet
+        // }
       }
     } catch (error) {
       console.error("Erreur chargement bénéficiaire:", error);
@@ -442,14 +499,14 @@ const Profile: React.FC = () => {
 
   // ─── Sauvegarde d'une étape ─────────────────────────────────────────────
 
-  const saveCurrentStep = async () => {
+  const saveCurrentStep = async (isFinish: boolean = false) => {
     if (!beneficiary?.id) {
       toast.error(t("beneficiaryNotFound"));
       return;
     }
 
     if (!validateStep(currentStep)) {
-      toast.error(t("pleaseFixErrors"));
+      // toast.error(t("pleaseFixErrors"));
       return;
     }
 
@@ -485,6 +542,7 @@ const Profile: React.FC = () => {
             acceptPrivacyPolicy: form.acceptPrivacy,
             certifyAccuracy: form.certifyAccuracy,
             optInNotifications: form.acceptNotifications,
+            isProfileCompleted: isFinish,
           },
         },
         lang,
@@ -654,7 +712,7 @@ const Profile: React.FC = () => {
                     className="login_form wrap-form"
                     onSubmit={(e) => {
                       e.preventDefault();
-                      saveCurrentStep();
+                      saveCurrentStep(false);
                     }}
                     noValidate
                   >
@@ -666,6 +724,8 @@ const Profile: React.FC = () => {
                           errors={errors}
                           provinces={provinces}
                           communes={communes}
+                          isKi={isKi}
+                          maxDate={maxDate}
                           loadingStates={loadingStates}
                           onUpdateField={updateField}
                           t={t}
@@ -747,10 +807,10 @@ const Profile: React.FC = () => {
                             {currentStep === 3 && (
                               <button
                                 type="button"
-                                onClick={saveCurrentStep}
+                                onClick={() => saveCurrentStep(true)}
                                 className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
                               >
-                                ✓ {t("updateProfile")}
+                                ✓ {t("submit")}
                               </button>
                             )}
                           </div>
@@ -842,6 +902,8 @@ const Step1Fields: React.FC<any> = ({
   loadingStates,
   onUpdateField,
   t,
+  isKi,
+  maxDate,
 }) => (
   <>
     <div className="col-12">
@@ -909,7 +971,23 @@ const Step1Fields: React.FC<any> = ({
     <div className="col-lg-6">
       <label className={errors.birthDate ? "copa-input-invalid" : ""}>
         <i className="ti ti-calendar" />
-        <input
+         <Flatpickr
+            data-enable-time
+            value={new Date(form.birthDate)}
+            onChange={([date]) => {
+              onUpdateField("birthDate", date.toISOString().split("T")[0]);
+            }}
+            placeholder={t("birthDate")}
+            options={{
+              enableTime: false,
+              dateFormat: "d-m-Y",
+              maxDate: maxDate,
+              locale: isKi ? KirundiLocale as any: French,
+              altFormat: "j F Y"
+            }}
+            style={{height: '55px'}}
+          />
+        {/* <input
           type="date"
           value={form.birthDate}
           onChange={(e) => onUpdateField("birthDate", e.target.value)}
@@ -918,7 +996,7 @@ const Step1Fields: React.FC<any> = ({
               .toISOString()
               .split("T")[0]
           }
-        />
+        /> */}
       </label>
       {errors.birthDate && (
         <span className="copa-error-msg">{errors.birthDate}</span>
@@ -939,7 +1017,21 @@ const Step1Fields: React.FC<any> = ({
     </div>
 
     <div className="col-lg-6">
-      <label className={errors.phone ? "copa-input-invalid" : ""}>
+       <label className={errors.phone ? "copa-input-invalid" : ""}>
+        <PhoneInput
+          country={'bi'}
+          // onlyCountries={['bi']}
+          value={form.phone}
+          onChange={phone => onUpdateField("phone", phone)}
+          autoFormat={true}
+          placeholder={t("phoneNumber")}
+          // disableDropdown={true}
+          enableSearch={true}
+          countryCodeEditable={false}
+          disableSearchIcon={true}
+        />
+      </label>
+      {/* <label className={errors.phone ? "copa-input-invalid" : ""}>
         <i className="ti ti-mobile" />
         <input
           type="tel"
@@ -947,7 +1039,7 @@ const Step1Fields: React.FC<any> = ({
           onChange={(e) => onUpdateField("phone", e.target.value)}
           placeholder={t("phoneNumber")}
         />
-      </label>
+      </label> */}
       {errors.phone && <span className="copa-error-msg">{errors.phone}</span>}
     </div>
 

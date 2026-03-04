@@ -25,6 +25,8 @@ import Contact_Plainte from "./pages/ContactPlainte";
 import Ressources_FAQ from "./pages/FAQ";
 import AboutPrete from "./pages/AboutPrete";
 import Profile from "./pages/Profile";
+import ApplicationSubmitted1 from "./pages/ApplicationSubmitted1";
+import ApplicationSubmitted from "./pages/ApplicationSubmitted";
 
 const App: React.FC = () => {
   return (
@@ -45,6 +47,7 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/application-submitted" element={<ApplicationSubmitted />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/espace-mpme/dashboard" element={<Dashboard />} />
         <Route path="/espace-mpme/mes-formations/en-cours" element={<MesFormations />} />

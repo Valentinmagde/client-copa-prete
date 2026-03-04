@@ -84,9 +84,9 @@ const Login: React.FC = () => {
       }
 
       toast.success(t("loginSuccess"));
-      setInterval(() => {
+      // setInterval(() => {
         navigate(from, { replace: true });
-      }, 2000);
+      // }, 2000);
     } catch (err: any) {
       console.error("Login error:", err);
 

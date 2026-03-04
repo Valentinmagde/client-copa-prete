@@ -44,6 +44,7 @@
   "companyInformation": "Ibikorwa bya gutegura",
   "validation": "Validation",
   "submit": "Injira",
+  "submitApplication": "Injira",
   "youAre": "Uri nde",
   "burundianEntrepreneur": "Umucuruzi w'umurundi",
   "refugeeEntrepreneur": "Umucuruzi w'impunzi",
@@ -574,5 +575,18 @@
     "buttons": {
       "readMore": "Soma vyinshi"
     }
+  },
+   "applicationSubmitted": {
+    "title": "Kwemeza gusaba",
+    "breadcrumb": "Urugendo rwa COPA",
+    "congratulations": "Urakoze {{name}} !",
+    "message": "Ibihe vy'umucuruzi wawe vyanditswe neza.",
+    "notification": "Uzomenyeshwa email na SMS mugihe ibisubizo vy'itora ryambere bizotanga.",
+    "downloadButton": "Gukuramo ikemezo",
+    "dashboardLink": "Kuja kuri konti yawe",
+    "printButton": "Gucapura",
+    "saveButton": "Kubika",
+    "shareButton": "Gusangira",
+    "homeLink": "Kujya kuri umuganda"
   }
 }
