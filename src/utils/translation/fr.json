@@ -794,7 +794,7 @@
     }
   },
   "editionCalendarPage": {
-    "pageTitle": "Calendrier COPA 2025",
+    "pageTitle": "Calendrier COPA 2026",
     "breadcrumb": "COPA / Calendrier",
     "sectionTitle": {
       "highlight": "Édition 2026",
@@ -805,8 +805,8 @@
         "num": "1",
         "phase": "Inscriptions",
         "description": "Ouverture des inscriptions sur la plateforme COPA. Création de compte et remplissage du profil entrepreneur. Période de sensibilisation et d'information.",
-        "startDate": "1er mars 2025",
-        "endDate": "31 mars 2025",
+        "startDate": "1er mars 2026",
+        "endDate": "31 mars 2026",
         "status": {
           "label": "Terminé"
         },
@@ -818,8 +818,8 @@
         "num": "2",
         "phase": "Formations",
         "description": "Sessions de formation obligatoires sur l'entrepreneuriat et la rédaction du plan d'affaires. Disponibles en présentiel (Bujumbura, Gitega, Ngozi) et en ligne.",
-        "startDate": "1er avril 2025",
-        "endDate": "30 avril 2025",
+        "startDate": "1er avril 2026",
+        "endDate": "30 avril 2026",
         "status": {
           "label": "En cours"
         },
@@ -831,8 +831,8 @@
         "num": "3",
         "phase": "Dépôt des plans d'affaires",
         "description": "Soumission des plans d'affaires sur la plateforme. Vous pouvez déposer votre plan à tout moment pendant cette période. Une confirmation par email et SMS sera envoyée.",
-        "startDate": "1er mai 2025",
-        "endDate": "31 mai 2025",
+        "startDate": "1er mai 2026",
+        "endDate": "31 mai 2026",
         "status": {
           "label": "À venir"
         },
@@ -844,8 +844,8 @@
         "num": "4",
         "phase": "Évaluation",
         "description": "Analyse et évaluation des plans d'affaires soumis par un comité d'experts indépendants. Utilisation d'une grille de critères transparente.",
-        "startDate": "1er juin 2025",
-        "endDate": "30 juin 2025",
+        "startDate": "1er juin 2026",
+        "endDate": "30 juin 2026",
         "status": {
           "label": "À venir"
         },
@@ -856,8 +856,8 @@
         "num": "5",
         "phase": "Annonce des résultats",
         "description": "Publication de la liste des lauréats. Notification individuelle par email et SMS. Conférence de presse officielle.",
-        "startDate": "15 juillet 2025",
-        "endDate": "15 juillet 2025",
+        "startDate": "15 juillet 2026",
+        "endDate": "15 juillet 2026",
         "status": {
           "label": "À venir"
         },
@@ -869,8 +869,8 @@
         "num": "6",
         "phase": "Signature des conventions",
         "description": "Rencontre avec les lauréats pour la signature des conventions de subvention. Présentation du plan de mise en œuvre et du calendrier de versement.",
-        "startDate": "1er août 2025",
-        "endDate": "31 août 2025",
+        "startDate": "1er août 2026",
+        "endDate": "31 août 2026",
         "status": {
           "label": "À venir"
         },

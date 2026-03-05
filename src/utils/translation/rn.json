@@ -785,10 +785,10 @@
     }
   },
   "editionCalendarPage": {
-    "pageTitle": "Kalendari ya COPA 2025",
+    "pageTitle": "Kalendari ya COPA 2026",
     "breadcrumb": "COPA / Kalendari",
     "sectionTitle": {
-      "highlight": "2026",
+      "highlight": "Igikorwa ca 2026",
       "title": "Kalendari y'iyi mwaka"
     },
     "phases": [
@@ -796,8 +796,8 @@
         "num": "1",
         "phase": "Kwiyandikisha",
         "description": "Gufungura kwiyandikisha kuri porogaramu ya COPA. Gufungura konti no kuzuza amakuru yombi. Igihe co gukangurira no gutanga amakuru.",
-        "startDate": "1 Werurwe 2025",
-        "endDate": "31 Werurwe 2025",
+        "startDate": "1 Werurwe 2026",
+        "endDate": "31 Werurwe 2026",
         "status": {
           "label": "Birangiye"
         },
@@ -809,8 +809,8 @@
         "num": "2",
         "phase": "Amahugurwa",
         "description": "Amasomo y'amahugurwa ategetswe kw'ubucuruzi no kwandika gahunda y'ubucuruzi. Araboneka mu maso (Bujumbura, Gitega, Ngozi) no kuri interineti.",
-        "startDate": "1 Mata 2025",
-        "endDate": "30 Mata 2025",
+        "startDate": "1 Mata 2026",
+        "endDate": "30 Mata 2026",
         "status": {
           "label": "Irarende"
         },
@@ -822,8 +822,8 @@
         "num": "3",
         "phase": "Gutanga gahunda",
         "description": "Gutanga gahunda z'ubucuruzi kuri porogaramu. Ushobora gutanga gahunda yawe igihe icyo ari co cose muri iki gihe. Uzohererezwa konfirmasiyo kuri email na SMS.",
-        "startDate": "1 Gicurasi 2025",
-        "endDate": "31 Gicurasi 2025",
+        "startDate": "1 Gicurasi 2026",
+        "endDate": "31 Gicurasi 2026",
         "status": {
           "label": "Iraza"
         },
@@ -835,8 +835,8 @@
         "num": "4",
         "phase": "Isuzuma",
         "description": "Isesengura n'isuzuma ry'agahunda z'ubucuruzi zatanzwe n'itsinda ry'inzobere mu kujijuka. Gukoresha urutonde rw'ibipimo bigaragara.",
-        "startDate": "1 Kamena 2025",
-        "endDate": "30 Kamena 2025",
+        "startDate": "1 Kamena 2026",
+        "endDate": "30 Kamena 2026",
         "status": {
           "label": "Iraza"
         },
@@ -847,8 +847,8 @@
         "num": "5",
         "phase": "Kumenyesha ibisubizo",
         "description": "Gushyira ku mugaragaro urutonde rw'atsinze. Kumenyeshwa kwa buri muntu ku giti ciwe biciye muri email na SMS. Inama y'abanyamakuru itemewe.",
-        "startDate": "15 Mukakaro 2025",
-        "endDate": "15 Mukakaro 2025",
+        "startDate": "15 Mukakaro 2026",
+        "endDate": "15 Mukakaro 2026",
         "status": {
           "label": "Iraza"
         },
@@ -860,8 +860,8 @@
         "num": "6",
         "phase": "Gusinya amasezerano",
         "description": "Guhurira n'atsinze kugira ngo basinye amasezerano y'inkunga. Kwerekana gahunda yo gushyira mu bikorwa na kalendari yo kwishyura.",
-        "startDate": "1 Nyakanga 2025",
-        "endDate": "31 Nyakanga 2025",
+        "startDate": "1 Nyakanga 2026",
+        "endDate": "31 Nyakanga 2026",
         "status": {
           "label": "Iraza"
         },
