@@ -224,7 +224,7 @@ const Home: React.FC = () => {
               </div>
               <Link
                 className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark"
-                to="/"
+                to="/copa-presentation"
               >
                 {t("learnMore")}
               </Link>
@@ -268,7 +268,7 @@ const Home: React.FC = () => {
             <div className="col-lg-6 col-md-4">
               <Link
                 className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark mb-15"
-                to={"#"}
+                to={"/how-to-participate"}
               >
                 {t("discoverFullProcess")}
               </Link>

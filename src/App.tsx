@@ -17,16 +17,17 @@ import MonPlanAffairesRedaction from "./pages/espace-mpme/mon-plan-affaires/Reda
 import MonPlanAffairesSoumission from "./pages/espace-mpme/mon-plan-affaires/SoumissionPlan";
 import Dashboard from "./pages/espace-mpme/Dashboard";
 import AboutCopa from "./pages/AboutCopa";
-import COPA_Comment_Participer from "./pages/COPACommentParticiper";
-import COPA_Calendrier from "./pages/COPACalendrier";
-import COPA_Criteres_Eligibilite from "./pages/COPACriteresEligibilite";
 import Formations_Catalogue from "./pages/FormationsCatalogue";
 import Contact_Plainte from "./pages/ContactPlainte";
 import Ressources_FAQ from "./pages/FAQ";
 import AboutPrete from "./pages/AboutPrete";
 import Profile from "./pages/Profile";
-import ApplicationSubmitted1 from "./pages/ApplicationSubmitted1";
 import ApplicationSubmitted from "./pages/ApplicationSubmitted";
+import ProtectedRoute from "./guards/ProtectedRoute";
+import PublicRoute from "./guards/PublicRoute";
+import HowToParticipate from "./pages/HowToParticipate";
+import EditionCalender from "./pages/EditionCalendar";
+import EligibilityCriteria from "./pages/EligibilityCriteria";
 
 const App: React.FC = () => {
   return (
@@ -44,26 +45,16 @@ const App: React.FC = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog-details" element={<BlogDetails />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/application-submitted" element={<ApplicationSubmitted />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/espace-mpme/dashboard" element={<Dashboard />} />
-        <Route path="/espace-mpme/mes-formations/en-cours" element={<MesFormations />} />
-        <Route path="/espace-mpme/mon-profil/informations" element={<MonProfilInformations />} />
-        <Route path="/espace-mpme/mon-profil/documents" element={<MonProfilDocuments />} />
-        <Route path="/espace-mpme/mon-plan-affaires/redaction" element={<MonPlanAffairesRedaction />} />
-        <Route path="/espace-mpme/mon-plan-affaires/soumission" element={<MonPlanAffairesSoumission />} />
         <Route path="/prete-presentation" element={<AboutPrete />} /> 
         <Route path="/copa-presentation" element={<AboutCopa />} /> 
-        <Route path="/how-to-participate" element={<COPA_Comment_Participer />} />
-        <Route path="/edition-calender" element={<COPA_Calendrier />} />
-        <Route path="/eligibility-criteria" element={<COPA_Criteres_Eligibilite />} />
+        <Route path="/how-to-participate" element={<HowToParticipate />} />
+        <Route path="/edition-calender" element={<EditionCalender />} />
+        <Route path="/eligibility-criteria" element={<EligibilityCriteria />} />
         {/* <Route path="/previous-editions" element={<COPA_Calendrier />} /> */}
         <Route path="/training-catalog" element={<Formations_Catalogue />} />
-        <Route path="/sessions-calendar" element={<COPA_Calendrier />} />
-        <Route path="/session-registration" element={<COPA_Calendrier />} />
+        <Route path="/sessions-calendar" element={<EditionCalender />} />
+        <Route path="/session-registration" element={<EditionCalender />} />
         <Route path="/news" element={<Blog />} />
         <Route path="/practical-guides" element={<Blog />} />
         <Route path="/downloadable-templates" element={<Blog />} />
@@ -73,6 +64,22 @@ const App: React.FC = () => {
         <Route path="/submit-complaint" element={<Contact_Plainte />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/about-us" element={<AboutUs />} />
+        {/* Routes protégées */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/espace-mpme/dashboard" element={<Dashboard />} />
+          <Route path="/espace-mpme/mes-formations/en-cours" element={<MesFormations />} />
+          <Route path="/espace-mpme/mon-profil/informations" element={<MonProfilInformations />} />
+          <Route path="/espace-mpme/mon-profil/documents" element={<MonProfilDocuments />} />
+          <Route path="/espace-mpme/mon-plan-affaires/redaction" element={<MonPlanAffairesRedaction />} />
+          <Route path="/espace-mpme/mon-plan-affaires/soumission" element={<MonPlanAffairesSoumission />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/application-submitted" element={<ApplicationSubmitted />} />
+        </Route>
+        {/* Routes publiques */}
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
       </Routes>
     </div>
   );

@@ -70,7 +70,9 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 
   return (
     <div
-      className={`header_btn language-switcher ${variantClass} ${className}`}
+      className={`header_btn language-switcher ${variantClass} ${className} ${
+        isOpen ? "open" : ""
+      }`}
       ref={dropdownRef}
     >
       {/* Bouton principal */}

@@ -183,7 +183,7 @@
   "privacyPolicy": "Politique de confidentialité",
   "youMustAcceptTermsAndConditions": "Vous devez accepter les conditions d'utilisation et la politique de confidentialité",
   "profileNoteTitle": "Finalisez votre profil — validez votre inscription",
-  "profileNote": "Veuillez compléter votre profil afin de participer au programme COPA",
+  "profileNote": "Veuillez compléter et soumettre votre profil afin de participer au programme COPA",
   "validationAndSend": "Validation & envoi",
   "updateProfile": "Mettre à jour le profil",
   "update": "Mettre à jour",
@@ -381,16 +381,19 @@
       },
       "list": [
         {
+          "icon": "flaticon-advertising",
           "num": "01",
           "title": "Formation",
           "desc": "Renforcement des compétences entrepreneuriales et de gestion à travers des modules adaptés, disponibles en présentiel ou en ligne."
         },
         {
+          "icon": "flaticon-recruitment",
           "num": "02",
           "title": "Compétition",
           "desc": "Évaluation transparente et équitable des plans d'affaires par des experts indépendants, selon une grille de critères objective."
         },
         {
+          "icon": "flaticon-bank",
           "num": "03",
           "title": "Financement",
           "desc": "Attribution de subventions de contrepartie (matching grants) aux lauréats pour concrétiser leurs projets d'entreprise."
@@ -597,5 +600,298 @@
     "saveButton": "Enregistrer",
     "shareButton": "Partager",
     "homeLink": "Retour à l'accueil"
+  },
+  "howToParticipatePage": {
+    "pageTitle": "Comment participer au COPA ?",
+    "breadcrumb": "COPA",
+    "sectionTitle": {
+      "highlight": "simple !",
+      "title": "Suivez ces étapes pour maximiser vos chances",
+      "description": "Participer au COPA, c'est simple ! Suivez ces 7 étapes pour maximiser vos chances de succès et accéder à une subvention pour développer votre entreprise."
+    },
+    "step": {
+      "prefix": "Étape"
+    },
+    "steps": [
+      {
+        "num": "01",
+        "title": "Vérifiez votre éligibilité",
+        "desc": {
+          "intro": "Avant de vous inscrire, assurez-vous que vous remplissez les critères d'éligibilité du COPA. Les conditions principales sont :",
+          "criteria": [
+            "Être une MPME formelle ou en cours de formalisation au Burundi",
+            "Avoir un projet d'entreprise viable et innovant",
+            "Pouvoir apporter une contribution propre (matching)"
+          ]
+        },
+        "cta": "Consulter tous les critères d'éligibilité"
+      },
+      {
+        "num": "02",
+        "title": "Inscrivez-vous sur la plateforme",
+        "desc": {
+          "intro": "Créez votre compte en quelques minutes. Vous aurez besoin de :",
+          "criteria": [
+            "Une adresse email valide ou un numéro de téléphone",
+            "Une pièce d'identité (CNI, passeport ou carte de réfugié)",
+            "Les informations de base sur votre entreprise"
+          ]
+        },
+        "cta": "M'inscrire maintenant"
+      },
+      {
+        "num": "03",
+        "title": "Complétez votre profil",
+        "desc": "Une fois inscrit, complétez votre profil d'entrepreneur avec toutes les informations requises : données personnelles, informations sur l'entreprise, documents justificatifs. Un profil complet augmente vos chances de sélection."
+      },
+      {
+        "num": "04",
+        "title": "Suivez les formations",
+        "desc": "Participez aux formations obligatoires sur la rédaction de plan d'affaires. Ces formations sont gratuites et disponibles en présentiel ou en ligne. Elles vous donneront toutes les clés pour rédiger un plan d'affaires convaincant.",
+        "cta": "Voir le catalogue des formations"
+      },
+      {
+        "num": "05",
+        "title": "Rédigez et soumettez votre plan d'affaires",
+        "desc": "Utilisez les outils de la plateforme pour rédiger votre plan d'affaires. Vous pouvez sauvegarder votre travail et y revenir autant que nécessaire avant la date limite de soumission.",
+        "cta": "Consulter le calendrier",
+        "note": "Consultez les dates de soumission dans le calendrier COPA."
+      },
+      {
+        "num": "06",
+        "title": "Attendez les résultats",
+        "desc": "Votre plan sera évalué par un comité d'experts indépendants selon des critères transparents. Vous serez informé des résultats par email et SMS.",
+        "note": "L'évaluation dure environ 10 à 15 jours ouvrables après la clôture des dépôts."
+      },
+      {
+        "num": "07",
+        "title": "Si vous êtes lauréat",
+        "desc": {
+          "intro": "Félicitations ! En tant que lauréat, vous bénéficierez de :",
+          "criteria": [
+            "Signature d'une convention de subvention avec le PRETE",
+            "Accompagnement personnalisé pour la mise en œuvre",
+            "Versement de la subvention de contrepartie",
+            "Suivi post-projet par des mentors experts"
+          ]
+        }
+      }
+    ],
+    "cta": {
+      "title": "Commencez votre parcours COPA aujourd'hui !",
+      "description": "L'inscription est gratuite et ne prend que quelques minutes.",
+      "button": "S'inscrire gratuitement"
+    }
+  },
+  "eligibilityCriteriaPage": {
+    "pageTitle": "Critères d'éligibilité",
+    "breadcrumb": "COPA / Éligibilité",
+    "intro": {
+      "highlight": "participer ?",
+      "title": "Vérifiez votre éligibilité au COPA",
+      "description": "Le COPA est ouvert aux MPME répondant aux critères suivants. Vérifiez votre éligibilité avant de vous inscrire."
+    },
+    "sections": {
+      "enterprise": {
+        "title": "Critères relatifs à l'entreprise",
+        "items": [
+          "Être une micro, petite ou moyenne entreprise selon la définition nationale",
+          "Être formellement enregistrée au Burundi OU s'engager à se formaliser en cas de sélection",
+          "Opérer dans un secteur éligible (voir liste ci-dessous)",
+          "Ne pas avoir de dette impayée envers l'État ou des institutions financières (OBR/INSS/etc.)"
+        ]
+      },
+      "promoter": {
+        "title": "Critères relatifs au promoteur",
+        "items": [
+          "Être âgé de 18 ans minimum",
+          "Être de nationalité burundaise OU réfugié enregistré au Burundi",
+          "N'avoir pas bénéficié d'une subvention COPA lors d'une édition précédente",
+          "S'engager à suivre les formations obligatoires"
+        ]
+      }
+    },
+    "sectors": {
+      "title": "Secteurs éligibles",
+      "subtitle": "Votre secteur est-il concerné ?",
+      "tabs": {
+        "eligible": "Secteurs éligibles",
+        "excluded": "Secteurs exclus"
+      },
+      "eligibleList": [
+        {
+          "label": "Agriculture et agroalimentaire",
+          "desc": "Production, transformation, conservation et commercialisation des produits agricoles"
+        },
+        {
+          "label": "Transformation industrielle",
+          "desc": "Transformation de matières premières locales, production manufacturière à valeur ajoutée"
+        },
+        {
+          "label": "Commerce et distribution",
+          "desc": "Commerce de détail et de gros, distribution de biens de consommation courante"
+        },
+        {
+          "label": "Artisanat et artisanat d'art",
+          "desc": "Fabrication artisanale, objets d'art, textile traditionnel et cuir"
+        },
+        {
+          "label": "Technologies et numérique",
+          "desc": "Développement logiciel, e-commerce, services numériques, fintech"
+        },
+        {
+          "label": "Santé et bien-être",
+          "desc": "Services de santé de proximité, pharmacies, produits para-médicaux"
+        },
+        {
+          "label": "Éducation et formation",
+          "desc": "Centres de formation professionnelle, crèches, soutien scolaire"
+        },
+        {
+          "label": "Environnement et énergie",
+          "desc": "Énergies renouvelables, gestion des déchets, agriculture durable"
+        },
+        {
+          "label": "Transport et logistique",
+          "desc": "Transport de marchandises et de personnes, services logistiques"
+        },
+        {
+          "label": "Hôtellerie et restauration",
+          "desc": "Restaurants, traiteurs, hébergement, tourisme local"
+        }
+      ],
+      "excludedList": [
+        {
+          "label": "Activités illicites",
+          "desc": "Toutes activités illicites ou contraires à la législation burundaise"
+        },
+        {
+          "label": "Tabac et drogues",
+          "desc": "Production, commerce ou distribution de tabac, alcool ou drogues"
+        },
+        {
+          "label": "Activités nuisibles à l'environnement",
+          "desc": "Activités nuisibles à l'environnement"
+        },
+        {
+          "label": "Jeux de hasard et paris",
+          "desc": "Jeux de hasard et paris"
+        },
+        {
+          "label": "Armes et munitions",
+          "desc": "Activités militaires ou para-militaires"
+        },
+        {
+          "label": "Prêt d'argent à intérêt",
+          "desc": "Prêt d'argent à intérêt"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Une question sur votre éligibilité ?",
+      "description": "Notre équipe est disponible pour vous aider à clarifier votre situation.",
+      "button": "Nous contacter"
+    }
+  },
+  "editionCalendarPage": {
+    "pageTitle": "Calendrier COPA 2025",
+    "breadcrumb": "COPA / Calendrier",
+    "sectionTitle": {
+      "highlight": "2026",
+      "title": "Calendrier de l'édition en cours"
+    },
+    "phases": [
+      {
+        "num": "1",
+        "phase": "Inscriptions",
+        "description": "Ouverture des inscriptions sur la plateforme COPA. Création de compte et remplissage du profil entrepreneur. Période de sensibilisation et d'information.",
+        "startDate": "1er mars 2025",
+        "endDate": "31 mars 2025",
+        "status": {
+          "label": "Terminé"
+        },
+        "icon": "📝",
+        "tips": "Profitez de cette période pour rassembler vos documents et préparer les informations sur votre entreprise.",
+        "cta": "S'inscrire"
+      },
+      {
+        "num": "2",
+        "phase": "Formations",
+        "description": "Sessions de formation obligatoires sur l'entrepreneuriat et la rédaction du plan d'affaires. Disponibles en présentiel (Bujumbura, Gitega, Ngozi) et en ligne.",
+        "startDate": "1er avril 2025",
+        "endDate": "30 avril 2025",
+        "status": {
+          "label": "En cours"
+        },
+        "icon": "📚",
+        "tips": "Assistez à un maximum de sessions pour maximiser la qualité de votre plan d'affaires.",
+        "cta": "Voir le catalogue formations"
+      },
+      {
+        "num": "3",
+        "phase": "Dépôt des plans d'affaires",
+        "description": "Soumission des plans d'affaires sur la plateforme. Vous pouvez déposer votre plan à tout moment pendant cette période. Une confirmation par email et SMS sera envoyée.",
+        "startDate": "1er mai 2025",
+        "endDate": "31 mai 2025",
+        "status": {
+          "label": "À venir"
+        },
+        "icon": "📤",
+        "tips": "Ne laissez pas la soumission à la dernière minute. Préparez votre plan bien à l'avance.",
+        "cta": "Rédiger mon plan"
+      },
+      {
+        "num": "4",
+        "phase": "Évaluation",
+        "description": "Analyse et évaluation des plans d'affaires soumis par un comité d'experts indépendants. Utilisation d'une grille de critères transparente.",
+        "startDate": "1er juin 2025",
+        "endDate": "30 juin 2025",
+        "status": {
+          "label": "À venir"
+        },
+        "icon": "🔍",
+        "tips": "Les évaluateurs examinent : viabilité économique, innovation, impact social/environnemental, capacité de mise en œuvre."
+      },
+      {
+        "num": "5",
+        "phase": "Annonce des résultats",
+        "description": "Publication de la liste des lauréats. Notification individuelle par email et SMS. Conférence de presse officielle.",
+        "startDate": "15 juillet 2025",
+        "endDate": "15 juillet 2025",
+        "status": {
+          "label": "À venir"
+        },
+        "icon": "🏆",
+        "tips": "Inscrivez-vous à notre newsletter pour être alerté dès l'annonce des résultats.",
+        "cta": "S'abonner aux alertes"
+      },
+      {
+        "num": "6",
+        "phase": "Signature des conventions",
+        "description": "Rencontre avec les lauréats pour la signature des conventions de subvention. Présentation du plan de mise en œuvre et du calendrier de versement.",
+        "startDate": "1er août 2025",
+        "endDate": "31 août 2025",
+        "status": {
+          "label": "À venir"
+        },
+        "icon": "✍️",
+        "tips": "La convention précise les modalités de versement et les obligations de reporting."
+      }
+    ],
+    "timeline": {
+      "phase": "Phase",
+      "dateRange": "{{startDate}} - {{endDate}}",
+      "singleDate": "{{date}}"
+    },
+    "status": {
+      "done": "Terminé",
+      "active": "En cours",
+      "upcoming": "À venir"
+    },
+    "cta": {
+      "title": "Les inscriptions sont ouvertes !",
+      "description": "Ne manquez pas l'édition 2026 du COPA. Inscrivez-vous dès maintenant.",
+      "button": "S'inscrire maintenant"
+    }
   }
 }

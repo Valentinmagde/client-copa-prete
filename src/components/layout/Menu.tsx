@@ -35,9 +35,9 @@ const Menu: React.FC<MenuProps> = () => {
             <li>
               <Link to="/copa-presentation" className="mega-menu-link">{t("copaPresentation")}</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="#" className="mega-menu-link">{t("ourPartners")}</Link>
-            </li>
+            </li> */}
           </ul>
         </li>
 
@@ -58,9 +58,9 @@ const Menu: React.FC<MenuProps> = () => {
             <li>
               <Link to="/eligibility-criteria">{t("eligibilityCriteria")}</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="#">{t("previousEditions")}</Link>
-            </li>
+            </li> */}
           </ul>
         </li>
 
@@ -73,17 +73,17 @@ const Menu: React.FC<MenuProps> = () => {
           </Link>
           <ul className="mega-submenu">
             <li>
-              <Link to="/training-catalog">
+              <Link to="#">
                 {t("trainingsCatalog")}
               </Link>
             </li>
             <li>
-              <Link to="/sessions-calendar">
+              <Link to="#">
                 {t("sessionsCalendar")}
               </Link>
             </li>
             <li>
-              <Link to="/session-registration">
+              <Link to="#">
                 {t("sessionRegistration")}
               </Link>
             </li>

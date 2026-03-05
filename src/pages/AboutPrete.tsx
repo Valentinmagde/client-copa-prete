@@ -350,7 +350,7 @@ const AboutPrete: React.FC = () => {
       </section> */}
 
       {/* CTA Section */}
-      {/* <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">
+      <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
@@ -371,7 +371,7 @@ const AboutPrete: React.FC = () => {
                   </div>
                 </div>
                 <Link
-                  to="/inscription"
+                  to="/register"
                   className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
                 >
                   {t("aboutprete.cta.button")}
@@ -380,7 +380,7 @@ const AboutPrete: React.FC = () => {
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
       <Footer />
     </div>

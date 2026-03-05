@@ -96,7 +96,7 @@ const Header: React.FC<HeaderProps> = () => {
   // Fermer le dropdown quand on clique ailleurs
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const dropdown = document.querySelector(".user-dropdown");
+      const dropdown = document.querySelector(".user-menu-container");
       if (dropdown && !dropdown.contains(event.target as Node)) {
         setDropdownOpen(false);
       }
@@ -128,7 +128,9 @@ const Header: React.FC<HeaderProps> = () => {
                       <i className="flaticon flaticon-email"></i>
                     </div>
                     <span>
-                      <a href={`mailto:info@example.com`}>contact@copa-prete.bi</a>
+                      <a href={`mailto:info@example.com`}>
+                        contact@copa-prete.bi
+                      </a>
                     </span>
                   </div>
                   <div className="top_bar_contact_item">
@@ -238,58 +240,60 @@ const Header: React.FC<HeaderProps> = () => {
                           className="user-dropdown-trigger d-flex align-items-center"
                           onClick={handleDropdownToggle}
                         >
-                          <div className="user-avatar">
+                          {/* <div className="bg-theme-GreyColor user-avatar">
                             {user?.firstName?.charAt(0)}
                             {user?.lastName?.charAt(0)}
-                          </div>
+                          </div> */}
+                          <i
+                            className="ti ti-user text-theme-DarkColor"
+                            style={{ fontSize: "1rem" }}
+                          ></i>
                           <span className="user-name ms-2">
-                            {user?.firstName || t("user")}
+                            {user?.firstName + " " + user?.lastName ||
+                              t("user")}
                           </span>
                           <i
                             className={`ti ti-chevron-${dropdownOpen ? "up" : "down"} ms-2`}
                           ></i>
                         </div>
 
-                        {dropdownOpen && (
-                          <div className="user-dropdown">
-                            <div className="dropdown-header">
-                              <strong>
-                                {user?.firstName} {user?.lastName}
-                              </strong>
-                              <small>{user?.email}</small>
-                            </div>
-                            <div className="dropdown-divider"></div>
-                            {/* <Link
+                        <div
+                          className={`user-dropdown ${dropdownOpen ? "user-dropdown-open" : ""}`}
+                        >
+                          <div className="dropdown-header">
+                            <strong>
+                              {user?.firstName} {user?.lastName}
+                            </strong>
+                            <small className="mt-2">{user?.email}</small>
+                          </div>
+                          <div className="dropdown-divider"></div>
+                          {/* <Link
                               to="/espace-mpme/dashboard"
                               className="dropdown-item"
                             >
                               <i className="ti ti-dashboard"></i>
                               {t("dashboard")}
                             </Link> */}
-                            <Link
-                              to="/profile"
-                              className="dropdown-item"
-                            >
-                              <i className="ti ti-user"></i>
-                              {t("myProfile")}
-                            </Link>
-                            {/* <Link
+                          <Link to="/profile" className="dropdown-item">
+                            <i className="ti ti-user"></i>
+                            {t("myProfile")}
+                          </Link>
+                          {/* <Link
                               to="#"
                               className="dropdown-item"
                             >
                               <i className="ti ti-bell"></i>
                               {t("notifications")}
                             </Link> */}
-                            <div className="dropdown-divider"></div>
-                            <button
-                              onClick={handleLogout}
-                              className="dropdown-item logout-btn"
-                            >
-                              <i className="ti ti-power-off"></i>
-                              {t("logout")}
-                            </button>
-                          </div>
-                        )}
+                          <div className="dropdown-divider"></div>
+                          <button
+                            onClick={handleLogout}
+                            className="dropdown-item logout-btn"
+                          >
+                            <i className="ti ti-power-off"></i>
+                            {t("logout")}
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -311,26 +315,26 @@ const Header: React.FC<HeaderProps> = () => {
           cursor: pointer;
           padding: 8px 12px;
           border-radius: 30px;
-          background: #f8f9fa;
+          // background: #f8f9fa;
           transition: all 0.3s;
           display: flex;
           align-items: center;
         }
 
         .user-dropdown-trigger:hover {
-          background: #e9ecef;
+          // background: #e9ecef;
         }
 
         .user-avatar {
           width: 32px;
           height: 32px;
           border-radius: 50%;
-          background: linear-gradient(135deg, var(--theme-SkinColor, #1f4e79) 0%, #0f2540 100%);
+          background: #6B7280;
           color: #fff;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 600;
+          // font-weight: 600;
           font-size: 14px;
           text-transform: uppercase;
         }
@@ -342,27 +346,43 @@ const Header: React.FC<HeaderProps> = () => {
         }
 
         .user-dropdown {
+          margin-top: 22px;
+          text-align: left;
           position: absolute;
-          top: calc(100% + 10px);
-          right: 0;
-          width: 240px;
-          background: #fff;
-          border-radius: 8px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-          border: 1px solid #e9ecef;
-          z-index: 1000;
-          animation: dropdownFade 0.2s ease;
+          display: block;
+          opacity: 0;
+          visibility: visible;
+          width: 250px;
+          line-height: 14px;
+          list-style: none;
+          padding: 0;
+          background-color: #fff;
+          border-radius: 5px;
+          -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .18);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, .18);
+          background-clip: padding-box;
+          transition: all .5s ease;
+          z-index: 99;
+          -webkit-transition: all 0.2s ease-out;
+          transition: all 0.5s ease-out;
+          -moz-transition: all 0.5s ease-out;
+          -ms-transition: all 0.5s ease-out;
+          -webkit-box-shadow: 0px 4px 4px 1px rgba(0, 0, 0, .20);
+          box-shadow: 0px 4px 4px 1px rgba(0, 0, 0, .20);
+          -webkit-transform: rotateX(-90deg);
+          transform: rotateX(-90deg);
+          -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+          -webkit-box-shadow: 0 3px 25px 0px rgba(43, 52, 59, .10), 0 0 0 rgba(43, 52, 59, .10) inset;
+          box-shadow: 0 3px 25px 0px rgba(43, 52, 59, .10), 0 0 0 rgba(43, 52, 59, .10) inset;
+          background-clip: padding-box;
         }
 
-        @keyframes dropdownFade {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        .user-dropdown-open {
+          opacity: 1;
+          filter: alpha(opacity=100);
+          -webkit-transform: rotateX(0);
+          transform: rotateX(0);
         }
 
         .dropdown-header {
@@ -413,7 +433,7 @@ const Header: React.FC<HeaderProps> = () => {
         }
 
         .dropdown-item:hover {
-          background: #f1f3f4;
+          // background: #f1f3f4;
           color: var(--theme-SkinColor, #1f4e79);
         }
 
