@@ -65,7 +65,18 @@ const HowToParticipate: React.FC = () => {
               {/* section title */}
               <div className="section-title style2 mb-0">
                 <div className="title-header">
-                  <h3>{t("howToParticipatePage.sectionTitle.highlight")}</h3>
+                  <h3>
+                    {t("howToParticipatePage.sectionTitle.highlight")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}
+                  </h3>
                   <h2 className="title">
                     {t("howToParticipatePage.sectionTitle.title")}
                   </h2>
@@ -138,9 +149,14 @@ const HowToParticipate: React.FC = () => {
                             </ul>
                           </>
                         ) : (
-                          <p>{t(`howToParticipatePage.steps.${stepIndex}.desc`)}</p>
+                          <p>
+                            {t(`howToParticipatePage.steps.${stepIndex}.desc`)}
+                          </p>
                         )}
-                        {t(`howToParticipatePage.steps.${stepIndex}.note`, "") && (
+                        {t(
+                          `howToParticipatePage.steps.${stepIndex}.note`,
+                          "",
+                        ) && (
                           <p className="mt-10 text-theme-SkinColor">
                             <i className="fa fa-info-circle mr-5"></i>
                             {t(`howToParticipatePage.steps.${stepIndex}.note`)}

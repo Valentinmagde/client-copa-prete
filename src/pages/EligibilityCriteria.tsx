@@ -40,7 +40,18 @@ const EligibilityCriteria: React.FC = () => {
               {/* section title */}
               <div className="section-title style2 mb-0">
                 <div className="title-header">
-                  <h3>{t("eligibilityCriteriaPage.intro.highlight")}</h3>
+                  <h3>
+                    {t("eligibilityCriteriaPage.intro.highlight")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}
+                  </h3>
                   <h2 className="title">
                     {t("eligibilityCriteriaPage.intro.title")}
                   </h2>
@@ -118,7 +129,18 @@ const EligibilityCriteria: React.FC = () => {
             <div className="col-lg-12">
               <div className="section-title title-style-center_text">
                 <div className="title-header">
-                  <h3>{t("eligibilityCriteriaPage.sectors.title")}</h3>
+                  <h3>
+                    {t("eligibilityCriteriaPage.sectors.title")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}
+                  </h3>
                   <h2 className="title">
                     {t("eligibilityCriteriaPage.sectors.subtitle")}
                   </h2>

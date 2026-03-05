@@ -55,7 +55,10 @@ const EditionCalendar: React.FC = () => {
               {/* section title */}
               <div className="section-title title-style-center_text">
                 <div className="title-header">
-                  <h3>{t("editionCalendarPage.sectionTitle.highlight")}</h3>
+                  <h3>{t("editionCalendarPage.sectionTitle.highlight").split(" ").map((word, i) => (
+                    <span key={i} className={i >= 1 ? "text-theme-SkinColor" : ""}>{word} </span>
+                  ))}
+                  </h3>
                   <h2 className="title">
                     {t("editionCalendarPage.sectionTitle.title")}
                   </h2>

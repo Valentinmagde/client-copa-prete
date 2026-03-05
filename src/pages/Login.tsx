@@ -133,7 +133,7 @@ const Login: React.FC = () => {
                 // const loginResponse = await AuthService.loginWithGoogle(response.access_token, i18n.language);
 
                 toast.success(t("loginSuccess"));
-                navigate(from, { replace: true });
+                navigate(from, { replace: false });
               } catch (err: any) {
                 console.error("Google login error:", err);
                 setApiError(t("googleLoginError"));
