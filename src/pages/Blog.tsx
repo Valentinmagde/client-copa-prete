@@ -3,7 +3,10 @@ import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
-import BlogImg from "../assets/img/blog/03.jpg";
+import BlogImg1 from "../assets/img/blog/01.png";
+import BlogImg2 from "../assets/img/blog/02.png";
+import BlogImg3 from "../assets/img/blog/03.png";
+import BlogImg4 from "../assets/img/blog/04.png";
 
 interface BlogProps {}
 
@@ -46,7 +49,7 @@ const Blog: React.FC<BlogProps> = () => {
                     <div className="ttm-post-featured">
                       <img
                         className="img-fluid"
-                        src={BlogImg}
+                        src={post.image}
                         alt="image-blog"
                       />
                       <div className="ttm-box-post-date">
@@ -155,7 +158,7 @@ const Blog: React.FC<BlogProps> = () => {
                         <a href={post.link}>
                           <img
                             className="img-fluid"
-                            src={BlogImg}
+                            src={post.image}
                             alt="image-post"
                           />
                         </a>
@@ -166,36 +169,6 @@ const Blog: React.FC<BlogProps> = () => {
                       </li>
                     ))}
                   </ul>
-                </aside>
-
-                <aside className="widget widget-banner">
-                  <div className="ttm-col-bgcolor-yes bg-theme-DarkColor text-theme-WhiteColor col-bg-img-seven ttm-col-bgimage-yes p-30 pb-50 pt-45">
-                    <div
-                      className="ttm-col-wrapper-bg-layer ttm-bg-layer bg-theme-DarkColor"
-                      style={{
-                        backgroundImage: `url(${BlogImg})`,
-                      }}
-                    >
-                      <div className="ttm-col-wrapper-bg-layer-inner bg-theme-DarkColor"></div>
-                    </div>
-                    <div className="layer-content text-center text-theme-WhiteColor">
-                      <div className="ttm-icon ttm-icon_element-onlytxt ttm-icon_element-style-round ttm-icon_element-color-skincolor ttm-icon_element-size-xl">
-                        <i className="far fa-comments"></i>
-                      </div>
-                      <h3>{t("blog.sidebar.helpBanner.title")}</h3>
-                      <div className="ttm-horizontal_sep width-100 mt-25 mb-25"></div>
-                      <ul>
-                        <li>{t("blog.sidebar.helpBanner.phone")}</li>
-                        <li>{t("blog.sidebar.helpBanner.email")}</li>
-                      </ul>
-                      <a
-                        className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
-                        href={"/"}
-                      >
-                        {t("blog.sidebar.helpBanner.button")}
-                      </a>
-                    </div>
-                  </div>
                 </aside>
 
                 <aside className="widget tagcloud-widget with-title">

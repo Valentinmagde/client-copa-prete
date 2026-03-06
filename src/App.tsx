@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import Blog from "./pages/Blog";
 import BlogDetails from "./pages/BlogDetails";
-import Contact from "./pages/Contact1";
+import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ScrollToTop from "./components/layout/Gotop";
@@ -18,7 +18,7 @@ import MonPlanAffairesSoumission from "./pages/espace-mpme/mon-plan-affaires/Sou
 import Dashboard from "./pages/espace-mpme/Dashboard";
 import AboutCopa from "./pages/AboutCopa";
 import Formations_Catalogue from "./pages/FormationsCatalogue";
-import Contact_Plainte from "./pages/ContactPlainte";
+import SubmitComplaint from "./pages/SubmitComplaint";
 import Ressources_FAQ from "./pages/FAQ";
 import AboutPrete from "./pages/AboutPrete";
 import Profile from "./pages/Profile";
@@ -61,7 +61,7 @@ const App: React.FC = () => {
         <Route path="/video-tutorials" element={<Blog />} />
         <Route path="/blog-details" element={<BlogDetails />} />
         <Route path="/faq" element={<Ressources_FAQ />} />
-        <Route path="/submit-complaint" element={<Contact_Plainte />} />
+        <Route path="/submit-complaint" element={<SubmitComplaint />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/about-us" element={<AboutUs />} />
         {/* Routes protégées */}

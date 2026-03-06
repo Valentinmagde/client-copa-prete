@@ -252,7 +252,7 @@ const AboutCopa: React.FC = () => {
 
       {/* services-section */}
       <section
-        className="ttm-row services-section bg-img1 bg-theme-GreyColor ttm-bg ttm-bgimage-yes clearfix"
+        className="ttm-row services-section bg-img1 bg-theme-WhiteColor ttm-bg ttm-bgimage-yes clearfix"
         style={{ backgroundImage: `url(${RowBgImg})` }}
       >
         <div className="container">

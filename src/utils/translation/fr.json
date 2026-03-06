@@ -466,21 +466,26 @@
       "title": "Nos Bureaux",
       "subtitle": "Comment pouvons-nous vous aider ?",
       "address": {
-        "title": "Adresse",
+        "title": "Visitez le bureau",
         "value": "Chaussée d'Uvira, Bujumbura"
       },
       "email": {
-        "title": "Email",
+        "title": "Envoyer un e-mail",
         "value": "contact@copa-prete.bi"
       },
       "phone": {
-        "title": "Téléphone",
+        "title": "Appelez à tout moment",
         "value": "(+257) 62 44 72 55"
+      },
+      "hours": {
+        "title": "Horaires d'ouverture",
+        "description": "Lundi au Vendredi de 8h00 à 17h00"
       }
     },
     "form": {
       "title": "Restons en Contact",
-      "subtitle": "Demander un rappel",
+      "subtitle": "Entrez en contact avec nous",
+      "description": "Vous avez une question sur le COPA ? Notre équipe est à votre disposition pour vous accompagner.",
       "name": "Votre Nom",
       "email": "Votre Email",
       "subject": "Sujet",
@@ -497,6 +502,7 @@
     "breadcrumb": "Actualités",
     "posts": [
       {
+        "image": "/src/assets/img/blog/01.png",
         "date": "18 Mars 2020",
         "category": "Affaires",
         "author": "Jean Dupont",
@@ -506,6 +512,7 @@
         "link": "/blog-details"
       },
       {
+        "image": "/src/assets/img/blog/02.png",
         "date": "18 Mars 2020",
         "category": "Affaires",
         "author": "Jean Dupont",
@@ -515,6 +522,7 @@
         "link": "/blog-details"
       },
       {
+        "image": "/src/assets/img/blog/03.png",
         "date": "18 Mars 2020",
         "category": "Affaires",
         "author": "Jean Dupont",
@@ -548,16 +556,19 @@
         "title": "Articles Récents",
         "list": [
           {
+            "image": "/src/assets/img/blog/3.png",
             "title": "Comment les enquêteurs utilisent leurs compétences",
             "date": "10 Octobre 2020",
             "link": "/blog-details"
           },
           {
+            "image": "/src/assets/img/blog/2.png",
             "title": "Créez votre propre fil d'actualités compétitif",
             "date": "10 Octobre 2020",
             "link": "/blog-details"
           },
           {
+            "image": "/src/assets/img/blog/4.png",
             "title": "Tendances du recrutement à distance 2021",
             "date": "10 Octobre 2020",
             "link": "/blog-details"
@@ -892,6 +903,132 @@
       "title": "Les inscriptions sont ouvertes !",
       "description": "Ne manquez pas l'édition 2026 du COPA. Inscrivez-vous dès maintenant.",
       "button": "S'inscrire maintenant"
+    }
+  },
+  "submitComplaintPage": {
+    "pageTitle": "Déposer une plainte",
+    "breadcrumb": "Contact / Plainte",
+    "success": {
+      "title": "Votre plainte a été enregistrée",
+      "message": "Merci d'avoir signalé ce problème. Nous traitons chaque plainte avec sérieux et confidentialité.",
+      "refNumber": "Numéro de référence",
+      "notifications": [
+        "Vous recevrez une réponse dans un délai de 15 jours ouvrables.",
+        "Votre plainte est traitée en toute confidentialité.",
+        "Conservez votre numéro de référence pour suivre l'état de votre plainte."
+      ],
+      "vbgNotification": "🆘 Les cas de VBG/EAS-HS bénéficient d'un traitement prioritaire.",
+      "buttons": {
+        "home": "Retour à l'accueil",
+        "contact": "Nous contacter"
+      }
+    },
+    "intro": {
+      "highlight": "plainte",
+      "title": "Signaler un problème ou une irrégularité",
+      "description": "Le COPA s'engage à traiter vos préoccupations avec sérieux et confidentialité. Si vous constatez un problème, une irrégularité ou si vous êtes victime de comportements inappropriés, n'hésitez pas à nous en faire part.",
+      "complaintTypes": "Types de plaintes acceptées:",
+      "types": [
+        "Problème technique avec la plateforme",
+        "Irrégularité dans le processus de sélection",
+        "Comportement inapproprié d'un agent ou partenaire",
+        "Demande de pots-de-vin ou corruption",
+        "Violence, harcèlement ou abus (VBG/EAS-HS)",
+        "Autre préoccupation"
+      ]
+    },
+    "form": {
+      "title": "Formulaire de plainte",
+      "subtitle": "Décrivez votre situation",
+      "anonymous": {
+        "label": "Je souhaite rester anonyme",
+        "active": "Anonyme activé"
+      },
+      "fields": {
+        "name": {
+          "placeholder": "Nom complet (optionnel)"
+        },
+        "contact": {
+          "placeholder": "Téléphone ou email (optionnel)"
+        },
+        "type": {
+          "placeholder": "Type de plainte *",
+          "options": [
+            {
+              "value": "tech",
+              "label": "Problème technique avec la plateforme",
+              "icon": "💻"
+            },
+            {
+              "value": "selection",
+              "label": "Irrégularité dans le processus de sélection",
+              "icon": "⚖️"
+            },
+            {
+              "value": "behavior",
+              "label": "Comportement inapproprié d'un agent/partenaire",
+              "icon": "👤"
+            },
+            {
+              "value": "corruption",
+              "label": "Demande de pots-de-vin ou corruption",
+              "icon": "🚫"
+            },
+            {
+              "value": "vbg",
+              "label": "Violence, harcèlement ou abus (VBG/EAS-HS)",
+              "icon": "🆘"
+            },
+            {
+              "value": "other",
+              "label": "Autre préoccupation",
+              "icon": "📝"
+            }
+          ]
+        },
+        "date": {
+          "placeholder": "Date des faits (optionnel)"
+        },
+        "location": {
+          "placeholder": "Lieu des faits (optionnel)"
+        },
+        "description": {
+          "placeholder": "Description détaillée des faits *\nDécrivez précisément ce qui s'est passé, quand, comment et qui était impliqué...",
+          "charCount": "{{count}} caractères",
+          "minRecommend": "(minimum recommandé : 100)",
+          "minWarning": "minimum recommandé : 100"
+        },
+        "files": {
+          "upload": "Cliquez pour ajouter des pièces jointes",
+          "hint": "Documents, photos, captures d'écran — max 5 fichiers, 10 Mo chacun",
+          "size": "{{size}} Ko"
+        },
+        "consent": {
+          "label": "J'accepte que mes informations soient traitées de manière confidentielle par l'équipe COPA conformément à la politique de protection des données."
+        }
+      },
+      "priority": {
+        "label": "Priorité de traitement : {{priority}}",
+        "standard": "Standard",
+        "high": "Élevée",
+        "urgent": "Urgente",
+        "priority": "🆘 Prioritaire",
+        "vbgNote": " — Ce type de plainte sera orienté vers des services spécialisés."
+      },
+      "errors": {
+        "typeRequired": "Veuillez sélectionner le type de plainte.",
+        "descriptionRequired": "Veuillez décrire les faits en détail.",
+        "consentRequired": "Vous devez accepter les conditions de traitement."
+      },
+      "submit": {
+        "default": "Soumettre ma plainte",
+        "submitting": "Soumission en cours…"
+      }
+    },
+    "validation": {
+      "selectType": "Veuillez sélectionner le type de plainte.",
+      "describeFacts": "Veuillez décrire les faits en détail.",
+      "acceptTerms": "Vous devez accepter les conditions de traitement."
     }
   }
 }

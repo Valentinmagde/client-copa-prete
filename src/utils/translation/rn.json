@@ -470,11 +470,16 @@
       "phone": {
         "title": "Telefone",
         "value": "(+257) 62 44 72 55"
+      },
+      "hours": {
+        "title": "Igihugu",
+        "value": "8:00 - 17:00"
       }
     },
     "form": {
       "title": "Twumvikane",
       "subtitle": "Saba ko twoguhamura",
+      "description": "Tugufashe gute? Fungura konte yawe utangire urugendo rwawe muri COPA uyu munsi.",
       "name": "Izina ryawe",
       "email": "Imeri yawe",
       "subject": "Ikiganiro",
@@ -491,6 +496,7 @@
     "breadcrumb": "Amakuru",
     "posts": [
       {
+        "image": "/src/assets/img/blog/01.png",
         "date": "18 Werurwe 2020",
         "category": "Ubucuruzi",
         "author": "Jean Dupont",
@@ -500,6 +506,7 @@
         "link": "/blog-details"
       },
       {
+        "image": "/src/assets/img/blog/02.png",
         "date": "18 Werurwe 2020",
         "category": "Ubucuruzi",
         "author": "Jean Dupont",
@@ -509,6 +516,7 @@
         "link": "/blog-details"
       },
       {
+        "image": "/src/assets/img/blog/03.png",
         "date": "18 Werurwe 2020",
         "category": "Ubucuruzi",
         "author": "Jean Dupont",
@@ -542,16 +550,19 @@
         "title": "Ivyanditswe vuba",
         "list": [
           {
+            "image": "/src/assets/img/blog/3.png",
             "title": "Uko abashakashatsi bakoresha ubumenyi",
             "date": "10 Gitugutu 2020",
             "link": "/blog-details"
           },
           {
+            "image": "/src/assets/img/blog/2.png",
             "title": "Rema ifoto yawe y'amakuru y'ubucuruzi",
             "date": "10 Gitugutu 2020",
             "link": "/blog-details"
           },
           {
+            "image": "/src/assets/img/blog/4.png",
             "title": "Uburyo bushasha bwo gushaka abakozi 2021",
             "date": "10 Gitugutu 2020",
             "link": "/blog-details"
@@ -883,6 +894,132 @@
       "title": "Kwiyandikisha birafunguye !",
       "description": "Ntucikeza umwanya w'umwaka wa 2026 wa COPA. Mwiyandikishe ubu.",
       "button": "Mwiyandikishe ubu"
+    }
+  },
+  "submitComplaintPage": {
+    "pageTitle": "Tangaza ikibazo",
+    "breadcrumb": "Twandikire / Ikibazo",
+    "success": {
+      "title": "Ikibazo cawe caranditswe",
+      "message": "Urakoze kutubwira iki kibazo. Turafata ibibazo vyose hafi kandi tubikora mu ibanga.",
+      "refNumber": "Numero y'ikibazo",
+      "notifications": [
+        "Uzoronswa igisubizo mu misi 15 y'akazi.",
+        "Ikibazo cawe girakoreshwa mu ibanga.",
+        "Komeza numero y'ikibazo cawe kugira ngo ukurikire aho kigeze."
+      ],
+      "vbgNotification": "🆘 Ibibazo vya VBG/EAS-HS bikurikiranwa kare.",
+      "buttons": {
+        "home": "Subira ahabanza",
+        "contact": "Twandikire"
+      }
+    },
+    "intro": {
+      "highlight": "ikibazo",
+      "title": "Menyesha ikibazo canke amakosa",
+      "description": "COPA yiyemeje gufata ibibazo vyawe hafi kandi mu ibanga. Niba ubonye ikibazo, amakosa, canke ugirirwa nabi, ntukagire ingahe kutubwira.",
+      "complaintTypes": "Ubwoko bw'ibibazo twemera:",
+      "types": [
+        "Ikibazo ciwe kubijanye na porogaramu",
+        "Amakosa mu gutorwa",
+        "Umwirondoro mubi w'umukozi canke umufasha",
+        "Gusaba ibamba canze ikiguzi kidakwiye",
+        "Ubuhambangwa, guhutazwa, canke gukoreshwa nabi (VBG/EAS-HS)",
+        "Ikindi kibazo"
+      ]
+    },
+    "form": {
+      "title": "Fishi y'ikibazo",
+      "subtitle": "Sobanura ibibazo vyawe",
+      "anonymous": {
+        "label": "Ndashaka kuguma nk'umuntu utazwi",
+        "active": "Utazwi yarabishatse"
+      },
+      "fields": {
+        "name": {
+          "placeholder": "Izina ry'ukuri (bishatse)"
+        },
+        "contact": {
+          "placeholder": "Telefone canke imeli (bishatse)"
+        },
+        "type": {
+          "placeholder": "Ubwoko bw'ikibazo *",
+          "options": [
+            {
+              "value": "tech",
+              "label": "Ikibazo ciwe kubijanye na porogaramu",
+              "icon": "💻"
+            },
+            {
+              "value": "selection",
+              "label": "Amakosa mu gutorwa",
+              "icon": "⚖️"
+            },
+            {
+              "value": "behavior",
+              "label": "Umwirondoro mubi w'umukozi canke umufasha",
+              "icon": "👤"
+            },
+            {
+              "value": "corruption",
+              "label": "Gusaba ibamba canze ikiguzi kidakwiye",
+              "icon": "🚫"
+            },
+            {
+              "value": "vbg",
+              "label": "Ubuhambangwa, guhutazwa, canke gukoreshwa nabi (VBG/EAS-HS)",
+              "icon": "🆘"
+            },
+            {
+              "value": "other",
+              "label": "Ikindi kibazo",
+              "icon": "📝"
+            }
+          ]
+        },
+        "date": {
+          "placeholder": "Umunsi w'ikibazo (bishatse)"
+        },
+        "location": {
+          "placeholder": "Aho ikibazo cabereye (bishatse)"
+        },
+        "description": {
+          "placeholder": "Isobanuro riramba ry'ikibazo *\nSobanura neza ibyabaye, igihe, ukuntu, n'uwari muri byo...",
+          "charCount": "Inyuguti {{count}}",
+          "minRecommend": "(bikenewe nibura 100)",
+          "minWarning": "bikenewe nibura 100"
+        },
+        "files": {
+          "upload": "Kanda kugira ngo wongere inyandiko",
+          "hint": "Inyandiko, amafoto, amashusho — max 5 idosiye, 10 Mo buri imwe",
+          "size": "{{size}} Ko"
+        },
+        "consent": {
+          "label": "Nemera ko amakuru yanje akoreshwa mu ibanga n'itsinda rya COPA nk'uko bigenda muri politiki yo gukoresha amakuru."
+        }
+      },
+      "priority": {
+        "label": "Ubwihutirwa: {{priority}}",
+        "standard": "Gisanzwe",
+        "high": "Nyamukuru",
+        "urgent": "Bihutirwa",
+        "priority": "🆘 Bihutirwa",
+        "vbgNote": " — Ubu bwoko bw'ikibazo buzoshikirizwa abahinga bahari."
+      },
+      "errors": {
+        "typeRequired": "Hitamo ubwoko bw'ikibazo.",
+        "descriptionRequired": "Sobanura ibyabaye mu buryo buramba.",
+        "consentRequired": "Ugomba kwemera uburyo bwo gukoresha amakuru."
+      },
+      "submit": {
+        "default": "Tangaza ikibazo",
+        "submitting": "Biriko biratangazwa…"
+      }
+    },
+    "validation": {
+      "selectType": "Hitamo ubwoko bw'ikibazo.",
+      "describeFacts": "Sobanura ibyabaye mu buryo buramba.",
+      "acceptTerms": "Ugomba kwemera uburyo bwo gukoresha amakuru."
     }
   }
 }
