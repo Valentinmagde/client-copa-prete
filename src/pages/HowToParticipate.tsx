@@ -168,13 +168,13 @@ const HowToParticipate: React.FC = () => {
                           className="ttm-btn btn-inline ttm-btn-size-md ttm-btn-color-darkgrey"
                           to={
                             stepIndex === 0
-                              ? "/copa/criteres-eligibilite"
+                              ? "/eligibility-criteria"
                               : stepIndex === 1
-                                ? "/inscription"
+                                ? "/register"
                                 : stepIndex === 3
-                                  ? "/formations/catalogue"
+                                  ? "#"
                                   : stepIndex === 4
-                                    ? "/copa/calendrier"
+                                    ? "/edition-calender"
                                     : "#"
                           }
                         >

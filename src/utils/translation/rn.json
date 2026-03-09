@@ -496,7 +496,7 @@
     "breadcrumb": "Amakuru",
     "posts": [
       {
-        "image": "/src/assets/img/blog/01.png",
+        "image": "/assets/img/blog/01.png",
         "date": "18 Werurwe 2020",
         "category": "Ubucuruzi",
         "author": "Jean Dupont",
@@ -506,7 +506,7 @@
         "link": "/blog-details"
       },
       {
-        "image": "/src/assets/img/blog/02.png",
+        "image": "/assets/img/blog/02.png",
         "date": "18 Werurwe 2020",
         "category": "Ubucuruzi",
         "author": "Jean Dupont",
@@ -516,7 +516,7 @@
         "link": "/blog-details"
       },
       {
-        "image": "/src/assets/img/blog/03.png",
+        "image": "/assets/img/blog/03.png",
         "date": "18 Werurwe 2020",
         "category": "Ubucuruzi",
         "author": "Jean Dupont",

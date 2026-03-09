@@ -1,0 +1,188 @@
+@font-face {
+    font-family: "flaticon";
+    src: url("../../fonts/flaticon.ttf?990556c59ed2b8a765a80a6838c9dec8") format("truetype"),
+url("../../fonts/flaticon.woff?990556c59ed2b8a765a80a6838c9dec8") format("woff"),
+url("../../fonts/flaticon.woff2?990556c59ed2b8a765a80a6838c9dec8") format("woff2"),
+url("../../fonts/flaticon.eot?990556c59ed2b8a765a80a6838c9dec8#iefix") format("embedded-opentype"),
+url("../../fonts/flaticon.svg?990556c59ed2b8a765a80a6838c9dec8#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.flaticon-calendar:before {
+    content: "\f101";
+}
+.flaticon-calendar-1:before {
+    content: "\f102";
+}
+.flaticon-expert:before {
+    content: "\f103";
+}
+.flaticon-subfolder:before {
+    content: "\f104";
+}
+.flaticon-subfolder-1:before {
+    content: "\f105";
+}
+.flaticon-lavatory:before {
+    content: "\f106";
+}
+.flaticon-gender:before {
+    content: "\f107";
+}
+.flaticon-pdf:before {
+    content: "\f108";
+}
+.flaticon-cloud-computing:before {
+    content: "\f109";
+}
+.flaticon-download:before {
+    content: "\f10a";
+}
+.flaticon-phone-call:before {
+    content: "\f10b";
+}
+.flaticon-call:before {
+    content: "\f10c";
+}
+.flaticon-telephone:before {
+    content: "\f10d";
+}
+.flaticon-call-1:before {
+    content: "\f10e";
+}
+.flaticon-outgoing-call:before {
+    content: "\f10f";
+}
+.flaticon-email:before {
+    content: "\f110";
+}
+.flaticon-email-1:before {
+    content: "\f111";
+}
+.flaticon-pin:before {
+    content: "\f112";
+}
+.flaticon-gps:before {
+    content: "\f113";
+}
+.flaticon-clock:before {
+    content: "\f114";
+}
+.flaticon-deadline:before {
+    content: "\f115";
+}
+.flaticon-technical-support:before {
+    content: "\f116";
+}
+.flaticon-bank:before {
+    content: "\f117";
+}
+.flaticon-conveyor:before {
+    content: "\f118";
+}
+.flaticon-healthcare:before {
+    content: "\f119";
+}
+.flaticon-sketch:before {
+    content: "\f11a";
+}
+.flaticon-headhunting:before {
+    content: "\f11b";
+}
+.flaticon-research:before {
+    content: "\f11c";
+}
+.flaticon-human-resources:before {
+    content: "\f11d";
+}
+.flaticon-recruiting:before {
+    content: "\f11e";
+}
+.flaticon-advertising:before {
+    content: "\f11f";
+}
+.flaticon-personal-wealth:before {
+    content: "\f120";
+}
+.flaticon-company:before {
+    content: "\f121";
+}
+.flaticon-job-search:before {
+    content: "\f122";
+}
+.flaticon-communities:before {
+    content: "\f123";
+}
+.flaticon-recruitment:before {
+    content: "\f124";
+}
+.flaticon-play-button:before {
+    content: "\f125";
+}
+.flaticon-placeholder:before {
+    content: "\f126";
+}
+.flaticon-growth:before {
+    content: "\f127";
+}
+.flaticon-human-resources-1:before {
+    content: "\f128";
+}
+.flaticon-human-resources-2:before {
+    content: "\f129";
+}
+.flaticon-job-search-1:before {
+    content: "\f12a";
+}
+.flaticon-recruitment-3:before {
+    content: "\f12b";
+}
+.flaticon-recruitment-4:before {
+    content: "\f12c";
+}
+.flaticon-candidate-management:before {
+    content: "\f12d";
+}
+.flaticon-share:before {
+    content: "\f12e";
+}
+.flaticon-human-resources-3:before {
+    content: "\f12f";
+}
+.flaticon-recruitment-6:before {
+    content: "\f130";
+}
+.flaticon-recruitment-7:before {
+    content: "\f131";
+}
+.flaticon-interview:before {
+    content: "\f132";
+}
+.flaticon-user:before {
+    content: "\f133";
+}
+.flaticon-budget:before {
+    content: "\f134";
+}
+.flaticon-house:before {
+    content: "\f135";
+}
+.flaticon-human-resources-4:before {
+    content: "\f136";
+}
+.flaticon-restaurant:before {
+    content: "\f137";
+}
+.flaticon-telecommunication:before {
+    content: "\f138";
+}
