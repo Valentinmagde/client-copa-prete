@@ -134,6 +134,10 @@ interface FormData {
   isDirectSupplierToProject: TriBool;
   hasPreviousGrant: TriBool;
   previousGrantDetails: string;
+  isWomanLed: boolean;
+  isRefugeeLed: boolean;
+  hasClimateImpact: boolean;
+
   // Step 2
   companyStatus: CompanyStatusType;
   companyName: string;
@@ -208,6 +212,49 @@ interface BeneficiaryData {
   profileCompletedAt: string | null;
   companyType: string;
   isProfileComplete?: boolean;
+  beneficiaryNumber?: string; // Numéro de bénéficiaire (00001, etc.)
+  documentsByKey?: Record<string, any>; // Documents organisés par clé
+
+  // ✅ Champs directement dans beneficiary (hors user)
+  position?: string;
+  maritalStatus?: string;
+  educationLevel?: string;
+
+  // ✅ Questions d'éligibilité
+  isPublicServant?: boolean;
+  isRelativeOfPublicServant?: boolean;
+  isPublicIntern?: boolean;
+  isRelativeOfPublicIntern?: boolean;
+  wasHighOfficer?: boolean;
+  isRelativeOfHighOfficer?: boolean;
+  hasProjectLink?: boolean;
+  isDirectSupplierToProject?: boolean;
+  hasPreviousGrant?: boolean;
+  previousGrantDetails?: string;
+
+  // ✅ Champs projet
+  projectTitle?: string;
+  projectObjective?: string;
+  projectSectors?: string[];
+  otherSector?: string;
+  mainActivities?: string;
+  productsServices?: string;
+  businessIdea?: string;
+  targetClients?: string;
+  clientScope?: string[];
+  hasCompetitors?: boolean;
+  competitorNames?: string;
+  plannedEmployeesFemale?: number;
+  plannedEmployeesMale?: number;
+  plannedPermanentEmployees?: number;
+  isNewIdea?: boolean;
+  climateActions?: string;
+  inclusionActions?: string;
+  hasEstimatedCost?: boolean;
+  totalProjectCost?: number;
+  requestedSubsidyAmount?: number;
+  mainExpenses?: string;
+
   user: {
     id: number;
     email: string;
@@ -216,9 +263,17 @@ interface BeneficiaryData {
     birthDate: string;
     phoneNumber: string;
     gender: { code: string };
-    primaryAddress: { provinceId: number; communeId: number };
+    primaryAddress: {
+      provinceId: number;
+      communeId: number;
+      zone?: string;
+      colline?: string;
+      neighborhood?: string;
+      street?: string;
+    };
     consents: Array<{ consentType: { code: string }; value: boolean }>;
   };
+
   company?: {
     id: number;
     companyName: string;
@@ -229,6 +284,60 @@ interface BeneficiaryData {
     permanentEmployees: number;
     revenueYearN1: number;
     companyType: string;
+
+    // ✅ Adresse de l'entreprise (si différente)
+    address?: {
+      neighborhood?: string;
+      street?: string;
+      provinceId?: number;
+      communeId?: number;
+      zone?: string;
+      colline?: string;
+    };
+
+    // ✅ Contacts
+    companyPhone?: string;
+    companyEmail?: string;
+
+    // ✅ Informations juridiques
+    legalStatus?: string;
+    legalStatusOther?: string;
+    registrationNumber?: string;
+    affiliatedToCGA?: boolean;
+
+    // ✅ Effectifs détaillés
+    femaleEmployees?: number;
+    maleEmployees?: number;
+    refugeeEmployees?: number;
+    batwaEmployees?: number;
+    disabledEmployees?: number;
+
+    // ✅ Associés
+    associatesCount?: string;
+    associatesCountOther?: string;
+    femalePartners?: number;
+    malePartners?: number;
+    refugeePartners?: number;
+    batwaPartners?: number;
+    disabledPartners?: number;
+
+    // ✅ Informations bancaires
+    hasBankAccount?: boolean;
+    hasBankCredit?: boolean;
+    bankCreditAmount?: number;
+
+    // ✅ Indicateurs
+    isLedByWoman?: boolean;
+    isLedByRefugee?: boolean;
+    hasPositiveClimateImpact?: boolean;
+
+    // ✅ Pour compatibilité (anciens champs)
+    addressDifferent?: boolean;
+    phone?: string;
+    email?: string;
+    partnerCount?: string;
+    partnerCountOther?: string;
+    creditAmount?: number;
   };
 }
 
@@ -314,6 +423,9 @@ const INITIAL_FORM: FormData = {
   acceptPrivacy: true,
   certifyAccuracy: true,
   acceptNotifications: false,
+  isRefugeeLed: false,
+  isWomanLed: false,
+  hasClimateImpact: false,
 };
 
 const STEPS = [
@@ -1027,7 +1139,7 @@ const Profile: React.FC = () => {
       acceptPrivacy: cm.get("PRIVACY_POLICY") || false,
       certifyAccuracy: cm.get("CERTIFY_ACCURACY") || false,
       acceptNotifications: cm.get("COMMUNICATIONS") || false,
-    }));
+    } as any));
   };
   const updateField = useCallback(
     <K extends keyof FormData>(key: K, value: FormData[K]) => {
@@ -1055,7 +1167,7 @@ const Profile: React.FC = () => {
 
   const updateDocument = useCallback(
     (key: string, file: File | null) => {
-      setDocuments((prev) => ({ ...prev, [key]: file }));
+      setDocuments((prev: any) => ({ ...prev, [key]: file }));
       if (docErrors[key])
         setDocErrors((prev) => ({ ...prev, [key]: undefined }));
     },
@@ -1339,7 +1451,7 @@ const Profile: React.FC = () => {
             if (documents[doc.key] instanceof File) {
               try {
                 const result = await DocumentService.uploadFormDocument(
-                  documents[doc.key],
+                  documents[doc.key] as any,
                   {
                     entityId: beneficiary.id,
                     entityType: "beneficiary",

@@ -31,6 +31,9 @@ export default defineConfig([
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/no-unsafe-throw': 'off',
+      '@typescript-eslint/no-case-declarations': ['off'],
+      '@typescript-eslint/no-non-null-assertion': ['off'],
+      '@typescript-eslint/no-var-requires': ['off'],
     },
   },
 ])

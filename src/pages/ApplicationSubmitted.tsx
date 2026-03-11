@@ -51,7 +51,7 @@ const ApplicationSubmitted: React.FC = () => {
       if (!user?.id) return;
 
       try {
-        const response = await BeneficiaryService.getByUserId(
+        const response: any = await BeneficiaryService.getByUserId(
           user.id,
           i18n.language,
         );
