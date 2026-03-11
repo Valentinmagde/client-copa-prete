@@ -1150,5 +1150,6 @@
   "beneficiaryNotFound": "Urongotwa ntabonetse",
   "errorLoadingReference": "Ikosa mu gukurura amakuru ngenderwako",
   "errorLoadingProfile": "Ikosa mu gukurura umwirondoro",
-  "errorSavingStep": "Ikosa mu kubika intambwe"
+  "errorSavingStep": "Ikosa mu kubika intambwe",
+  "dragAndDropOrClick": "Kwegereza canke kanda kugira ngo utore idosiye"
 }

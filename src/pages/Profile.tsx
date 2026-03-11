@@ -990,10 +990,10 @@ const FileUploadRow: React.FC<{
                     display: "block",
                     fontSize: 12,
                     color: "#aaa",
-                    marginTop: 1,
+                    marginTop: 5,
                   }}
                 >
-                  Glissez-déposez ou Cliquez pour sélectionner un fichier (PDF,
+                  {t("dragAndDropOrClick")}{" "} (PDF,
                   DOCX, JPG, PNG — max 5 Mo)
                 </span>
               </span>

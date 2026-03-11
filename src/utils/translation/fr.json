@@ -1159,5 +1159,6 @@
   "beneficiaryNotFound": "Bénéficiaire introuvable",
   "errorLoadingReference": "Erreur lors du chargement des données de référence",
   "errorLoadingProfile": "Erreur lors du chargement du profil",
-  "errorSavingStep": "Erreur lors de la sauvegarde"
+  "errorSavingStep": "Erreur lors de la sauvegarde",
+  "dragAndDropOrClick": "Glissez-déposez ou cliquez pour sélectionner un fichier"
 }
