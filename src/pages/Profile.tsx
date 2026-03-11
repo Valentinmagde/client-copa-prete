@@ -702,6 +702,117 @@ const CheckboxGroup: React.FC<{
 );
 
 /** File upload row — styled as copa-check-row, no native file input visible */
+// const FileUploadRow: React.FC<{
+//   docKey: string;
+//   labelKey: string;
+//   required: boolean;
+//   file: File | null;
+//   error?: string;
+//   onChange: (key: string, file: File | null) => void;
+//   t: any;
+// }> = ({ docKey, labelKey, required, file, error, onChange, t }) => {
+//   const ref = useRef<HTMLInputElement>(null);
+//   return (
+//     <div className="col-12">
+//       <label
+//         className={`copa-check-row ${file ? "is-checked" : ""} ${error ? "is-invalid" : ""}`}
+//         style={{ cursor: "pointer" }}
+//         // onClick={() => ref.current?.click()}
+//       >
+//         <span className="copa-check-row__box" style={{ flexShrink: 0 }}>
+//           {file ? (
+//             <svg
+//               viewBox="0 0 10 10"
+//               fill="none"
+//               stroke="currentColor"
+//               strokeWidth="2.5"
+//             >
+//               <path
+//                 d="M1.5 5l2.5 2.5 5-5"
+//                 strokeLinecap="round"
+//                 strokeWidth="2.5"
+//               />
+//             </svg>
+//           ) : (
+//             <svg
+//               viewBox="0 0 16 16"
+//               fill="currentColor"
+//               width="12"
+//               height="12"
+//               style={{ opacity: 0.35 }}
+//             >
+//               <path d="M8 1a.5.5 0 0 1 .5.5V7h5.5a.5.5 0 0 1 0 1H8.5v5.5a.5.5 0 0 1-1 0V8H2a.5.5 0 0 1 0-1h5.5V1.5A.5.5 0 0 1 8 1z" />
+//             </svg>
+//           )}
+//         </span>
+
+//         <span className="copa-check-row__text" style={{ flex: 1 }}>
+//           {t(labelKey)}
+//           {required && <span style={{ color: "#dc3545" }}> *</span>}
+//         </span>
+
+//         <span
+//           style={{
+//             fontSize: 11,
+//             fontWeight: 600,
+//             padding: "3px 14px",
+//             borderRadius: 20,
+//             flexShrink: 0,
+//             whiteSpace: "nowrap",
+//             background: file
+//               ? "rgba(var(--skin-color-rgb, 76,175,80), 0.1)"
+//               : "#f0f0f0",
+//             color: file ? "var(--skin-color, #4caf50)" : "#888",
+//           }}
+//         >
+//           {file
+//             ? file.name.length > 24
+//               ? file.name.slice(0, 22) + "…"
+//               : file.name
+//             : t("chooseFile")}
+//         </span>
+
+//         {file && (
+//           <button
+//             type="button"
+//             style={{
+//               border: "none",
+//               background: "none",
+//               color: "#dc3545",
+//               padding: "0 8px",
+//               fontSize: 18,
+//               lineHeight: 1,
+//               cursor: "pointer",
+//             }}
+//             onClick={(e) => {
+//               e.stopPropagation();
+//               e.preventDefault();
+//               onChange(docKey, null);
+//             }}
+//           >
+//             ×
+//           </button>
+//         )}
+
+//         <input
+//           ref={ref}
+//           type="file"
+//           accept=".pdf,.jpg,.jpeg,.png"
+//           style={{ display: "none" }}
+//           onChange={(e) => {
+//             console.log(JSON.stringify(e.target.files?.[0]));
+//             onChange(docKey, e.target.files?.[0] ?? null);
+//             e.target.value = "";
+//           }}
+//         />
+//       </label>
+//       {error && <span className="copa-error-msg">{error}</span>}
+//     </div>
+//   );
+// };
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
 const FileUploadRow: React.FC<{
   docKey: string;
   labelKey: string;
@@ -711,107 +822,254 @@ const FileUploadRow: React.FC<{
   onChange: (key: string, file: File | null) => void;
   t: any;
 }> = ({ docKey, labelKey, required, file, error, onChange, t }) => {
-  const ref = useRef<HTMLInputElement>(null);
+  const [drag, setDrag] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState(false);
+
+  // useEffect(() => {
+  //   if (!file) { setPreviewUrl(null); return; }
+  //   const url = URL.createObjectURL(file);
+  //   setPreviewUrl(url);
+  //   return () => URL.revokeObjectURL(url);
+  // }, [file]);
+
+  const isImage = file?.type.startsWith("image/") ?? false;
+  const isPdf = file?.type === "application/pdf";
+
+  const pick = (f?: File | null) => {
+    if (f) onChange(docKey, f);
+  };
+
   return (
-    <div className="col-12">
-      <label
-        className={`copa-check-row ${file ? "is-checked" : ""} ${error ? "is-invalid" : ""}`}
-        style={{ cursor: "pointer" }}
-        // onClick={() => ref.current?.click()}
-      >
-        <span className="copa-check-row__box" style={{ flexShrink: 0 }}>
-          {file ? (
-            <svg
-              viewBox="0 0 10 10"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path
-                d="M1.5 5l2.5 2.5 5-5"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-              />
-            </svg>
-          ) : (
-            <svg
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              width="12"
-              height="12"
-              style={{ opacity: 0.35 }}
-            >
-              <path d="M8 1a.5.5 0 0 1 .5.5V7h5.5a.5.5 0 0 1 0 1H8.5v5.5a.5.5 0 0 1-1 0V8H2a.5.5 0 0 1 0-1h5.5V1.5A.5.5 0 0 1 8 1z" />
-            </svg>
-          )}
-        </span>
-
-        <span className="copa-check-row__text" style={{ flex: 1 }}>
-          {t(labelKey)}
-          {required && <span style={{ color: "#dc3545" }}> *</span>}
-        </span>
-
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 600,
-            padding: "3px 14px",
-            borderRadius: 20,
-            flexShrink: 0,
-            whiteSpace: "nowrap",
-            background: file
-              ? "rgba(var(--skin-color-rgb, 76,175,80), 0.1)"
-              : "#f0f0f0",
-            color: file ? "var(--skin-color, #4caf50)" : "#888",
-          }}
-        >
-          {file
-            ? file.name.length > 24
-              ? file.name.slice(0, 22) + "…"
-              : file.name
-            : t("chooseFile")}
-        </span>
-
-        {file && (
-          <button
-            type="button"
+    <>
+      <div className="col-12" style={{ marginBottom: 30 }}>
+        {file ? (
+          /* ── Uploaded state ─────────────────────────────── */
+          <div
             style={{
-              border: "none",
-              background: "none",
-              color: "#dc3545",
-              padding: "0 8px",
-              fontSize: 18,
-              lineHeight: 1,
-              cursor: "pointer",
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onChange(docKey, null);
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "10px 14px",
+              background: "#fff",
+              border: "1px solid rgba(119,119,119,.18)",
+              borderRadius: 6,
             }}
           >
-            ×
-          </button>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              {isImage && previewUrl ? (
+                <button
+                  type="button"
+                  onClick={() => setLightbox(true)}
+                  style={{
+                    width: 34,
+                    height: 34,
+                    padding: 0,
+                    border: "1px solid #ddd",
+                    borderRadius: 4,
+                    overflow: "hidden",
+                    cursor: "zoom-in",
+                    background: "none",
+                    flexShrink: 0,
+                  }}
+                >
+                  <img
+                    src={previewUrl}
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                </button>
+              ) : (
+                <i
+                  className="ti ti-files"
+                  style={{ fontSize: 18, flexShrink: 0 }}
+                />
+              )}
+              <div>
+                <p style={{ color: "#999", margin: 0 }}>{t(labelKey)}</p>
+                <p style={{ fontSize: 12, fontWeight: 400, margin: 0 }}>
+                  {file.name.length > 64
+                    ? file.name.slice(0, 60) + "…"
+                    : file.name}{" "}
+                  ·{" "}
+                  {file.size < 1_048_576
+                    ? `${(file.size / 1024).toFixed(0)} Ko`
+                    : `${(file.size / 1_048_576).toFixed(1)} Mo`}
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              {isPdf && previewUrl && (
+                <a
+                  href={previewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: 12,
+                    color: "var(--skin-color, #4caf50)",
+                    textDecoration: "none",
+                    fontWeight: 600,
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <i className="ti ti-eye" /> Voir
+                </a>
+              )}
+              <button
+                type="button"
+                onClick={() => onChange(docKey, null)}
+                style={{
+                  border: "none",
+                  background: "none",
+                  padding: "2px 4px",
+                  cursor: "pointer",
+                  color: "#bbb",
+                  fontSize: 16,
+                  lineHeight: 1,
+                  transition: "color .15s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#dc3545")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#bbb")}
+                title="Supprimer"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        ) : (
+          /* ── Empty state ────────────────────────────────── */
+          <label
+            style={{ cursor: "pointer", display: "block", margin: 0 }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDrag(true);
+            }}
+            onDragLeave={() => setDrag(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDrag(false);
+              pick(e.dataTransfer.files?.[0]);
+            }}
+          >
+            <input
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png"
+              style={{ display: "none" }}
+              onChange={(e) => {
+                pick(e.target.files?.[0]);
+                e.target.value = "";
+              }}
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "12px 16px",
+                border: `1.5px dashed ${drag ? "var(--skin-color, #4caf50)" : "rgba(119,119,119,.25)"}`,
+                borderRadius: 6,
+                background: "#fff",
+                transition: "border-color .2s, background .2s",
+              }}
+            >
+              <i
+                className="ti ti-cloud-up"
+                style={{ fontSize: 17, flexShrink: 0 }}
+              />
+              <span style={{ fontSize: 14, color: "#777" }}>
+                {t(labelKey)}
+                {/* {required && <span style={{ color: "#dc3545" }}> *</span>} */}
+                <span
+                  style={{
+                    display: "block",
+                    fontSize: 12,
+                    color: "#aaa",
+                    marginTop: 1,
+                  }}
+                >
+                  Glissez-déposez ou Cliquez pour sélectionner un fichier (PDF,
+                  DOCX, JPG, PNG — max 5 Mo)
+                </span>
+              </span>
+            </div>
+          </label>
         )}
 
-        <input
-          ref={ref}
-          type="file"
-          accept=".pdf,.jpg,.jpeg,.png"
-          style={{ display: "none" }}
-          onChange={(e) => {
-            console.log(JSON.stringify(e.target.files?.[0]));
-            onChange(docKey, e.target.files?.[0] ?? null);
-            e.target.value = "";
+        {error && <span className="copa-error-msg mt-5">{error}</span>}
+      </div>
+
+      {/* Lightbox */}
+      {lightbox && isImage && previewUrl && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9999,
+            background: "rgba(0,0,0,.65)",
+            backdropFilter: "blur(6px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-        />
-      </label>
-      {error && <span className="copa-error-msg">{error}</span>}
-    </div>
+          onClick={() => setLightbox(false)}
+        >
+          <div
+            style={{
+              position: "relative",
+              background: "#fff",
+              borderRadius: 10,
+              overflow: "hidden",
+              boxShadow: "0 20px 60px rgba(0,0,0,.3)",
+              maxWidth: "88vw",
+              maxHeight: "88vh",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setLightbox(false)}
+              style={{
+                position: "absolute",
+                top: 10,
+                right: 10,
+                width: 26,
+                height: 26,
+                borderRadius: "50%",
+                background: "rgba(0,0,0,.45)",
+                border: "none",
+                color: "#fff",
+                cursor: "pointer",
+                fontSize: 14,
+                lineHeight: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <i className="ti ti-close" style={{ fontSize: 11 }} />
+            </button>
+            <img
+              src={previewUrl}
+              alt={file?.name}
+              style={{
+                maxWidth: "80vw",
+                maxHeight: "80vh",
+                objectFit: "contain",
+                display: "block",
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
-
-// ─── Main component ───────────────────────────────────────────────────────────
 
 const Profile: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -919,8 +1177,8 @@ const Profile: React.FC = () => {
           setDocuments((prev) => ({ ...prev, ...existingDocs }));
         }
 
-        if (res.isProfileComplete)
-          navigate("/application-submitted", { replace: true });
+        // if (res.isProfileComplete)
+        //   navigate("/application-submitted", { replace: true });
       }
     } catch {
       toast.error(t("errorLoadingProfile"));
@@ -983,163 +1241,167 @@ const Profile: React.FC = () => {
       (d.user.consents || []).map((c) => [c.consentType.code, c.value]),
     );
 
-    setForm((prev) => ({
-      ...prev,
-      // ===== STEP 1 =====
-      entrepreneurType: (d.category?.toLowerCase() as EntrepreneurType) || "",
-      firstName: d.user.firstName || "",
-      lastName: d.user.lastName || "",
-      position: d.position || "",
-      gender: (d.user.gender?.code as GenderType) || "",
-      birthDate: d.user.birthDate || "",
-      maritalStatus: (d.maritalStatus as MaritalStatusType) || "",
-      educationLevel: (d.educationLevel as EducationLevelType) || "",
-      neighborhood: d.user.primaryAddress?.neighborhood || "",
-      zone: d.user.primaryAddress?.street || "",
-      provinceId: d.user.primaryAddress?.provinceId || "",
-      communeId: d.user.primaryAddress?.communeId || "",
-      phone: d.user.phoneNumber || "",
-      email: d.user.email || "",
+    setForm(
+      (prev) =>
+        ({
+          ...prev,
+          // ===== STEP 1 =====
+          entrepreneurType:
+            (d.category?.toLowerCase() as EntrepreneurType) || "",
+          firstName: d.user.firstName || "",
+          lastName: d.user.lastName || "",
+          position: d.position || "",
+          gender: (d.user.gender?.code as GenderType) || "",
+          birthDate: d.user.birthDate || "",
+          maritalStatus: (d.maritalStatus as MaritalStatusType) || "",
+          educationLevel: (d.educationLevel as EducationLevelType) || "",
+          neighborhood: d.user.primaryAddress?.neighborhood || "",
+          zone: d.user.primaryAddress?.street || "",
+          provinceId: d.user.primaryAddress?.provinceId || "",
+          communeId: d.user.primaryAddress?.communeId || "",
+          phone: d.user.phoneNumber || "",
+          email: d.user.email || "",
 
-      // Questions d'éligibilité (nouveaux champs)
-      isPublicServant: d.isPublicServant
-        ? "yes"
-        : d.isPublicServant === false
-          ? "no"
-          : "",
-      isRelativeOfPublicServant: d.isRelativeOfPublicServant
-        ? "yes"
-        : d.isRelativeOfPublicServant === false
-          ? "no"
-          : "",
-      isPublicIntern: d.isPublicIntern
-        ? "yes"
-        : d.isPublicIntern === false
-          ? "no"
-          : "",
-      isRelativeOfPublicIntern: d.isRelativeOfPublicIntern
-        ? "yes"
-        : d.isRelativeOfPublicIntern === false
-          ? "no"
-          : "",
-      wasHighOfficer: d.wasHighOfficer
-        ? "yes"
-        : d.wasHighOfficer === false
-          ? "no"
-          : "",
-      isRelativeOfHighOfficer: d.isRelativeOfHighOfficer
-        ? "yes"
-        : d.isRelativeOfHighOfficer === false
-          ? "no"
-          : "",
-      hasProjectLink: d.hasProjectLink
-        ? "yes"
-        : d.hasProjectLink === false
-          ? "no"
-          : "",
-      isDirectSupplierToProject: d.isDirectSupplierToProject
-        ? "yes"
-        : d.isDirectSupplierToProject === false
-          ? "no"
-          : "",
-      hasPreviousGrant: d.hasPreviousGrant
-        ? "yes"
-        : d.hasPreviousGrant === false
-          ? "no"
-          : "",
-      previousGrantDetails: d.previousGrantDetails || "",
+          // Questions d'éligibilité (nouveaux champs)
+          isPublicServant: d.isPublicServant
+            ? "yes"
+            : d.isPublicServant === false
+              ? "no"
+              : "",
+          isRelativeOfPublicServant: d.isRelativeOfPublicServant
+            ? "yes"
+            : d.isRelativeOfPublicServant === false
+              ? "no"
+              : "",
+          isPublicIntern: d.isPublicIntern
+            ? "yes"
+            : d.isPublicIntern === false
+              ? "no"
+              : "",
+          isRelativeOfPublicIntern: d.isRelativeOfPublicIntern
+            ? "yes"
+            : d.isRelativeOfPublicIntern === false
+              ? "no"
+              : "",
+          wasHighOfficer: d.wasHighOfficer
+            ? "yes"
+            : d.wasHighOfficer === false
+              ? "no"
+              : "",
+          isRelativeOfHighOfficer: d.isRelativeOfHighOfficer
+            ? "yes"
+            : d.isRelativeOfHighOfficer === false
+              ? "no"
+              : "",
+          hasProjectLink: d.hasProjectLink
+            ? "yes"
+            : d.hasProjectLink === false
+              ? "no"
+              : "",
+          isDirectSupplierToProject: d.isDirectSupplierToProject
+            ? "yes"
+            : d.isDirectSupplierToProject === false
+              ? "no"
+              : "",
+          hasPreviousGrant: d.hasPreviousGrant
+            ? "yes"
+            : d.hasPreviousGrant === false
+              ? "no"
+              : "",
+          previousGrantDetails: d.previousGrantDetails || "",
 
-      // ===== STEP 2 =====
-      companyStatus: (d.companyType as CompanyStatusType) || "",
-      companyName: d.company?.companyName || "",
-      companyNeighborhood: d.company?.address?.neighborhood || "",
-      companyZone: d.company?.address?.street || "",
-      companyProvinceId: d.company?.address?.provinceId || "",
-      companyCommuneId: d.company?.address?.communeId || "",
-      companyPhone: d.company?.companyPhone || "",
-      companyEmail: d.company?.companyEmail || "",
-      legalStatus: (d.company?.legalStatus as LegalStatusType) || "",
-      legalStatusOther: d.company?.legalStatusOther || "",
-      nif: d.company?.taxIdNumber || "",
-      affiliatedToCGA: d.company?.affiliatedToCGA
-        ? "yes"
-        : d.company?.affiliatedToCGA === false
-          ? "no"
-          : "", // Nouveau champ
-      femaleEmployees: d.company?.femaleEmployees ?? "", // Nouveau champ
-      maleEmployees: d.company?.maleEmployees ?? "", // Nouveau champ
-      refugeeEmployees: d.company?.refugeeEmployees ?? "", // Nouveau champ
-      batwaEmployees: d.company?.batwaEmployees ?? "", // Nouveau champ
-      disabledEmployees: d.company?.disabledEmployees ?? "", // Nouveau champ
-      employeeCount: d.company?.permanentEmployees ?? "",
-      associatesCount:
-        (d.company?.associatesCount as AssociatesCountType) || "", // Nouveau champ
-      associatesCountOther: d.company?.associatesCountOther || "", // Nouveau champ
-      femalePartners: d.company?.femalePartners ?? "", // Nouveau champ
-      malePartners: d.company?.malePartners ?? "", // Nouveau champ
-      refugeePartners: d.company?.refugeePartners ?? "", // Nouveau champ
-      batwaPartners: d.company?.batwaPartners ?? "", // Nouveau champ
-      disabledPartners: d.company?.disabledPartners ?? "", // Nouveau champ
-      annualRevenue: d.company?.revenueYearN1
-        ? Number(d.company.revenueYearN1)
-        : "",
-      creationYear: d.company?.creationDate
-        ? new Date(d.company.creationDate).getFullYear()
-        : "",
-      sectorId: d.company?.primarySectorId || "",
-      activityDescription: d.company?.activityDescription || "",
-      hasBankAccount: d.company?.hasBankAccount
-        ? "yes"
-        : d.company?.hasBankAccount === false
-          ? "no"
-          : "", // Nouveau champ
-      hasBankCredit: d.company?.hasBankCredit
-        ? "yes"
-        : d.company?.hasBankCredit === false
-          ? "no"
-          : "", // Nouveau champ
-      bankCreditAmount: d.company?.bankCreditAmount ?? "", // Nouveau champ
-      isWomanLed: d.company?.isLedByWoman || false,
-      isRefugeeLed: d.company?.isLedByRefugee || false,
-      hasClimateImpact: d.company?.hasPositiveClimateImpact || false,
+          // ===== STEP 2 =====
+          companyStatus: (d.companyType as CompanyStatusType) || "",
+          companyName: d.company?.companyName || "",
+          companyNeighborhood: d.company?.address?.neighborhood || "",
+          companyZone: d.company?.address?.street || "",
+          companyProvinceId: d.company?.address?.provinceId || "",
+          companyCommuneId: d.company?.address?.communeId || "",
+          companyPhone: d.company?.companyPhone || "",
+          companyEmail: d.company?.companyEmail || "",
+          legalStatus: (d.company?.legalStatus as LegalStatusType) || "",
+          legalStatusOther: d.company?.legalStatusOther || "",
+          nif: d.company?.taxIdNumber || "",
+          affiliatedToCGA: d.company?.affiliatedToCGA
+            ? "yes"
+            : d.company?.affiliatedToCGA === false
+              ? "no"
+              : "", // Nouveau champ
+          femaleEmployees: d.company?.femaleEmployees ?? "", // Nouveau champ
+          maleEmployees: d.company?.maleEmployees ?? "", // Nouveau champ
+          refugeeEmployees: d.company?.refugeeEmployees ?? "", // Nouveau champ
+          batwaEmployees: d.company?.batwaEmployees ?? "", // Nouveau champ
+          disabledEmployees: d.company?.disabledEmployees ?? "", // Nouveau champ
+          employeeCount: d.company?.permanentEmployees ?? "",
+          associatesCount:
+            (d.company?.associatesCount as AssociatesCountType) || "", // Nouveau champ
+          associatesCountOther: d.company?.associatesCountOther || "", // Nouveau champ
+          femalePartners: d.company?.femalePartners ?? "", // Nouveau champ
+          malePartners: d.company?.malePartners ?? "", // Nouveau champ
+          refugeePartners: d.company?.refugeePartners ?? "", // Nouveau champ
+          batwaPartners: d.company?.batwaPartners ?? "", // Nouveau champ
+          disabledPartners: d.company?.disabledPartners ?? "", // Nouveau champ
+          annualRevenue: d.company?.revenueYearN1
+            ? Number(d.company.revenueYearN1)
+            : "",
+          creationYear: d.company?.creationDate
+            ? new Date(d.company.creationDate).getFullYear()
+            : "",
+          sectorId: d.company?.primarySectorId || "",
+          activityDescription: d.company?.activityDescription || "",
+          hasBankAccount: d.company?.hasBankAccount
+            ? "yes"
+            : d.company?.hasBankAccount === false
+              ? "no"
+              : "", // Nouveau champ
+          hasBankCredit: d.company?.hasBankCredit
+            ? "yes"
+            : d.company?.hasBankCredit === false
+              ? "no"
+              : "", // Nouveau champ
+          bankCreditAmount: d.company?.bankCreditAmount ?? "", // Nouveau champ
+          isWomanLed: d.company?.isLedByWoman || false,
+          isRefugeeLed: d.company?.isLedByRefugee || false,
+          hasClimateImpact: d.company?.hasPositiveClimateImpact || false,
 
-      // ===== STEP 3 =====
-      projectTitle: d.projectTitle || "", // Nouveau champ
-      projectObjective: d.projectObjective || "", // Nouveau champ
-      projectSectors: d.projectSectors || [], // Nouveau champ
-      otherSector: d.otherSector || "", // Nouveau champ
-      mainActivities: d.mainActivities || "", // Nouveau champ
-      productsServices: d.productsServices || "", // Nouveau champ
-      businessIdea: d.businessIdea || "", // Nouveau champ
-      targetClients: d.targetClients || "", // Nouveau champ
-      clientScope: d.clientScope || [], // Nouveau champ
-      hasCompetitors: d.hasCompetitors
-        ? "yes"
-        : d.hasCompetitors === false
-          ? "no"
-          : "", // Nouveau champ
-      competitorNames: d.competitorNames || "", // Nouveau champ
-      plannedEmployeesFemale: d.plannedEmployeesFemale ?? "", // Nouveau champ
-      plannedEmployeesMale: d.plannedEmployeesMale ?? "", // Nouveau champ
-      plannedPermanentEmployees: d.plannedPermanentEmployees ?? "", // Nouveau champ
-      isNewIdea: d.isNewIdea ? "yes" : d.isNewIdea === false ? "no" : "", // Nouveau champ
-      climateActions: d.climateActions || "", // Nouveau champ
-      inclusionActions: d.inclusionActions || "", // Nouveau champ
-      hasEstimatedCost: d.hasEstimatedCost
-        ? "yes"
-        : d.hasEstimatedCost === false
-          ? "no"
-          : "", // Nouveau champ
-      totalProjectCost: d.totalProjectCost ?? "", // Nouveau champ
-      requestedSubsidyAmount: d.requestedSubsidyAmount ?? "", // Nouveau champ
-      mainExpenses: d.mainExpenses || "", // Nouveau champ
+          // ===== STEP 3 =====
+          projectTitle: d.projectTitle || "", // Nouveau champ
+          projectObjective: d.projectObjective || "", // Nouveau champ
+          projectSectors: d.projectSectors || [], // Nouveau champ
+          otherSector: d.otherSector || "", // Nouveau champ
+          mainActivities: d.mainActivities || "", // Nouveau champ
+          productsServices: d.productsServices || "", // Nouveau champ
+          businessIdea: d.businessIdea || "", // Nouveau champ
+          targetClients: d.targetClients || "", // Nouveau champ
+          clientScope: d.clientScope || [], // Nouveau champ
+          hasCompetitors: d.hasCompetitors
+            ? "yes"
+            : d.hasCompetitors === false
+              ? "no"
+              : "", // Nouveau champ
+          competitorNames: d.competitorNames || "", // Nouveau champ
+          plannedEmployeesFemale: d.plannedEmployeesFemale ?? "", // Nouveau champ
+          plannedEmployeesMale: d.plannedEmployeesMale ?? "", // Nouveau champ
+          plannedPermanentEmployees: d.plannedPermanentEmployees ?? "", // Nouveau champ
+          isNewIdea: d.isNewIdea ? "yes" : d.isNewIdea === false ? "no" : "", // Nouveau champ
+          climateActions: d.climateActions || "", // Nouveau champ
+          inclusionActions: d.inclusionActions || "", // Nouveau champ
+          hasEstimatedCost: d.hasEstimatedCost
+            ? "yes"
+            : d.hasEstimatedCost === false
+              ? "no"
+              : "", // Nouveau champ
+          totalProjectCost: d.totalProjectCost ?? "", // Nouveau champ
+          requestedSubsidyAmount: d.requestedSubsidyAmount ?? "", // Nouveau champ
+          mainExpenses: d.mainExpenses || "", // Nouveau champ
 
-      // ===== STEP 4 =====
-      acceptTerms: cm.get("TERMS_AND_CONDITIONS") || false,
-      acceptPrivacy: cm.get("PRIVACY_POLICY") || false,
-      certifyAccuracy: cm.get("CERTIFY_ACCURACY") || false,
-      acceptNotifications: cm.get("COMMUNICATIONS") || false,
-    } as any));
+          // ===== STEP 4 =====
+          acceptTerms: cm.get("TERMS_AND_CONDITIONS") || false,
+          acceptPrivacy: cm.get("PRIVACY_POLICY") || false,
+          certifyAccuracy: cm.get("CERTIFY_ACCURACY") || false,
+          acceptNotifications: cm.get("COMMUNICATIONS") || false,
+        }) as any,
+    );
   };
   const updateField = useCallback(
     <K extends keyof FormData>(key: K, value: FormData[K]) => {
@@ -1226,6 +1488,25 @@ const Profile: React.FC = () => {
           if (form.companyStatus === "formal" && !form.legalStatus)
             e.legalStatus = t("required");
           if (!form.associatesCount) e.associatesCount = t("required");
+
+          // Required documents
+          const docList =
+            form.companyStatus === "formal"
+              ? FORMAL_DOCS
+              : form.companyStatus === "informal"
+                ? INFORMAL_DOCS
+                : [];
+          const de: FormErrors = {};
+          docList
+            .filter((d) => d.required)
+            .forEach((d) => {
+              if (!documents[d.key]) de[d.key] = t("required");
+            });
+          setDocErrors(de);
+          if (Object.keys(de).length > 0) {
+            setErrors(e);
+            return false;
+          }
         }
       }
 
@@ -1252,24 +1533,6 @@ const Profile: React.FC = () => {
         if (!form.acceptTerms) e.acceptTerms = t("acceptTermsRequired");
         if (!form.acceptPrivacy) e.acceptPrivacy = t("acceptPrivacyRequired");
         if (!form.certifyAccuracy) e.certifyAccuracy = t("certifyRequired");
-        // Required documents
-        const docList =
-          form.companyStatus === "formal"
-            ? FORMAL_DOCS
-            : form.companyStatus === "informal"
-              ? INFORMAL_DOCS
-              : [];
-        const de: FormErrors = {};
-        docList
-          .filter((d) => d.required)
-          .forEach((d) => {
-            if (!documents[d.key]) de[d.key] = t("required");
-          });
-        setDocErrors(de);
-        if (Object.keys(de).length > 0) {
-          setErrors(e);
-          return false;
-        }
       }
 
       setErrors(e);
@@ -1436,7 +1699,7 @@ const Profile: React.FC = () => {
         lang,
       );
 
-      if (currentStep === 4 || isFinish) {
+      if (currentStep === 2) {
         const docList =
           form.companyStatus === "formal"
             ? FORMAL_DOCS
@@ -1515,173 +1778,179 @@ const Profile: React.FC = () => {
   const canShowCompanyFields =
     form.companyStatus === "formal" || form.companyStatus === "informal";
 
-  return (
-    <div className="site-main">
-      <Header />
-      <PageHeader title={t("myProfile")} breadcrumb={t("myProfile")} />
-      <div className="ttm-row login-section clearfix">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="bg-theme-GreyColor ttm-col-bgcolor-yes ttm-bg rounded p-50 p-lg-20">
-                <div className="layer-content">
-                  <div className="d-flex justify-content-between align-items-center mb-30">
-                    <div>
-                      <p
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 700,
-                          textTransform: "uppercase",
-                          letterSpacing: "0.1em",
-                          color: "#999",
-                          margin: "0 0 4px",
-                        }}
-                      >
-                        {t("step")} {currentStep} {t("of")} 4
-                      </p>
-                      <h4 style={{ margin: 0 }}>
-                        {t(STEPS[currentStep - 1].labelKey)}
-                      </h4>
+  if (loading) {
+    return <ProfileLoader/>;
+  } else if (beneficiary?.isProfileComplete) {
+    navigate("/application-submitted", { replace: true });
+  } else {
+    return (
+      <div className="site-main">
+        <Header />
+        <PageHeader title={t("myProfile")} breadcrumb={t("myProfile")} />
+        <div className="ttm-row login-section clearfix">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="bg-theme-GreyColor ttm-col-bgcolor-yes ttm-bg rounded p-50 p-lg-20">
+                  <div className="layer-content">
+                    <div className="d-flex justify-content-between align-items-center mb-30">
+                      <div>
+                        <p
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.1em",
+                            color: "#999",
+                            margin: "0 0 4px",
+                          }}
+                        >
+                          {t("step")} {currentStep} {t("of")} 4
+                        </p>
+                        <h4 style={{ margin: 0 }}>
+                          {t(STEPS[currentStep - 1].labelKey)}
+                        </h4>
+                      </div>
+                      <ProgressRing
+                        percentage={parseInt(progressPercentage.toString())}
+                      />
                     </div>
-                    <ProgressRing
-                      percentage={parseInt(progressPercentage.toString())}
-                    />
-                  </div>
 
-                  {currentStep === 1 && (
-                    <InfoBanner
-                      title={t("profileNoteTitle")}
-                      description={t("profileNote")}
-                    />
-                  )}
-                  {currentStep === 4 && (
-                    <InfoBanner
-                      title={t("verifyBanner.title")}
-                      description={t("verifyBanner.description")}
-                    />
-                  )}
+                    {currentStep === 1 && (
+                      <InfoBanner
+                        title={t("profileNoteTitle")}
+                        description={t("profileNote")}
+                      />
+                    )}
+                    {currentStep === 4 && (
+                      <InfoBanner
+                        title={t("verifyBanner.title")}
+                        description={t("verifyBanner.description")}
+                      />
+                    )}
 
-                  <form
-                    className="login_form wrap-form"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      saveCurrentStep(false);
-                    }}
-                    noValidate
-                  >
-                    <div className="row">
-                      {currentStep === 1 && (
-                        <Step1Fields
-                          form={form}
-                          errors={errors}
-                          provinces={provinces}
-                          communes={communes}
-                          isKi={isKi}
-                          maxDate={maxDate}
-                          loadingStates={loadingStates}
-                          onUpdateField={updateField}
-                          t={t}
-                        />
-                      )}
-                      {currentStep === 2 && (
-                        <Step2Fields
-                          form={form}
-                          errors={errors}
-                          sectors={sectors}
-                          provinces={provinces}
-                          companyCommunes={companyCommunes}
-                          isKi={isKi}
-                          loadingStates={loadingStates}
-                          canShowCompanyFields={canShowCompanyFields}
-                          onUpdateField={updateField}
-                          toggleArray={toggleArray}
-                          t={t}
-                        />
-                      )}
-                      {currentStep === 3 && (
-                        <Step3Fields
-                          form={form}
-                          errors={errors}
-                          onUpdateField={updateField}
-                          toggleArray={toggleArray}
-                          t={t}
-                        />
-                      )}
-                      {currentStep === 4 && (
-                        <Step4Fields
-                          form={form}
-                          errors={errors}
-                          documents={documents}
-                          docErrors={docErrors}
-                          onUpdateField={updateField}
-                          onUpdateDocument={updateDocument}
-                          t={t}
-                        />
-                      )}
+                    <form
+                      className="login_form wrap-form"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        saveCurrentStep(false);
+                      }}
+                      noValidate
+                    >
+                      <div className="row">
+                        {currentStep === 1 && (
+                          <Step1Fields
+                            form={form}
+                            errors={errors}
+                            provinces={provinces}
+                            communes={communes}
+                            isKi={isKi}
+                            maxDate={maxDate}
+                            loadingStates={loadingStates}
+                            onUpdateField={updateField}
+                            t={t}
+                          />
+                        )}
+                        {currentStep === 2 && (
+                          <Step2Fields
+                            form={form}
+                            errors={errors}
+                            sectors={sectors}
+                            provinces={provinces}
+                            companyCommunes={companyCommunes}
+                            isKi={isKi}
+                            loadingStates={loadingStates}
+                            canShowCompanyFields={canShowCompanyFields}
+                            onUpdateField={updateField}
+                            toggleArray={toggleArray}
+                            documents={documents}
+                            docErrors={docErrors}
+                            onUpdateDocument={updateDocument}
+                            t={t}
+                          />
+                        )}
+                        {currentStep === 3 && (
+                          <Step3Fields
+                            form={form}
+                            errors={errors}
+                            onUpdateField={updateField}
+                            toggleArray={toggleArray}
+                            t={t}
+                          />
+                        )}
+                        {currentStep === 4 && (
+                          <Step4Fields
+                            form={form}
+                            errors={errors}
+                            onUpdateField={updateField}
+                            t={t}
+                          />
+                        )}
 
-                      <div className="col-12 mt-25">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <div>
-                            {currentStep > 1 && (
-                              <button
-                                type="button"
-                                onClick={goToPreviousStep}
-                                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
-                              >
-                                ← {t("previous")}
-                              </button>
-                            )}
-                          </div>
-                          <div className="d-flex" style={{ gap: 10 }}>
-                            <button
-                              type="submit"
-                              disabled={savingStep === currentStep}
-                              className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor d-flex justify-content-center align-items-center"
-                            >
-                              {savingStep === currentStep ? (
-                                <>
-                                  <span className="copa-spinner" />
-                                  {t("saving")}...
-                                </>
-                              ) : (
-                                <>
-                                  <i className="ti ti-save me-2 ml-0" />
-                                  {t("saveStep")}
-                                </>
+                        <div className="col-12 mt-25">
+                          <div className="d-flex justify-content-between align-items-center">
+                            <div>
+                              {currentStep > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={goToPreviousStep}
+                                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
+                                >
+                                  ← {t("previous")}
+                                </button>
                               )}
-                            </button>
-                            {currentStep < 4 && (
+                            </div>
+                            <div className="d-flex" style={{ gap: 10 }}>
                               <button
-                                type="button"
-                                onClick={goToNextStep}
-                                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                                type="submit"
+                                disabled={savingStep === currentStep}
+                                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor d-flex justify-content-center align-items-center"
                               >
-                                {t("next")} →
+                                {savingStep === currentStep ? (
+                                  <>
+                                    <span className="copa-spinner" />
+                                    {t("saving")}...
+                                  </>
+                                ) : (
+                                  <>
+                                    <i className="ti ti-save me-2 ml-0" />
+                                    {t("saveStep")}
+                                  </>
+                                )}
                               </button>
-                            )}
-                            {currentStep === 4 && (
-                              <button
-                                type="button"
-                                onClick={() => saveCurrentStep(true)}
-                                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
-                              >
-                                ✓ {t("submit")}
-                              </button>
-                            )}
+                              {currentStep < 4 && (
+                                <button
+                                  type="button"
+                                  onClick={goToNextStep}
+                                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                                >
+                                  {t("next")} →
+                                </button>
+                              )}
+                              {currentStep === 4 && (
+                                <button
+                                  type="button"
+                                  onClick={() => saveCurrentStep(true)}
+                                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                                >
+                                  ✓ {t("submit")}
+                                </button>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </form>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
+    );
+  }
 };
 
 // ─── ProgressRing & InfoBanner ────────────────────────────────────────────────
@@ -2047,28 +2316,38 @@ const Step2Fields: React.FC<any> = ({
   canShowCompanyFields,
   onUpdateField,
   toggleArray,
+  documents,
+  docErrors,
+  onUpdateDocument,
   t,
-}) => (
-  <>
-    <SectionTitle title={t("selectCompanyStatus")} />
-    <div className="col-12">
-      <label className={errors.companyStatus ? "copa-input-invalid" : ""}>
-        <i className="ti ti-briefcase" />
-        <select
-          value={form.companyStatus}
-          onChange={(e) => onUpdateField("companyStatus", e.target.value)}
-        >
-          <option value="">{t("selectCompanyStatus")}</option>
-          <option value="formal">{t("formalCompany")}</option>
-          <option value="informal">{t("informalCompany")}</option>
-          <option value="project">{t("projectCompany")}</option>
-        </select>
-      </label>
-      {errors.companyStatus && (
-        <span className="copa-error-msg">{errors.companyStatus}</span>
-      )}
-    </div>
-    {/* <div className="col-12">
+}) => {
+  const docList =
+    form.companyStatus === "formal"
+      ? FORMAL_DOCS
+      : form.companyStatus === "informal"
+        ? INFORMAL_DOCS
+        : null;
+  return (
+    <>
+      <SectionTitle title={t("selectCompanyStatus")} />
+      <div className="col-12">
+        <label className={errors.companyStatus ? "copa-input-invalid" : ""}>
+          <i className="ti ti-briefcase" />
+          <select
+            value={form.companyStatus}
+            onChange={(e) => onUpdateField("companyStatus", e.target.value)}
+          >
+            <option value="">{t("selectCompanyStatus")}</option>
+            <option value="formal">{t("formalCompany")}</option>
+            <option value="informal">{t("informalCompany")}</option>
+            <option value="project">{t("projectCompany")}</option>
+          </select>
+        </label>
+        {errors.companyStatus && (
+          <span className="copa-error-msg">{errors.companyStatus}</span>
+        )}
+      </div>
+      {/* <div className="col-12">
       <p style={{ fontSize: 13, fontWeight: 600, color: "#444", marginBottom: 0 }}>
         {t("selectCompanyStatus")}
         <span style={{ color: "#dc3545" }}>*</span>
@@ -2091,435 +2370,490 @@ const Step2Fields: React.FC<any> = ({
       {errors.companyStatus && <span className="copa-error-msg">{errors.companyStatus}</span>}
     </div> */}
 
-    {canShowCompanyFields && (
-      <>
-        <div className="col-lg-6">
-          <label className={errors.companyName ? "copa-input-invalid" : ""}>
-            <i className="ti ti-briefcase" />
-            <input
-              type="text"
-              value={form.companyName}
-              onChange={(e) => onUpdateField("companyName", e.target.value)}
-              placeholder={t("companyName")}
-            />
-          </label>
-          {errors.companyName && (
-            <span className="copa-error-msg">{errors.companyName}</span>
-          )}
-        </div>
-        <div className="col-lg-6">
-          <label className={errors.nif ? "copa-input-invalid" : ""}>
-            <i className="ti ti-id-badge" />
-            <input
-              type="text"
-              value={form.nif}
-              onChange={(e) => onUpdateField("nif", e.target.value)}
-              placeholder={t("nif")}
-            />
-          </label>
-          {errors.nif && <span className="copa-error-msg">{errors.nif}</span>}
-        </div>
-
-        {form.companyStatus === "formal" && (
-          <>
-            <div className="col-lg-6">
-              <label className={errors.legalStatus ? "copa-input-invalid" : ""}>
-                <i className="ti ti-clipboard" />
-                <select
-                  value={form.legalStatus}
-                  onChange={(e) => onUpdateField("legalStatus", e.target.value)}
-                >
-                  <option value="">{t("selectLegalStatus")}</option>
-                  <option value="snc">Société en Non Collectif (SNC)</option>
-                  <option value="scs">
-                    Société en Commandite Simple (SCS)
-                  </option>
-                  <option value="sprl">SPRL</option>
-                  <option value="su">Société Unipersonnelle (SU)</option>
-                  <option value="sa">Société Anonyme (SA)</option>
-                  <option value="coop">Société Coopérative</option>
-                  <option value="other">{t("other")}</option>
-                </select>
-              </label>
-              {errors.legalStatus && (
-                <span className="copa-error-msg">{errors.legalStatus}</span>
-              )}
-            </div>
-            {form.legalStatus === "other" && (
-              <div className="col-lg-6">
-                <label>
-                  <i className="ti ti-pencil" />
-                  <input
-                    type="text"
-                    value={form.legalStatusOther}
-                    onChange={(e) =>
-                      onUpdateField("legalStatusOther", e.target.value)
-                    }
-                    placeholder={t("specifyLegalStatus")}
-                  />
-                </label>
-              </div>
-            )}
-          </>
-        )}
-
-        <div className="col-lg-6">
-          <label className={errors.creationYear ? "copa-input-invalid" : ""}>
-            <i className="ti ti-calendar" />
-            <input
-              type="number"
-              value={String(form.creationYear)}
-              onChange={(e) =>
-                onUpdateField(
-                  "creationYear",
-                  e.target.value ? +e.target.value : "",
-                )
-              }
-              placeholder={t("creationYear")}
-              min="1900"
-              max={new Date().getFullYear()}
-            />
-          </label>
-          {errors.creationYear && (
-            <span className="copa-error-msg">{errors.creationYear}</span>
-          )}
-        </div>
-        <div className="col-lg-6">
-          <label className={errors.sectorId ? "copa-input-invalid" : ""}>
-            <i className="ti ti-briefcase" />
-            <select
-              value={String(form.sectorId)}
-              onChange={(e) =>
-                onUpdateField("sectorId", e.target.value ? +e.target.value : "")
-              }
-            >
-              <option value="">
-                {loadingStates.sectors ? t("loading") : t("selectSector")}
-              </option>
-              {sectors.map((s: any) => (
-                <option key={s.id} value={s.id}>
-                  {isKi && s.nameRn ? s.nameRn : s.nameFr}
-                </option>
-              ))}
-            </select>
-          </label>
-          {errors.sectorId && (
-            <span className="copa-error-msg">{errors.sectorId}</span>
-          )}
-        </div>
-        <div className="col-12">
-          <label
-            className={errors.activityDescription ? "copa-input-invalid" : ""}
-          >
-            <textarea
-              rows={4}
-              value={form.activityDescription}
-              onChange={(e) =>
-                onUpdateField("activityDescription", e.target.value)
-              }
-              placeholder={t("activityDescription")}
-              style={{ paddingLeft: 15, lineHeight: 1.5 }}
-            />
-          </label>
-          {errors.activityDescription && (
-            <span className="copa-error-msg">{errors.activityDescription}</span>
-          )}
-        </div>
-
-        {/* Adresse entreprise */}
-        <SectionTitle title={t("companyAddressIfDifferent")} />
-        <div className="col-lg-6">
-          <label>
-            <i className="ti ti-home" />
-            <input
-              type="text"
-              value={form.companyNeighborhood}
-              onChange={(e) =>
-                onUpdateField("companyNeighborhood", e.target.value)
-              }
-              placeholder={t("neighborhood")}
-            />
-          </label>
-        </div>
-        <div className="col-lg-6">
-          <label>
-            <i className="ti ti-location-pin" />
-            <input
-              type="text"
-              value={form.companyZone}
-              onChange={(e) => onUpdateField("companyZone", e.target.value)}
-              placeholder={t("zone")}
-            />
-          </label>
-        </div>
-        <div className="col-lg-6">
-          <label>
-            <i className="ti ti-map" />
-            <select
-              value={String(form.companyProvinceId)}
-              onChange={(e) =>
-                onUpdateField(
-                  "companyProvinceId",
-                  e.target.value ? +e.target.value : "",
-                )
-              }
-            >
-              <option value="">{t("selectProvince")}</option>
-              {provinces.map((p: any) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <div className="col-lg-6">
-          <label>
-            <i className="ti ti-map-alt" />
-            <select
-              value={String(form.companyCommuneId)}
-              onChange={(e) =>
-                onUpdateField(
-                  "companyCommuneId",
-                  e.target.value ? +e.target.value : "",
-                )
-              }
-              disabled={!form.companyProvinceId}
-            >
-              <option value="">
-                {!form.companyProvinceId
-                  ? t("selectProvinceFirst")
-                  : t("selectCommune")}
-              </option>
-              {companyCommunes.map((c: any) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <div className="col-lg-6">
-          <label>
-            <PhoneInput
-              country="bi"
-              value={form.companyPhone}
-              onChange={(p: string) => onUpdateField("companyPhone", p)}
-              autoFormat
-              enableSearch
-              countryCodeEditable={false}
-              disableSearchIcon
-              placeholder={t("phoneNumber")}
-            />
-          </label>
-        </div>
-        <div className="col-lg-6">
-          <label>
-            <i className="ti ti-email" />
-            <input
-              type="email"
-              value={form.companyEmail}
-              onChange={(e) => onUpdateField("companyEmail", e.target.value)}
-              placeholder={t("email")}
-            />
-          </label>
-        </div>
-
-        <div className="col-lg-6">
-          <label className={errors.affiliatedToCGA ? "copa-input-invalid" : ""}>
-            <i className="ti ti-check-box" />
-            <select
-              value={form.affiliatedToCGA}
-              onChange={(e) =>
-                onUpdateField("affiliatedToCGA", e.target.value as TriBool)
-              }
-            >
-              <option value="">{t("affiliatedToCGALabel")}</option>
-              <option value="yes">{t("yes")}</option>
-              <option value="no">{t("no")}</option>
-            </select>
-          </label>
-          {errors.affiliatedToCGA && (
-            <span className="copa-error-msg">{errors.affiliatedToCGA}</span>
-          )}
-        </div>
-
-        {/* Effectifs */}
-        <SectionTitle title={t("employeesBreakdown")} />
-        {[
-          { k: "femaleEmployees", ph: "femaleEmployees", ic: "ti-user" },
-          { k: "maleEmployees", ph: "maleEmployees", ic: "ti-user" },
-          { k: "refugeeEmployees", ph: "refugeeEmployees", ic: "ti-user" },
-          { k: "batwaEmployees", ph: "batwaEmployees", ic: "ti-user" },
-          { k: "disabledEmployees", ph: "disabledEmployees", ic: "ti-user" },
-          { k: "employeeCount", ph: "permanentEmployees", ic: "fa fa-users" },
-        ].map(({ k, ph, ic }) => (
-          <div className="col-lg-4" key={k}>
-            <label className={(errors as any)[k] ? "copa-input-invalid" : ""}>
-              <i className={ic} />
-              <input
-                type="number"
-                min="0"
-                value={String((form as any)[k])}
-                onChange={(e) =>
-                  onUpdateField(
-                    k as keyof FormData,
-                    e.target.value ? +e.target.value : ("" as any),
-                  )
-                }
-                placeholder={t(ph)}
-              />
-            </label>
-            {(errors as any)[k] && (
-              <span className="copa-error-msg">{(errors as any)[k]}</span>
-            )}
-          </div>
-        ))}
-
-        {/* Associés */}
-        <SectionTitle title={t("associatesSection")} />
-        <div className="col-12">
-          <label className={errors.associatesCount ? "copa-input-invalid" : ""}>
-            <i className="fa fa-users" />
-            <select
-              value={form.associatesCount}
-              onChange={(e) => onUpdateField("associatesCount", e.target.value)}
-            >
-              <option value="">{t("selectAssociatesCount")}</option>
-              <option value="solo">{t("associates_solo")}</option>
-              <option value="2">{t("associates_2")}</option>
-              <option value="3">{t("associates_3")}</option>
-              <option value="other">{t("associates_other")}</option>
-            </select>
-          </label>
-          {errors.associatesCount && (
-            <span className="copa-error-msg">{errors.associatesCount}</span>
-          )}
-        </div>
-        {form.associatesCount === "other" && (
+      {canShowCompanyFields && (
+        <>
           <div className="col-lg-6">
-            <label>
-              <i className="ti ti-pencil" />
+            <label className={errors.companyName ? "copa-input-invalid" : ""}>
+              <i className="ti ti-briefcase" />
               <input
                 type="text"
-                value={form.associatesCountOther}
+                value={form.companyName}
+                onChange={(e) => onUpdateField("companyName", e.target.value)}
+                placeholder={t("companyName")}
+              />
+            </label>
+            {errors.companyName && (
+              <span className="copa-error-msg">{errors.companyName}</span>
+            )}
+          </div>
+          <div className="col-lg-6">
+            <label className={errors.nif ? "copa-input-invalid" : ""}>
+              <i className="ti ti-id-badge" />
+              <input
+                type="text"
+                value={form.nif}
+                onChange={(e) => onUpdateField("nif", e.target.value)}
+                placeholder={t("nif")}
+              />
+            </label>
+            {errors.nif && <span className="copa-error-msg">{errors.nif}</span>}
+          </div>
+
+          {form.companyStatus === "formal" && (
+            <>
+              <div className="col-lg-6">
+                <label
+                  className={errors.legalStatus ? "copa-input-invalid" : ""}
+                >
+                  <i className="ti ti-clipboard" />
+                  <select
+                    value={form.legalStatus}
+                    onChange={(e) =>
+                      onUpdateField("legalStatus", e.target.value)
+                    }
+                  >
+                    <option value="">{t("selectLegalStatus")}</option>
+                    <option value="snc">Société en Non Collectif (SNC)</option>
+                    <option value="scs">
+                      Société en Commandite Simple (SCS)
+                    </option>
+                    <option value="sprl">SPRL</option>
+                    <option value="su">Société Unipersonnelle (SU)</option>
+                    <option value="sa">Société Anonyme (SA)</option>
+                    <option value="coop">Société Coopérative</option>
+                    <option value="other">{t("other")}</option>
+                  </select>
+                </label>
+                {errors.legalStatus && (
+                  <span className="copa-error-msg">{errors.legalStatus}</span>
+                )}
+              </div>
+              {form.legalStatus === "other" && (
+                <div className="col-lg-6">
+                  <label>
+                    <i className="ti ti-pencil" />
+                    <input
+                      type="text"
+                      value={form.legalStatusOther}
+                      onChange={(e) =>
+                        onUpdateField("legalStatusOther", e.target.value)
+                      }
+                      placeholder={t("specifyLegalStatus")}
+                    />
+                  </label>
+                </div>
+              )}
+            </>
+          )}
+
+          <div className="col-lg-6">
+            <label className={errors.creationYear ? "copa-input-invalid" : ""}>
+              <i className="ti ti-calendar" />
+              <input
+                type="number"
+                value={String(form.creationYear)}
                 onChange={(e) =>
-                  onUpdateField("associatesCountOther", e.target.value)
+                  onUpdateField(
+                    "creationYear",
+                    e.target.value ? +e.target.value : "",
+                  )
                 }
-                placeholder={t("specifyAssociatesCount")}
+                placeholder={t("creationYear")}
+                min="1900"
+                max={new Date().getFullYear()}
+              />
+            </label>
+            {errors.creationYear && (
+              <span className="copa-error-msg">{errors.creationYear}</span>
+            )}
+          </div>
+          <div className="col-lg-6">
+            <label className={errors.sectorId ? "copa-input-invalid" : ""}>
+              <i className="ti ti-briefcase" />
+              <select
+                value={String(form.sectorId)}
+                onChange={(e) =>
+                  onUpdateField(
+                    "sectorId",
+                    e.target.value ? +e.target.value : "",
+                  )
+                }
+              >
+                <option value="">
+                  {loadingStates.sectors ? t("loading") : t("selectSector")}
+                </option>
+                {sectors.map((s: any) => (
+                  <option key={s.id} value={s.id}>
+                    {isKi && s.nameRn ? s.nameRn : s.nameFr}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {errors.sectorId && (
+              <span className="copa-error-msg">{errors.sectorId}</span>
+            )}
+          </div>
+          <div className="col-12">
+            <label
+              className={errors.activityDescription ? "copa-input-invalid" : ""}
+            >
+              <textarea
+                rows={4}
+                value={form.activityDescription}
+                onChange={(e) =>
+                  onUpdateField("activityDescription", e.target.value)
+                }
+                placeholder={t("activityDescription")}
+                style={{ paddingLeft: 15, lineHeight: 1.5 }}
+              />
+            </label>
+            {errors.activityDescription && (
+              <span className="copa-error-msg">
+                {errors.activityDescription}
+              </span>
+            )}
+          </div>
+
+          {/* Adresse entreprise */}
+          <SectionTitle title={t("companyAddressIfDifferent")} />
+          <div className="col-lg-6">
+            <label>
+              <i className="ti ti-home" />
+              <input
+                type="text"
+                value={form.companyNeighborhood}
+                onChange={(e) =>
+                  onUpdateField("companyNeighborhood", e.target.value)
+                }
+                placeholder={t("neighborhood")}
               />
             </label>
           </div>
-        )}
-        {form.associatesCount && form.associatesCount !== "solo" && (
-          <>
-            <SectionTitle title={t("partnersBreakdown")} />
-            {[
-              { k: "femalePartners", ph: "femalePartners" },
-              { k: "malePartners", ph: "malePartners" },
-              { k: "refugeePartners", ph: "refugeePartners" },
-              { k: "batwaPartners", ph: "batwaPartners" },
-              { k: "disabledPartners", ph: "disabledPartners" },
-            ].map(({ k, ph }) => (
-              <div className="col-lg-4" key={k}>
-                <label>
-                  <i className="ti ti-user" />
-                  <input
-                    type="number"
-                    min="0"
-                    value={String((form as any)[k])}
-                    onChange={(e) =>
-                      onUpdateField(
-                        k as keyof FormData,
-                        e.target.value ? +e.target.value : ("" as any),
-                      )
-                    }
-                    placeholder={t(ph)}
-                  />
-                </label>
-              </div>
-            ))}
-          </>
-        )}
+          <div className="col-lg-6">
+            <label>
+              <i className="ti ti-location-pin" />
+              <input
+                type="text"
+                value={form.companyZone}
+                onChange={(e) => onUpdateField("companyZone", e.target.value)}
+                placeholder={t("zone")}
+              />
+            </label>
+          </div>
+          <div className="col-lg-6">
+            <label>
+              <i className="ti ti-map" />
+              <select
+                value={String(form.companyProvinceId)}
+                onChange={(e) =>
+                  onUpdateField(
+                    "companyProvinceId",
+                    e.target.value ? +e.target.value : "",
+                  )
+                }
+              >
+                <option value="">{t("selectProvince")}</option>
+                {provinces.map((p: any) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="col-lg-6">
+            <label>
+              <i className="ti ti-map-alt" />
+              <select
+                value={String(form.companyCommuneId)}
+                onChange={(e) =>
+                  onUpdateField(
+                    "companyCommuneId",
+                    e.target.value ? +e.target.value : "",
+                  )
+                }
+                disabled={!form.companyProvinceId}
+              >
+                <option value="">
+                  {!form.companyProvinceId
+                    ? t("selectProvinceFirst")
+                    : t("selectCommune")}
+                </option>
+                {companyCommunes.map((c: any) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="col-lg-6">
+            <label>
+              <PhoneInput
+                country="bi"
+                value={form.companyPhone}
+                onChange={(p: string) => onUpdateField("companyPhone", p)}
+                autoFormat
+                enableSearch
+                countryCodeEditable={false}
+                disableSearchIcon
+                placeholder={t("phoneNumber")}
+              />
+            </label>
+          </div>
+          <div className="col-lg-6">
+            <label>
+              <i className="ti ti-email" />
+              <input
+                type="email"
+                value={form.companyEmail}
+                onChange={(e) => onUpdateField("companyEmail", e.target.value)}
+                placeholder={t("email")}
+              />
+            </label>
+          </div>
 
-        {/* Financier */}
-        <SectionTitle title={t("financialSection")} />
-        <div className="col-lg-6">
-          <label>
-            <i className="ti ti-money" />
-            <input
-              type="number"
-              min="0"
-              value={String(form.annualRevenue)}
-              onChange={(e) =>
-                onUpdateField(
-                  "annualRevenue",
-                  e.target.value ? +e.target.value : "",
-                )
-              }
-              placeholder={t("annualRevenue")}
-            />
-          </label>
-        </div>
-        <div className="col-lg-6">
-          <label className={errors.hasBankAccount ? "copa-input-invalid" : ""}>
-            <i className="ti ti-credit-card" />
-            <select
-              value={form.hasBankAccount}
-              onChange={(e) =>
-                onUpdateField("hasBankAccount", e.target.value as TriBool)
-              }
+          <div className="col-lg-6">
+            <label
+              className={errors.affiliatedToCGA ? "copa-input-invalid" : ""}
             >
-              <option value="">{t("hasBankAccountLabel")}</option>
-              <option value="yes">{t("yes")}</option>
-              <option value="no">{t("no")}</option>
-            </select>
-          </label>
-          {errors.hasBankAccount && (
-            <span className="copa-error-msg">{errors.hasBankAccount}</span>
-          )}
-        </div>
-        <div className="col-lg-6">
-          <label className={errors.hasBankCredit ? "copa-input-invalid" : ""}>
-            <i className="ti ti-money" />
-            <select
-              value={form.hasBankCredit}
-              onChange={(e) =>
-                onUpdateField("hasBankCredit", e.target.value as TriBool)
-              }
+              <i className="ti ti-check-box" />
+              <select
+                value={form.affiliatedToCGA}
+                onChange={(e) =>
+                  onUpdateField("affiliatedToCGA", e.target.value as TriBool)
+                }
+              >
+                <option value="">{t("affiliatedToCGALabel")}</option>
+                <option value="yes">{t("yes")}</option>
+                <option value="no">{t("no")}</option>
+              </select>
+            </label>
+            {errors.affiliatedToCGA && (
+              <span className="copa-error-msg">{errors.affiliatedToCGA}</span>
+            )}
+          </div>
+
+          {/* Effectifs */}
+          <SectionTitle title={t("employeesBreakdown")} />
+          {[
+            { k: "femaleEmployees", ph: "femaleEmployees", ic: "ti-user" },
+            { k: "maleEmployees", ph: "maleEmployees", ic: "ti-user" },
+            { k: "refugeeEmployees", ph: "refugeeEmployees", ic: "ti-user" },
+            { k: "batwaEmployees", ph: "batwaEmployees", ic: "ti-user" },
+            { k: "disabledEmployees", ph: "disabledEmployees", ic: "ti-user" },
+            { k: "employeeCount", ph: "permanentEmployees", ic: "fa fa-users" },
+          ].map(({ k, ph, ic }) => (
+            <div className="col-lg-4" key={k}>
+              <label className={(errors as any)[k] ? "copa-input-invalid" : ""}>
+                <i className={ic} />
+                <input
+                  type="number"
+                  min="0"
+                  value={String((form as any)[k])}
+                  onChange={(e) =>
+                    onUpdateField(
+                      k as keyof FormData,
+                      e.target.value ? +e.target.value : ("" as any),
+                    )
+                  }
+                  placeholder={t(ph)}
+                />
+              </label>
+              {(errors as any)[k] && (
+                <span className="copa-error-msg">{(errors as any)[k]}</span>
+              )}
+            </div>
+          ))}
+
+          {/* Associés */}
+          <SectionTitle title={t("associatesSection")} />
+          <div className="col-12">
+            <label
+              className={errors.associatesCount ? "copa-input-invalid" : ""}
             >
-              <option value="">{t("hasBankCreditLabel")}</option>
-              <option value="yes">{t("yes")}</option>
-              <option value="no">{t("no")}</option>
-            </select>
-          </label>
-          {errors.hasBankCredit && (
-            <span className="copa-error-msg">{errors.hasBankCredit}</span>
+              <i className="fa fa-users" />
+              <select
+                value={form.associatesCount}
+                onChange={(e) =>
+                  onUpdateField("associatesCount", e.target.value)
+                }
+              >
+                <option value="">{t("selectAssociatesCount")}</option>
+                <option value="solo">{t("associates_solo")}</option>
+                <option value="2">{t("associates_2")}</option>
+                <option value="3">{t("associates_3")}</option>
+                <option value="other">{t("associates_other")}</option>
+              </select>
+            </label>
+            {errors.associatesCount && (
+              <span className="copa-error-msg">{errors.associatesCount}</span>
+            )}
+          </div>
+          {form.associatesCount === "other" && (
+            <div className="col-lg-6">
+              <label>
+                <i className="ti ti-pencil" />
+                <input
+                  type="text"
+                  value={form.associatesCountOther}
+                  onChange={(e) =>
+                    onUpdateField("associatesCountOther", e.target.value)
+                  }
+                  placeholder={t("specifyAssociatesCount")}
+                />
+              </label>
+            </div>
           )}
-        </div>
-        {form.hasBankCredit === "yes" && (
+          {form.associatesCount && form.associatesCount !== "solo" && (
+            <>
+              <SectionTitle title={t("partnersBreakdown")} />
+              {[
+                { k: "femalePartners", ph: "femalePartners" },
+                { k: "malePartners", ph: "malePartners" },
+                { k: "refugeePartners", ph: "refugeePartners" },
+                { k: "batwaPartners", ph: "batwaPartners" },
+                { k: "disabledPartners", ph: "disabledPartners" },
+              ].map(({ k, ph }) => (
+                <div className="col-lg-4" key={k}>
+                  <label>
+                    <i className="ti ti-user" />
+                    <input
+                      type="number"
+                      min="0"
+                      value={String((form as any)[k])}
+                      onChange={(e) =>
+                        onUpdateField(
+                          k as keyof FormData,
+                          e.target.value ? +e.target.value : ("" as any),
+                        )
+                      }
+                      placeholder={t(ph)}
+                    />
+                  </label>
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Financier */}
+          <SectionTitle title={t("financialSection")} />
           <div className="col-lg-6">
             <label>
               <i className="ti ti-money" />
               <input
                 type="number"
                 min="0"
-                value={String(form.bankCreditAmount)}
+                value={String(form.annualRevenue)}
                 onChange={(e) =>
                   onUpdateField(
-                    "bankCreditAmount",
+                    "annualRevenue",
                     e.target.value ? +e.target.value : "",
                   )
                 }
-                placeholder={t("bankCreditAmount")}
+                placeholder={t("annualRevenue")}
               />
             </label>
           </div>
-        )}
-      </>
-    )}
-  </>
-);
+          <div className="col-lg-6">
+            <label
+              className={errors.hasBankAccount ? "copa-input-invalid" : ""}
+            >
+              <i className="ti ti-credit-card" />
+              <select
+                value={form.hasBankAccount}
+                onChange={(e) =>
+                  onUpdateField("hasBankAccount", e.target.value as TriBool)
+                }
+              >
+                <option value="">{t("hasBankAccountLabel")}</option>
+                <option value="yes">{t("yes")}</option>
+                <option value="no">{t("no")}</option>
+              </select>
+            </label>
+            {errors.hasBankAccount && (
+              <span className="copa-error-msg">{errors.hasBankAccount}</span>
+            )}
+          </div>
+          <div className="col-lg-6">
+            <label className={errors.hasBankCredit ? "copa-input-invalid" : ""}>
+              <i className="ti ti-money" />
+              <select
+                value={form.hasBankCredit}
+                onChange={(e) =>
+                  onUpdateField("hasBankCredit", e.target.value as TriBool)
+                }
+              >
+                <option value="">{t("hasBankCreditLabel")}</option>
+                <option value="yes">{t("yes")}</option>
+                <option value="no">{t("no")}</option>
+              </select>
+            </label>
+            {errors.hasBankCredit && (
+              <span className="copa-error-msg">{errors.hasBankCredit}</span>
+            )}
+          </div>
+          {form.hasBankCredit === "yes" && (
+            <div className="col-lg-6">
+              <label>
+                <i className="ti ti-money" />
+                <input
+                  type="number"
+                  min="0"
+                  value={String(form.bankCreditAmount)}
+                  onChange={(e) =>
+                    onUpdateField(
+                      "bankCreditAmount",
+                      e.target.value ? +e.target.value : "",
+                    )
+                  }
+                  placeholder={t("bankCreditAmount")}
+                />
+              </label>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Documents */}
+      {docList && (
+        <>
+          <SectionTitle
+            title={t(
+              form.companyStatus === "formal"
+                ? "documentsForFormal"
+                : "documentsForInformal",
+            )}
+          />
+          {/* <div className="col-12 mb-15">
+            <InfoBanner
+              title={t("documentsInfoTitle")}
+              description={t(
+                form.companyStatus === "formal"
+                  ? "documentsInfoFormal"
+                  : "documentsInfoInformal",
+              )}
+            />
+          </div> */}
+          <div className="mt-15">
+            {docList.map((doc) => (
+              <FileUploadRow
+                key={doc.key}
+                docKey={doc.key}
+                labelKey={doc.labelKey}
+                required={doc.required}
+                file={documents[doc.key] || null}
+                error={docErrors[doc.key]}
+                onChange={onUpdateDocument}
+                t={t}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </>
+  );
+};
 
 // ─── Step 3 ───────────────────────────────────────────────────────────────────
 
@@ -2890,21 +3224,13 @@ const Step3Fields: React.FC<any> = ({
 
 // ─── Step 4 ───────────────────────────────────────────────────────────────────
 
-const Step4Fields: React.FC<any> = ({
-  form,
-  errors,
-  documents,
-  docErrors,
-  onUpdateField,
-  onUpdateDocument,
-  t,
-}) => {
-  const docList =
-    form.companyStatus === "formal"
-      ? FORMAL_DOCS
-      : form.companyStatus === "informal"
-        ? INFORMAL_DOCS
-        : null;
+const Step4Fields: React.FC<any> = ({ form, errors, onUpdateField, t }) => {
+  // const docList =
+  //   form.companyStatus === "formal"
+  //     ? FORMAL_DOCS
+  //     : form.companyStatus === "informal"
+  //       ? INFORMAL_DOCS
+  //       : null;
 
   return (
     <>
@@ -2961,7 +3287,7 @@ const Step4Fields: React.FC<any> = ({
       </div>
 
       {/* Documents */}
-      {docList && (
+      {/* {docList && (
         <>
           <SectionTitle
             title={t(
@@ -2993,8 +3319,93 @@ const Step4Fields: React.FC<any> = ({
             />
           ))}
         </>
-      )}
+      )} */}
     </>
+  );
+};
+
+const ProfileLoader: React.FC = () => {
+
+  return (
+    <div className="site-main">
+      <Header />
+
+      <div
+        style={{
+          minHeight: "70vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 32,
+          padding: "60px 24px",
+        }}
+      >
+        {/* Anneau animé */}
+        <div style={{ position: "relative", width: 72, height: 72 }}>
+          <svg
+            viewBox="0 0 72 72"
+            style={{
+              width: 72,
+              height: 72,
+              animation: "copa-spin 1.1s linear infinite",
+            }}
+          >
+            <circle
+              cx="36" cy="36" r="28"
+              fill="none"
+              stroke="#e8e8e8"
+              strokeWidth="5"
+            />
+            <circle
+              cx="36" cy="36" r="28"
+              fill="none"
+              stroke="var(--skin-color, #1F4E79)"
+              strokeWidth="5"
+              strokeDasharray="60 116"
+              strokeLinecap="round"
+              transform="rotate(-90 36 36)"
+            />
+          </svg>
+          {/* Icône centrée */}
+          <span
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <i
+              className="ti ti-user"
+              style={{
+                fontSize: 22,
+                color: "var(--skin-color, #1F4E79)",
+                opacity: 0.8,
+              }}
+            />
+          </span>
+        </div>
+      </div>
+
+      {/* Keyframes — injectés une seule fois dans le <head> */}
+      <style>{`
+        @keyframes copa-spin {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes copa-pulse {
+          0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+          40%            { transform: scale(1);   opacity: 1;   }
+        }
+        @keyframes copa-shimmer {
+          0%   { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+      `}</style>
+
+      <Footer />
+    </div>
   );
 };
 
