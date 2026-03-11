@@ -32,6 +32,8 @@ const Login: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const location = useLocation();
 
   const from =
@@ -167,6 +169,10 @@ const Login: React.FC = () => {
     return isEmail(identifier) ? "email" : "phone";
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="site-main">
       <Header />
@@ -229,7 +235,7 @@ const Login: React.FC = () => {
                           >
                             <i className="ti ti-lock" />
                             <input
-                              type="password"
+                              type={showPassword ? "text" : "password"}
                               value={password}
                               onChange={(e) => {
                                 setPassword(e.target.value);
@@ -241,6 +247,18 @@ const Login: React.FC = () => {
                               placeholder={t("passwordPlaceholder")}
                               autoComplete="current-password"
                             />
+                            {/* {!showPassword ? (
+                              <span>
+                              <i
+                                className="fa fa-eye-slash"
+                                onClick={togglePasswordVisibility}
+                              /></span>
+                            ) : (
+                              <i
+                                className="fa fa-eye"
+                                onClick={togglePasswordVisibility}
+                              />
+                            )} */}
                           </label>
                           {errors.password && (
                             <span className="copa-error-msg">

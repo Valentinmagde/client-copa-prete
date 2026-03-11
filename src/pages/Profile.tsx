@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
@@ -12,13 +18,14 @@ import ReferenceService from "@/services/reference/reference.service";
 import { toast } from "react-toastify";
 import BeneficiaryService from "@/services/beneficiary/beneficiary.service";
 import { getUser } from "@/utils/storage";
-import { validateEmail, validateNif, validatePhone } from "@/utils/validators";
+import { validateEmail, validateNif } from "@/utils/validators";
 import { Link, useNavigate } from "react-router-dom";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { French } from "flatpickr/dist/l10n/fr";
+import DocumentService from "@/services/document/document.service";
 
 const KirundiLocale = {
   weekdays: {
@@ -71,30 +78,118 @@ const KirundiLocale = {
 type EntrepreneurType = "burundian" | "refugee" | "";
 type GenderType = "M" | "F" | "";
 type CompanyStatusType = "formal" | "informal" | "project" | "";
+type MaritalStatusType = "single" | "married" | "divorced" | "widowed" | "";
+type EducationLevelType = "none" | "primary" | "secondary" | "university" | "";
+type LegalStatusType =
+  | "snc"
+  | "scs"
+  | "sprl"
+  | "su"
+  | "sa"
+  | "coop"
+  | "other"
+  | "";
+type AssociatesCountType = "solo" | "2" | "3" | "other" | "";
+type ClientScopeType = "local" | "national" | "eastAfrica" | "international";
+type TriBool = "yes" | "no" | "";
+// type DocumentFiles = Record<string, File | null>;
+type DocumentFiles = Record<
+  string,
+  {
+    file?: File | null;
+    existing?: {
+      id: number;
+      name: string;
+      size: number;
+      type: string;
+      url: string;
+      validationStatus: string;
+    };
+  } | null
+>;
 
 interface FormData {
   // Step 1
   entrepreneurType: EntrepreneurType;
   firstName: string;
   lastName: string;
+  position: string;
   gender: GenderType;
   birthDate: string;
-  email: string;
-  phone: string;
+  maritalStatus: MaritalStatusType;
+  educationLevel: EducationLevelType;
+  neighborhood: string;
+  zone: string;
   provinceId: number | "";
   communeId: number | "";
-
+  phone: string;
+  email: string;
+  isPublicServant: TriBool;
+  isRelativeOfPublicServant: TriBool;
+  isPublicIntern: TriBool;
+  isRelativeOfPublicIntern: TriBool;
+  wasHighOfficer: TriBool;
+  isRelativeOfHighOfficer: TriBool;
+  hasProjectLink: TriBool;
+  isDirectSupplierToProject: TriBool;
+  hasPreviousGrant: TriBool;
+  previousGrantDetails: string;
   // Step 2
   companyStatus: CompanyStatusType;
   companyName: string;
+  companyNeighborhood: string;
+  companyZone: string;
+  companyProvinceId: number | "";
+  companyCommuneId: number | "";
+  companyPhone: string;
+  companyEmail: string;
+  legalStatus: LegalStatusType;
+  legalStatusOther: string;
   nif: string;
+  affiliatedToCGA: TriBool;
+  femaleEmployees: number | "";
+  maleEmployees: number | "";
+  refugeeEmployees: number | "";
+  batwaEmployees: number | "";
+  disabledEmployees: number | "";
+  employeeCount: number | "";
+  associatesCount: AssociatesCountType;
+  associatesCountOther: string;
+  femalePartners: number | "";
+  malePartners: number | "";
+  refugeePartners: number | "";
+  batwaPartners: number | "";
+  disabledPartners: number | "";
+  annualRevenue: number | "";
   creationYear: number | "";
   sectorId: number | "";
   activityDescription: string;
-  employeeCount: number | "";
-  annualRevenue: number | "";
-
+  hasBankAccount: TriBool;
+  hasBankCredit: TriBool;
+  bankCreditAmount: number | "";
   // Step 3
+  projectTitle: string;
+  projectObjective: string;
+  projectSectors: string[];
+  otherSector: string;
+  mainActivities: string;
+  productsServices: string;
+  businessIdea: string;
+  targetClients: string;
+  clientScope: ClientScopeType[];
+  hasCompetitors: TriBool;
+  competitorNames: string;
+  plannedEmployeesFemale: number | "";
+  plannedEmployeesMale: number | "";
+  plannedPermanentEmployees: number | "";
+  isNewIdea: TriBool;
+  climateActions: string;
+  inclusionActions: string;
+  hasEstimatedCost: TriBool;
+  totalProjectCost: number | "";
+  requestedSubsidyAmount: number | "";
+  mainExpenses: string;
+  // Step 4
   acceptTerms: boolean;
   acceptPrivacy: boolean;
   certifyAccuracy: boolean;
@@ -112,6 +207,7 @@ interface BeneficiaryData {
   profileCompletionStep: string;
   profileCompletedAt: string | null;
   companyType: string;
+  isProfileComplete?: boolean;
   user: {
     id: number;
     email: string;
@@ -120,14 +216,8 @@ interface BeneficiaryData {
     birthDate: string;
     phoneNumber: string;
     gender: { code: string };
-    primaryAddress: {
-      provinceId: number;
-      communeId: number;
-    };
-    consents: Array<{
-      consentType: { code: string };
-      value: boolean;
-    }>;
+    primaryAddress: { provinceId: number; communeId: number };
+    consents: Array<{ consentType: { code: string }; value: boolean }>;
   };
   company?: {
     id: number;
@@ -146,34 +236,93 @@ const INITIAL_FORM: FormData = {
   entrepreneurType: "",
   firstName: "",
   lastName: "",
+  position: "",
   gender: "",
   birthDate: "",
-  email: "",
-  phone: "",
+  maritalStatus: "",
+  educationLevel: "",
+  neighborhood: "",
+  zone: "",
   provinceId: "",
   communeId: "",
+  phone: "",
+  email: "",
+  isPublicServant: "",
+  isRelativeOfPublicServant: "",
+  isPublicIntern: "",
+  isRelativeOfPublicIntern: "",
+  wasHighOfficer: "",
+  isRelativeOfHighOfficer: "",
+  hasProjectLink: "",
+  isDirectSupplierToProject: "",
+  hasPreviousGrant: "",
+  previousGrantDetails: "",
   companyStatus: "",
   companyName: "",
+  companyNeighborhood: "",
+  companyZone: "",
+  companyProvinceId: "",
+  companyCommuneId: "",
+  companyPhone: "",
+  companyEmail: "",
+  legalStatus: "",
+  legalStatusOther: "",
   nif: "",
+  affiliatedToCGA: "",
+  femaleEmployees: "",
+  maleEmployees: "",
+  refugeeEmployees: "",
+  batwaEmployees: "",
+  disabledEmployees: "",
+  employeeCount: "",
+  associatesCount: "",
+  associatesCountOther: "",
+  femalePartners: "",
+  malePartners: "",
+  refugeePartners: "",
+  batwaPartners: "",
+  disabledPartners: "",
+  annualRevenue: "",
   creationYear: "",
   sectorId: "",
   activityDescription: "",
-  employeeCount: "",
-  annualRevenue: "",
+  hasBankAccount: "",
+  hasBankCredit: "",
+  bankCreditAmount: "",
+  projectTitle: "",
+  projectObjective: "",
+  projectSectors: [],
+  otherSector: "",
+  mainActivities: "",
+  productsServices: "",
+  businessIdea: "",
+  targetClients: "",
+  clientScope: [],
+  hasCompetitors: "",
+  competitorNames: "",
+  plannedEmployeesFemale: "",
+  plannedEmployeesMale: "",
+  plannedPermanentEmployees: "",
+  isNewIdea: "",
+  climateActions: "",
+  inclusionActions: "",
+  hasEstimatedCost: "",
+  totalProjectCost: "",
+  requestedSubsidyAmount: "",
+  mainExpenses: "",
   acceptTerms: true,
   acceptPrivacy: true,
   certifyAccuracy: true,
   acceptNotifications: false,
 };
 
-// Configuration des étapes avec leurs poids
 const STEPS = [
-  { num: 1, labelKey: "basicInformation", weight: 33, stepName: "STEP1" },
-  { num: 2, labelKey: "companyInformation", weight: 34, stepName: "STEP2" },
-  { num: 3, labelKey: "validationAndSend", weight: 33, stepName: "STEP3" },
+  { num: 1, labelKey: "basicInformation", weight: 25, stepName: "STEP1" },
+  { num: 2, labelKey: "companyInformation", weight: 25, stepName: "STEP2" },
+  { num: 3, labelKey: "projectPresentation", weight: 25, stepName: "STEP3" },
+  { num: 4, labelKey: "validationAndSend", weight: 25, stepName: "STEP4" },
 ] as const;
 
-// Options pour les cartes radio de l'étape 2
 const COMPANY_STATUS_OPTIONS = [
   {
     value: "formal" as const,
@@ -195,39 +344,362 @@ const COMPANY_STATUS_OPTIONS = [
   },
 ];
 
-// Options pour les checkboxes de l'étape 3
 const CONSENT_OPTIONS = [
   {
     key: "acceptTerms" as const,
     labelKey: "acceptTerms",
     link: "/conditions-utilisation",
     required: true,
-    consentCode: "TERMS_AND_CONDITIONS",
   },
   {
     key: "acceptPrivacy" as const,
     labelKey: "acceptPrivacy",
     link: "/politique-confidentialite",
     required: true,
-    consentCode: "PRIVACY_POLICY",
   },
   {
     key: "certifyAccuracy" as const,
     labelKey: "certifyAccuracy",
     link: null,
     required: true,
-    consentCode: "CERTIFY_ACCURACY",
   },
   {
     key: "acceptNotifications" as const,
     labelKey: "acceptNotifications",
     link: null,
     required: false,
-    consentCode: "COMMUNICATIONS",
   },
 ];
 
-// ─── Component ────────────────────────────────────────────────────────────────
+export const FORMAL_DOCS = [
+  { key: "idCard", labelKey: "doc_idCard", required: true, typeId: 1 },
+  {
+    key: "criminalRecord",
+    labelKey: "doc_criminalRecord",
+    required: true,
+    typeId: 2,
+  },
+  { key: "managerAct", labelKey: "doc_managerAct", required: false, typeId: 3 },
+  {
+    key: "commerceRegister",
+    labelKey: "doc_commerceRegister",
+    required: true,
+    typeId: 4,
+  },
+  {
+    key: "bankStatements",
+    labelKey: "doc_bankStatements",
+    required: true,
+    typeId: 6,
+  },
+];
+
+export const INFORMAL_DOCS = [
+  {
+    key: "communalAttestation",
+    labelKey: "doc_communalAttestation",
+    required: true,
+    typeId: 7,
+  },
+  { key: "idCard", labelKey: "doc_idCard", required: true, typeId: 1 },
+  {
+    key: "criminalRecord",
+    labelKey: "doc_criminalRecord",
+    required: true,
+    typeId: 2,
+  },
+  {
+    key: "bankStatements",
+    labelKey: "doc_bankStatements",
+    required: true,
+    typeId: 6,
+  },
+];
+
+const PROJECT_SECTORS_LIST = [
+  { value: "milk", labelKey: "sectorMilk" },
+  { value: "poultry", labelKey: "sectorPoultry" },
+  { value: "fish", labelKey: "sectorFish" },
+  { value: "tropicalFruit", labelKey: "sectorFruit" },
+  { value: "mining", labelKey: "sectorMining" },
+  { value: "tourism", labelKey: "sectorTourism" },
+  { value: "digital", labelKey: "sectorDigital" },
+  { value: "other", labelKey: "sectorOther" },
+];
+
+const ELIGIBILITY_QUESTIONS: { key: keyof FormData; labelKey: string }[] = [
+  { key: "isPublicServant", labelKey: "isPublicServantLabel" },
+  {
+    key: "isRelativeOfPublicServant",
+    labelKey: "isRelativeOfPublicServantLabel",
+  },
+  { key: "isPublicIntern", labelKey: "isPublicInternLabel" },
+  {
+    key: "isRelativeOfPublicIntern",
+    labelKey: "isRelativeOfPublicInternLabel",
+  },
+  { key: "wasHighOfficer", labelKey: "wasHighOfficerLabel" },
+  { key: "isRelativeOfHighOfficer", labelKey: "isRelativeOfHighOfficerLabel" },
+  { key: "hasProjectLink", labelKey: "hasProjectLinkLabel" },
+  {
+    key: "isDirectSupplierToProject",
+    labelKey: "isDirectSupplierToProjectLabel",
+  },
+  { key: "hasPreviousGrant", labelKey: "hasPreviousGrantLabel" },
+];
+
+// ─── Shared UI atoms ──────────────────────────────────────────────────────────
+
+/** Thin section separator — same style as rest of the form */
+const SectionTitle: React.FC<{ title: string }> = ({ title }) => (
+  <div className="col-12 mt-20 mb-5">
+    <p
+      style={{
+        fontSize: 11,
+        fontWeight: 700,
+        textTransform: "uppercase",
+        letterSpacing: "0.08em",
+        color: "#999",
+        margin: 0,
+        borderBottom: "1px solid #e5e5e5",
+        paddingBottom: 8,
+      }}
+    >
+      {title}
+    </p>
+  </div>
+);
+
+/**
+ * Yes/No toggle rendered as two copa-check-row items.
+ * Identical look to the consent checkboxes — only one can be active at a time.
+ */
+const CheckboxToggle: React.FC<{
+  fieldKey: string;
+  labelKey: string;
+  value: TriBool;
+  error?: string;
+  onChange: (v: TriBool) => void;
+  t: any;
+}> = ({ fieldKey, labelKey, value, error, onChange, t }) => (
+  <div className="col-12">
+    <div className="copa-checklist" style={{ marginBottom: 4 }}>
+      <label
+        className={`copa-check-row ${value === "yes" ? "is-checked" : ""} ${error ? "is-invalid" : ""}`}
+        style={{ marginBottom: 4 }}
+      >
+        <input
+          type="checkbox"
+          checked={value === "yes"}
+          onChange={() => onChange(value === "yes" ? "" : "yes")}
+        />
+        <span className="copa-check-row__box">
+          <svg
+            viewBox="0 0 10 10"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          >
+            <path
+              d="M1.5 5l2.5 2.5 5-5"
+              strokeLinecap="round"
+              strokeWidth="2.5"
+            />
+          </svg>
+        </span>
+        <span className="copa-check-row__text">
+          {t(labelKey)}&nbsp;—&nbsp;<strong>{t("yes")}</strong>
+          <span style={{ color: "#dc3545" }}> *</span>
+        </span>
+      </label>
+
+      <label
+        className={`copa-check-row ${value === "no" ? "is-checked" : ""} ${error ? "is-invalid" : ""}`}
+      >
+        <input
+          type="checkbox"
+          checked={value === "no"}
+          onChange={() => onChange(value === "no" ? "" : "no")}
+        />
+        <span className="copa-check-row__box">
+          <svg
+            viewBox="0 0 10 10"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          >
+            <path
+              d="M1.5 5l2.5 2.5 5-5"
+              strokeLinecap="round"
+              strokeWidth="2.5"
+            />
+          </svg>
+        </span>
+        <span className="copa-check-row__text">
+          {t(labelKey)}&nbsp;—&nbsp;<strong>{t("no")}</strong>
+        </span>
+      </label>
+    </div>
+    {error && <span className="copa-error-msg">{error}</span>}
+  </div>
+);
+
+/** Multi-select checklist — same copa-check-row design */
+const CheckboxGroup: React.FC<{
+  items: { value: string; labelKey: string }[];
+  selected: string[];
+  errorKey?: string;
+  errors: FormErrors;
+  onToggle: (v: string) => void;
+  t: any;
+}> = ({ items, selected, errorKey, errors, onToggle, t }) => (
+  <div className="col-12">
+    <div className="copa-checklist">
+      {items.map(({ value, labelKey }) => (
+        <label
+          key={value}
+          className={`copa-check-row ${selected.includes(value) ? "is-checked" : ""}`}
+        >
+          <input
+            type="checkbox"
+            checked={selected.includes(value)}
+            onChange={() => onToggle(value)}
+          />
+          <span className="copa-check-row__box">
+            <svg
+              viewBox="0 0 10 10"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
+              <path
+                d="M1.5 5l2.5 2.5 5-5"
+                strokeLinecap="round"
+                strokeWidth="2.5"
+              />
+            </svg>
+          </span>
+          <span className="copa-check-row__text">{t(labelKey)}</span>
+        </label>
+      ))}
+    </div>
+    {errorKey && errors[errorKey] && (
+      <span className="copa-error-msg">{errors[errorKey]}</span>
+    )}
+  </div>
+);
+
+/** File upload row — styled as copa-check-row, no native file input visible */
+const FileUploadRow: React.FC<{
+  docKey: string;
+  labelKey: string;
+  required: boolean;
+  file: File | null;
+  error?: string;
+  onChange: (key: string, file: File | null) => void;
+  t: any;
+}> = ({ docKey, labelKey, required, file, error, onChange, t }) => {
+  const ref = useRef<HTMLInputElement>(null);
+  return (
+    <div className="col-12">
+      <label
+        className={`copa-check-row ${file ? "is-checked" : ""} ${error ? "is-invalid" : ""}`}
+        style={{ cursor: "pointer" }}
+        // onClick={() => ref.current?.click()}
+      >
+        <span className="copa-check-row__box" style={{ flexShrink: 0 }}>
+          {file ? (
+            <svg
+              viewBox="0 0 10 10"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
+              <path
+                d="M1.5 5l2.5 2.5 5-5"
+                strokeLinecap="round"
+                strokeWidth="2.5"
+              />
+            </svg>
+          ) : (
+            <svg
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              width="12"
+              height="12"
+              style={{ opacity: 0.35 }}
+            >
+              <path d="M8 1a.5.5 0 0 1 .5.5V7h5.5a.5.5 0 0 1 0 1H8.5v5.5a.5.5 0 0 1-1 0V8H2a.5.5 0 0 1 0-1h5.5V1.5A.5.5 0 0 1 8 1z" />
+            </svg>
+          )}
+        </span>
+
+        <span className="copa-check-row__text" style={{ flex: 1 }}>
+          {t(labelKey)}
+          {required && <span style={{ color: "#dc3545" }}> *</span>}
+        </span>
+
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            padding: "3px 14px",
+            borderRadius: 20,
+            flexShrink: 0,
+            whiteSpace: "nowrap",
+            background: file
+              ? "rgba(var(--skin-color-rgb, 76,175,80), 0.1)"
+              : "#f0f0f0",
+            color: file ? "var(--skin-color, #4caf50)" : "#888",
+          }}
+        >
+          {file
+            ? file.name.length > 24
+              ? file.name.slice(0, 22) + "…"
+              : file.name
+            : t("chooseFile")}
+        </span>
+
+        {file && (
+          <button
+            type="button"
+            style={{
+              border: "none",
+              background: "none",
+              color: "#dc3545",
+              padding: "0 8px",
+              fontSize: 18,
+              lineHeight: 1,
+              cursor: "pointer",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              onChange(docKey, null);
+            }}
+          >
+            ×
+          </button>
+        )}
+
+        <input
+          ref={ref}
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png"
+          style={{ display: "none" }}
+          onChange={(e) => {
+            console.log(JSON.stringify(e.target.files?.[0]));
+            onChange(docKey, e.target.files?.[0] ?? null);
+            e.target.value = "";
+          }}
+        />
+      </label>
+      {error && <span className="copa-error-msg">{error}</span>}
+    </div>
+  );
+};
+
+// ─── Main component ───────────────────────────────────────────────────────────
 
 const Profile: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -236,430 +708,711 @@ const Profile: React.FC = () => {
   const user = getUser();
   const navigate = useNavigate();
 
-  // State
   const [beneficiary, setBeneficiary] = useState<BeneficiaryData | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [form, setForm] = useState<FormData>(INITIAL_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [savingStep, setSavingStep] = useState<number | null>(null);
+  const [documents, setDocuments] = useState<DocumentFiles>({});
+  const [docErrors, setDocErrors] = useState<FormErrors>({});
 
-  // Reference data
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [communes, setCommunes] = useState<Commune[]>([]);
+  const [companyCommunes, setCompanyCommunes] = useState<Commune[]>([]);
   const [sectors, setSectors] = useState<Sector[]>([]);
   const [loadingStates, setLoadingStates] = useState({
     provinces: false,
     communes: false,
     sectors: false,
   });
+
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() - 18);
-  // ─── Chargement initial ─────────────────────────────────────────────────
 
   useEffect(() => {
     loadReferenceData();
   }, []);
-
   useEffect(() => {
-    if (!user?.id) return;
-    loadBeneficiaryData();
+    if (user?.id) loadBeneficiaryData();
   }, [user?.id]);
-
   useEffect(() => {
     if (!form.provinceId) {
       setCommunes([]);
       return;
     }
-    loadCommunes();
+    loadCommunes(form.provinceId, setCommunes);
   }, [form.provinceId]);
-
-  // ─── Fonctions de chargement ────────────────────────────────────────────
+  useEffect(() => {
+    if (!form.companyProvinceId) {
+      setCompanyCommunes([]);
+      return;
+    }
+    loadCommunes(form.companyProvinceId, setCompanyCommunes);
+  }, [form.companyProvinceId]);
 
   const loadReferenceData = async () => {
-    setLoadingStates((prev) => ({ ...prev, provinces: true, sectors: true }));
+    setLoadingStates((p) => ({ ...p, provinces: true, sectors: true }));
     try {
-      const [provincesData, sectorsData] = await Promise.all([
+      const [p, s] = await Promise.all([
         ReferenceService.getAllPovinces(lang),
         ReferenceService.getBusinessSectors(true, lang),
       ]);
-      setProvinces(provincesData);
-      setSectors(sectorsData);
-    } catch (error) {
-      console.error("Erreur chargement références:", error);
+      setProvinces(p);
+      setSectors(s);
+    } catch {
       toast.error(t("errorLoadingReference"));
     } finally {
-      setLoadingStates((prev) => ({
-        ...prev,
-        provinces: false,
-        sectors: false,
-      }));
+      setLoadingStates((p) => ({ ...p, provinces: false, sectors: false }));
     }
   };
 
   const loadBeneficiaryData = async () => {
     setLoading(true);
     try {
-      const response: any = await BeneficiaryService.getByUserId(user.id, lang);
-      if (response) {
-        setBeneficiary(response);
-        mapBeneficiaryToForm(response);
+      const res: any = await BeneficiaryService.getByUserId(user.id, lang);
+      if (res) {
+        setBeneficiary(res);
+        mapToForm(res);
 
-        if ((response.isProfileComplete)) {
-          navigate("/application-submitted", { replace: true });
+        if (res.documentsByKey) {
+          const existingDocs: DocumentFiles = {};
+
+          // Pour chaque document existant, on crée un placeholder
+          Object.keys(res.documentsByKey).forEach((key) => {
+            const doc = res.documentsByKey[key];
+
+            // Créer un objet File-like avec les métadonnées
+            // Note: On ne peut pas recréer le fichier original, mais on peut stocker les infos
+            existingDocs[key] = {
+              name: doc.originalFilename,
+              size: doc.fileSizeBytes,
+              type: doc.mimeType,
+              // On peut aussi stocker l'URL pour prévisualisation
+              preview: doc.filePath,
+              validationStatus: doc.validationStatus,
+              id: doc.id,
+              uploadedAt: doc.uploadedAt,
+              existing: {
+                id: doc.id,
+                name: doc.originalFilename,
+                size: doc.fileSizeBytes,
+                type: doc.mimeType,
+                url: doc.filePath,
+                validationStatus: doc.validationStatus,
+              },
+            } as any;
+          });
+
+          setDocuments((prev) => ({ ...prev, ...existingDocs }));
         }
 
-        // Déterminer l'étape courante en fonction du pourcentage de complétion
-        // if (response.profileCompletionPercentage <= 33) {
-        //   setCurrentStep(1);
-        // } else if (response.profileCompletionPercentage <= 67) {
-        //   setCurrentStep(2);
-        // } else if (response.profileCompletionPercentage <= 100) {
-        //   setCurrentStep(3);
-        // } else {
-        //   setCurrentStep(3); // Dernière étape mais tout est complet
-        // }
+        if (res.isProfileComplete)
+          navigate("/application-submitted", { replace: true });
       }
-    } catch (error) {
-      console.error("Erreur chargement bénéficiaire:", error);
+    } catch {
       toast.error(t("errorLoadingProfile"));
     } finally {
       setLoading(false);
     }
   };
 
-  const loadCommunes = async () => {
-    if (!form.provinceId) return;
-
-    setLoadingStates((prev) => ({ ...prev, communes: true }));
+  const loadCommunes = async (
+    provinceId: number | "",
+    setter: React.Dispatch<React.SetStateAction<Commune[]>>,
+  ) => {
+    if (!provinceId) return;
+    setLoadingStates((p) => ({ ...p, communes: true }));
     try {
-      const communesData = await ReferenceService.getCommunesByProvince(
-        form.provinceId,
-        lang,
-      );
-      setCommunes(communesData);
-
-      if (
-        form.communeId &&
-        !communesData.some((c) => c.id === form.communeId)
-      ) {
-        updateField("communeId", "");
-      }
-    } catch (error) {
-      console.error("Erreur chargement communes:", error);
+      setter(await ReferenceService.getCommunesByProvince(provinceId, lang));
+    } catch {
+      /* silent */
     } finally {
-      setLoadingStates((prev) => ({ ...prev, communes: false }));
+      setLoadingStates((p) => ({ ...p, communes: false }));
     }
   };
 
-  // ─── Mapping des données ────────────────────────────────────────────────
+  // const mapToForm = (d: BeneficiaryData) => {
+  //   const cm = new Map(
+  //     (d.user.consents || []).map((c) => [c.consentType.code, c.value]),
+  //   );
+  //   setForm((prev) => ({
+  //     ...prev,
+  //     entrepreneurType: (d.category?.toLowerCase() as EntrepreneurType) || "",
+  //     firstName: d.user.firstName || "",
+  //     lastName: d.user.lastName || "",
+  //     email: d.user.email || "",
+  //     phone: d.user.phoneNumber || "",
+  //     gender: (d.user.gender?.code as GenderType) || "",
+  //     birthDate: d.user.birthDate || "",
+  //     provinceId: d.user.primaryAddress?.provinceId || "",
+  //     communeId: d.user.primaryAddress?.communeId || "",
+  //     companyName: d.company?.companyName || "",
+  //     nif: d.company?.taxIdNumber || "",
+  //     creationYear: d.company?.creationDate
+  //       ? new Date(d.company.creationDate).getFullYear()
+  //       : "",
+  //     sectorId: d.company?.primarySectorId || "",
+  //     activityDescription: d.company?.activityDescription || "",
+  //     employeeCount: d.company?.permanentEmployees || "",
+  //     annualRevenue: d.company?.revenueYearN1
+  //       ? Number(d.company.revenueYearN1)
+  //       : "",
+  //     companyStatus: (d.companyType as CompanyStatusType) || "",
+  //     acceptTerms: cm.get("TERMS_AND_CONDITIONS") || false,
+  //     acceptPrivacy: cm.get("PRIVACY_POLICY") || false,
+  //     certifyAccuracy: cm.get("CERTIFY_ACCURACY") || false,
+  //     acceptNotifications: cm.get("COMMUNICATIONS") || false,
+  //   }));
+  // };
 
-  const mapBeneficiaryToForm = (data: BeneficiaryData) => {
-    const consents = data.user.consents || [];
-    const consentMap = new Map(
-      consents.map((c) => [c.consentType.code, c.value]),
+  const mapToForm = (d: BeneficiaryData) => {
+    const cm = new Map(
+      (d.user.consents || []).map((c) => [c.consentType.code, c.value]),
     );
 
-    setForm({
-      entrepreneurType:
-        (data.category?.toLowerCase() as EntrepreneurType) || "",
-      firstName: data.user.firstName || "",
-      lastName: data.user.lastName || "",
-      email: data.user.email || "",
-      phone: data.user.phoneNumber || "",
-      gender: (data.user.gender?.code as GenderType) || "",
-      birthDate: data.user.birthDate || "",
-      provinceId: data.user.primaryAddress?.provinceId || "",
-      communeId: data.user.primaryAddress?.communeId || "",
-      companyName: data.company?.companyName || "",
-      nif: data.company?.taxIdNumber || "",
-      creationYear: data.company?.creationDate
-        ? new Date(data.company.creationDate).getFullYear()
+    setForm((prev) => ({
+      ...prev,
+      // ===== STEP 1 =====
+      entrepreneurType: (d.category?.toLowerCase() as EntrepreneurType) || "",
+      firstName: d.user.firstName || "",
+      lastName: d.user.lastName || "",
+      position: d.position || "",
+      gender: (d.user.gender?.code as GenderType) || "",
+      birthDate: d.user.birthDate || "",
+      maritalStatus: (d.maritalStatus as MaritalStatusType) || "",
+      educationLevel: (d.educationLevel as EducationLevelType) || "",
+      neighborhood: d.user.primaryAddress?.neighborhood || "",
+      zone: d.user.primaryAddress?.street || "",
+      provinceId: d.user.primaryAddress?.provinceId || "",
+      communeId: d.user.primaryAddress?.communeId || "",
+      phone: d.user.phoneNumber || "",
+      email: d.user.email || "",
+
+      // Questions d'éligibilité (nouveaux champs)
+      isPublicServant: d.isPublicServant
+        ? "yes"
+        : d.isPublicServant === false
+          ? "no"
+          : "",
+      isRelativeOfPublicServant: d.isRelativeOfPublicServant
+        ? "yes"
+        : d.isRelativeOfPublicServant === false
+          ? "no"
+          : "",
+      isPublicIntern: d.isPublicIntern
+        ? "yes"
+        : d.isPublicIntern === false
+          ? "no"
+          : "",
+      isRelativeOfPublicIntern: d.isRelativeOfPublicIntern
+        ? "yes"
+        : d.isRelativeOfPublicIntern === false
+          ? "no"
+          : "",
+      wasHighOfficer: d.wasHighOfficer
+        ? "yes"
+        : d.wasHighOfficer === false
+          ? "no"
+          : "",
+      isRelativeOfHighOfficer: d.isRelativeOfHighOfficer
+        ? "yes"
+        : d.isRelativeOfHighOfficer === false
+          ? "no"
+          : "",
+      hasProjectLink: d.hasProjectLink
+        ? "yes"
+        : d.hasProjectLink === false
+          ? "no"
+          : "",
+      isDirectSupplierToProject: d.isDirectSupplierToProject
+        ? "yes"
+        : d.isDirectSupplierToProject === false
+          ? "no"
+          : "",
+      hasPreviousGrant: d.hasPreviousGrant
+        ? "yes"
+        : d.hasPreviousGrant === false
+          ? "no"
+          : "",
+      previousGrantDetails: d.previousGrantDetails || "",
+
+      // ===== STEP 2 =====
+      companyStatus: (d.companyType as CompanyStatusType) || "",
+      companyName: d.company?.companyName || "",
+      companyNeighborhood: d.company?.address?.neighborhood || "",
+      companyZone: d.company?.address?.street || "",
+      companyProvinceId: d.company?.address?.provinceId || "",
+      companyCommuneId: d.company?.address?.communeId || "",
+      companyPhone: d.company?.companyPhone || "",
+      companyEmail: d.company?.companyEmail || "",
+      legalStatus: (d.company?.legalStatus as LegalStatusType) || "",
+      legalStatusOther: d.company?.legalStatusOther || "",
+      nif: d.company?.taxIdNumber || "",
+      affiliatedToCGA: d.company?.affiliatedToCGA
+        ? "yes"
+        : d.company?.affiliatedToCGA === false
+          ? "no"
+          : "", // Nouveau champ
+      femaleEmployees: d.company?.femaleEmployees ?? "", // Nouveau champ
+      maleEmployees: d.company?.maleEmployees ?? "", // Nouveau champ
+      refugeeEmployees: d.company?.refugeeEmployees ?? "", // Nouveau champ
+      batwaEmployees: d.company?.batwaEmployees ?? "", // Nouveau champ
+      disabledEmployees: d.company?.disabledEmployees ?? "", // Nouveau champ
+      employeeCount: d.company?.permanentEmployees ?? "",
+      associatesCount:
+        (d.company?.associatesCount as AssociatesCountType) || "", // Nouveau champ
+      associatesCountOther: d.company?.associatesCountOther || "", // Nouveau champ
+      femalePartners: d.company?.femalePartners ?? "", // Nouveau champ
+      malePartners: d.company?.malePartners ?? "", // Nouveau champ
+      refugeePartners: d.company?.refugeePartners ?? "", // Nouveau champ
+      batwaPartners: d.company?.batwaPartners ?? "", // Nouveau champ
+      disabledPartners: d.company?.disabledPartners ?? "", // Nouveau champ
+      annualRevenue: d.company?.revenueYearN1
+        ? Number(d.company.revenueYearN1)
         : "",
-      sectorId: data.company?.primarySectorId || "",
-      activityDescription: data.company?.activityDescription || "",
-      employeeCount: data.company?.permanentEmployees || "",
-      annualRevenue: data.company?.revenueYearN1
-        ? Number(data.company.revenueYearN1)
+      creationYear: d.company?.creationDate
+        ? new Date(d.company.creationDate).getFullYear()
         : "",
-      companyStatus: (data.companyType as CompanyStatusType),
-      acceptTerms: consentMap.get("TERMS_AND_CONDITIONS") || false,
-      acceptPrivacy: consentMap.get("PRIVACY_POLICY") || false,
-      certifyAccuracy: consentMap.get("CERTIFY_ACCURACY") || false,
-      acceptNotifications: consentMap.get("COMMUNICATIONS") || false,
-    });
+      sectorId: d.company?.primarySectorId || "",
+      activityDescription: d.company?.activityDescription || "",
+      hasBankAccount: d.company?.hasBankAccount
+        ? "yes"
+        : d.company?.hasBankAccount === false
+          ? "no"
+          : "", // Nouveau champ
+      hasBankCredit: d.company?.hasBankCredit
+        ? "yes"
+        : d.company?.hasBankCredit === false
+          ? "no"
+          : "", // Nouveau champ
+      bankCreditAmount: d.company?.bankCreditAmount ?? "", // Nouveau champ
+      isWomanLed: d.company?.isLedByWoman || false,
+      isRefugeeLed: d.company?.isLedByRefugee || false,
+      hasClimateImpact: d.company?.hasPositiveClimateImpact || false,
+
+      // ===== STEP 3 =====
+      projectTitle: d.projectTitle || "", // Nouveau champ
+      projectObjective: d.projectObjective || "", // Nouveau champ
+      projectSectors: d.projectSectors || [], // Nouveau champ
+      otherSector: d.otherSector || "", // Nouveau champ
+      mainActivities: d.mainActivities || "", // Nouveau champ
+      productsServices: d.productsServices || "", // Nouveau champ
+      businessIdea: d.businessIdea || "", // Nouveau champ
+      targetClients: d.targetClients || "", // Nouveau champ
+      clientScope: d.clientScope || [], // Nouveau champ
+      hasCompetitors: d.hasCompetitors
+        ? "yes"
+        : d.hasCompetitors === false
+          ? "no"
+          : "", // Nouveau champ
+      competitorNames: d.competitorNames || "", // Nouveau champ
+      plannedEmployeesFemale: d.plannedEmployeesFemale ?? "", // Nouveau champ
+      plannedEmployeesMale: d.plannedEmployeesMale ?? "", // Nouveau champ
+      plannedPermanentEmployees: d.plannedPermanentEmployees ?? "", // Nouveau champ
+      isNewIdea: d.isNewIdea ? "yes" : d.isNewIdea === false ? "no" : "", // Nouveau champ
+      climateActions: d.climateActions || "", // Nouveau champ
+      inclusionActions: d.inclusionActions || "", // Nouveau champ
+      hasEstimatedCost: d.hasEstimatedCost
+        ? "yes"
+        : d.hasEstimatedCost === false
+          ? "no"
+          : "", // Nouveau champ
+      totalProjectCost: d.totalProjectCost ?? "", // Nouveau champ
+      requestedSubsidyAmount: d.requestedSubsidyAmount ?? "", // Nouveau champ
+      mainExpenses: d.mainExpenses || "", // Nouveau champ
+
+      // ===== STEP 4 =====
+      acceptTerms: cm.get("TERMS_AND_CONDITIONS") || false,
+      acceptPrivacy: cm.get("PRIVACY_POLICY") || false,
+      certifyAccuracy: cm.get("CERTIFY_ACCURACY") || false,
+      acceptNotifications: cm.get("COMMUNICATIONS") || false,
+    }));
   };
-
-  // ─── Gestion du formulaire ──────────────────────────────────────────────
-
   const updateField = useCallback(
     <K extends keyof FormData>(key: K, value: FormData[K]) => {
       setForm((prev) => ({ ...prev, [key]: value }));
-      if (errors[key as string]) {
+      if (errors[key as string])
         setErrors((prev) => ({ ...prev, [key]: undefined }));
-      }
     },
     [errors],
   );
 
-  // ─── Validation ─────────────────────────────────────────────────────────
-
-  const validateStep = useCallback(
-    (step: number): boolean => {
-      const newErrors: FormErrors = {};
-
-      switch (step) {
-        case 1:
-          if (!form.entrepreneurType)
-            newErrors.entrepreneurType = t("required");
-          if (!form.firstName.trim()) newErrors.firstName = t("required");
-          if (!form.lastName.trim()) newErrors.lastName = t("required");
-          if (!form.gender) newErrors.gender = t("required");
-
-          if (!form.birthDate) {
-            newErrors.birthDate = t("required");
-          } else {
-            const age =
-              new Date().getFullYear() - new Date(form.birthDate).getFullYear();
-            if (age < 18) newErrors.birthDate = t("birthDateInvalid");
-          }
-
-          if (!form.email) {
-            newErrors.email = t("required");
-          } else if (!validateEmail(form.email)) {
-            newErrors.email = t("emailInvalid");
-          }
-
-          if (!form.phone) {
-            newErrors.phone = t("required");
-          }
-          // else if (!validatePhone(form.phone)) {
-          //   newErrors.phone = t("phoneInvalid");
-          // }
-
-          if (!form.provinceId) newErrors.provinceId = t("required");
-          if (!form.communeId) newErrors.communeId = t("required");
-          break;
-
-        case 2:
-          if (!form.companyStatus) {
-            newErrors.companyStatus = t("required");
-          } else if (
-            form.companyStatus === "formal" ||
-            form.companyStatus === "informal"
-          ) {
-            if (!form.companyName.trim()) newErrors.companyName = t("required");
-
-            if (!form.creationYear) {
-              newErrors.creationYear = t("required");
-            } else {
-              const year = Number(form.creationYear);
-              const currentYear = new Date().getFullYear();
-              if (year < 1900 || year > currentYear) {
-                newErrors.creationYear = t("creationYearInvalid");
-              }
-            }
-
-            if (!form.sectorId) newErrors.sectorId = t("required");
-
-            if (!form.activityDescription.trim()) {
-              newErrors.activityDescription = t("required");
-            } else if (form.activityDescription.length < 20) {
-              newErrors.activityDescription = t("descriptionMinLength");
-            }
-
-            if (!form.employeeCount) {
-              newErrors.employeeCount = t("required");
-            } else if (Number(form.employeeCount) < 0) {
-              newErrors.employeeCount = t("employeeCountInvalid");
-            }
-
-            if (form.nif && !validateNif(form.nif)) {
-              newErrors.nif = t("nifInvalid");
-            }
-          }
-          break;
-
-        case 3:
-          if (!form.acceptTerms)
-            newErrors.acceptTerms = t("acceptTermsRequired");
-          if (!form.acceptPrivacy)
-            newErrors.acceptPrivacy = t("acceptPrivacyRequired");
-          if (!form.certifyAccuracy)
-            newErrors.certifyAccuracy = t("certifyRequired");
-          break;
-      }
-
-      setErrors(newErrors);
-      return Object.keys(newErrors).length === 0;
+  const toggleArray = useCallback(
+    <K extends keyof FormData>(key: K, val: string) => {
+      setForm((prev) => {
+        const arr = (prev[key] as string[]) || [];
+        return {
+          ...prev,
+          [key]: arr.includes(val)
+            ? arr.filter((v) => v !== val)
+            : [...arr, val],
+        };
+      });
     },
-    [form, t],
+    [],
   );
 
-  // ─── Sauvegarde d'une étape ─────────────────────────────────────────────
+  const updateDocument = useCallback(
+    (key: string, file: File | null) => {
+      setDocuments((prev) => ({ ...prev, [key]: file }));
+      if (docErrors[key])
+        setDocErrors((prev) => ({ ...prev, [key]: undefined }));
+    },
+    [docErrors],
+  );
 
-  const saveCurrentStep = async (isFinish: boolean = false) => {
+  // Validation
+  const validateStep = useCallback(
+    (step: number): boolean => {
+      const e: FormErrors = {};
+
+      if (step === 1) {
+        if (!form.entrepreneurType) e.entrepreneurType = t("required");
+        if (!form.lastName.trim()) e.lastName = t("required");
+        if (!form.firstName.trim()) e.firstName = t("required");
+        if (!form.gender) e.gender = t("required");
+        if (!form.maritalStatus) e.maritalStatus = t("required");
+        if (!form.educationLevel) e.educationLevel = t("required");
+        if (!form.birthDate) {
+          e.birthDate = t("required");
+        } else if (
+          new Date().getFullYear() - new Date(form.birthDate).getFullYear() <
+          18
+        ) {
+          e.birthDate = t("birthDateInvalid");
+        }
+        if (!form.email) e.email = t("required");
+        else if (!validateEmail(form.email)) e.email = t("emailInvalid");
+        if (!form.phone) e.phone = t("required");
+        if (!form.provinceId) e.provinceId = t("required");
+        if (!form.communeId) e.communeId = t("required");
+        ELIGIBILITY_QUESTIONS.forEach(({ key }) => {
+          if (!form[key]) e[key as string] = t("required");
+        });
+      }
+
+      if (step === 2) {
+        if (!form.companyStatus) {
+          e.companyStatus = t("required");
+        } else if (form.companyStatus !== "project") {
+          if (!form.companyName.trim()) e.companyName = t("required");
+          if (!form.creationYear) {
+            e.creationYear = t("required");
+          } else {
+            const y = Number(form.creationYear);
+            if (y < 1900 || y > new Date().getFullYear())
+              e.creationYear = t("creationYearInvalid");
+          }
+          if (!form.sectorId) e.sectorId = t("required");
+          if (!form.activityDescription.trim())
+            e.activityDescription = t("required");
+          else if (form.activityDescription.length < 20)
+            e.activityDescription = t("descriptionMinLength");
+          if (!form.employeeCount) e.employeeCount = t("required");
+          if (form.nif && !validateNif(form.nif)) e.nif = t("nifInvalid");
+          if (form.companyStatus === "formal" && !form.legalStatus)
+            e.legalStatus = t("required");
+          if (!form.associatesCount) e.associatesCount = t("required");
+        }
+      }
+
+      if (step === 3) {
+        if (!form.projectTitle.trim()) e.projectTitle = t("required");
+        if (!form.projectObjective.trim()) e.projectObjective = t("required");
+        if (!form.projectSectors.length) e.projectSectors = t("required");
+        if (!form.mainActivities.trim()) e.mainActivities = t("required");
+        if (!form.productsServices.trim()) e.productsServices = t("required");
+        if (!form.targetClients.trim()) e.targetClients = t("required");
+        if (!form.clientScope.length) e.clientScope = t("required");
+        if (!form.hasCompetitors) e.hasCompetitors = t("required");
+        if (!form.climateActions.trim()) e.climateActions = t("required");
+        if (!form.inclusionActions.trim()) e.inclusionActions = t("required");
+        if (!form.hasEstimatedCost) e.hasEstimatedCost = t("required");
+        if (form.hasEstimatedCost === "yes" && !form.totalProjectCost)
+          e.totalProjectCost = t("required");
+        if (form.hasEstimatedCost === "yes" && !form.requestedSubsidyAmount)
+          e.requestedSubsidyAmount = t("required");
+        if (!form.mainExpenses.trim()) e.mainExpenses = t("required");
+      }
+
+      if (step === 4) {
+        if (!form.acceptTerms) e.acceptTerms = t("acceptTermsRequired");
+        if (!form.acceptPrivacy) e.acceptPrivacy = t("acceptPrivacyRequired");
+        if (!form.certifyAccuracy) e.certifyAccuracy = t("certifyRequired");
+        // Required documents
+        const docList =
+          form.companyStatus === "formal"
+            ? FORMAL_DOCS
+            : form.companyStatus === "informal"
+              ? INFORMAL_DOCS
+              : [];
+        const de: FormErrors = {};
+        docList
+          .filter((d) => d.required)
+          .forEach((d) => {
+            if (!documents[d.key]) de[d.key] = t("required");
+          });
+        setDocErrors(de);
+        if (Object.keys(de).length > 0) {
+          setErrors(e);
+          return false;
+        }
+      }
+
+      setErrors(e);
+      return Object.keys(e).length === 0;
+    },
+    [form, documents, t],
+  );
+
+  const saveCurrentStep = async (isFinish = false) => {
     if (!beneficiary?.id) {
       toast.error(t("beneficiaryNotFound"));
       return;
     }
-
-    if (!validateStep(currentStep)) {
-      // toast.error(t("pleaseFixErrors"));
-      return;
-    }
-
+    if (!validateStep(currentStep)) return;
     setSavingStep(currentStep);
     try {
+      const cleanNumber = (value: any): number | undefined => {
+        if (value === "" || value === null || value === undefined)
+          return undefined;
+        const num = Number(value);
+        return isNaN(num) ? undefined : num;
+      };
+
+      const cleanBoolean = (value: any): boolean | undefined => {
+        if (value === "" || value === null || value === undefined)
+          return undefined;
+        if (value === "yes") return true;
+        if (value === "no") return false;
+        return Boolean(value);
+      };
+
+      const cleanString = (value: any): string | undefined => {
+        if (value === "" || value === null || value === undefined)
+          return undefined;
+        return String(value).trim();
+      };
+
+      const step1Data =
+        currentStep === 1 || isFinish
+          ? {
+              status:
+                form.entrepreneurType === "burundian" ? "burundais" : "refugie",
+              firstName: cleanString(form.firstName),
+              lastName: cleanString(form.lastName),
+              position: cleanString(form.position),
+              gender: form.gender || undefined,
+              birthDate: form.birthDate || undefined,
+              maritalStatus: form.maritalStatus || undefined,
+              educationLevel: form.educationLevel || undefined,
+              email: cleanString(form.email),
+              phone: cleanString(form.phone),
+              provinceId: cleanNumber(form.provinceId),
+              communeId: cleanNumber(form.communeId),
+              neighborhood: cleanString(form.neighborhood),
+              zone: cleanString(form.zone),
+              isPublicServant: cleanBoolean(form.isPublicServant),
+              isRelativeOfPublicServant: cleanBoolean(
+                form.isRelativeOfPublicServant,
+              ),
+              isPublicIntern: cleanBoolean(form.isPublicIntern),
+              isRelativeOfPublicIntern: cleanBoolean(
+                form.isRelativeOfPublicIntern,
+              ),
+              wasHighOfficer: cleanBoolean(form.wasHighOfficer),
+              isRelativeOfHighOfficer: cleanBoolean(
+                form.isRelativeOfHighOfficer,
+              ),
+              hasProjectLink: cleanBoolean(form.hasProjectLink),
+              isDirectSupplierToProject: cleanBoolean(
+                form.isDirectSupplierToProject,
+              ),
+              hasPreviousGrant: cleanBoolean(form.hasPreviousGrant),
+              previousGrantDetails: cleanString(form.previousGrantDetails),
+            }
+          : undefined;
+
+      const step2Data =
+        currentStep === 2 || isFinish
+          ? {
+              companyStatus: form.companyStatus || undefined,
+              companyExists: form.companyStatus !== "project" ? "yes" : "no",
+              companyName: cleanString(form.companyName),
+              companyNeighborhood: cleanString(form.companyNeighborhood),
+              companyZone: cleanString(form.companyZone),
+              companyProvinceId: cleanNumber(form.companyProvinceId),
+              companyCommuneId: cleanNumber(form.companyCommuneId),
+              companyPhone: cleanString(form.companyPhone),
+              companyEmail: cleanString(form.companyEmail),
+              legalStatus: form.legalStatus || undefined,
+              legalStatusOther: cleanString(form.legalStatusOther),
+              nif: cleanString(form.nif),
+              affiliatedToCGA: cleanBoolean(form.affiliatedToCGA),
+              femaleEmployees: cleanNumber(form.femaleEmployees),
+              maleEmployees: cleanNumber(form.maleEmployees),
+              refugeeEmployees: cleanNumber(form.refugeeEmployees),
+              batwaEmployees: cleanNumber(form.batwaEmployees),
+              disabledEmployees: cleanNumber(form.disabledEmployees),
+              employeeCount: cleanNumber(form.employeeCount),
+              associatesCount: form.associatesCount || undefined,
+              associatesCountOther: cleanString(form.associatesCountOther),
+              femalePartners: cleanNumber(form.femalePartners),
+              malePartners: cleanNumber(form.malePartners),
+              refugeePartners: cleanNumber(form.refugeePartners),
+              batwaPartners: cleanNumber(form.batwaPartners),
+              disabledPartners: cleanNumber(form.disabledPartners),
+              annualRevenue: cleanNumber(form.annualRevenue),
+              creationYear: cleanNumber(form.creationYear),
+              sectorId: cleanNumber(form.sectorId),
+              activityDescription: cleanString(form.activityDescription),
+              hasBankAccount: cleanBoolean(form.hasBankAccount),
+              hasBankCredit: cleanBoolean(form.hasBankCredit),
+              bankCreditAmount: cleanNumber(form.bankCreditAmount),
+              isWomanLed: form.isWomanLed || false,
+              isRefugeeLed: form.isRefugeeLed || false,
+              hasClimateImpact: form.hasClimateImpact || false,
+            }
+          : undefined;
+
+      const step3Data =
+        currentStep === 3 || isFinish
+          ? {
+              projectTitle: cleanString(form.projectTitle),
+              projectObjective: cleanString(form.projectObjective),
+              projectSectors: form.projectSectors?.length
+                ? form.projectSectors
+                : undefined,
+              otherSector: cleanString(form.otherSector),
+              mainActivities: cleanString(form.mainActivities),
+              productsServices: cleanString(form.productsServices),
+              businessIdea: cleanString(form.businessIdea),
+              targetClients: cleanString(form.targetClients),
+              clientScope: form.clientScope?.length
+                ? form.clientScope
+                : undefined,
+              hasCompetitors: cleanBoolean(form.hasCompetitors),
+              competitorNames: cleanString(form.competitorNames),
+              plannedEmployeesFemale: cleanNumber(form.plannedEmployeesFemale),
+              plannedEmployeesMale: cleanNumber(form.plannedEmployeesMale),
+              plannedPermanentEmployees: cleanNumber(
+                form.plannedPermanentEmployees,
+              ),
+              isNewIdea: cleanBoolean(form.isNewIdea),
+              climateActions: cleanString(form.climateActions),
+              inclusionActions: cleanString(form.inclusionActions),
+              hasEstimatedCost: cleanBoolean(form.hasEstimatedCost),
+              totalProjectCost: cleanNumber(form.totalProjectCost),
+              requestedSubsidyAmount: cleanNumber(form.requestedSubsidyAmount),
+              mainExpenses: cleanString(form.mainExpenses),
+              acceptCGU: form.acceptTerms,
+              acceptPrivacyPolicy: form.acceptPrivacy,
+              certifyAccuracy: form.certifyAccuracy,
+              optInNotifications: form.acceptNotifications,
+              isProfileCompleted: isFinish,
+            }
+          : undefined;
+
       await BeneficiaryService.update(
         beneficiary.id,
         {
-          step1: {
-            entrepreneurType: form.entrepreneurType,
-            firstName: form.firstName,
-            lastName: form.lastName,
-            gender: form.gender,
-            birthDate: form.birthDate,
-            email: form.email,
-            phone: form.phone,
-            provinceId: form.provinceId,
-            communeId: form.communeId,
-          },
-          step2: {
-            companyStatus: form.companyStatus,
-            companyExists: form.companyStatus && form.companyStatus !== "project" ? "yes" : "no",
-            companyName: form.companyName,
-            nif: form.nif,
-            creationYear: form.creationYear,
-            sectorId: form.sectorId,
-            activityDescription: form.activityDescription,
-            employeeCount: form.employeeCount,
-            annualRevenue: form.annualRevenue,
-          },
-          step3: {
-            acceptCGU: form.acceptTerms,
-            acceptPrivacyPolicy: form.acceptPrivacy,
-            certifyAccuracy: form.certifyAccuracy,
-            optInNotifications: form.acceptNotifications,
-            isProfileCompleted: isFinish,
-          },
+          step1: step1Data,
+          step2: step2Data,
+          step3: step3Data,
         },
         lang,
       );
 
-      // Recharger les données pour avoir le nouveau pourcentage
-      await loadBeneficiaryData();
+      if (currentStep === 4 || isFinish) {
+        const docList =
+          form.companyStatus === "formal"
+            ? FORMAL_DOCS
+            : form.companyStatus === "informal"
+              ? INFORMAL_DOCS
+              : [];
+        console.log(documents[docList[0].key]);
+        // Uploader chaque document
+        const uploadPromises = docList
+          .filter((doc) => documents[doc.key])
+          .map(async (doc) => {
+            if (documents[doc.key] instanceof File) {
+              try {
+                const result = await DocumentService.uploadFormDocument(
+                  documents[doc.key],
+                  {
+                    entityId: beneficiary.id,
+                    entityType: "beneficiary",
+                    documentKey: doc.key,
+                    documentTypeId: doc.typeId,
+                    formStep: "STEP4",
+                  },
+                );
 
-      if(currentStep === 3) {
-        toast.success(t("profileUpdated"));
-      } else {
-        toast.success(t("stepSaved", { step: currentStep }));
+                console.log(`Document ${doc.key} uploaded:`, result);
+                return result;
+              } catch (error) {
+                console.error(`Error uploading ${doc.key}:`, error);
+                throw error;
+              }
+            }
+          });
+
+        if (uploadPromises.length > 0) {
+          await Promise.all(uploadPromises);
+          // toast.success(t("documentsUploadedSuccess"));
+        }
       }
-    } catch (error: any) {
-      console.error("Erreur sauvegarde:", error);
-      toast.error(error.response?.data?.message || t("errorSavingStep"));
+
+      await loadBeneficiaryData();
+      toast.success(
+        currentStep === 4
+          ? t("profileUpdated")
+          : t("stepSaved", { step: currentStep }),
+      );
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || t("errorSavingStep"));
     } finally {
       setSavingStep(null);
     }
   };
 
-  // ─── Navigation ─────────────────────────────────────────────────────────
-
   const goToNextStep = () => {
-    if (currentStep < 3 && validateStep(currentStep)) {
-      setCurrentStep((prev) => prev + 1);
+    if (currentStep < 4 && validateStep(currentStep)) {
+      setCurrentStep((p) => p + 1);
       window.scrollTo(0, 0);
     }
   };
-
   const goToPreviousStep = () => {
     if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
+      setCurrentStep((p) => p - 1);
       window.scrollTo(0, 0);
     }
   };
 
-  // ─── Calculs dérivés ────────────────────────────────────────────────────
-
-  const progressPercentage = useMemo(() => {
-    return (
+  const progressPercentage = useMemo(
+    () =>
       beneficiary?.profileCompletionPercentage ||
-      STEPS.reduce((acc, s) => (s.num <= currentStep ? acc + s.weight : acc), 0)
-    );
-  }, [currentStep, beneficiary]);
-
-  const canShowCompanyFields = useMemo(() => {
-    return form.companyStatus === "formal" || form.companyStatus === "informal";
-  }, [form.companyStatus]);
-
-  const isStepCompleted = useCallback(
-    (step: number) => {
-      if (!beneficiary) return false;
-
-      const stepName = STEPS.find((s) => s.num === step)?.stepName;
-      const completedStep = beneficiary.profileCompletionStep;
-
-      // Si l'étape actuelle est inférieure ou égale à l'étape complétée
-      const stepOrder = { STEP1: 1, STEP2: 2, STEP3: 3 };
-      const currentStepOrder =
-        stepOrder[stepName as keyof typeof stepOrder] || 0;
-      const completedStepOrder =
-        stepOrder[completedStep as keyof typeof stepOrder] || 0;
-
-      return currentStepOrder <= completedStepOrder;
-    },
-    [beneficiary],
+      STEPS.reduce(
+        (acc, s) => (s.num <= currentStep ? acc + s.weight : acc),
+        0,
+      ),
+    [currentStep, beneficiary],
   );
 
-  // ─── Rendu ──────────────────────────────────────────────────────────────
+  const canShowCompanyFields =
+    form.companyStatus === "formal" || form.companyStatus === "informal";
+
   return (
     <div className="site-main">
       <Header />
       <PageHeader title={t("myProfile")} breadcrumb={t("myProfile")} />
-
       <div className="ttm-row login-section clearfix">
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              {/* ── Stepper copa ── */}
-              {/* <div className="copa-stepper">
-                {STEPS.map((s, i) => (
-                  <React.Fragment key={s.num}>
-                    <div
-                      className={`copa-step ${step === s.num ? "is-active" : ""} ${step > s.num ? "is-done" : ""}`}
-                    >
-                      <div className="copa-step__dot">
-                        {step > s.num ? (
-                          <svg
-                            viewBox="0 0 12 12"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                          >
-                            <path d="M2 6l3 3 5-5" strokeLinecap="round" />
-                          </svg>
-                        ) : step === s.num ? (
-                          <span className="copa-dot-pulse" />
-                        ) : (
-                          <span>{s.num}</span>
-                        )}
-                      </div>
-                      <span className="copa-step__label">{s.label}</span>
-                    </div>
-                    {i < STEPS.length - 1 && (
-                      <div
-                        className={`copa-step-line ${step > s.num ? "is-filled" : ""}`}
-                      />
-                    )}
-                  </React.Fragment>
-                ))}
-              </div> */}
-
-              {/* Carte formulaire */}
               <div className="bg-theme-GreyColor ttm-col-bgcolor-yes ttm-bg rounded p-50 p-lg-20">
                 <div className="layer-content">
-                  {/* En-tête étape avec progression */}
                   <div className="d-flex justify-content-between align-items-center mb-30">
                     <div>
                       <p
@@ -672,7 +1425,7 @@ const Profile: React.FC = () => {
                           margin: "0 0 4px",
                         }}
                       >
-                        {t("step")} {currentStep} {t("of")} 3
+                        {t("step")} {currentStep} {t("of")} 4
                       </p>
                       <h4 style={{ margin: 0 }}>
                         {t(STEPS[currentStep - 1].labelKey)}
@@ -683,33 +1436,17 @@ const Profile: React.FC = () => {
                     />
                   </div>
 
-                  {/* Bannière info pour l'étape 1 */}
                   {currentStep === 1 && (
                     <InfoBanner
                       title={t("profileNoteTitle")}
                       description={t("profileNote")}
                     />
                   )}
-
-                  {/* Bannière de validation pour l'étape 3 */}
-                  {currentStep === 3 && (
-                     <InfoBanner
+                  {currentStep === 4 && (
+                    <InfoBanner
                       title={t("verifyBanner.title")}
                       description={t("verifyBanner.description")}
                     />
-                    // <div className="copa-validation-banner mb-30">
-                    //   <svg viewBox="0 0 20 20" fill="currentColor">
-                    //     <path
-                    //       fillRule="evenodd"
-                    //       d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z"
-                    //       clipRule="evenodd"
-                    //     />
-                    //   </svg>
-                    //   <div>
-                    //     <strong>{t("verifyBanner.title")}</strong>
-                    //     <p>{t("verifyBanner.description")}</p>
-                    //   </div>
-                    // </div>
                   )}
 
                   <form
@@ -721,7 +1458,6 @@ const Profile: React.FC = () => {
                     noValidate
                   >
                     <div className="row">
-                      {/* Étape 1 */}
                       {currentStep === 1 && (
                         <Step1Fields
                           form={form}
@@ -735,32 +1471,42 @@ const Profile: React.FC = () => {
                           t={t}
                         />
                       )}
-
-                      {/* Étape 2 */}
                       {currentStep === 2 && (
                         <Step2Fields
                           form={form}
                           errors={errors}
                           sectors={sectors}
+                          provinces={provinces}
+                          companyCommunes={companyCommunes}
                           isKi={isKi}
                           loadingStates={loadingStates}
                           canShowCompanyFields={canShowCompanyFields}
                           onUpdateField={updateField}
+                          toggleArray={toggleArray}
                           t={t}
                         />
                       )}
-
-                      {/* Étape 3 */}
                       {currentStep === 3 && (
                         <Step3Fields
                           form={form}
                           errors={errors}
                           onUpdateField={updateField}
+                          toggleArray={toggleArray}
+                          t={t}
+                        />
+                      )}
+                      {currentStep === 4 && (
+                        <Step4Fields
+                          form={form}
+                          errors={errors}
+                          documents={documents}
+                          docErrors={docErrors}
+                          onUpdateField={updateField}
+                          onUpdateDocument={updateDocument}
                           t={t}
                         />
                       )}
 
-                      {/* Actions */}
                       <div className="col-12 mt-25">
                         <div className="d-flex justify-content-between align-items-center">
                           <div>
@@ -774,14 +1520,11 @@ const Profile: React.FC = () => {
                               </button>
                             )}
                           </div>
-
                           <div className="d-flex" style={{ gap: 10 }}>
-                            {/* Bouton Sauvegarder l'étape */}
                             <button
                               type="submit"
                               disabled={savingStep === currentStep}
-                              className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor
-                              d-flex justify-content-center align-items-center"
+                              className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor d-flex justify-content-center align-items-center"
                             >
                               {savingStep === currentStep ? (
                                 <>
@@ -795,9 +1538,7 @@ const Profile: React.FC = () => {
                                 </>
                               )}
                             </button>
-
-                            {/* Bouton Suivant (si pas dernière étape) */}
-                            {currentStep < 3 && (
+                            {currentStep < 4 && (
                               <button
                                 type="button"
                                 onClick={goToNextStep}
@@ -806,9 +1547,7 @@ const Profile: React.FC = () => {
                                 {t("next")} →
                               </button>
                             )}
-
-                            {/* Bouton Terminer (si dernière étape) */}
-                            {currentStep === 3 && (
+                            {currentStep === 4 && (
                               <button
                                 type="button"
                                 onClick={() => saveCurrentStep(true)}
@@ -828,20 +1567,15 @@ const Profile: React.FC = () => {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );
 };
 
-// ─── Composants sous-composants ──────────────────────────────────────────────
+// ─── ProgressRing & InfoBanner ────────────────────────────────────────────────
 
 const ProgressRing: React.FC<{ percentage: number }> = ({ percentage }) => (
-  <svg
-    viewBox="0 0 44 44"
-    className="progress-ring"
-    style={{ width: 44, height: 44, flexShrink: 0 }}
-  >
+  <svg viewBox="0 0 44 44" style={{ width: 44, height: 44, flexShrink: 0 }}>
     <circle
       cx="22"
       cy="22"
@@ -896,7 +1630,7 @@ const InfoBanner: React.FC<{ title: string; description: string }> = ({
   </div>
 );
 
-// ─── Composants d'étapes ─────────────────────────────────────────────────────
+// ─── Step 1 ───────────────────────────────────────────────────────────────────
 
 const Step1Fields: React.FC<any> = ({
   form,
@@ -910,6 +1644,7 @@ const Step1Fields: React.FC<any> = ({
   maxDate,
 }) => (
   <>
+    {/* Statut */}
     <div className="col-12">
       <label className={errors.entrepreneurType ? "copa-input-invalid" : ""}>
         <i className="ti ti-id-badge" />
@@ -927,6 +1662,21 @@ const Step1Fields: React.FC<any> = ({
       )}
     </div>
 
+    {/* Identité */}
+    <div className="col-lg-6">
+      <label className={errors.lastName ? "copa-input-invalid" : ""}>
+        <i className="ti ti-user" />
+        <input
+          type="text"
+          value={form.lastName}
+          onChange={(e) => onUpdateField("lastName", e.target.value)}
+          placeholder={t("lastName")}
+        />
+      </label>
+      {errors.lastName && (
+        <span className="copa-error-msg">{errors.lastName}</span>
+      )}
+    </div>
     <div className="col-lg-6">
       <label className={errors.firstName ? "copa-input-invalid" : ""}>
         <i className="ti ti-user" />
@@ -943,21 +1693,40 @@ const Step1Fields: React.FC<any> = ({
     </div>
 
     <div className="col-lg-6">
-      <label className={errors.lastName ? "copa-input-invalid" : ""}>
-        <i className="ti ti-user" />
+      <label>
+        <i className="ti ti-briefcase" />
         <input
           type="text"
-          value={form.lastName}
-          onChange={(e) => onUpdateField("lastName", e.target.value)}
-          placeholder={t("lastName")}
+          value={form.position}
+          onChange={(e) => onUpdateField("position", e.target.value)}
+          placeholder={t("roleInCompany")}
         />
       </label>
-      {errors.lastName && (
-        <span className="copa-error-msg">{errors.lastName}</span>
+    </div>
+    <div className="col-lg-6">
+      <label className={errors.birthDate ? "copa-input-invalid" : ""}>
+        <i className="ti ti-calendar" />
+        <Flatpickr
+          value={form.birthDate ? new Date(form.birthDate) : undefined}
+          onChange={([date]: Date[]) =>
+            onUpdateField("birthDate", date?.toISOString().split("T")[0] || "")
+          }
+          placeholder={t("birthDate")}
+          options={{
+            enableTime: false,
+            dateFormat: "d-m-Y",
+            maxDate,
+            locale: isKi ? (KirundiLocale as any) : French,
+          }}
+          style={{ height: "55px" }}
+        />
+      </label>
+      {errors.birthDate && (
+        <span className="copa-error-msg">{errors.birthDate}</span>
       )}
     </div>
 
-    <div className="col-lg-6">
+    <div className="col-lg-4">
       <label className={errors.gender ? "copa-input-invalid" : ""}>
         <i className="ti ti-anchor" />
         <select
@@ -971,82 +1740,67 @@ const Step1Fields: React.FC<any> = ({
       </label>
       {errors.gender && <span className="copa-error-msg">{errors.gender}</span>}
     </div>
-
-    <div className="col-lg-6">
-      <label className={errors.birthDate ? "copa-input-invalid" : ""}>
-        <i className="ti ti-calendar" />
-         <Flatpickr
-            data-enable-time
-            value={new Date(form.birthDate)}
-            onChange={([date]) => {
-              onUpdateField("birthDate", date.toISOString().split("T")[0]);
-            }}
-            placeholder={t("birthDate")}
-            options={{
-              enableTime: false,
-              dateFormat: "d-m-Y",
-              maxDate: maxDate,
-              locale: isKi ? KirundiLocale as any: French,
-              altFormat: "j F Y"
-            }}
-            style={{height: '55px'}}
-          />
-        {/* <input
-          type="date"
-          value={form.birthDate}
-          onChange={(e) => onUpdateField("birthDate", e.target.value)}
-          max={
-            new Date(new Date().setFullYear(new Date().getFullYear() - 18))
-              .toISOString()
-              .split("T")[0]
-          }
-        /> */}
+    <div className="col-lg-4">
+      <label className={errors.maritalStatus ? "copa-input-invalid" : ""}>
+        <i className="ti ti-heart" />
+        <select
+          value={form.maritalStatus}
+          onChange={(e) => onUpdateField("maritalStatus", e.target.value)}
+        >
+          <option value="">{t("selectMaritalStatus")}</option>
+          <option value="single">{t("single")}</option>
+          <option value="married">{t("married")}</option>
+          <option value="divorced">{t("divorced")}</option>
+          <option value="widowed">{t("widowed")}</option>
+        </select>
       </label>
-      {errors.birthDate && (
-        <span className="copa-error-msg">{errors.birthDate}</span>
+      {errors.maritalStatus && (
+        <span className="copa-error-msg">{errors.maritalStatus}</span>
+      )}
+    </div>
+    <div className="col-lg-4">
+      <label className={errors.educationLevel ? "copa-input-invalid" : ""}>
+        <i className="ti ti-book" />
+        <select
+          value={form.educationLevel}
+          onChange={(e) => onUpdateField("educationLevel", e.target.value)}
+        >
+          <option value="">{t("selectEducationLevel")}</option>
+          <option value="none">{t("educationNone")}</option>
+          <option value="primary">{t("educationPrimary")}</option>
+          <option value="secondary">{t("educationSecondary")}</option>
+          <option value="university">{t("educationUniversity")}</option>
+        </select>
+      </label>
+      {errors.educationLevel && (
+        <span className="copa-error-msg">{errors.educationLevel}</span>
       )}
     </div>
 
+    {/* Adresse */}
+    <SectionTitle title={t("addressSection")} />
     <div className="col-lg-6">
-      <label className={errors.email ? "copa-input-invalid" : ""}>
-        <i className="ti ti-email" />
+      <label>
+        <i className="ti ti-home" />
         <input
-          type="email"
-          value={form.email}
-          onChange={(e) => onUpdateField("email", e.target.value)}
-          placeholder={t("email")}
+          type="text"
+          value={form.neighborhood}
+          onChange={(e) => onUpdateField("neighborhood", e.target.value)}
+          placeholder={t("neighborhood")}
         />
       </label>
-      {errors.email && <span className="copa-error-msg">{errors.email}</span>}
     </div>
-
     <div className="col-lg-6">
-       <label className={errors.phone ? "copa-input-invalid" : ""}>
-        <PhoneInput
-          country={'bi'}
-          // onlyCountries={['bi']}
-          value={form.phone}
-          onChange={phone => onUpdateField("phone", phone)}
-          autoFormat={true}
-          placeholder={t("phoneNumber")}
-          // disableDropdown={true}
-          enableSearch={true}
-          countryCodeEditable={false}
-          disableSearchIcon={true}
+      <label>
+        <i className="ti ti-location-pin" />
+        <input
+          type="text"
+          value={form.zone}
+          onChange={(e) => onUpdateField("zone", e.target.value)}
+          placeholder={t("zone")}
         />
       </label>
-      {/* <label className={errors.phone ? "copa-input-invalid" : ""}>
-        <i className="ti ti-mobile" />
-        <input
-          type="tel"
-          value={form.phone}
-          onChange={(e) => onUpdateField("phone", e.target.value)}
-          placeholder={t("phoneNumber")}
-        />
-      </label> */}
-      {errors.phone && <span className="copa-error-msg">{errors.phone}</span>}
     </div>
-
     <div className="col-lg-6">
       <label className={errors.provinceId ? "copa-input-invalid" : ""}>
         <i className="ti ti-map" />
@@ -1059,7 +1813,7 @@ const Step1Fields: React.FC<any> = ({
           <option value="">
             {loadingStates.provinces ? t("loading") : t("selectProvince")}
           </option>
-          {provinces.map((p) => (
+          {provinces.map((p: any) => (
             <option key={p.id} value={p.id}>
               {p.name}
             </option>
@@ -1070,7 +1824,6 @@ const Step1Fields: React.FC<any> = ({
         <span className="copa-error-msg">{errors.provinceId}</span>
       )}
     </div>
-
     <div className="col-lg-6">
       <label className={errors.communeId ? "copa-input-invalid" : ""}>
         <i className="ti ti-map-alt" />
@@ -1088,7 +1841,7 @@ const Step1Fields: React.FC<any> = ({
                 ? t("selectProvinceFirst")
                 : t("selectCommune")}
           </option>
-          {communes.map((c) => (
+          {communes.map((c: any) => (
             <option key={c.id} value={c.id}>
               {c.name}
             </option>
@@ -1099,73 +1852,132 @@ const Step1Fields: React.FC<any> = ({
         <span className="copa-error-msg">{errors.communeId}</span>
       )}
     </div>
+    <div className="col-lg-6">
+      <label className={errors.phone ? "copa-input-invalid" : ""}>
+        <PhoneInput
+          country="bi"
+          value={form.phone}
+          onChange={(p: string) => onUpdateField("phone", p)}
+          autoFormat
+          enableSearch
+          countryCodeEditable={false}
+          disableSearchIcon
+          placeholder={t("phoneNumber")}
+        />
+      </label>
+      {errors.phone && <span className="copa-error-msg">{errors.phone}</span>}
+    </div>
+    <div className="col-lg-6">
+      <label className={errors.email ? "copa-input-invalid" : ""}>
+        <i className="ti ti-email" />
+        <input
+          type="email"
+          value={form.email}
+          onChange={(e) => onUpdateField("email", e.target.value)}
+          placeholder={t("email")}
+        />
+      </label>
+      {errors.email && <span className="copa-error-msg">{errors.email}</span>}
+    </div>
+
+    {/* Éligibilité */}
+    <SectionTitle title={t("eligibilitySection")} />
+    {ELIGIBILITY_QUESTIONS.map(({ key, labelKey }) => (
+      <div className="col-12" key={key as string}>
+        <label
+          className={(errors as any)[key as string] ? "copa-input-invalid" : ""}
+        >
+          <i className="ti ti-shield" />
+          <select
+            value={form[key] as string}
+            onChange={(e) => onUpdateField(key, e.target.value as TriBool)}
+          >
+            <option value="">{t(labelKey)}</option>
+            <option value="yes">{t("yes")}</option>
+            <option value="no">{t("no")}</option>
+          </select>
+        </label>
+        {(errors as any)[key as string] && (
+          <span className="copa-error-msg">
+            {(errors as any)[key as string]}
+          </span>
+        )}
+      </div>
+    ))}
+    {form.hasPreviousGrant === "yes" && (
+      <div className="col-12">
+        <label>
+          <i className="ti ti-pencil" />
+          <input
+            type="text"
+            value={form.previousGrantDetails}
+            onChange={(e) =>
+              onUpdateField("previousGrantDetails", e.target.value)
+            }
+            placeholder={t("previousGrantDetailsPlaceholder")}
+          />
+        </label>
+      </div>
+    )}
   </>
 );
+
+// ─── Step 2 ───────────────────────────────────────────────────────────────────
 
 const Step2Fields: React.FC<any> = ({
   form,
   errors,
   sectors,
+  provinces,
+  companyCommunes,
   isKi,
   loadingStates,
   canShowCompanyFields,
   onUpdateField,
+  toggleArray,
   t,
 }) => (
   <>
+    <SectionTitle title={t("selectCompanyStatus")} />
     <div className="col-12">
-      <p
-        style={{
-          fontSize: 13,
-          fontWeight: 600,
-          color: "#444",
-          marginBottom: 10,
-        }}
-      >
-        {t("haveCompany")} <span style={{ color: "#dc3545" }}>*</span>
-      </p>
-      <div className="copa-radio-cards">
-        {COMPANY_STATUS_OPTIONS.map((option) => (
-          <label
-            key={option.value}
-            className={`copa-radio-card ${
-              form.companyStatus === option.value ? "is-selected" : ""
-            }`}
-          >
-            <input
-              type="radio"
-              name="companyStatus"
-              value={option.value}
-              checked={form.companyStatus === option.value}
-              onChange={(e) => onUpdateField("companyStatus", e.target.value)}
-            />
-            <span className="copa-radio-card__check">
-              <svg
-                viewBox="0 0 10 10"
-                fill="none"
-                stroke="currentColor"
-                width="10"
-                height="10"
-              >
-                <path
-                  d="M1.5 5l2.5 2.5 5-5"
-                  strokeLinecap="round"
-                  strokeWidth="2.5"
-                />
-              </svg>
-            </span>
-            <span className="copa-radio-card__icon">
-              {/* <i className={`ti ${option.icon}`} /> */}
-            </span>
-            <span className="copa-radio-card__name">{t(option.labelKey)}</span>
-            <span className="copa-radio-card__desc">{t(option.descKey)}</span>
-          </label>
-        ))}
-      </div>
+      <label className={errors.companyStatus ? "copa-input-invalid" : ""}>
+        <i className="ti ti-briefcase" />
+        <select
+          value={form.companyStatus}
+          onChange={(e) => onUpdateField("companyStatus", e.target.value)}
+        >
+          <option value="">{t("selectCompanyStatus")}</option>
+          <option value="formal">{t("formalCompany")}</option>
+          <option value="informal">{t("informalCompany")}</option>
+          <option value="project">{t("projectCompany")}</option>
+        </select>
+      </label>
       {errors.companyStatus && (
         <span className="copa-error-msg">{errors.companyStatus}</span>
       )}
     </div>
+    {/* <div className="col-12">
+      <p style={{ fontSize: 13, fontWeight: 600, color: "#444", marginBottom: 0 }}>
+        {t("selectCompanyStatus")}
+        <span style={{ color: "#dc3545" }}>*</span>
+      </p>
+      <div className="copa-radio-cards mt-0 mb-5">
+        {COMPANY_STATUS_OPTIONS.map((option) => (
+          <label key={option.value} className={`copa-radio-card ${form.companyStatus === option.value ? "is-selected" : ""}`}>
+            <input type="radio" name="companyStatus" value={option.value} checked={form.companyStatus === option.value}
+              onChange={(e) => onUpdateField("companyStatus", e.target.value)} />
+            <span className="copa-radio-card__check">
+              <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" width="10" height="10">
+                <path d="M1.5 5l2.5 2.5 5-5" strokeLinecap="round" strokeWidth="2.5" />
+              </svg>
+            </span>
+            <span className="copa-radio-card__name" style={{color: '#919191'}}>{t(option.labelKey)}</span>
+            <span className="copa-radio-card__desc">{t(option.descKey)}</span>
+          </label>
+        ))}
+      </div>
+      {errors.companyStatus && <span className="copa-error-msg">{errors.companyStatus}</span>}
+    </div> */}
 
     {canShowCompanyFields && (
       <>
@@ -1183,7 +1995,6 @@ const Step2Fields: React.FC<any> = ({
             <span className="copa-error-msg">{errors.companyName}</span>
           )}
         </div>
-
         <div className="col-lg-6">
           <label className={errors.nif ? "copa-input-invalid" : ""}>
             <i className="ti ti-id-badge" />
@@ -1196,6 +2007,49 @@ const Step2Fields: React.FC<any> = ({
           </label>
           {errors.nif && <span className="copa-error-msg">{errors.nif}</span>}
         </div>
+
+        {form.companyStatus === "formal" && (
+          <>
+            <div className="col-lg-6">
+              <label className={errors.legalStatus ? "copa-input-invalid" : ""}>
+                <i className="ti ti-clipboard" />
+                <select
+                  value={form.legalStatus}
+                  onChange={(e) => onUpdateField("legalStatus", e.target.value)}
+                >
+                  <option value="">{t("selectLegalStatus")}</option>
+                  <option value="snc">Société en Non Collectif (SNC)</option>
+                  <option value="scs">
+                    Société en Commandite Simple (SCS)
+                  </option>
+                  <option value="sprl">SPRL</option>
+                  <option value="su">Société Unipersonnelle (SU)</option>
+                  <option value="sa">Société Anonyme (SA)</option>
+                  <option value="coop">Société Coopérative</option>
+                  <option value="other">{t("other")}</option>
+                </select>
+              </label>
+              {errors.legalStatus && (
+                <span className="copa-error-msg">{errors.legalStatus}</span>
+              )}
+            </div>
+            {form.legalStatus === "other" && (
+              <div className="col-lg-6">
+                <label>
+                  <i className="ti ti-pencil" />
+                  <input
+                    type="text"
+                    value={form.legalStatusOther}
+                    onChange={(e) =>
+                      onUpdateField("legalStatusOther", e.target.value)
+                    }
+                    placeholder={t("specifyLegalStatus")}
+                  />
+                </label>
+              </div>
+            )}
+          </>
+        )}
 
         <div className="col-lg-6">
           <label className={errors.creationYear ? "copa-input-invalid" : ""}>
@@ -1218,7 +2072,6 @@ const Step2Fields: React.FC<any> = ({
             <span className="copa-error-msg">{errors.creationYear}</span>
           )}
         </div>
-
         <div className="col-lg-6">
           <label className={errors.sectorId ? "copa-input-invalid" : ""}>
             <i className="ti ti-briefcase" />
@@ -1231,7 +2084,7 @@ const Step2Fields: React.FC<any> = ({
               <option value="">
                 {loadingStates.sectors ? t("loading") : t("selectSector")}
               </option>
-              {sectors.map((s) => (
+              {sectors.map((s: any) => (
                 <option key={s.id} value={s.id}>
                   {isKi && s.nameRn ? s.nameRn : s.nameFr}
                 </option>
@@ -1242,7 +2095,6 @@ const Step2Fields: React.FC<any> = ({
             <span className="copa-error-msg">{errors.sectorId}</span>
           )}
         </div>
-
         <div className="col-12">
           <label
             className={errors.activityDescription ? "copa-input-invalid" : ""}
@@ -1262,32 +2114,230 @@ const Step2Fields: React.FC<any> = ({
           )}
         </div>
 
+        {/* Adresse entreprise */}
+        <SectionTitle title={t("companyAddressIfDifferent")} />
         <div className="col-lg-6">
-          <label className={errors.employeeCount ? "copa-input-invalid" : ""}>
-            <i className="fa fa-users" />
+          <label>
+            <i className="ti ti-home" />
             <input
-              type="number"
-              value={String(form.employeeCount)}
+              type="text"
+              value={form.companyNeighborhood}
+              onChange={(e) =>
+                onUpdateField("companyNeighborhood", e.target.value)
+              }
+              placeholder={t("neighborhood")}
+            />
+          </label>
+        </div>
+        <div className="col-lg-6">
+          <label>
+            <i className="ti ti-location-pin" />
+            <input
+              type="text"
+              value={form.companyZone}
+              onChange={(e) => onUpdateField("companyZone", e.target.value)}
+              placeholder={t("zone")}
+            />
+          </label>
+        </div>
+        <div className="col-lg-6">
+          <label>
+            <i className="ti ti-map" />
+            <select
+              value={String(form.companyProvinceId)}
               onChange={(e) =>
                 onUpdateField(
-                  "employeeCount",
+                  "companyProvinceId",
                   e.target.value ? +e.target.value : "",
                 )
               }
-              placeholder={t("employeeCount")}
-              min="0"
+            >
+              <option value="">{t("selectProvince")}</option>
+              {provinces.map((p: any) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="col-lg-6">
+          <label>
+            <i className="ti ti-map-alt" />
+            <select
+              value={String(form.companyCommuneId)}
+              onChange={(e) =>
+                onUpdateField(
+                  "companyCommuneId",
+                  e.target.value ? +e.target.value : "",
+                )
+              }
+              disabled={!form.companyProvinceId}
+            >
+              <option value="">
+                {!form.companyProvinceId
+                  ? t("selectProvinceFirst")
+                  : t("selectCommune")}
+              </option>
+              {companyCommunes.map((c: any) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="col-lg-6">
+          <label>
+            <PhoneInput
+              country="bi"
+              value={form.companyPhone}
+              onChange={(p: string) => onUpdateField("companyPhone", p)}
+              autoFormat
+              enableSearch
+              countryCodeEditable={false}
+              disableSearchIcon
+              placeholder={t("phoneNumber")}
             />
           </label>
-          {errors.employeeCount && (
-            <span className="copa-error-msg">{errors.employeeCount}</span>
+        </div>
+        <div className="col-lg-6">
+          <label>
+            <i className="ti ti-email" />
+            <input
+              type="email"
+              value={form.companyEmail}
+              onChange={(e) => onUpdateField("companyEmail", e.target.value)}
+              placeholder={t("email")}
+            />
+          </label>
+        </div>
+
+        <div className="col-lg-6">
+          <label className={errors.affiliatedToCGA ? "copa-input-invalid" : ""}>
+            <i className="ti ti-check-box" />
+            <select
+              value={form.affiliatedToCGA}
+              onChange={(e) =>
+                onUpdateField("affiliatedToCGA", e.target.value as TriBool)
+              }
+            >
+              <option value="">{t("affiliatedToCGALabel")}</option>
+              <option value="yes">{t("yes")}</option>
+              <option value="no">{t("no")}</option>
+            </select>
+          </label>
+          {errors.affiliatedToCGA && (
+            <span className="copa-error-msg">{errors.affiliatedToCGA}</span>
           )}
         </div>
 
+        {/* Effectifs */}
+        <SectionTitle title={t("employeesBreakdown")} />
+        {[
+          { k: "femaleEmployees", ph: "femaleEmployees", ic: "ti-user" },
+          { k: "maleEmployees", ph: "maleEmployees", ic: "ti-user" },
+          { k: "refugeeEmployees", ph: "refugeeEmployees", ic: "ti-user" },
+          { k: "batwaEmployees", ph: "batwaEmployees", ic: "ti-user" },
+          { k: "disabledEmployees", ph: "disabledEmployees", ic: "ti-user" },
+          { k: "employeeCount", ph: "permanentEmployees", ic: "fa fa-users" },
+        ].map(({ k, ph, ic }) => (
+          <div className="col-lg-4" key={k}>
+            <label className={(errors as any)[k] ? "copa-input-invalid" : ""}>
+              <i className={ic} />
+              <input
+                type="number"
+                min="0"
+                value={String((form as any)[k])}
+                onChange={(e) =>
+                  onUpdateField(
+                    k as keyof FormData,
+                    e.target.value ? +e.target.value : ("" as any),
+                  )
+                }
+                placeholder={t(ph)}
+              />
+            </label>
+            {(errors as any)[k] && (
+              <span className="copa-error-msg">{(errors as any)[k]}</span>
+            )}
+          </div>
+        ))}
+
+        {/* Associés */}
+        <SectionTitle title={t("associatesSection")} />
+        <div className="col-12">
+          <label className={errors.associatesCount ? "copa-input-invalid" : ""}>
+            <i className="fa fa-users" />
+            <select
+              value={form.associatesCount}
+              onChange={(e) => onUpdateField("associatesCount", e.target.value)}
+            >
+              <option value="">{t("selectAssociatesCount")}</option>
+              <option value="solo">{t("associates_solo")}</option>
+              <option value="2">{t("associates_2")}</option>
+              <option value="3">{t("associates_3")}</option>
+              <option value="other">{t("associates_other")}</option>
+            </select>
+          </label>
+          {errors.associatesCount && (
+            <span className="copa-error-msg">{errors.associatesCount}</span>
+          )}
+        </div>
+        {form.associatesCount === "other" && (
+          <div className="col-lg-6">
+            <label>
+              <i className="ti ti-pencil" />
+              <input
+                type="text"
+                value={form.associatesCountOther}
+                onChange={(e) =>
+                  onUpdateField("associatesCountOther", e.target.value)
+                }
+                placeholder={t("specifyAssociatesCount")}
+              />
+            </label>
+          </div>
+        )}
+        {form.associatesCount && form.associatesCount !== "solo" && (
+          <>
+            <SectionTitle title={t("partnersBreakdown")} />
+            {[
+              { k: "femalePartners", ph: "femalePartners" },
+              { k: "malePartners", ph: "malePartners" },
+              { k: "refugeePartners", ph: "refugeePartners" },
+              { k: "batwaPartners", ph: "batwaPartners" },
+              { k: "disabledPartners", ph: "disabledPartners" },
+            ].map(({ k, ph }) => (
+              <div className="col-lg-4" key={k}>
+                <label>
+                  <i className="ti ti-user" />
+                  <input
+                    type="number"
+                    min="0"
+                    value={String((form as any)[k])}
+                    onChange={(e) =>
+                      onUpdateField(
+                        k as keyof FormData,
+                        e.target.value ? +e.target.value : ("" as any),
+                      )
+                    }
+                    placeholder={t(ph)}
+                  />
+                </label>
+              </div>
+            ))}
+          </>
+        )}
+
+        {/* Financier */}
+        <SectionTitle title={t("financialSection")} />
         <div className="col-lg-6">
           <label>
             <i className="ti ti-money" />
             <input
               type="number"
+              min="0"
               value={String(form.annualRevenue)}
               onChange={(e) =>
                 onUpdateField(
@@ -1296,71 +2346,544 @@ const Step2Fields: React.FC<any> = ({
                 )
               }
               placeholder={t("annualRevenue")}
-              min="0"
             />
           </label>
         </div>
+        <div className="col-lg-6">
+          <label className={errors.hasBankAccount ? "copa-input-invalid" : ""}>
+            <i className="ti ti-credit-card" />
+            <select
+              value={form.hasBankAccount}
+              onChange={(e) =>
+                onUpdateField("hasBankAccount", e.target.value as TriBool)
+              }
+            >
+              <option value="">{t("hasBankAccountLabel")}</option>
+              <option value="yes">{t("yes")}</option>
+              <option value="no">{t("no")}</option>
+            </select>
+          </label>
+          {errors.hasBankAccount && (
+            <span className="copa-error-msg">{errors.hasBankAccount}</span>
+          )}
+        </div>
+        <div className="col-lg-6">
+          <label className={errors.hasBankCredit ? "copa-input-invalid" : ""}>
+            <i className="ti ti-money" />
+            <select
+              value={form.hasBankCredit}
+              onChange={(e) =>
+                onUpdateField("hasBankCredit", e.target.value as TriBool)
+              }
+            >
+              <option value="">{t("hasBankCreditLabel")}</option>
+              <option value="yes">{t("yes")}</option>
+              <option value="no">{t("no")}</option>
+            </select>
+          </label>
+          {errors.hasBankCredit && (
+            <span className="copa-error-msg">{errors.hasBankCredit}</span>
+          )}
+        </div>
+        {form.hasBankCredit === "yes" && (
+          <div className="col-lg-6">
+            <label>
+              <i className="ti ti-money" />
+              <input
+                type="number"
+                min="0"
+                value={String(form.bankCreditAmount)}
+                onChange={(e) =>
+                  onUpdateField(
+                    "bankCreditAmount",
+                    e.target.value ? +e.target.value : "",
+                  )
+                }
+                placeholder={t("bankCreditAmount")}
+              />
+            </label>
+          </div>
+        )}
       </>
     )}
   </>
 );
 
-const Step3Fields: React.FC<any> = ({ form, errors, onUpdateField, t }) => (
-  <div className="col-12">
-    <div className="copa-checklist">
-      {CONSENT_OPTIONS.map((item) => (
-        <label
-          key={item.key}
-          className={`copa-check-row ${form[item.key] ? "is-checked" : ""} ${
-            errors[item.key] ? "is-invalid" : ""
-          }`}
-        >
-          <input
-            type="checkbox"
-            checked={form[item.key] as boolean}
-            onChange={(e) => onUpdateField(item.key, e.target.checked)}
-          />
-          <span className="copa-check-row__box">
-            <svg
-              viewBox="0 0 10 10"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path
-                d="M1.5 5l2.5 2.5 5-5"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-              />
-            </svg>
-          </span>
-          <span className="copa-check-row__text">
-            {t(item.labelKey)}
-            {item.required && (
-              <span className="required-star" style={{ color: "#dc3545" }}>
-                {" "}
-                *
-              </span>
-            )}
-            {item.link && (
-              <Link
-                to={"#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="copa-check-row__link"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {t("read")} →
-              </Link>
-            )}
-          </span>
-          {errors[item.key] && (
-            <span className="copa-check-row__error">{errors[item.key]}</span>
-          )}
-        </label>
-      ))}
+// ─── Step 3 ───────────────────────────────────────────────────────────────────
+
+const Step3Fields: React.FC<any> = ({
+  form,
+  errors,
+  onUpdateField,
+  toggleArray,
+  t,
+}) => (
+  <>
+    <div className="col-12">
+      <label className={errors.projectTitle ? "copa-input-invalid" : ""}>
+        <i className="ti ti-pencil-alt" />
+        <input
+          type="text"
+          value={form.projectTitle}
+          onChange={(e) => onUpdateField("projectTitle", e.target.value)}
+          placeholder={t("projectTitle")}
+        />
+      </label>
+      {errors.projectTitle && (
+        <span className="copa-error-msg">{errors.projectTitle}</span>
+      )}
     </div>
-  </div>
+    <div className="col-12">
+      <label className={errors.projectObjective ? "copa-input-invalid" : ""}>
+        <textarea
+          rows={3}
+          value={form.projectObjective}
+          onChange={(e) => onUpdateField("projectObjective", e.target.value)}
+          placeholder={t("projectObjective")}
+          style={{ paddingLeft: 15, lineHeight: 1.5 }}
+        />
+      </label>
+      {errors.projectObjective && (
+        <span className="copa-error-msg">{errors.projectObjective}</span>
+      )}
+    </div>
+
+    <SectionTitle title={`${t("projectSectors")} *`} />
+    <CheckboxGroup
+      items={PROJECT_SECTORS_LIST}
+      selected={form.projectSectors}
+      errorKey="projectSectors"
+      errors={errors}
+      onToggle={(v: string) => toggleArray("projectSectors", v)}
+      t={t}
+    />
+    {form.projectSectors.includes("other") && (
+      <div className="col-12">
+        <label>
+          <i className="ti ti-pencil" />
+          <input
+            type="text"
+            value={form.otherSector}
+            onChange={(e) => onUpdateField("otherSector", e.target.value)}
+            placeholder={t("specifyOtherSector")}
+          />
+        </label>
+      </div>
+    )}
+
+    <div className="col-12">
+      <label className={errors.mainActivities ? "copa-input-invalid" : ""}>
+        <textarea
+          rows={3}
+          value={form.mainActivities}
+          onChange={(e) => onUpdateField("mainActivities", e.target.value)}
+          placeholder={t("mainActivities")}
+          style={{ paddingLeft: 15, lineHeight: 1.5 }}
+        />
+      </label>
+      {errors.mainActivities && (
+        <span className="copa-error-msg">{errors.mainActivities}</span>
+      )}
+    </div>
+    <div className="col-12">
+      <label className={errors.productsServices ? "copa-input-invalid" : ""}>
+        <textarea
+          rows={3}
+          value={form.productsServices}
+          onChange={(e) => onUpdateField("productsServices", e.target.value)}
+          placeholder={t("productsServices")}
+          style={{ paddingLeft: 15, lineHeight: 1.5 }}
+        />
+      </label>
+      {errors.productsServices && (
+        <span className="copa-error-msg">{errors.productsServices}</span>
+      )}
+    </div>
+    <div className="col-12">
+      <label>
+        <textarea
+          rows={3}
+          value={form.businessIdea}
+          onChange={(e) => onUpdateField("businessIdea", e.target.value)}
+          placeholder={t("businessIdeaOrigin")}
+          style={{ paddingLeft: 15, lineHeight: 1.5 }}
+        />
+      </label>
+    </div>
+    <div className="col-12">
+      <label className={errors.targetClients ? "copa-input-invalid" : ""}>
+        <textarea
+          rows={2}
+          value={form.targetClients}
+          onChange={(e) => onUpdateField("targetClients", e.target.value)}
+          placeholder={t("targetClientsProfile")}
+          style={{ paddingLeft: 15, lineHeight: 1.5 }}
+        />
+      </label>
+      {errors.targetClients && (
+        <span className="copa-error-msg">{errors.targetClients}</span>
+      )}
+    </div>
+
+    <SectionTitle title={`${t("clientScope")} *`} />
+    <CheckboxGroup
+      items={[
+        { value: "local", labelKey: "scope_local" },
+        { value: "national", labelKey: "scope_national" },
+        { value: "eastAfrica", labelKey: "scope_eastAfrica" },
+        { value: "international", labelKey: "scope_international" },
+      ]}
+      selected={form.clientScope}
+      errorKey="clientScope"
+      errors={errors}
+      onToggle={(v: string) => toggleArray("clientScope", v)}
+      t={t}
+    />
+
+    {/* <CheckboxToggle
+      fieldKey="hasCompetitors"
+      labelKey="hasCompetitorsLabel"
+      value={form.hasCompetitors}
+      error={errors.hasCompetitors}
+      onChange={(v: TriBool) => onUpdateField("hasCompetitors", v)}
+      t={t}
+    /> */}
+    <div className="col-12">
+      <label className={errors.hasCompetitors ? "copa-input-invalid" : ""}>
+        <i className="ti ti-flag" />
+        <select
+          value={form.hasCompetitors}
+          onChange={(e) =>
+            onUpdateField("hasCompetitors", e.target.value as TriBool)
+          }
+        >
+          <option value="">{t("hasCompetitorsLabel")}</option>
+          <option value="yes">{t("yes")}</option>
+          <option value="no">{t("no")}</option>
+        </select>
+      </label>
+      {errors.hasCompetitors && (
+        <span className="copa-error-msg">{errors.hasCompetitors}</span>
+      )}
+    </div>
+    {form.hasCompetitors === "yes" && (
+      <div className="col-12">
+        <label>
+          <textarea
+            rows={2}
+            value={form.competitorNames}
+            onChange={(e) => onUpdateField("competitorNames", e.target.value)}
+            placeholder={t("competitorNamesPlaceholder")}
+            style={{ paddingLeft: 15, lineHeight: 1.5 }}
+          />
+        </label>
+      </div>
+    )}
+
+    <SectionTitle title={t("plannedEmployees")} />
+    <div className="col-lg-4">
+      <label>
+        <i className="ti ti-user" />
+        <input
+          type="number"
+          min="0"
+          value={String(form.plannedEmployeesFemale)}
+          onChange={(e) =>
+            onUpdateField(
+              "plannedEmployeesFemale",
+              e.target.value ? +e.target.value : "",
+            )
+          }
+          placeholder={t("femaleEmployees")}
+        />
+      </label>
+    </div>
+    <div className="col-lg-4">
+      <label>
+        <i className="ti ti-user" />
+        <input
+          type="number"
+          min="0"
+          value={String(form.plannedEmployeesMale)}
+          onChange={(e) =>
+            onUpdateField(
+              "plannedEmployeesMale",
+              e.target.value ? +e.target.value : "",
+            )
+          }
+          placeholder={t("maleEmployees")}
+        />
+      </label>
+    </div>
+    <div className="col-lg-4">
+      <label>
+        <i className="fa fa-users" />
+        <input
+          type="number"
+          min="0"
+          value={String(form.plannedPermanentEmployees)}
+          onChange={(e) =>
+            onUpdateField(
+              "plannedPermanentEmployees",
+              e.target.value ? +e.target.value : "",
+            )
+          }
+          placeholder={t("permanentEmployees")}
+        />
+      </label>
+    </div>
+
+    {/* <CheckboxToggle
+      fieldKey="isNewIdea"
+      labelKey="isNewIdeaLabel"
+      value={form.isNewIdea}
+      error={errors.isNewIdea}
+      onChange={(v: TriBool) => onUpdateField("isNewIdea", v)}
+      t={t}
+    /> */}
+    <div className="col-12">
+      <label className={errors.isNewIdea ? "copa-input-invalid" : ""}>
+        <i className="ti ti-light-bulb" />
+        <select
+          value={form.isNewIdea}
+          onChange={(e) =>
+            onUpdateField("isNewIdea", e.target.value as TriBool)
+          }
+        >
+          <option value="">{t("isNewIdeaLabel")}</option>
+          <option value="yes">{t("yes")}</option>
+          <option value="no">{t("no")}</option>
+        </select>
+      </label>
+      {errors.isNewIdea && (
+        <span className="copa-error-msg">{errors.isNewIdea}</span>
+      )}
+    </div>
+
+    <div className="col-12">
+      <label className={errors.climateActions ? "copa-input-invalid" : ""}>
+        <textarea
+          rows={3}
+          value={form.climateActions}
+          onChange={(e) => onUpdateField("climateActions", e.target.value)}
+          placeholder={t("climateActionsPlaceholder")}
+          style={{ paddingLeft: 15, lineHeight: 1.5 }}
+        />
+      </label>
+      {errors.climateActions && (
+        <span className="copa-error-msg">{errors.climateActions}</span>
+      )}
+    </div>
+    <div className="col-12">
+      <label className={errors.inclusionActions ? "copa-input-invalid" : ""}>
+        <textarea
+          rows={3}
+          value={form.inclusionActions}
+          onChange={(e) => onUpdateField("inclusionActions", e.target.value)}
+          placeholder={t("inclusionActionsPlaceholder")}
+          style={{ paddingLeft: 15, lineHeight: 1.5 }}
+        />
+      </label>
+      {errors.inclusionActions && (
+        <span className="copa-error-msg">{errors.inclusionActions}</span>
+      )}
+    </div>
+
+    <div className="col-12">
+      <label className={errors.hasEstimatedCost ? "copa-input-invalid" : ""}>
+        <i className="ti ti-money" />
+        <select
+          value={form.hasEstimatedCost}
+          onChange={(e) =>
+            onUpdateField("hasEstimatedCost", e.target.value as TriBool)
+          }
+        >
+          <option value="">{t("hasEstimatedCostLabel")}</option>
+          <option value="yes">{t("yes")}</option>
+          <option value="no">{t("no")}</option>
+        </select>
+      </label>
+      {errors.hasEstimatedCost && (
+        <span className="copa-error-msg">{errors.hasEstimatedCost}</span>
+      )}
+    </div>
+    {form.hasEstimatedCost === "yes" && (
+      <>
+        <div className="col-lg-6">
+          <label
+            className={errors.totalProjectCost ? "copa-input-invalid" : ""}
+          >
+            <i className="ti ti-money" />
+            <input
+              type="number"
+              min="0"
+              value={String(form.totalProjectCost)}
+              onChange={(e) =>
+                onUpdateField(
+                  "totalProjectCost",
+                  e.target.value ? +e.target.value : "",
+                )
+              }
+              placeholder={t("totalProjectCost")}
+            />
+          </label>
+          {errors.totalProjectCost && (
+            <span className="copa-error-msg">{errors.totalProjectCost}</span>
+          )}
+        </div>
+        <div className="col-lg-6">
+          <label
+            className={
+              errors.requestedSubsidyAmount ? "copa-input-invalid" : ""
+            }
+          >
+            <i className="ti ti-money" />
+            <input
+              type="number"
+              min="0"
+              value={String(form.requestedSubsidyAmount)}
+              onChange={(e) =>
+                onUpdateField(
+                  "requestedSubsidyAmount",
+                  e.target.value ? +e.target.value : "",
+                )
+              }
+              placeholder={t("requestedSubsidyAmount")}
+            />
+          </label>
+          {errors.requestedSubsidyAmount && (
+            <span className="copa-error-msg">
+              {errors.requestedSubsidyAmount}
+            </span>
+          )}
+        </div>
+      </>
+    )}
+    <div className="col-12">
+      <label className={errors.mainExpenses ? "copa-input-invalid" : ""}>
+        <textarea
+          rows={3}
+          value={form.mainExpenses}
+          onChange={(e) => onUpdateField("mainExpenses", e.target.value)}
+          placeholder={t("mainExpensesPlaceholder")}
+          style={{ paddingLeft: 15, lineHeight: 1.5 }}
+        />
+      </label>
+      {errors.mainExpenses && (
+        <span className="copa-error-msg">{errors.mainExpenses}</span>
+      )}
+    </div>
+  </>
 );
+
+// ─── Step 4 ───────────────────────────────────────────────────────────────────
+
+const Step4Fields: React.FC<any> = ({
+  form,
+  errors,
+  documents,
+  docErrors,
+  onUpdateField,
+  onUpdateDocument,
+  t,
+}) => {
+  const docList =
+    form.companyStatus === "formal"
+      ? FORMAL_DOCS
+      : form.companyStatus === "informal"
+        ? INFORMAL_DOCS
+        : null;
+
+  return (
+    <>
+      {/* Consentements */}
+      <div className="col-12">
+        <div className="copa-checklist">
+          {CONSENT_OPTIONS.map((item) => (
+            <label
+              key={item.key}
+              className={`copa-check-row ${form[item.key] ? "is-checked" : ""} ${errors[item.key] ? "is-invalid" : ""}`}
+            >
+              <input
+                type="checkbox"
+                checked={form[item.key] as boolean}
+                onChange={(e) => onUpdateField(item.key, e.target.checked)}
+              />
+              <span className="copa-check-row__box">
+                <svg
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <path
+                    d="M1.5 5l2.5 2.5 5-5"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                  />
+                </svg>
+              </span>
+              <span className="copa-check-row__text">
+                {t(item.labelKey)}
+                {item.required && <span style={{ color: "#dc3545" }}> *</span>}
+                {item.link && (
+                  <Link
+                    to="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="copa-check-row__link"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {t("read")} →
+                  </Link>
+                )}
+              </span>
+              {errors[item.key] && (
+                <span className="copa-check-row__error">
+                  {errors[item.key]}
+                </span>
+              )}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Documents */}
+      {docList && (
+        <>
+          <SectionTitle
+            title={t(
+              form.companyStatus === "formal"
+                ? "documentsForFormal"
+                : "documentsForInformal",
+            )}
+          />
+          <div className="col-12 mb-15">
+            <InfoBanner
+              title={t("documentsInfoTitle")}
+              description={t(
+                form.companyStatus === "formal"
+                  ? "documentsInfoFormal"
+                  : "documentsInfoInformal",
+              )}
+            />
+          </div>
+          {docList.map((doc) => (
+            <FileUploadRow
+              key={doc.key}
+              docKey={doc.key}
+              labelKey={doc.labelKey}
+              required={doc.required}
+              file={documents[doc.key] || null}
+              error={docErrors[doc.key]}
+              onChange={onUpdateDocument}
+              t={t}
+            />
+          ))}
+        </>
+      )}
+    </>
+  );
+};
 
 export default Profile;
