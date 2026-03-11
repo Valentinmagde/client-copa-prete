@@ -2644,7 +2644,7 @@ const Step2Fields: React.FC<any> = ({
             { k: "disabledEmployees", ph: "disabledEmployees", ic: "ti-user" },
             { k: "employeeCount", ph: "permanentEmployees", ic: "fa fa-users" },
           ].map(({ k, ph, ic }) => (
-            <div className="col-lg-4" key={k}>
+            <div className="col-lg-6" key={k}>
               <label className={(errors as any)[k] ? "copa-input-invalid" : ""}>
                 <i className={ic} />
                 <input
