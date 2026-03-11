@@ -3325,10 +3325,12 @@ const Step4Fields: React.FC<any> = ({ form, errors, onUpdateField, t }) => {
 };
 
 const ProfileLoader: React.FC = () => {
+  const { t } = useTranslation();
 
   return (
     <div className="site-main">
       <Header />
+      <PageHeader title={t("myProfile")} breadcrumb={t("myProfile")} />
 
       <div
         style={{
