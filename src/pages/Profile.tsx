@@ -1484,7 +1484,7 @@ const Profile: React.FC = () => {
           else if (form.activityDescription.length < 20)
             e.activityDescription = t("descriptionMinLength");
           if (!form.employeeCount) e.employeeCount = t("required");
-          if (form.nif && !validateNif(form.nif)) e.nif = t("nifInvalid");
+          // if (form.nif && !validateNif(form.nif)) e.nif = t("nifInvalid");
           if (form.companyStatus === "formal" && !form.legalStatus)
             e.legalStatus = t("required");
           if (!form.associatesCount) e.associatesCount = t("required");
@@ -2340,7 +2340,7 @@ const Step2Fields: React.FC<any> = ({
             <option value="">{t("selectCompanyStatus")}</option>
             <option value="formal">{t("formalCompany")}</option>
             <option value="informal">{t("informalCompany")}</option>
-            <option value="project">{t("projectCompany")}</option>
+            {/* <option value="project">{t("projectCompany")}</option> */}
           </select>
         </label>
         {errors.companyStatus && (
@@ -2386,21 +2386,22 @@ const Step2Fields: React.FC<any> = ({
               <span className="copa-error-msg">{errors.companyName}</span>
             )}
           </div>
-          <div className="col-lg-6">
-            <label className={errors.nif ? "copa-input-invalid" : ""}>
-              <i className="ti ti-id-badge" />
-              <input
-                type="text"
-                value={form.nif}
-                onChange={(e) => onUpdateField("nif", e.target.value)}
-                placeholder={t("nif")}
-              />
-            </label>
-            {errors.nif && <span className="copa-error-msg">{errors.nif}</span>}
-          </div>
 
           {form.companyStatus === "formal" && (
             <>
+              <div className="col-lg-6">
+                <label className={errors.nif ? "copa-input-invalid" : ""}>
+                  <i className="ti ti-id-badge" />
+                  <input
+                    type="text"
+                    value={form.nif}
+                    onChange={(e) => onUpdateField("nif", e.target.value)}
+                    placeholder={t("nif")}
+                  />
+                </label>
+                {errors.nif && <span className="copa-error-msg">{errors.nif}</span>}
+              </div>
+
               <div className="col-lg-6">
                 <label
                   className={errors.legalStatus ? "copa-input-invalid" : ""}
@@ -2715,7 +2716,7 @@ const Step2Fields: React.FC<any> = ({
                 { k: "batwaPartners", ph: "batwaPartners" },
                 { k: "disabledPartners", ph: "disabledPartners" },
               ].map(({ k, ph }) => (
-                <div className="col-lg-4" key={k}>
+                <div className="col-lg-6" key={k}>
                   <label>
                     <i className="ti ti-user" />
                     <input
@@ -2739,12 +2740,13 @@ const Step2Fields: React.FC<any> = ({
           {/* Financier */}
           <SectionTitle title={t("financialSection")} />
           <div className="col-lg-6">
-            <label>
-              <i className="ti ti-money" />
+            <label className="d-flex align-items-center">
+              <i className="ti ti-fbu">FBu</i>
               <input
                 type="number"
                 min="0"
                 value={String(form.annualRevenue)}
+                className="pl-60 pb-15"
                 onChange={(e) =>
                   onUpdateField(
                     "annualRevenue",
@@ -2777,12 +2779,14 @@ const Step2Fields: React.FC<any> = ({
           </div>
           <div className="col-lg-6">
             <label className={errors.hasBankCredit ? "copa-input-invalid" : ""}>
-              <i className="ti ti-money" />
+              {/* <i className="ti ti-money" /> */}
+              <i className="fa fa-credit-card"></i>
               <select
                 value={form.hasBankCredit}
                 onChange={(e) =>
                   onUpdateField("hasBankCredit", e.target.value as TriBool)
                 }
+                className="pl-30"
               >
                 <option value="">{t("hasBankCreditLabel")}</option>
                 <option value="yes">{t("yes")}</option>
@@ -2796,11 +2800,13 @@ const Step2Fields: React.FC<any> = ({
           {form.hasBankCredit === "yes" && (
             <div className="col-lg-6">
               <label>
-                <i className="ti ti-money" />
+                {/* <i className="ti ti-money" /> */}
+                <i className="fa ti-fbu">FBu</i>
                 <input
                   type="number"
                   min="0"
                   value={String(form.bankCreditAmount)}
+                  className="pl-60 pb-15"
                   onChange={(e) =>
                     onUpdateField(
                       "bankCreditAmount",
@@ -3137,9 +3143,10 @@ const Step3Fields: React.FC<any> = ({
 
     <div className="col-12">
       <label className={errors.hasEstimatedCost ? "copa-input-invalid" : ""}>
-        <i className="ti ti-money" />
+        <i className="ti ti-fbu">FBu</i>
         <select
           value={form.hasEstimatedCost}
+          className="pl-40"
           onChange={(e) =>
             onUpdateField("hasEstimatedCost", e.target.value as TriBool)
           }
@@ -3159,11 +3166,12 @@ const Step3Fields: React.FC<any> = ({
           <label
             className={errors.totalProjectCost ? "copa-input-invalid" : ""}
           >
-            <i className="ti ti-money" />
+            <i className="ti ti-fbu">FBu</i>
             <input
               type="number"
               min="0"
               value={String(form.totalProjectCost)}
+              className="pl-60 pb-15"
               onChange={(e) =>
                 onUpdateField(
                   "totalProjectCost",
@@ -3183,11 +3191,12 @@ const Step3Fields: React.FC<any> = ({
               errors.requestedSubsidyAmount ? "copa-input-invalid" : ""
             }
           >
-            <i className="ti ti-money" />
+            <i className="ti ti-fbu">FBu</i>
             <input
               type="number"
               min="0"
               value={String(form.requestedSubsidyAmount)}
+              className="pl-60 pb-15"
               onChange={(e) =>
                 onUpdateField(
                   "requestedSubsidyAmount",

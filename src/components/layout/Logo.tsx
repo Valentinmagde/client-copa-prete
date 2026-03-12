@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/img/logo.jpeg";
+import logo from "../../assets/img/logo.png";
 import { Link } from "react-router-dom";
 
 // Define props interface (empty but can be extended)
@@ -15,7 +15,7 @@ const Logo: React.FC<LogoProps> = () => {
     >
       <img
         id="logo-img"
-        height="42"
+        // height="42"
         width="100"
         className="img-fluid auto_size"
         src={logo}
