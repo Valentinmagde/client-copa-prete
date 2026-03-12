@@ -11,6 +11,7 @@ interface CandidateData {
   name: string;
   dossierNumber: string;
   beneficiaryNumber: string;
+  user: any;
   submittedAt: string;
 }
 
@@ -23,6 +24,7 @@ const ApplicationSubmitted: React.FC = () => {
     name: user?.firstName + " " + user?.lastName,
     dossierNumber: "COPA-2026-00001",
     beneficiaryNumber: "",
+    user: null,
     submittedAt: new Date().toLocaleDateString(
       i18n.language === "fr" ? "fr-FR" : "en-US",
       {
@@ -60,6 +62,7 @@ const ApplicationSubmitted: React.FC = () => {
             ...prev,
             beneficiaryNumber: response.applicationCode,
             dossierNumber: response.applicationCode,
+            user: response.user
           }));
         }
       } catch (error) {
