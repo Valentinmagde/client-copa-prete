@@ -1,6 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
-import slide1 from "../../assets/img/slider/04.png";
+import slide1 from "../../assets/img/slider/08.png";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
