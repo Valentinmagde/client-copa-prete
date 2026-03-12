@@ -547,7 +547,10 @@
     "saveButton": "Kubika",
     "shareButton": "Gusangira",
     "homeLink": "Kujya kuri umuganda",
-    "yourCode": "Kode yawe :"
+    "yourCode": "Kode yawe :",
+    "confirmation": "Turabashirakoze kumenyesha ko twakiriye dosiye yanyu y'isabikwa kandi tubashimira ku bw'inyota mufise yo kugira uruhara muri Competitions y'Imishinga y'Ubucuruzi (COPA Nyunganira).",
+    "review": "Komite yacu y'itoratoranya irasuzuma dosiye yanyu y'isabikwa kandi tuzobamenyesha ibisubizo.",
+    "contact": "Nimwagira ikibazo, mudasaze kutwandikira kuri contact@copa-prete.bi cyangwa mu kuduhamera kuri telephone +257 62 766 766."
   },
   "howToParticipatePage": {
     "pageTitle": "Uko witabira COPA ?",
@@ -1151,5 +1154,9 @@
   "errorLoadingReference": "Ikosa mu gukurura amakuru ngenderwako",
   "errorLoadingProfile": "Ikosa mu gukurura umwirondoro",
   "errorSavingStep": "Ikosa mu kubika intambwe",
-  "dragAndDropOrClick": "Kwegereza canke kanda kugira ngo utore idosiye"
+  "dragAndDropOrClick": "Kwegereza canke kanda kugira ngo utore idosiye",
+   "civility": {
+    "madam": "Madamu",
+    "mister": "Bwana"
+  }
 }

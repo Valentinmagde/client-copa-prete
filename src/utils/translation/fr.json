@@ -555,7 +555,10 @@
     "saveButton": "Enregistrer",
     "shareButton": "Partager",
     "homeLink": "Retour à l'accueil",
-    "yourCode": "Votre code candidat :"
+    "yourCode": "Votre code candidat :",
+    "confirmation": "Nous vous confirmons que nous avons bien reçu votre dossier de candidature et vous remercions pour l'intérêt que vous portez au Concours de Plans d'Affaires (COPA Nyunganira).",
+    "review": "Notre comité de sélection va passer en revue votre dossier de candidature et nous vous tiendrons informé.e.s des résultats.",
+    "contact": "En cas de question, n'hésitez pas à nous contacter par mail à contact@copa-prete.bi ou par téléphone au +257 62 766 766."
   },
   "howToParticipatePage": {
     "pageTitle": "Comment participer au COPA ?",
@@ -1160,5 +1163,9 @@
   "errorLoadingReference": "Erreur lors du chargement des données de référence",
   "errorLoadingProfile": "Erreur lors du chargement du profil",
   "errorSavingStep": "Erreur lors de la sauvegarde",
-  "dragAndDropOrClick": "Glissez-déposez ou cliquez pour sélectionner un fichier"
+  "dragAndDropOrClick": "Glissez-déposez ou cliquez pour sélectionner un fichier",
+  "civility": {
+    "madam": "Madame",
+    "mister": "Monsieur"
+  }
 }

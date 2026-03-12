@@ -94,29 +94,29 @@ const ApplicationSubmitted: React.FC = () => {
                       <div className="featured-content">
                         <div className="featured-title">
                           <h3>
-                            {t("applicationSubmitted.congratulations", {
-                              name: candidateData.name,
-                            })}
+                            {candidateData?.user?.gender?.code === "M" ? t("civility.mister"): t("civility.madam")}{" "}
+                            {candidateData.name}
                           </h3>
                         </div>
                         <div className="featured-desc">
-                          <p>{t("applicationSubmitted.message")}</p>
-
-                          {/* ✅ AFFICHAGE DU CODE - juste le texte */}
-                          <p>
-                            <strong>
-                              {t("applicationSubmitted.yourCode")}{" "}
-                              {candidateData.beneficiaryNumber}
-                            </strong>
-                          </p>
-
-                          <p>{t("applicationSubmitted.notification")}</p>
+                          <div className="col-lg-8 offset-lg-2">
+                            <p style={{textAlign: "justify"}}>{t("applicationSubmitted.confirmation")}</p>
+                            <p style={{textAlign: "justify"}}>{t("applicationSubmitted.review")}</p>
+                          
+                            {/* ✅ AFFICHAGE DU CODE - juste le texte */}
+                            <p>
+                              <strong>
+                                {t("applicationSubmitted.yourCode")}{" "}
+                                {candidateData.beneficiaryNumber}
+                              </strong>
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div
-                    className="d-flex justify-content-center flex-wrap pt-30 pb-20"
+                    className="d-flex justify-content-center flex-wrap pt-15"
                     style={{ gap: 12 }}
                   >
                     <button
@@ -128,6 +128,9 @@ const ApplicationSubmitted: React.FC = () => {
                       {t("applicationSubmitted.downloadButton")}
                     </button>
                   </div>
+            <div className="copa-verify-footer mt-30">
+                  <span>{t("applicationSubmitted.contact")}</span>
+                </div>
                 </div>
               </div>
             </div>
