@@ -503,7 +503,7 @@
   }
 
   p {
-    font-size: 12px;
+    font-size: 14px;
     color: $bodyfont-Color;
     margin: 0;
   }
@@ -790,4 +790,11 @@ span.flatpickr-weekday {
 
 .ti-fbu {
   height: 55px;
+}
+
+.profile-form {
+  label {
+    margin-top: 0 !important;
+    margin-bottom: 20px !important;
+  }
 }

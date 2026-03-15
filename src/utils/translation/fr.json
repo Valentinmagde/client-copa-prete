@@ -435,10 +435,27 @@
       "subject": "Sujet",
       "phone": "Numéro de Téléphone",
       "message": "Message",
-      "button": "Envoyer un message !"
+      "button": "Envoyer un message !",
+      "sending": "Envoi en cours..."
     },
     "map": {
       "title": "Carte du Burundi"
+    },
+    "validation": {
+      "nameRequired": "Le nom est requis",
+      "emailRequired": "L'email est requis",
+      "emailInvalid": "Format d'email invalide",
+      "subjectRequired": "Le sujet est requis",
+      "phoneRequired": "Le numéro de téléphone est requis",
+      "messageRequired": "Le message est requis",
+      "messageTooShort": "Le message doit contenir au moins 10 caractères",
+      "checkErrors": "Veuillez corriger les erreurs dans le formulaire"
+    },
+    "success": {
+      "message": "Votre message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais."
+    },
+    "error": {
+      "message": "Une erreur est survenue lors de l'envoi. Veuillez réessayer."
     }
   },
   "blog": {
@@ -1006,10 +1023,18 @@
     "description": "Avant de soumettre votre candidature, assurez-vous que toutes les informations saisies sont correctes et que tous les documents requis ont été téléversés."
   },
 
+  "enterValue": "Veuillez saisir une valeur",
+
+  "specify": "Préciser",
+  "selectOption": "Sélectionnez une option",
+  "statusSection": "Statut du/de la Représentant/Représentante légal.e de la MPME candidate",
   "selectYourStatus": "Sélectionnez votre statut",
   "burundianEntrepreneur": "Entrepreneur(e) burundais(e)",
   "refugeeEntrepreneur": "Entrepreneur(e) réfugié(e)",
+  "otherStatus": "Autre statut",
+  "enterYourStatus": "Saisissez votre statut",
 
+  "identitySection": "Identité du/de la Représentant/Représentante légal.e de la MPME candidate",
   "lastName": "Nom",
   "firstName": "Prénom(s)",
   "roleInCompany": "Fonction au sein de l'entreprise",
@@ -1029,7 +1054,7 @@
   "educationUniversity": "Universitaire",
   "birthDateInvalid": "Vous devez avoir au moins 18 ans",
 
-  "addressSection": "Adresse du représentant légal",
+  "addressSection": "Adresse du/de la Représentant/Représentante légal.e de la MPME candidate",
   "neighborhood": "Colline / Quartier",
   "zone": "Zone",
   "selectProvince": "Sélectionnez une province",
@@ -1039,16 +1064,16 @@
   "email": "Adresse e-mail",
   "emailInvalid": "Adresse e-mail invalide",
 
-  "eligibilitySection": "Questions d'éligibilité",
-  "isPublicServantLabel": "Êtes-vous actuellement fonctionnaire ou sous contrat dans le cadre d'un projet financé par des bailleurs multilatéraux/bilatéraux ?",
-  "isRelativeOfPublicServantLabel": "Êtes-vous conjoint(e), ascendant(e) ou descendant(e) direct(e) d'un tel fonctionnaire ?",
-  "isPublicInternLabel": "Êtes-vous stagiaire dans l'administration publique à la date de soumission de votre candidature ?",
-  "isRelativeOfPublicInternLabel": "Êtes-vous conjoint(e), ascendant(e) ou descendant(e) direct(e) d'un tel stagiaire ?",
-  "wasHighOfficerLabel": "Avez-vous été Président, Premier ministre, ministre ou Député lors des 5 dernières années ?",
-  "isRelativeOfHighOfficerLabel": "Êtes-vous ou avez-vous été conjoint(e), ascendant(e) ou descendant(e) direct(e) d'un tel haut responsable ?",
-  "hasProjectLinkLabel": "Avez-vous un lien professionnel ou familial avec l'UGP/PRETE, l'équipe COPA ou le Comité de sélection ?",
-  "isDirectSupplierToProjectLabel": "Êtes-vous fournisseur direct ou réalisez-vous des travaux pour un membre de l'UGP ou du Comité de sélection ?",
-  "hasPreviousGrantLabel": "Votre entreprise ou son représentant légal a-t-il bénéficié d'une subvention similaire lors des 5 dernières années ?",
+  "eligibilitySection": "Conflit d'intérêts",
+  "isPublicServantLabel": "Êtes-vous présentement en fonction dans l’administration publique ou en contrat dans le cadre d’un projet financé par des bailleurs de fonds multilatéraux ou bilatéraux ?",
+  "isRelativeOfPublicServantLabel": "Êtes-vous la/le conjoint(e), l’ascendant(e) ou le/la descendant(e) direct(e) d’une personne qui travaille dans l’administration publique ou en contrat dans le cadre d’un projet financé par des bailleurs de fonds multilatéraux ou bilatéraux ?",
+  "isPublicInternLabel": "Êtes-vous stagiaire dans l’administration publique à la date de soumission de votre candidature ?",
+  "isRelativeOfPublicInternLabel": "Êtes-vous la/le conjoint(e), l’ascendant(e) ou le/la descendant(e) direct(e) d’un stagiaire dans l’administration publique à la date de soumission de votre candidature ?",
+  "wasHighOfficerLabel": "Avez-vous été Président, Premier ministre, ministre, Député les cinq dernières années ?",
+  "isRelativeOfHighOfficerLabel": "Êtes-vous ou avez-vous été la/le conjoint(e), l’ascendant(e) ou le/la descendant(e) direct(e) d’un Président, Premier ministre, ministres, Député actuellement ou pendant les cinq dernières années ?",
+  "hasProjectLinkLabel": "Avez-vous un lien professionnel ou familial étroit avec l’Unité de Gestion du Projet (UGP) pour l’Emploi et la Transformation Économique (PRETE Nyunganira), l'équipe du COPA, le Comité de sélection ou une entité leur étant affiliée ?",
+  "isDirectSupplierToProjectLabel": "Êtes-vous fournisseur direct ou réalisez-vous des travaux autres que les activités dont bénéficieront les subventions du COPA à un membre ou plusieurs membres de l’Unité de Gestion du Projet ou du Comité de sélection ?",
+  "hasPreviousGrantLabel": "L'entreprise ou son/sa représentant/Représentante légal.e ont il déjà bénéficié d'une subvention similaire durant les 5 dernières années ? ",
   "previousGrantDetailsPlaceholder": "Précisez le projet ou l'organisme concerné",
 
   "selectCompanyStatus": "Statut de l'entreprise",
@@ -1060,6 +1085,13 @@
   "nifInvalid": "Numéro NIF invalide",
   "selectLegalStatus": "Statut juridique",
   "specifyLegalStatus": "Précisez le statut juridique",
+  "legalStatus": "Statut légal de la MPME",
+  "snc": "Société en Nom Collectif (SNC)",
+  "scs": "Société en Commandite Simple (SCS)",
+  "sprl": "SPRL",
+  "su": "Société Unipersonnelle (SU)",
+  "sa": "Société Anonyme (SA)",
+  "coop": "Société Coopérative",
   "creationYear": "Année de création",
   "creationYearInvalid": "Année de création invalide",
   "selectSector": "Secteur d'activité principal",
@@ -1167,5 +1199,6 @@
   "civility": {
     "madam": "Madame",
     "mister": "Monsieur"
-  }
+  },
+  "apply": "Soumettre ma candidature"
 }

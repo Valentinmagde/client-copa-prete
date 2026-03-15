@@ -53,7 +53,7 @@ const Menu: React.FC<MenuProps> = () => {
               <Link to="/how-to-participate">{t("howToParticipate")}</Link>
             </li>
             <li>
-              <Link to="/edition-calender">{t("editionCalendar")}</Link>
+              <Link to="/edition-calendar">{t("editionCalendar")}</Link>
             </li>
             <li>
               <Link to="/eligibility-criteria">{t("eligibilityCriteria")}</Link>

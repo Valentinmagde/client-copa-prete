@@ -1,14 +1,108 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
 import ContactImg from "../assets/img/contact/01.jpg";
+import { toast } from "react-toastify";
+import NotificationService from "../services/notification/notification.service";
+
+interface ContactForm {
+  name: string;
+  email: string;
+  subject: string;
+  phone: string;
+  message: string;
+}
 
 interface ContactProps {}
 
 const Contact: React.FC<ContactProps> = () => {
   const { t } = useTranslation();
+  const [formData, setFormData] = useState<ContactForm>({
+    name: "",
+    email: "",
+    subject: "",
+    phone: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Partial<ContactForm>>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<ContactForm> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = t("contactPage.validation.nameRequired");
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = t("contactPage.validation.emailRequired");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = t("contactPage.validation.emailInvalid");
+    }
+
+    if (!formData.subject.trim()) {
+      newErrors.subject = t("contactPage.validation.subjectRequired");
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = t("contactPage.validation.phoneRequired");
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = t("contactPage.validation.messageRequired");
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = t("contactPage.validation.messageTooShort");
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[name as keyof ContactForm]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      toast.error(t("contactPage.validation.checkErrors"));
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Simuler un appel API
+      // await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      await NotificationService.sendContactMessage(formData);
+
+      toast.success(t("contactPage.success.message"));
+
+      // Réinitialiser le formulaire
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        phone: "",
+        message: "",
+      });
+    } catch (error) {
+      toast.error(t("contactPage.error.message"));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="site-main">
@@ -139,64 +233,117 @@ const Contact: React.FC<ContactProps> = () => {
               <div className="ttm-col-bgcolor-yes ttm-bg bg-theme-WhiteColor z-index-2 p-40 p-lg-30 mt-15 mt-lg-30">
                 <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
                 <div className="layer-content">
-                  <form id="contact_form" className="contact_form wrap-form">
+                  <form
+                    id="contact_form"
+                    className="contact_form wrap-form"
+                    onSubmit={handleSubmit}
+                    noValidate
+                  >
                     <div className="row ttm-boxes-spacing-30px">
                       <div className="col-md-12 ttm-box-col-wrapper">
                         <label>
                           <input
                             name="name"
                             type="text"
+                            value={formData.name}
+                            onChange={handleChange}
                             placeholder={t("contactPage.form.name")}
+                            className={errors.name ? "error" : ""}
                             required={true}
                           />
                         </label>
+                        {errors.name && (
+                          <span className="text-danger" style={{ fontSize: "12px", marginTop: "4px", display: "block" }}>
+                            {errors.name}
+                          </span>
+                        )}
                       </div>
                       <div className="col-md-6 ttm-box-col-wrapper">
                         <label>
                           <input
                             name="email"
-                            type="text"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             placeholder={t("contactPage.form.email")}
+                            className={errors.email ? "error" : ""}
                             required={true}
                           />
                         </label>
+                        {errors.email && (
+                          <span className="text-danger" style={{ fontSize: "12px", marginTop: "4px", display: "block" }}>
+                            {errors.email}
+                          </span>
+                        )}
                       </div>
                       <div className="col-md-6 ttm-box-col-wrapper">
                         <label>
                           <input
                             name="subject"
                             type="text"
+                            value={formData.subject}
+                            onChange={handleChange}
                             placeholder={t("contactPage.form.subject")}
+                            className={errors.subject ? "error" : ""}
                             required={true}
                           />
                         </label>
+                        {errors.subject && (
+                          <span className="text-danger" style={{ fontSize: "12px", marginTop: "4px", display: "block" }}>
+                            {errors.subject}
+                          </span>
+                        )}
                       </div>
                       <div className="col-md-12 ttm-box-col-wrapper">
                         <label>
                           <input
                             name="phone"
-                            type="text"
+                            type="tel"
+                            value={formData.phone}
+                            onChange={handleChange}
                             placeholder={t("contactPage.form.phone")}
+                            className={errors.phone ? "error" : ""}
                             required={true}
                           />
                         </label>
+                        {errors.phone && (
+                          <span className="text-danger" style={{ fontSize: "12px", marginTop: "4px", display: "block" }}>
+                            {errors.phone}
+                          </span>
+                        )}
                       </div>
                       <div className="col-md-12 ttm-box-col-wrapper">
                         <label>
                           <textarea
                             name="message"
                             rows={9}
+                            value={formData.message}
+                            onChange={handleChange}
                             placeholder={t("contactPage.form.message")}
+                            className={errors.message ? "error" : ""}
                             required={true}
                           ></textarea>
                         </label>
+                        {errors.message && (
+                          <span className="text-danger" style={{ fontSize: "12px", marginTop: "4px", display: "block" }}>
+                            {errors.message}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <button
                       className="submit ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor w-100"
                       type="submit"
+                      disabled={isSubmitting}
                     >
-                      {t("contactPage.form.button")}
+                      {isSubmitting ? (
+                        <>
+                          <i className="fa fa-spinner fa-spin mr-5"></i>
+                          {t("contactPage.form.sending")}
+                        </>
+                      ) : (
+                        t("contactPage.form.button")
+                      )}
                     </button>
                   </form>
                 </div>

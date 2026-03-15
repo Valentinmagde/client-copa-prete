@@ -174,7 +174,7 @@ const HowToParticipate: React.FC = () => {
                                 : stepIndex === 3
                                   ? "#"
                                   : stepIndex === 4
-                                    ? "/edition-calender"
+                                    ? "/edition-calendar"
                                     : "#"
                           }
                         >

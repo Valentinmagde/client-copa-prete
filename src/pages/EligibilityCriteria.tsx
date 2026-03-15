@@ -216,6 +216,17 @@ const EligibilityCriteria: React.FC = () => {
               ))}
             </div>
           )}
+
+          <div className="col-lg-12">
+            <div className="pt-30 m-auto text-center">
+              <a
+                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                href={"/register"}
+              >
+                {t("apply")}
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 

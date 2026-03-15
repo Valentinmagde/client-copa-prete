@@ -160,7 +160,7 @@ const Footer: React.FC<FooterProps> = () => {
                 <ul className="widget-post ttm-recent-post-list">
                   <li className="pb-0 border-bottom-0">
                     <div className="post-detail">
-                      <Link to="/faq">
+                      <Link to="#">
                         {t("frequentlyAskedQuestions")}
                       </Link>
                     </div>
@@ -196,7 +196,7 @@ const Footer: React.FC<FooterProps> = () => {
                 <ul className="widget-post ttm-recent-post-list">
                   <li className="pb-0 border-bottom-0">
                     <div className="post-detail">
-                      <Link to="/contact-from">
+                      <Link to="/contact-us">
                         {t("contactForm")}
                       </Link>
                     </div>

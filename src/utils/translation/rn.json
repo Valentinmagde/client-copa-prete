@@ -1,8 +1,8 @@
 {
-  "home": "Ubwoko",
+  "home": "Ahatangura",
   "homePage": "Umuganda",
-  "about": "Umuyobozi",
-  "pretePresentation": "Ibikorwa bya Prete",
+  "about": "Ibirimwo",
+  "pretePresentation": "Insiguro PRETE Prete",
   "copaPresentation": "Ibikorwa bya Copa",
   "partners": "Ama Partners",
   "ourPartners": "Ama Partners",
@@ -430,10 +430,27 @@
       "subject": "Ikiganiro",
       "phone": "Numero ya telefone",
       "message": "Ubutumwa",
-      "button": "Ohereza ubutumwa !"
+      "button": "Ohereza ubutumwa !",
+      "sending": "Biriko birarungikwa..."
     },
     "map": {
       "title": "Ikarita y'Uburundi"
+    },
+    "validation": {
+      "nameRequired": "Izina rirakenewe",
+      "emailRequired": "Imeli irakenewe",
+      "emailInvalid": "Imeli ntiyemewe",
+      "subjectRequired": "Ikiganiro girakenewe",
+      "phoneRequired": "Numero ya telefone irakenewe",
+      "messageRequired": "Ubutumwa burakenewe",
+      "messageTooShort": "Ubutumwa bugomba kuba bufise nibura inyuguti 10",
+      "checkErrors": "Nyamuneka kosora amakosa ari muri form"
+    },
+    "success": {
+      "message": "Ubutumwa bwawe bwarungitswe neza ! Tuzogusubiza vuba."
+    },
+    "error": {
+      "message": "Habaye ikosa mu kurungika ubutumwa. Gerageza ungone."
     }
   },
   "blog": {
@@ -998,10 +1015,18 @@
     "description": "Imbere yo gutuma candidature yanyu, nimwemeze ko amakuru yose yanditse ari ukuri kandi ko inyandiko zose z'agaciro zatumwe."
   },
 
+  "enterValue": "Andika agaciro",
+
+  "specify": "Sobanura",
+  "selectOption": "Hitamwo",
+  "statusSection": "Ivyerekeye uwuserukira mu mategeko MPME iriko irasaba",
   "selectYourStatus": "Hitamwo imiterere yanyu",
   "burundianEntrepreneur": "Umurimyi/Umukozi w'uburundi",
   "refugeeEntrepreneur": "Umurimyi/Umukozi w'impunzi",
+  "otherStatus": "Indundi ridasanzwe",
+  "enterYourStatus": "Andika indundi ryawe",
 
+  "identitySection": "Indangamuntu y’uhagarariye amategeko wa MPME isaba",
   "lastName": "Izina ry'umuryango",
   "firstName": "Izina bita",
   "roleInCompany": "Akazi mu kigo",
@@ -1050,6 +1075,13 @@
   "companyName": "Izina ry'ikigo",
   "nifInvalid": "NIF ntiyanditse neza",
   "selectLegalStatus": "Imiterere ya juridique",
+  "legalStatus": "Imiterere y'ubucuruzi bwa MPME",
+  "snc": "Société en Nom Collectif (SNC)",
+  "scs": "Société en Commandite Simple (SCS)",
+  "sprl": "SPRL",
+  "su": "Société Unipersonnelle (SU)",
+  "sa": "Société Anonyme (SA)",
+  "coop": "Société Coopérative",
   "specifyLegalStatus": "Tanga amakuru y'imiterere ya juridique",
   "creationYear": "Umwaka w'ugutsimbataza",
   "creationYearInvalid": "Umwaka ntiwemewe",
@@ -1158,5 +1190,6 @@
    "civility": {
     "madam": "Madamu",
     "mister": "Bwana"
-  }
+  },
+  "apply": "Gutanga ubusabe bwanje"
 }

@@ -110,7 +110,7 @@ const Banner: React.FC<BannerProps> = () => {
                   <div data-animation="animate__fadeInUp" data-delay="1.4">
                     <Link
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor me-3"
-                      to="/register"
+                      to="/eligibility-criteria"
                     >
                       {t("bannerParticipate")}
                     </Link>
@@ -160,7 +160,7 @@ const Banner: React.FC<BannerProps> = () => {
                   <div data-animation="animate__fadeInUp" data-delay="1.4">
                     <Link
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor me-3"
-                      to="/register"
+                      to="/eligibility-criteria"
                     >
                       {t("bannerParticipate")}
                     </Link>

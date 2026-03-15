@@ -121,7 +121,7 @@ const Header: React.FC<HeaderProps> = () => {
                     <div className="top_bar_icon">
                       <i className="flaticon flaticon-phone-call"></i>
                     </div>
-                    <span>(+257) 62 44 72 55</span>
+                    <span>(+257) 62 766 766</span>
                   </div>
                   <div className="top_bar_contact_item">
                     <div className="top_bar_icon">
@@ -228,7 +228,7 @@ const Header: React.FC<HeaderProps> = () => {
                       // Non connecté - Afficher Signup/Login
                       <div className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-icon-btn-left ttm-btn-color-grey text-theme-DarkColor d-flex align-items-center">
                         <i className="ti ti-user text-theme-DarkColor"></i>
-                        <Link to="/register">{t("signup")}</Link>
+                        <Link to="/eligibility-criteria">{t("signup")}</Link>
                         <span className="ml-10 mr-10 alert-heading">/</span>
                         <i className="ti ti-lock fa-sm text-theme-DarkColor"></i>
                         <Link to="/login">{t("login")}</Link>

@@ -49,7 +49,7 @@ const App: React.FC = () => {
         <Route path="/prete-presentation" element={<AboutPrete />} /> 
         <Route path="/copa-presentation" element={<AboutCopa />} /> 
         <Route path="/how-to-participate" element={<HowToParticipate />} />
-        <Route path="/edition-calender" element={<EditionCalender />} />
+        <Route path="/edition-calendar" element={<EditionCalender />} />
         <Route path="/eligibility-criteria" element={<EligibilityCriteria />} />
         {/* <Route path="/previous-editions" element={<COPA_Calendrier />} /> */}
         <Route path="/training-catalog" element={<Formations_Catalogue />} />
