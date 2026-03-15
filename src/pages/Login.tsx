@@ -37,7 +37,7 @@ const Login: React.FC = () => {
   const location = useLocation();
 
   const from =
-    (location.state as any)?.from?.pathname || "/profile";
+    (location.state as any)?.from?.pathname || "/application";
 
   useEffect(() => {
     if (!window.google) {

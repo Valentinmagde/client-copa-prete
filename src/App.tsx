@@ -21,7 +21,7 @@ import Formations_Catalogue from "./pages/FormationsCatalogue";
 import SubmitComplaint from "./pages/SubmitComplaint";
 import Ressources_FAQ from "./pages/FAQ";
 import AboutPrete from "./pages/AboutPrete";
-import Profile from "./pages/Profile";
+import Application from "./pages/Application";
 import ApplicationSubmitted from "./pages/ApplicationSubmitted";
 import ProtectedRoute from "./guards/ProtectedRoute";
 import PublicRoute from "./guards/PublicRoute";
@@ -72,7 +72,7 @@ const App: React.FC = () => {
           <Route path="/espace-mpme/mon-profil/documents" element={<MonProfilDocuments />} />
           <Route path="/espace-mpme/mon-plan-affaires/redaction" element={<MonPlanAffairesRedaction />} />
           <Route path="/espace-mpme/mon-plan-affaires/soumission" element={<MonPlanAffairesSoumission />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/application" element={<Application />} />
           <Route path="/application-submitted" element={<ApplicationSubmitted />} />
         </Route>
         {/* Routes publiques */}

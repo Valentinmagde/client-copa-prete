@@ -1200,5 +1200,8 @@
     "madam": "Madame",
     "mister": "Monsieur"
   },
-  "apply": "Soumettre ma candidature"
+  "apply": "Soumettre ma candidature",
+  "applicationForm": "Formulaire de candidature",
+  "application": "Candidature",
+  "myApplication": "Ma candidature"
 }

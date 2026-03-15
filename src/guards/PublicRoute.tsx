@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 const PublicRoute = () => {
   const isAuthenticated = isAuthenticatedCs();
 
-  return isAuthenticated ? <Navigate to="/profile" replace /> : <Outlet />;
+  return isAuthenticated ? <Navigate to="/application" replace /> : <Outlet />;
 };
 
 export default PublicRoute;

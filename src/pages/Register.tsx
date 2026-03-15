@@ -48,7 +48,7 @@ const Register: React.FC = () => {
   const [form, setForm] = useState<FormData>(INITIAL);
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
-  const from = "/profile";
+  const from = "/application";
 
   const upd = <K extends keyof FormData>(k: K, v: FormData[K]) => {
     setForm((p) => ({ ...p, [k]: v }));

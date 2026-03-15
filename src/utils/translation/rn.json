@@ -1191,5 +1191,8 @@
     "madam": "Madamu",
     "mister": "Bwana"
   },
-  "apply": "Gutanga ubusabe bwanje"
+  "apply": "Gutanga ubusabe bwanje",
+  "applicationForm": "Ifishi yo gutanga dosiye",
+  "application": "Dosiye yo kwiyandikisha",
+  "myApplication": "Dosiye yanje yo kwiyandikisha"
 }

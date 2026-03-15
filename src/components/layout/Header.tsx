@@ -274,9 +274,9 @@ const Header: React.FC<HeaderProps> = () => {
                               <i className="ti ti-dashboard"></i>
                               {t("dashboard")}
                             </Link> */}
-                          <Link to="/profile" className="dropdown-item">
-                            <i className="ti ti-user"></i>
-                            {t("myProfile")}
+                          <Link to="/application" className="dropdown-item">
+                            <i className="ti ti-medall"></i>
+                            {t("myApplication")}
                           </Link>
                           {/* <Link
                               to="#"

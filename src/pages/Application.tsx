@@ -862,7 +862,7 @@ const FileUploadRow: React.FC<{
 };
 
 // ─── Main component ───────────────────────────────────────────────────────────
-const Profile: React.FC = () => {
+const Application: React.FC = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
   const isKi = lang === "rn";
@@ -1445,7 +1445,7 @@ const Profile: React.FC = () => {
   return (
     <div className="site-main">
       <Header />
-      <PageHeader title={t("myProfile")} breadcrumb={t("myProfile")} />
+      <PageHeader title={t("applicationForm")} breadcrumb={t("application")} />
       <div className="ttm-row login-section clearfix">
         <div className="container">
           <div className="row">
@@ -1648,11 +1648,11 @@ const ProgressRing: React.FC<{ percentage: number }> = ({ percentage }) => (
   </svg>
 );
 
-const InfoBanner: React.FC<{ title: string; description: string, type?: string }> = ({
-  title,
-  description,
-  type,
-}) => (
+const InfoBanner: React.FC<{
+  title: string;
+  description: string;
+  type?: string;
+}> = ({ title, description, type }) => (
   <div className={`copa-validation-banner ${!type ? "mb-30" : ""}`}>
     <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
       <path
@@ -1695,10 +1695,14 @@ const Step1Fields: React.FC<any> = ({
           value={form.entrepreneurType}
           onChange={(e) => onUpdateField("entrepreneurType", e.target.value)}
         >
-          <option value="" disabled>{t("selectOption")}</option>
+          <option value="" disabled>
+            {t("selectOption")}
+          </option>
           <option value="burundian">{t("burundianEntrepreneur")}</option>
           <option value="refugee">{t("refugeeEntrepreneur")}</option>
-          <option value="other">{t("other")} ({t("specify").toLowerCase()})</option>
+          <option value="other">
+            {t("other")} ({t("specify").toLowerCase()})
+          </option>
         </select>
       </label>
       {errors.entrepreneurType && (
@@ -1812,7 +1816,9 @@ const Step1Fields: React.FC<any> = ({
           value={form.gender}
           onChange={(e) => onUpdateField("gender", e.target.value)}
         >
-          <option value="" disabled>{t("selectOption")}</option>
+          <option value="" disabled>
+            {t("selectOption")}
+          </option>
           <option value="M">{t("male")}</option>
           <option value="F">{t("female")}</option>
         </select>
@@ -1829,7 +1835,9 @@ const Step1Fields: React.FC<any> = ({
           value={form.maritalStatus}
           onChange={(e) => onUpdateField("maritalStatus", e.target.value)}
         >
-          <option value="" disabled>{t("selectOption")}</option>
+          <option value="" disabled>
+            {t("selectOption")}
+          </option>
           <option value="single">{t("single")}</option>
           <option value="married">{t("married")}</option>
           <option value="divorced">{t("divorced")}</option>
@@ -1850,7 +1858,9 @@ const Step1Fields: React.FC<any> = ({
           value={form.educationLevel}
           onChange={(e) => onUpdateField("educationLevel", e.target.value)}
         >
-          <option value="" disabled>{t("selectOption")}</option>
+          <option value="" disabled>
+            {t("selectOption")}
+          </option>
           <option value="none">{t("educationNone")}</option>
           <option value="primary">{t("educationPrimary")}</option>
           <option value="secondary">{t("educationSecondary")}</option>
@@ -1985,7 +1995,14 @@ const Step1Fields: React.FC<any> = ({
     <SectionTitle title={t("eligibilitySection")} />
 
     {ELIGIBILITY_QUESTIONS.map(({ key, labelKey, icon }) => (
-      <div className="col-lg-6" key={key as string}>
+      <div
+        className={
+          key === "hasPreviousGrant" && form.hasPreviousGrant === "no"
+            ? "col-12"
+            : "col-lg-6"
+        }
+        key={key as string}
+      >
         <FL label={t(labelKey)} required />
         <label
           className={(errors as any)[key as string] ? "copa-input-invalid" : ""}
@@ -1999,7 +2016,9 @@ const Step1Fields: React.FC<any> = ({
             value={form[key] as string}
             onChange={(e) => onUpdateField(key, e.target.value as TriBool)}
           >
-            <option value="" disabled>{t("selectOption")}</option>
+            <option value="" disabled>
+              {t("selectOption")}
+            </option>
             <option value="yes">{t("yes")}</option>
             <option value="no">{t("no")}</option>
           </select>
@@ -2068,7 +2087,9 @@ const Step2Fields: React.FC<any> = ({
             value={form.companyStatus}
             onChange={(e) => onUpdateField("companyStatus", e.target.value)}
           >
-            <option value="" disabled>{t("selectOption")}</option>
+            <option value="" disabled>
+              {t("selectOption")}
+            </option>
             <option value="formal">{t("formalCompany")}</option>
             <option value="informal">{t("informalCompany")}</option>
           </select>
@@ -2129,7 +2150,9 @@ const Step2Fields: React.FC<any> = ({
                       onUpdateField("legalStatus", e.target.value)
                     }
                   >
-                    <option value="" disabled>{t("selectOption")}</option>
+                    <option value="" disabled>
+                      {t("selectOption")}
+                    </option>
                     <option value="snc">{t("snc")}</option>
                     <option value="scs">{t("scs")}</option>
                     <option value="sprl">{t("sprl")}</option>
@@ -2188,7 +2211,7 @@ const Step2Fields: React.FC<any> = ({
           </div>
 
           {/* Secteur */}
-          <div className="col-lg-6">
+          <div className="col-12">
             <FL label={t("sector")} required />
             <label className={errors.sectorId ? "copa-input-invalid" : ""}>
               <i className="ti ti-briefcase" />
@@ -2280,7 +2303,9 @@ const Step2Fields: React.FC<any> = ({
                   )
                 }
               >
-                <option value="" disabled>{t("selectOption")}</option>
+                <option value="" disabled>
+                  {t("selectOption")}
+                </option>
                 {provinces.map((p: any) => (
                   <option key={p.id} value={p.id}>
                     {p.name}
@@ -2304,7 +2329,9 @@ const Step2Fields: React.FC<any> = ({
                 disabled={!form.companyProvinceId}
               >
                 <option value="">
-                  {!form.companyProvinceId ? t("selectProvinceFirst") : t("selectOption")}
+                  {!form.companyProvinceId
+                    ? t("selectProvinceFirst")
+                    : t("selectOption")}
                 </option>
                 {companyCommunes.map((c: any) => (
                   <option key={c.id} value={c.id}>
@@ -2343,7 +2370,7 @@ const Step2Fields: React.FC<any> = ({
           </div>
 
           {/* Affilié CGA */}
-          <div className="col-lg-6">
+          <div className="col-12">
             <FL label={t("affiliatedToCGALabel")} />
             <label
               className={errors.affiliatedToCGA ? "copa-input-invalid" : ""}
@@ -2355,7 +2382,9 @@ const Step2Fields: React.FC<any> = ({
                   onUpdateField("affiliatedToCGA", e.target.value as TriBool)
                 }
               >
-                <option value="" disabled>{t("selectOption")}</option>
+                <option value="" disabled>
+                  {t("selectOption")}
+                </option>
                 <option value="yes">{t("yes")}</option>
                 <option value="no">{t("no")}</option>
               </select>
@@ -2370,9 +2399,17 @@ const Step2Fields: React.FC<any> = ({
           {[
             { k: "femaleEmployees", ph: "femaleEmployees", ic: "fa fa-users" },
             { k: "maleEmployees", ph: "maleEmployees", ic: "fa fa-users" },
-            { k: "refugeeEmployees", ph: "refugeeEmployees", ic: "fa fa-users" },
+            {
+              k: "refugeeEmployees",
+              ph: "refugeeEmployees",
+              ic: "fa fa-users",
+            },
             { k: "batwaEmployees", ph: "batwaEmployees", ic: "fa fa-users" },
-            { k: "disabledEmployees", ph: "disabledEmployees", ic: "fa fa-users" },
+            {
+              k: "disabledEmployees",
+              ph: "disabledEmployees",
+              ic: "fa fa-users",
+            },
             { k: "employeeCount", ph: "permanentEmployees", ic: "fa fa-users" },
           ].map(({ k, ph, ic }) => (
             <div className="col-lg-6" key={k}>
@@ -2413,7 +2450,9 @@ const Step2Fields: React.FC<any> = ({
                   onUpdateField("associatesCount", e.target.value)
                 }
               >
-                <option value="" disabled>{t("selectOption")}</option>
+                <option value="" disabled>
+                  {t("selectOption")}
+                </option>
                 <option value="solo">{t("associates_solo")}</option>
                 <option value="2">{t("associates_2")}</option>
                 <option value="3">{t("associates_3")}</option>
@@ -2452,7 +2491,10 @@ const Step2Fields: React.FC<any> = ({
                 { k: "batwaPartners", ph: "batwaPartners" },
                 { k: "disabledPartners", ph: "disabledPartners" },
               ].map(({ k, ph }) => (
-                <div className="col-lg-6" key={k}>
+                <div
+                  className={`${k === "disabledPartners" ? "col-12" : "col-lg-6"}`}
+                  key={k}
+                >
                   <FL label={t(ph)} />
                   <label>
                     <i className="fa fa-users" />
@@ -2510,7 +2552,9 @@ const Step2Fields: React.FC<any> = ({
                   onUpdateField("hasBankAccount", e.target.value as TriBool)
                 }
               >
-                <option value="" disabled>{t("selectOption")}</option>
+                <option value="" disabled>
+                  {t("selectOption")}
+                </option>
                 <option value="yes">{t("yes")}</option>
                 <option value="no">{t("no")}</option>
               </select>
@@ -2532,7 +2576,9 @@ const Step2Fields: React.FC<any> = ({
                 }
                 className="pl-30"
               >
-                <option value="" disabled>{t("selectOption")}</option>
+                <option value="" disabled>
+                  {t("selectOption")}
+                </option>
                 <option value="yes">{t("yes")}</option>
                 <option value="no">{t("no")}</option>
               </select>
@@ -2756,7 +2802,9 @@ const Step3Fields: React.FC<any> = ({
             onUpdateField("hasCompetitors", e.target.value as TriBool)
           }
         >
-          <option value="" disabled>{t("selectOption")}</option>
+          <option value="" disabled>
+            {t("selectOption")}
+          </option>
           <option value="yes">{t("yes")}</option>
           <option value="no">{t("no")}</option>
         </select>
@@ -2849,7 +2897,9 @@ const Step3Fields: React.FC<any> = ({
             onUpdateField("isNewIdea", e.target.value as TriBool)
           }
         >
-          <option value="" disabled>{t("selectOption")}</option>
+          <option value="" disabled>
+            {t("selectOption")}
+          </option>
           <option value="yes">{t("yes")}</option>
           <option value="no">{t("no")}</option>
         </select>
@@ -2905,7 +2955,9 @@ const Step3Fields: React.FC<any> = ({
             onUpdateField("hasEstimatedCost", e.target.value as TriBool)
           }
         >
-          <option value="" disabled>{t("selectOption")}</option>
+          <option value="" disabled>
+            {t("selectOption")}
+          </option>
           <option value="yes">{t("yes")}</option>
           <option value="no">{t("no")}</option>
         </select>
@@ -3053,7 +3105,7 @@ const ProfileLoader: React.FC = () => {
   return (
     <div className="site-main">
       <Header />
-      <PageHeader title={t("myProfile")} breadcrumb={t("myProfile")} />
+      <PageHeader title={t("applicationForm")} breadcrumb={t("application")} />
       <div
         style={{
           minHeight: "70vh",
@@ -3120,4 +3172,4 @@ const ProfileLoader: React.FC = () => {
   );
 };
 
-export default Profile;
+export default Application;
