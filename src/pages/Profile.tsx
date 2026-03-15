@@ -75,7 +75,7 @@ const KirundiLocale = {
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type EntrepreneurType = "burundian" | "refugee" | "other";
+type EntrepreneurType = "burundian" | "refugee" | "other" | "";
 type GenderType = "M" | "F" | "";
 type CompanyStatusType = "formal" | "informal" | "project" | "";
 type MaritalStatusType = "single" | "married" | "divorced" | "widowed" | "";
