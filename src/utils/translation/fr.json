@@ -22,7 +22,7 @@
   "news": "Actualités",
   "newsList": "Liste des actualités",
   "newsDetail": "Détail d'un article",
-  "ressources": "Ressources",
+  "resources": "Ressources",
   "guides": "Guides pratiques",
   "practicalGuides": "Guides pratiques",
   "templates": "Modèles téléchargeables",
@@ -165,9 +165,8 @@
   "step3Desc": "Rédigez et déposez votre plan d'affaires avant la date limite. Nos experts l'évalueront de manière transparente.",
   "step4Title": "Recevez votre subvention",
   "step4Desc": "Si vous êtes sélectionné, bénéficiez d'une subvention de contrepartie et d'un accompagnement personnalisé pour lancer votre projet.",
-  "impactTitle": "L’impact du COPA",
-  "impactSubtitle": "en chiffres",
-  "impactDesc": "MPME soutenues, financements accordés et emplois créés.",
+  "impactTitle": "Chiffres clés",
+  "impactDesc": "L'impact du COPA en chiffres",
   "statsBusinesses": "MPME inscrites",
   "statsPlans": "Plans d'affaires soumis",
   "statsGrants": "Subventions accordées",
@@ -177,8 +176,7 @@
   "partnersTitle": "Nos",
   "partnersHighlight": "Partenaires",
   "partnersDesc": "Partenaires clés du projet COPA",
-  "testimonialsTitle": "MPME",
-  "testimonialsHighlight": "Satisfaits",
+  "testimonialsTitle": "Témoignages",
   "testimonialsDesc": "Ils ont réussi avec le COPA",
   "testimonial1Name": "Kaneza., Kayanza",
   "testimonial1Label": "Lauréate COPA 2026",
@@ -189,8 +187,7 @@
   "testimonial3Name": "Pacifique Ntahuga",
   "testimonial3Label": "Lauréat COPA 2026",
   "testimonial3Text": "Le soutien du COPA a été un véritable tournant pour mon entreprise. L’accompagnement m’a aidé à structurer ma gestion financière et la subvention m’a permis d’augmenter ma capacité de production. Aujourd’hui, mes ventes ont augmenté et j’ai créé 4 nouveaux emplois !",
-  "blogTitle": "Approfondir",
-  "blogHighlight": "ses connaissances",
+  "blogTitle": "Actualités",
   "blogDesc": "Dernières nouvelles",
   "blogReadMore": "Lire la suite!",
   "blogDate1": "18 Mar 2020",
@@ -205,6 +202,8 @@
   "blogDate4": "18 Avr 2020",
   "blogTitle4": "Comment gérer la négativité chez les anciens ?",
   "blogDesc4": "Quoi que vous fassiez en matière de planification ou d'animation, l'objectif doit être axé sur le soutien.",
+  "allNews": "Toutes les actualités",
+  "copyright": "Copyright : © 2026 PRETE – Tous droits réservés | Financé par la Banque mondiale",
   "admin": "Admin",
   "business": "business",
   "bannerTitle": "COPA – Concours de Plans d'Affaires",
@@ -216,16 +215,11 @@
     "breadcrumb": "À propos",
     "project": {
       "title": "Le Projet pour l'Emploi et la Transformation Économique",
-      "description": "Le PRETE est un projet du Gouvernement du Burundi, financé par la Banque mondiale, qui vise à stimuler la croissance économique inclusive et la création d'emplois dans le pays. D'un montant de 100 millions USD, le projet s'étend sur une période de 5 ans (2024-2028).",
-      "fundedBy": "Financé par",
-      "fundedByValue": "Banque mondiale — Gouvernement du Burundi",
-      "duration": "Durée du projet",
-      "durationValue": "2024 – 2028 (5 ans)"
+      "description": "Le PRETE est un projet du Gouvernement du Burundi, financé par la Banque mondiale, qui vise à stimuler la croissance économique inclusive et la création d'emplois dans le pays. D'un montant de 100 millions USD, le projet s'étend sur une période de 5 ans (2024-2028)."
     },
     "tabs": {
       "objectives": "Nos objectifs",
-      "components": "Les composantes du PRETE",
-      "values": "Valeurs fondamentales"
+      "components": "Les composantes du PRETE"
     },
     "objectives": {
       "list": [
@@ -262,32 +256,6 @@
         }
       ]
     },
-    "stats": [
-      { "label": "Budget total du projet", "suffix": "M$" },
-      { "label": "Durée du programme", "suffix": "ans" },
-      { "label": "Bénéficiaires attendus", "suffix": "+" },
-      { "label": "Croissance PIB ciblée", "suffix": "%" }
-    ],
-    "copa": {
-      "title": "Sous-composante 1.2",
-      "subtitle": "Le COPA : mécanisme phare du PRETE",
-      "description": "La sous-composante 1.2 « Amélioration des capacités des MPME » porte le <strong>Concours de Plans d'Affaires (COPA)</strong>, le mécanisme central d'appui aux entrepreneurs burundais.",
-      "description2": "Le COPA combine formation, mentorat et financement pour offrir un accompagnement complet aux porteurs de projets viables et innovants.",
-      "buttons": {
-        "discover": "Découvrir le COPA",
-        "participate": "Comment participer ?"
-      },
-      "stats": {
-        "title": "Le COPA en chiffres",
-        "items": [
-          "Programme de 5 ans (2024–2028)",
-          "Subventions de contrepartie (matching grants)",
-          "Formations gratuites en présentiel et en ligne",
-          "Accompagnement personnalisé par des experts",
-          "Priorité femmes, jeunes, réfugiés, climat"
-        ]
-      }
-    },
     "cta": {
       "title": "Prêt à rejoindre le programme COPA ?",
       "description": "Inscrivez-vous dès maintenant et bénéficiez d'un accompagnement complet pour développer votre entreprise.",
@@ -296,7 +264,7 @@
   },
   "aboutcopa": {
     "pageTitle": "Présentation du COPA",
-    "breadcrumb": "À propos / COPA",
+    "breadcrumb": "COPA",
     "intro": {
       "title": "Le COPA",
       "subtitle": "Le Concours de Plans d'Affaires",
@@ -352,50 +320,22 @@
       },
       "list": [
         {
-          "icon": "👩‍💼",
           "label": "Femmes entrepreneurs",
           "desc": "Entreprises dirigées par des femmes avec points bonus à l'évaluation"
         },
         {
-          "icon": "🌍",
           "label": "Entrepreneurs réfugiés",
           "desc": "Réfugiés enregistrés au Burundi éligibles au programme"
         },
         {
-          "icon": "🎓",
           "label": "Jeunes (18–35 ans)",
           "desc": "Jeunes porteurs de projets innovants et viables"
         },
         {
-          "icon": "🌿",
           "label": "Impact environnemental",
           "desc": "Projets à impact positif sur le climat et l'environnement"
         }
-      ],
-      "button": "Consulter tous les critères d'éligibilité"
-    },
-    "steps": {
-      "section": {
-        "title": "Le parcours",
-        "subtitle": "Les étapes du programme COPA"
-      },
-      "list": [
-        { "step": "1", "label": "Inscription", "link": "/inscription" },
-        {
-          "step": "2",
-          "label": "Profil complet",
-          "link": "/espace-mpme/mon-profil"
-        },
-        { "step": "3", "label": "Formations", "link": "/formations/catalogue" },
-        {
-          "step": "4",
-          "label": "Plan d'affaires",
-          "link": "/espace-mpme/mon-plan-affaires/redaction"
-        },
-        { "step": "5", "label": "Évaluation", "link": null },
-        { "step": "6", "label": "Subvention", "link": null }
-      ],
-      "access": "Accéder"
+      ]
     },
     "cta": {
       "title": "Prêt à participer au Concours de Plans d'Affaires ?",
@@ -623,34 +563,22 @@
       {
         "num": "04",
         "title": "Suivez les formations",
-        "desc": "Participez aux formations obligatoires sur la rédaction de plan d'affaires. Ces formations sont gratuites et disponibles en présentiel ou en ligne. Elles vous donneront toutes les clés pour rédiger un plan d'affaires convaincant.",
-        "cta": "Voir le catalogue des formations"
+        "desc": "Participez aux formations obligatoires sur la rédaction de plan d'affaires. Ces formations sont gratuites et disponibles en présentiel ou en ligne. Elles vous donneront toutes les clés pour rédiger un plan d'affaires convaincant."
       },
       {
         "num": "05",
         "title": "Rédigez et soumettez votre plan d'affaires",
-        "desc": "Utilisez les outils de la plateforme pour rédiger votre plan d'affaires. Vous pouvez sauvegarder votre travail et y revenir autant que nécessaire avant la date limite de soumission.",
-        "cta": "Consulter le calendrier",
-        "note": "Consultez les dates de soumission dans le calendrier COPA."
+        "desc": "Utilisez les outils de la plateforme pour rédiger votre plan d'affaires. Vous pouvez sauvegarder votre travail et y revenir autant que nécessaire avant la date limite de soumission."
       },
       {
         "num": "06",
         "title": "Attendez les résultats",
-        "desc": "Votre plan sera évalué par un comité d'experts indépendants selon des critères transparents. Vous serez informé des résultats par email et SMS.",
-        "note": "L'évaluation dure environ 10 à 15 jours ouvrables après la clôture des dépôts."
+        "desc": "Votre plan sera évalué par un comité d'experts indépendants selon des critères transparents. Vous serez informé des résultats par email et SMS."
       },
       {
         "num": "07",
         "title": "Si vous êtes lauréat",
-        "desc": {
-          "intro": "Félicitations ! En tant que lauréat, vous bénéficierez de :",
-          "criteria": [
-            "Signature d'une convention de subvention avec le PRETE",
-            "Accompagnement personnalisé pour la mise en œuvre",
-            "Versement de la subvention de contrepartie",
-            "Suivi post-projet par des mentors experts"
-          ]
-        }
+        "desc": "Félicitations ! Vous signerez une convention de subvention et bénéficierez d'un accompagnement personnalisé pour mettre en œuvre votre projet."
       }
     ],
     "cta": {
@@ -835,7 +763,7 @@
         "num": "1",
         "phase": "Inscriptions",
         "description": "Ouverture des inscriptions sur la plateforme COPA. Création de compte et remplissage du profil entrepreneur. Période de sensibilisation et d'information.",
-        "startDate": "1er mars 2026",
+        "startDate": "16 mars 2026",
         "endDate": "31 mars 2026",
         "status": {
           "label": "Terminé"

@@ -220,7 +220,7 @@ const Footer: React.FC<FooterProps> = () => {
           <div className="row">
             <div className="col-12 text-center">
               <span className="copyright">
-                Copyright : © 2026 PRETE – Tous droits réservés | Financé par la Banque mondiale
+                {t("copyright")}
                 {/* Copyright © 2021{" "}
                 <a href={import.meta.env.PUBLIC_URL + "/"}>HireCo </a>All rights
                 reserved. */}

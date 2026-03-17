@@ -51,7 +51,6 @@ const AboutCopa: React.FC = () => {
   const whyList = t("aboutcopa.intro.whyParticipate.list", {
     returnObjects: true,
   }) as string[];
-  const steps = t("aboutcopa.steps.list", { returnObjects: true }) as any[];
 
   return (
     <div className="site-main">
@@ -105,7 +104,7 @@ const AboutCopa: React.FC = () => {
                   <div className="layer-content">
                     <h4 className="mb-20">
                       {t("aboutcopa.intro.whyParticipate.title")}{" "}
-                      <span className="text-theme-SkinColor">?</span>
+                      {/* <span className="text-theme-SkinColor">?</span> */}
                     </h4>
                     <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
                       {whyList.map((item: string, i: number) => (

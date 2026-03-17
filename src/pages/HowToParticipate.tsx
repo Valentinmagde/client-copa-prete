@@ -124,9 +124,7 @@ const HowToParticipate: React.FC = () => {
                         </h3>
                       </div>
                       <div className="featured-desc">
-                        {stepIndex === 0 ||
-                        stepIndex === 1 ||
-                        stepIndex === 6 ? (
+                        {stepIndex === 0 || stepIndex === 1 ? (
                           <>
                             <p>
                               {t(
@@ -134,7 +132,7 @@ const HowToParticipate: React.FC = () => {
                               )}
                             </p>
                             <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor mt-10">
-                              {[...Array(stepIndex === 6 ? 4 : 3)].map(
+                              {[...Array(stepIndex === 1 ? 4 : 3)].map(
                                 (_, j) => (
                                   <li key={j}>
                                     <i className="far fa-check-circle"></i>

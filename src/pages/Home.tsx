@@ -212,8 +212,16 @@ const Home: React.FC = () => {
               <div className="section-title">
                 <div className="title-header">
                   <h3>
-                    {t("whatIsThe")}{" "}
-                    <span className="text-theme-SkinColor">COPA?</span>
+                    {t("aboutCopa")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}
                   </h3>
                   <h2 className="title">{t("aboutCopaTitle")}</h2>
                 </div>
@@ -258,8 +266,16 @@ const Home: React.FC = () => {
               <div className="section-title">
                 <div className="title-header">
                   <h3>
-                    {t("howDoesIt")}{" "}
-                    <span className="text-theme-SkinColor">{t("works")}</span>
+                    {t("howItWorks")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}{" "}
                   </h3>
                   <h2 className="title">{t("howItWorksTitle")}</h2>
                 </div>
@@ -366,10 +382,16 @@ const Home: React.FC = () => {
               <div className="section-title">
                 <div className="title-header">
                   <h3>
-                    {t("impactTitle")}{" "}
-                    <span className="text-theme-SkinColor">
-                      {t("impactSubtitle")}
-                    </span>
+                    {t("impactTitle")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}{" "}
                   </h3>
                   <h2 className="title">{t("impactDesc")}</h2>
                 </div>
@@ -519,9 +541,9 @@ const Home: React.FC = () => {
                   <div className="title-header">
                     <h3>
                       {t("testimonialsTitle")}{" "}
-                      <span className="text-theme-SkinColor">
+                      {/* <span className="text-theme-SkinColor">
                         {t("testimonialsHighlight")}
-                      </span>
+                      </span> */}
                     </h3>
                     <h2 className="title">{t("testimonialsDesc")}</h2>
                   </div>
@@ -561,9 +583,9 @@ const Home: React.FC = () => {
                 <div className="title-header">
                   <h3>
                     {t("blogTitle")}{" "}
-                    <span className="text-theme-SkinColor">
+                    {/* <span className="text-theme-SkinColor">
                       {t("blogHighlight")}
-                    </span>
+                    </span> */}
                   </h3>
                   <h2 className="title">{t("blogDesc")}</h2>
                 </div>
@@ -744,6 +766,18 @@ const Home: React.FC = () => {
               </div>
             </div>
           </Slider>
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="pt-30 m-auto text-center">
+                <Link
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                  to="/news"
+                >
+                  {t("allNews")}
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -3,41 +3,41 @@
   "homePage": "Umuganda",
   "about": "Ibirimwo",
   "pretePresentation": "Insiguro PRETE Prete",
-  "copaPresentation": "Ibikorwa bya Copa",
-  "partners": "Ama Partners",
+  "copaPresentation": "Insiguro COPA ",
+  "partners": "Abafatanyabikorwa",
   "ourPartners": "Ama Partners",
   "copa": "Copa",
   "participate": "Injira",
-  "howToParticipate": "Ubutumwa w'ubumenyesha",
-  "calendar": "Ikigaro",
+  "howToParticipate": "Ni gute nokwitabira ihiganwa",
+  "calendar": "ikirangaminsi",
   "editionCalendar": "Ikigaro cha kuvugurura",
-  "eligibilityCriteria": "Ibikorwa bya gutegura",
-  "previousEditions": "Ibikorwa bya gutegura",
+  "eligibilityCriteria": "Ivyisungwa kwemererwa",
+  "previousEditions": "Incuro gusubira inyuma ",
   "editionsArchive": "Ibikorwa bya gutegura",
-  "trainings": "Amakuru",
-  "catalogue": "Amakuru",
+  "trainings": "Inyigisho",
+  "catalogue": "Ububiko",
   "trainingsCatalog": "Amakuru",
-  "sessionsCalendar": "Ikigaro cha kuvugurura",
+  "sessionsCalendar": "Ikirangaminsi incuro",
   "sessionRegistration": "Injira kuri sessyon",
-  "news": "Amashusho",
+  "news": "Amakuru",
   "newsList": "Amashusho",
   "newsDetail": "Ubwoko",
-  "ressources": "Amashusho",
-  "guides": "Amashusho",
+  "resources": "Ivyo kumenya",
+  "guides": "Ivyo kwifashisha",
   "practicalGuides": "Amashusho",
-  "templates": "Amashusho",
+  "templates": "Uko yubatse ",
   "downloadableTemplates": "Amashusho",
-  "videos": "Amashusho",
+  "videos": "Amasanamu",
   "videoTutorials": "Amashusho",
-  "faq": "Ibikorwa bya gutegura",
+  "faq": "Ibibazo bikunda kubazwa ",
   "faqList": "Ibikorwa bya gutegura",
   "frequentlyAskedQuestions": "Ibikorwa bya gutegura",
-  "contact": "Ubwishyura",
+  "contact": "Inomero yo guhamagarako ",
   "contactForm": "Ubwishyura",
   "complaint": "Ibikorwa bya gutegura",
   "submitComplaint": "Ibikorwa bya gutegura",
   "signup": "Iyandikishe",
-  "registration": "Injira",
+  "registration": "Kwiyandikisha",
   "createCopaAccount": "Iyandikishe",
   "createNewAccount": "Iyandikishe",
   "creatingCopaAccount": "Iyandikishe",
@@ -141,52 +141,49 @@
   "profileCompletion": "Complétion du profil",
   "profileCompletedOn": "Profil complété le",
   "finish": "Finir",
-  "aboutCopa": "Ni iki COPA?",
+  "aboutCopa": "COPA ni iki ?",
   "whatIsThe": "Ni iki",
-  "aboutCopaTitle": "Ikibanza co kuronsa abikorera mu Burundi",
-  "aboutCopaDesc1": "COPA ni igikorwa c'Umushinga PRETE, ushikirizwa n'Isoko ry'Isi. Intumbero yacu: kurondera, gufasha no gutanga inkunga ku bicuruzwa bikiri binini canke bitoyi mu Burundi bishoboye.",
-  "aboutCopaDesc2": "COPA igamije abikorera bose, cane cane abakenyezi bikorera n'abahunze bifuza guteza imbere ibikorwa vyabo mu Burundi.",
+  "aboutCopaTitle": "Akaryo keza ko guteza imbere abanyamingambi b’Abarundi",
+  "aboutCopaDesc1": "Ihiganwa ry’imigambi y’ubudandaji (COPA) ni kimwe mu bikorwa vy’umugambi ugamije kugwiza akazi n’ihinduka mu bijanje n’ubutunzi (PRETE), ufashwe mu mugongo y’ibanki y’isi yose. Intumbero yacu ni: kumenya neza, kwigisha no gushigikira amashirahamwe matomato agaragaza ko ari imbere mu migambi gusuvya ayandi mu Burundi.",
+  "aboutCopaDesc2": "Ihiganwa COPA ryagenewe abantu bose bafise ibikorwa vyo kwiteza imbere, na cane cane ku bakenyezi bafise imigambi yo kwiteza imbere hamwe n’impunzi zipfuza gutanguza igikorwa co kwiyungunganya mu Burundi.",
   "learnMore": "Menya vyinshi",
-  "howItWorks": "Bigenda gute?",
+  "howItWorks": "Ikora gute ?",
   "howDoesIt": "Bigenda",
   "works": "gute?",
-  "howItWorksTitle": "Intambwe 4 z'uburindutsi",
-  "discoverFullProcess": "Raba uko bigenda",
-  "step1Title": "Iyandikishe",
-  "step1Desc": "Ugire konti yawe maze uzuze amakuru yawe mu minota mikeyi.",
-  "step2Title": "Wige",
-  "step2Desc": "Kurikira amahugurwa kubuntu kugira ngo ubone ubumenyi bukenewe bwo kwandika gahunda nziza.",
-  "step3Title": "Tanga gahunda yawe",
-  "step3Desc": "Andika kandi utange gahunda yawe mbere y'umunsi w'impera. Abahinga bacu bazo isuzuma mu buryo bubereye.",
-  "step4Title": "Habwe inkunga",
-  "step4Desc": "Ni wahigwa, ronka inkunga n'ubufasha mu gutanguza umushinga wawe.",
-  "impactTitle": "Ivyagezwe na COPA",
-  "impactSubtitle": "mu mishorobare",
-  "impactDesc": "Ubushigikire bw'ibicuruzwa, inkunga zatanzwe n'akazi karenguwe.",
-  "statsBusinesses": "Ibicuruzwa vyiyandikishije",
-  "statsPlans": "Imyigambi yatanzwe",
-  "statsGrants": "Inkunga zatanzwe",
-  "statsAmount": "BIF z'inkunga zatanzwe",
-  "statsWomen": "abakenyezi bikorera",
-  "statsJobs": "akazi karenguwe",
+  "howItWorksTitle": "Intambuko 4 zishikana ku gukora neza",
+  "discoverFullProcess": "Menya intambuko zose z’uko bigenda",
+  "step1Title": "Iyandikishe ",
+  "step1Desc": "Ugurura ikonte yawe nshasha hanyuma wuzuze umwidondoro wawe nk’umunyamigambi mu minota mikeya.",
+  "step2Title": "Menya amakuru",
+  "step2Desc": "Kurikirana amakuru yacu atangwa ku buntu kugira mwironkere ubumenyi buhagije ngo mushobore kwitunganiriza umugambi wubudandaji udasanzwe.",
+  "step3Title": "Rungika umugambi wawe",
+  "step3Desc": "Andika kandi wongere urungike umugambi wawe w’ubudandaji imbere yuko ikiringo categekanijwe kirangira. Abahinga bacu bazoca bawusuzuma biciye mu muco ntangere.",
+  "step4Title": "Ronka interano yawe mu mafaranga",
+  "step4Desc": "Mu gihe mwacaguwe mu bandi, muraronka imfashanyo y’amafaranga ahuye n’umugambi washikirije hamwe n’ugukurikiranwa ku giti cawe kugira umugambi wawe uje mu ngiro.",
+  "impactTitle": "Ibiharuro vy’abamaze gufashwa",
+  "impactDesc": "Uko COPA yafashije mw’irangurwa ry’imigambi mu biharuro",
+  "statsBusinesses": "Amashirahamwe matomato (MPME) yiyandikishije",
+  "statsPlans": "Imigambi yo kwiteza imbere yatanzwe",
+  "statsGrants": "Imfashanyo zatanzwe",
+  "statsAmount": "Igitigiri c’amafaranga y’amarundi yasohowe",
+  "statsWomen": "urugero rw’abakenyezi b’abanyamigambi",
+  "statsJobs": "ubuzi bwatanzwe",
   "partnersTitle": "Abadufasha",
   "partnersHighlight": "tw’ingenzi",
   "partnersDesc": "Ubufatanye n'abadufasha",
-  "testimonialsTitle": "Abishimye",
-  "testimonialsHighlight": "bavuga",
-  "testimonialsDesc": "Bagezweho na COPA",
+  "testimonialsTitle": "Intahe",
+  "testimonialsDesc": "Barashitse kw’iterambere kubwa COPA",
   "testimonial1Name": "Kaneza, Kayanza",
-  "testimonial1Label": "Uwatsindiye COPA 2026",
-  "testimonial1Text": "Cokimuriwe na COPA, nabaye gushobora guhindura ubucuruzi bwanje butoyi mw'igicuruzwa gikomeye. Amahugurwa yampaye icizigiro n'inkunga yampaye kugura ibikoresho vya none. Ubu, ndakoresha abantu 5!",
+  "testimonial1Label": "Uwatsindiye imfashanyo ya COPA mu mwaka wa 2026",
+  "testimonial1Text": "Kubw’umugambi COPA, narashoboye guhindura urudandazwa rwanje ruto mw’ishirahamwe riteye imbere. Inyigisho zarampaye inguvu zo kubandanya hanyuma intererano y’amafaranga nayo yatumye ngura ibikoresho bigezweho. Kugez’ubu, nkoresha abakozi bagera kuri 5!",
   "testimonial2Name": "Jean Bosco Ndayishimiye",
-  "testimonial2Label": "Uwatsindiye COPA 2026",
+  "testimonial2Label": "Uwatsindiye imfashanyo ya COPA mu mwaka wa 2026",
   "testimonial2Text": "Mfashijwe na COPA, umushinga wanje wavuye mw'igitekerezo gusa wabaye igicuruzwa giteguruwe neza. Inama nahaye zampaye gushobora gutunganya imari yanje n'inkunga yoroheje kugura ibikoresho vy'ingenzi. Ubu, ndabikorera abakiriya benshi kandi naremye akazi 4!",
   "testimonial3Name": "Pacifique Ntahuga",
-  "testimonial3Label": "Uwatsindiye COPA 2026",
+  "testimonial3Label": "Uwatsindiye imfashanyo ya COPA mu mwaka wa 2026",
   "testimonial3Text": "Ubufasha bwa COPA bwamye ihindagurika rikomeye ku bucuruzi bwanje. Urufatiro rwampaye gushobora gutunganya imari yanje n'inkunga yampaye kwongereza ubushobozi bwanje. Ubu, amacuruzi yanje yaragwiyekanye kandi naremye akazi 4 mashasha!",
-  "blogTitle": "Wige",
-  "blogHighlight": "ibindi",
-  "blogDesc": "Amakuru mashasha",
+  "blogTitle": "Amakuru",
+  "blogDesc": "Bishasha",
   "blogReadMore": "Soma!",
   "blogDate1": "18 Ru 2020",
   "blogTitle1": "Imahere anyu arabanje? Gerageza aya majambo 10",
@@ -200,35 +197,32 @@
   "blogDate4": "18 Mu 2020",
   "blogTitle4": "Ni gute twakemura amakenga mu bakenge?",
   "blogDesc4": "Ico ukoze mugutegura canke mugutwara, intumbero igomba kwibandwa kurufatiro.",
+  "allNews": "Inkuru zose",
+  "copyright": "Uwitirirwa igikorwa: © 2026 PRETE – Ntawemerewe kwiyitirira igikorwa | Gifashwe mu mugongo n’ibanki y’isi yose",
   "admin": "Umutware",
   "business": "ubucuruzi",
-  "bannerTitle": "COPA – Irushanwa rya gahunda z'ubucuruzi",
-  "bannerDescription": "Hindura igitekerezo cawe mu bucuruzi bukora. COPA ifasha ibicuruzwa bikiri binini canke bitoyi mu Burundi kwiga, kuronka ubufasha n'inkunga kugira ngo mushobore kugera ku ntego zanyu.",
-  "bannerParticipate": "Witabe COPA",
-  "bannerLearnMore": "Menya vyinshi",
+  "bannerTitle": "COPA – Ihiganwa ry’Imigambi y’ubudandaji",
+  "bannerDescription": "Hindura iciyumviro cawe kibe urudandazwa rutera imbere. COPA ifasha amashirahamwe akiri matomato (MPME) yo mu Burundi biciye mu nyigisho, gukurikiranwa rimwe ryose hamwe n’imfashanyo y’amafaranga kugira ivyipfuzo vyanyu bije mu ngiro.",
+  "bannerParticipate": "Injira mw’ihiganwa rya COPA",
+  "bannerLearnMore": "Menya vyinshi ",
   "aboutprete": {
     "pageTitle": "Ivyasha PRETE",
-    "breadcrumb": "Ivyerekeye",
+    "breadcrumb": "Ibirimwo",
     "project": {
       "title": "Umushinga w'Akazi n'Iterambere ry'Ubukungu",
-      "description": "PRETE ni umushinga wa Leta y'Uburundi, ufashwa na Banki y'Isi, ufise intego yo guteza imbere iterambere ry'ubukungu no kurema akazi mu gihugu. Ufise ingengo y'imari ingana miliyoni 100 z'amadolari y'Amerika, kandi uzomara imyaka 5 (2024-2028).",
-      "fundedBy": "Ufashwa na",
-      "fundedByValue": "Banki y'Isi — Leta y'Uburundi",
-      "duration": "Igihe c'umushinga",
-      "durationValue": "2024 – 2028 (imyaka 5)"
+      "description": "PRETE ni umugambi wa Reta y’Uburundi, ufashwe mu mugongo n’Ibanki y’isi yose, mu ntumbero yo gufasha abantu kwiteza imbere mu kugwiza ubutunzi atanumwe asigaye inyuma hamwe no kugwiza akazi mu gihugu. Hakoreshejwe amafaranga agera ku miriyoni ijana z’amadorare y’Abanyamerika (100,000,000$USD), uwo mugambi uzomara ikiringo c’imyaka 5 (2024-2028)."
     },
     "tabs": {
-      "objectives": "Intego zacu",
-      "components": "Ibigize PRETE",
-      "values": "Indobanurusange"
+      "objectives": "Intumbero zacu",
+      "components": "Ibice bigize PRETE"
     },
     "objectives": {
       "list": [
-        "Gushigikira ubushobozi bw'ibigo bito n'ibiciriritse",
-        "Kunoza ibihe vy'ubucuruzi mu Burundi",
-        "Kworoshya abacuruzi kubona inkunga",
-        "Guteza imbere ubwingenzi bw'abakenyezi n'impunzi mu bukungu",
-        "Gushigikira ishoramari ririnda imihindagurikire y'ikirere"
+        "Gukarihiriza ubwenge amashirahamwe matomato (MPME)",
+        "Guteza imbere ibijanye n’urudandazwa mu Burundi",
+        "Gufasha kugira abantu bafise imigambi bipfuza kurangura ngo baronke uko bashigikirwa",
+        "Guteza imbere interambere ridakumira mu bijanye n’ubutunzi ku bakenyezi hamwe n’impunzi",
+        "Gushigikira ishirwa ry’imitahe mu bintu vyizewe bihuye n’igihe kanaka "
       ]
     },
     "components": {
@@ -257,32 +251,6 @@
         }
       ]
     },
-    "stats": [
-      { "label": "Ingengo y'imari yose", "suffix": "M$" },
-      { "label": "Igihe c'umushinga", "suffix": "y" },
-      { "label": "Abazoronka akazi", "suffix": "+" },
-      { "label": "Intego y'ikura ry'ubukungu", "suffix": "%" }
-    ],
-    "copa": {
-      "title": "Igice ca 1.2",
-      "subtitle": "COPA: gahunda nyamukuru ya PRETE",
-      "description": "Igice ca 1.2 'Kunoza ubushobozi bw'ibigo' gitwara <strong>COPA</strong>, iyambere mu gushigikira abacuruzi b'Uburundi.",
-      "description2": "COPA ikoranya amahugurwa, ubuyobozi n'inkunga kugira ngo ishigikiye abafise imishinga myiza n'ishobora gutsimbataza.",
-      "buttons": {
-        "discover": "Menya COPA",
-        "participate": "Nigute watangura?"
-      },
-      "stats": {
-        "title": "COPA mu mibare",
-        "items": [
-          "Gahunda y'imyaka 5 (2024–2028)",
-          "Inkunga itishyurwa",
-          "Amahugurwa y'ubuntu",
-          "Ubuyobozi bwihariye n'abahanga",
-          "Uburinganire: abakenyezi, urubyiruko, impunzi, ikirere"
-        ]
-      }
-    },
     "cta": {
       "title": "Uriteguriye kwinjira muri gahunda ya COPA?",
       "description": "Iyandikishe ubu kugira ngo uhabwe ubufasha bukwiye bwo guteza imbere ubucuruzi bwawe.",
@@ -291,15 +259,15 @@
   },
   "aboutcopa": {
     "pageTitle": "Ivyasha COPA",
-    "breadcrumb": "Ivyerekeye / COPA",
+    "breadcrumb": "COPA",
     "intro": {
       "title": "COPA",
-      "subtitle": "Irirushanwa ry'Imishinga y'Ubucuruzi",
-      "description1": "COPA niryo shingiro rikomeye mu gice ca 1.2 ca PRETE. Ni gahunda yuzuye yo gufasha abacuruzi b'Uburundi, ikoranya <strong>amahugurwa, ubuyobozi n'inkunga</strong>.",
+      "subtitle": "Ihiganwa ry’imigambi y’ubudandaji",
+      "description1": "COPA (Ihiganwa ry’imigambi y’ubudandaji) ni uburyo nyamukuru mu gice ca 1.2 mu mugambi PRETE. Ni umugambi wikwije washizweho kugira ushigikire abanyambigambi b’abarundi, harimwo inyigisho, guhanura hamwe no gutanga imfashanyo y’amafaranga.",
       "description2": "COPA iha abafise imishinga myiza umwanya wo guteza imbere ubumenyi bwabo no kubona inkunga itishyurwa kugira ngo bashobore kurangiza intego zabo.",
       "buttons": {
-        "eligibility": "Raba niba ufise uburenganzira",
-        "howTo": "Nigute watangura?"
+        "eligibility": "Gusuzuma ko nkwije ibisabwa",
+        "howTo": "Ni gute nokwitabira ihiganwa ?"
       },
       "whyParticipate": {
         "title": "Kuki witabira?",
@@ -315,82 +283,54 @@
     },
     "pillars": {
       "section": {
-        "title": "Ingingo z'ibanze",
-        "subtitle": "COPA ishingiye ku ngingo 3"
+        "title": "Uko dukora",
+        "subtitle": "COPA ikoresha uburyo bushimikiye ku nkingi zitatu"
       },
       "list": [
         {
           "icon": "flaticon-advertising",
           "num": "01",
-          "title": "Amahugurwa",
-          "desc": "Guteza imbere ubumenyi mu bucuruzi n'ubuyobozi binyuze mu mahugurwa akwiye, haba mu maso no kuri interineti."
+          "title": "Inyigisho",
+          "desc": "Gukarisha ubumenyi mu bijanye no kwitunganiriza imigambi hamwe n’ukuziganya ubutunzi hakoreshejwe ibikoresho bihuye n’iyo ntumbero."
         },
         {
           "icon": "flaticon-recruitment",
           "num": "02",
-          "title": "Irirushanwa",
-          "desc": "Isuzuma ry'umutekano ry'ibikorwa ry'ubucuruzi n'abahanga, hakurikijwe amategeko."
+          "title": "Ihiganwa",
+          "desc": "Isuzumwa ryizewe kandi ku rugero rungana ry’imigambi y’ubudandaji rikorwa n’abahinga bigenga."
         },
         {
           "icon": "flaticon-bank",
           "num": "03",
-          "title": "Inkunga",
-          "desc": "Ihabwa abatsinze kugira ngo bashobore kurangiza imishinga yabo y'ubucuruzi."
+          "title": "Imfashanyo y’amafaranga",
+          "desc": "Gutanga imfashanyo y’amafaranga (intererano ihuye n’umugambi) ku bacaguwe mu babashikirije imigambi mu ntumbero y’ishirwa mu ngiro ry’imigambi yabo."
         }
       ]
     },
     "targets": {
       "section": {
-        "title": "Ni nde ashobora kwitabira?",
+        "title": "Ni inde yemerewe kuryitabira?",
         "subtitle": "COPA irakirira abantu bose",
-        "description": "COPA irakirira amasosiyete yose yemewe n'amategeko, kandi yitaye cyane ku matsinda akurikira:"
+        "description": "Ihiganwa COPA ryugururiwe amashirahamwe yose matomato yamaze kwemererwa gukora canke ari munzira yo kwemererwa gukora, mu kwama igihe cose hatangura gushirwa imbere:"
       },
       "list": [
         {
-          "icon": "👩‍💼",
-          "label": "Abacuruzi b'abakenyezi",
+          "label": "Amashirahamwe arongowe n’abakenyezi",
           "desc": "Amasosiyete ayobowe n'abakenyezi"
         },
         {
-          "icon": "🌍",
-          "label": "Abacuruzi b'impunzi",
+          "label": "Impunzi zifise imigambi yo kwiteza imbere",
           "desc": "Impunzi zanditswe mu Burundi"
         },
         {
-          "icon": "🎓",
-          "label": "Urubyiruko (18–35)",
+          "label": "Urwaruka rufise imigambi yo kwiteza imbere (imyaka 18-35)",
           "desc": "Urubyiruko rufise imishinga myiza"
         },
         {
-          "icon": "🌿",
-          "label": "ibidukikije",
+          "label": "Imigambi izana impinduka ku bijanye n’ihindagurika ry’ibihe",
           "desc": "Imishinga ifasha ikirere n'ibidukikije"
         }
-      ],
-      "button": "Raba ibisabwa byose"
-    },
-    "steps": {
-      "section": {
-        "title": "Inzira",
-        "subtitle": "Intambwe z'igahunda ya COPA"
-      },
-      "list": [
-        { "step": "1", "label": "Kwiyandikisha", "link": "/inscription" },
-        {
-          "step": "2",
-          "label": "Dosiye yuzuye",
-          "link": "/espace-mpme/mon-profil"
-        },
-        { "step": "3", "label": "Amahugurwa", "link": "/formations/catalogue" },
-        {
-          "step": "4",
-          "label": "Umushinga",
-          "link": "/espace-mpme/mon-plan-affaires/redaction"
-        },
-        { "step": "5", "label": "Isuzuma", "link": null },
-        { "step": "6", "label": "Inkunga", "link": null }
-      ],
-      "access": "Kwinjira"
+      ]
     },
     "cta": {
       "title": "Uriteguriye kwitabira Irirushanwa ry'Imishinga?",
@@ -573,76 +513,64 @@
     "pageTitle": "Uko witabira COPA ?",
     "breadcrumb": "COPA",
     "sectionTitle": {
-      "highlight": "biroroshye !",
+      "highlight": "Biroroshe !",
       "title": "Kurikiza izi ntambwe kugira ngo wongere amahirwe yawe",
-      "description": "Kwitaba COPA, biroroshye ! Kurikiza izi ntambwe 7 kugira ngo wongere amahirwe yawe yo gutsinda no kubona inkunga yo guteza imbere ubucuruzi bwawe."
+      "description": "Kuja mw’ihiganwa rya COPA, biroroshe ! Kurikiza intambwe zisabwa kugira ugwize amahirwe yo gutsinda."
     },
     "step": {
-      "prefix": "Intambwe"
+      "prefix": "Intambwe ya"
     },
     "steps": [
       {
         "num": "01",
-        "title": "Raba niba ufise uburenganzira",
+        "title": "Suzuma ko ukwije ibisabwa",
         "desc": {
-          "intro": "Mbere yo kwiyandikisha, raba niba uzuza ibisabwa byo kwitaba COPA. Ibisabwa nyamukuru ni :",
+          "intro": "Imbere yo kwiyandikisha, raba neza ko mukwije ibisabwa na COPA kugira wererwe. Ingingo nyamukuru n’izi :",
           "criteria": [
-            "Kuba uri MPME yemewe cyangwa uri mu nzira yo kwemererwa mu Burundi",
-            "Kugira umushinga w'ubucuruzi ufite ishingiro kandi wahitajwe",
-            "Kuba ushoboye gutanga umusanzu wawe (matching)"
+            "Kuba uri ishirahamwe rito risanzwe rikora canke riri mu nzira yo kwemererwa gukora mu Burundi",
+            "Kugira umugambi wo gutanguza Ishirahamwe rihagaze neza kandi harimwo impinduka nshasha",
+            "Gushobora kuzana intererano igaragara (ihuye n’ibikenewe)"
           ]
         },
         "cta": "Raba ibisabwa byose"
       },
       {
         "num": "02",
-        "title": "Iyandikishe kuri porogaramu",
+        "title": "Iyandikishe ku rubuga",
         "desc": {
-          "intro": "Fungura konti yawe mu minota mikeyi. Uzakenera :",
+          "intro": "Ugurura ikonte yawe mu minota mike. Muraza gukenera :",
           "criteria": [
-            "Aderesi ya email ikora cyangwa numero ya telefone",
-            "Ikirangantego (CNI, pasiporo cyangwa ikarita y'impunzi)",
-            "Amakuru y'ibanze kuri sosiyete yawe"
+            "Imeyiri ikora canke inomero ya terefone",
+            "Ikarata karangamuntu (CNI, urupapuro rw’inzira canke ikarata y’impunzi)",
+            "Amakuru y’ibanze yerekeye ishirahamwe ryanyu "
           ]
         },
-        "cta": "Mwiyandikishe ubu"
+        "cta": "Kwiyandikisha ubunyene"
       },
       {
         "num": "03",
-        "title": "Uzuza profili yawe",
-        "desc": "Nyuma yo kwiyandikisha, uzuza profili yawe yombi amakuru asabwa: amakuru yihariye, amakuru kuri sosiyete, inyandiko zemeza. Profili yuzuye yongerera amahirwe yo gutorwa."
+        "title": "Uzuza umwidondoro wawe",
+        "desc": "Uhejeje kwiyandikisha, uzuza umwidondoro wawe nk’umunyamutahe wisunze ibisabwa vyose : ibikuranga, ibiranga ishirahamwe, impapuro zivyemeza. Umwidondoro ukwije ibisabwa wongereza amahirwe yo kuba mubotorwamwo."
       },
       {
         "num": "04",
-        "title": "Kurikira amahugurwa",
-        "desc": "Gira uruhara mu mahugurwa ategetswe yo kwandika gahunda y'ubucuruzi. Aya mahugurwa ni ayubuntu kandi araboneka mu maso cyangwa kuri interineti. Azoguha ibisabwa byose byo kwandika gahunda y'ubucuruzi ikomeye.",
-        "cta": "Raba urutonde rw'amahugurwa"
+        "title": "Kurikirana inyigisho",
+        "desc": "Kwitabira inyigisho zitegekanijwe ko utegerezwa kubanza gukurikirana mu bijanye n’uko bategura umugambi w’ubudandaji.  Izo nyigisho zirahari ku buntu kandi urashobora kuzironswa haba ku kibanza canke ku buhinga bwa none. Zizobaronsa ivyankenerwa vyose nyamukuru mu gutegura umugambi w’ubudandaji utahuritse."
       },
       {
         "num": "05",
-        "title": "Andika kandi utange gahunda yawe y'ubucuruzi",
-        "desc": "Koresha ibikoresho bya porogaramu kwandika gahunda yawe y'ubucuruzi. Ushobora kubika akazi kawe ukagakomeza igize cyose ukeneye mbere y'umunsi w'impera wo gutanga.",
-        "cta": "Raba kalendari",
-        "note": "Raba amatariki yo gutanga muri kalendari ya COPA."
+        "title": "Andika wongere urungike umugambi wawe ujanye n’ubudandaji",
+        "desc": "Koresha ibikoresho vyategekanijwe n’uru rubuga mu gutegura umugambi wawe ujanye n’ubudandaji. Urashobora kubika ivyo wari umaze gukora hanyuma ukaza ku bigarukako igihe cose ubishakiye imbere yuko igenekerezo ryo kubirungika rigera."
       },
       {
         "num": "06",
-        "title": "Tegereza ibisubizo",
-        "desc": "Gahunda yawe izarerwa n'itsinda ry'inzobere mu kujijuka hakurikijwe ibipimo bigaragara. Uzamenyeshwa ibisubizo biciye muri email na SMS.",
-        "note": "Isuzuma rimara iminsi 10 kugeza 15 nyuma yo gufunga amatariki yo gutanga."
+        "title": "Rindira inyishu",
+        "desc": "Integuro yanyu izosuzumwa n’umugwi w’abahinga bigenga hisunzwe ibisabwa kugira utorwe bigaragara. Muzoronswa ubutumwa bubamenyesha uko vyagenze biciye kuri imeyiri no muri terefone ngendanwa."
       },
       {
         "num": "07",
-        "title": "Niba waratsinze",
-        "desc": {
-          "intro": "Muramuke ! Nk'uwatsinze, uzabona :",
-          "criteria": [
-            "Gusinya amasezerano y'inkunga na PRETE",
-            "Gufasha guhagaze ku giti cyawe mu gushyira mu bikorwa",
-            "Kwishyurwa inkunga",
-            "Gukurikiranwa nyuma y'umushinga n'abajyanama"
-          ]
-        }
+        "title": "Ni waba watsindiye ihiganwa",
+        "desc": "Turagukeje ! Uzoshira umukono ku masezerano yemeza gushigikirwa kandi uzokurikiranwa kugira ushire mu ngiro umugambi wawe."
       }
     ],
     "cta": {
@@ -820,13 +748,13 @@
     "breadcrumb": "COPA / Kalendari",
     "sectionTitle": {
       "highlight": "Igikorwa ca 2026",
-      "title": "Kalendari y'iyi mwaka"
+      "title": "Ikiringo c’ihiganwa ririko riraba"
     },
     "phases": [
       {
         "num": "1",
-        "phase": "Kwiyandikisha",
-        "description": "Gufungura kwiyandikisha kuri porogaramu ya COPA. Gufungura konti no kuzuza amakuru yombi. Igihe co gukangurira no gutanga amakuru.",
+        "phase": "Kwiyandikisha ",
+        "description": "Iyugururwa ry’ukwiyandikisha hamwe no guhimiriza",
         "startDate": "1 Werurwe 2026",
         "endDate": "31 Werurwe 2026",
         "status": {
@@ -838,8 +766,8 @@
       },
       {
         "num": "2",
-        "phase": "Amahugurwa",
-        "description": "Amasomo y'amahugurwa ategetswe kw'ubucuruzi no kwandika gahunda y'ubucuruzi. Araboneka mu maso (Bujumbura, Gitega, Ngozi) no kuri interineti.",
+        "phase": "Inyigisho",
+        "description": "Umwanya w’inyigigisho zibwirizwa gukurikiranwa",
         "startDate": "1 Mata 2026",
         "endDate": "30 Mata 2026",
         "status": {
@@ -851,8 +779,8 @@
       },
       {
         "num": "3",
-        "phase": "Gutanga gahunda",
-        "description": "Gutanga gahunda z'ubucuruzi kuri porogaramu. Ushobora gutanga gahunda yawe igihe icyo ari co cose muri iki gihe. Uzohererezwa konfirmasiyo kuri email na SMS.",
+        "phase": "Kurungika",
+        "description": "Gutangwa ry’imigambi y’ubudandaji",
         "startDate": "1 Gicurasi 2026",
         "endDate": "31 Gicurasi 2026",
         "status": {
@@ -864,8 +792,8 @@
       },
       {
         "num": "4",
-        "phase": "Isuzuma",
-        "description": "Isesengura n'isuzuma ry'agahunda z'ubucuruzi zatanzwe n'itsinda ry'inzobere mu kujijuka. Gukoresha urutonde rw'ibipimo bigaragara.",
+        "phase": "Isuzuma ",
+        "description": "Isuzuma ry’umugwi ugizwe n’abahinga",
         "startDate": "1 Kamena 2026",
         "endDate": "30 Kamena 2026",
         "status": {
@@ -876,8 +804,8 @@
       },
       {
         "num": "5",
-        "phase": "Kumenyesha ibisubizo",
-        "description": "Gushyira ku mugaragaro urutonde rw'atsinze. Kumenyeshwa kwa buri muntu ku giti ciwe biciye muri email na SMS. Inama y'abanyamakuru itemewe.",
+        "phase": "Inyishu",
+        "description": "Kumenyesha abatsindiye ihiganwa",
         "startDate": "15 Mukakaro 2026",
         "endDate": "15 Mukakaro 2026",
         "status": {
@@ -889,8 +817,8 @@
       },
       {
         "num": "6",
-        "phase": "Gusinya amasezerano",
-        "description": "Guhurira n'atsinze kugira ngo basinye amasezerano y'inkunga. Kwerekana gahunda yo gushyira mu bikorwa na kalendari yo kwishyura.",
+        "phase": "Amasezerano",
+        "description": "Gushira umukono ku masezerano",
         "startDate": "1 Nyakanga 2026",
         "endDate": "31 Nyakanga 2026",
         "status": {
