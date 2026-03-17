@@ -659,6 +659,60 @@
       "title": "Raba niba ufise uburenganzira bwo kwitabira COPA",
       "description": "COPA ifunguriwe MPME zuzuza ibisabwa bikurikira. Raba niba uboneye mbere yo kwiyandikisha."
     },
+    "criteria": {
+      "recevability": "Ibipimo vyo Kwemererwa",
+      "eligibility": "Ibipimo vyo Gukwiya",
+      "recevabilityItems": [
+        "Ikete ry’ugusaba ryatanzwe mu bihe vyateguwe?",
+        "Umusaba atanga icemezo c’ukuba i Burundi?",
+        "Umusaba yuzuye neza ifishi yo kuri interineti?",
+        "Umusaba yatanze inyandiko zari zisabwa muhamagararo ryo gutanga ibitekerezo?",
+        "Umusaba ari mw’ibazo c’amahitamwo abiri aravuzwe?",
+        "Umusaba yaratsinze mu myigenderanire ya COPA y’imbere?"
+      ],
+      "eligibilityItems": [
+        {
+          "label": "Imyaka y'Ubumenyi",
+          "desc": "Umwaka umwe canke kurenga."
+        },
+        {
+          "label": "Umubare w'Abakozi",
+          "desc": "Bingana canke bari munsi y’abakozi 100."
+        },
+        {
+          "label": "Izina ry’Itegeko rya MPME canke Umukoperative",
+          "desc": "Yanditswe mu Bwanditsi bw’Ubucuruzi (RC) canke muri ANACOOP, canke ifise NIF canke ifise icemezo c’ukumenyekana muri komine canki akarere kemeza ko ico kigo gifise umwaka umwe ushize mu buzima ku munsi w’ugusaba ku binyamigambi bitari mu tegeko."
+        },
+        {
+          "label": "Imico myiza ya MPME canke Umukoperative n’canke abayobozi bayo",
+          "desc": "Ica kigo n’canke uwuhagarariye mu buryo bw’itegeko ntibagomba kuba barahatiwe kubera ukwiyonkora ku mategeko y’Uburundi."
+        },
+        {
+          "label": "Ibice vy’Ikorwa",
+          "desc": "Agri-business, Agro-industrie (urugero Amata, Inkoko, Uburorerwa bw’Amafi, Ivya Musi ndetse n’ibindi bice bifise ubushobozi bunini), ii) Ivya Migodi na iii) serivisi bijanye n’agri-business (harimwo ubukerarugendo n’ikoranabuhanga)."
+        },
+        {
+          "label": "Aho MPME canke Umukoperative ari",
+          "desc": "Mu Burundi bwose."
+        },
+        {
+          "label": "Ikibanza c’Ufise Umushinga",
+          "desc": "Ufise umushinga ategerezwa kuba ari we uhagarariye mu buryo bw’itegeko rya MPME canke Umukoperative."
+        },
+        {
+          "label": "Umupaka w’Ubufasha",
+          "desc": "Ubufasha busabwa bugomba kuba hagati y’amadorari 10 000 n’20 000 y’Amerika."
+        },
+        {
+          "label": "Kurondera ibibazo vy’Ahandura n’Umuganda",
+          "desc": "MPME canke Abakoperative ntibategerezwa kuba bari mw’ibazo ry’ukwiyonkora kuri Code y’Ahandura n’Itegeko n°100/22 ryo ku wa 7 Gitugutu 2010 hamwe n’Inyubakwa y’Ahandura n’Umuganda (CGES) y’umushinga PRETE. Ukurondera ahandura n’umuganda bizafasha kumenya neza ibibera muri MPME."
+        },
+        {
+          "label": "Kutaba mw’amahitamwo abiri",
+          "desc": "Umusaba ntategerezwa kuba mw’ibazo ry’amahitamwo abiri."
+        }
+      ]
+    },
     "sections": {
       "enterprise": {
         "title": "Ibisabwa ku isosiyete",
@@ -1187,7 +1241,7 @@
   "errorLoadingProfile": "Ikosa mu gukurura umwirondoro",
   "errorSavingStep": "Ikosa mu kubika intambwe",
   "dragAndDropOrClick": "Kwegereza canke kanda kugira ngo utore idosiye",
-   "civility": {
+  "civility": {
     "madam": "Madamu",
     "mister": "Bwana"
   },

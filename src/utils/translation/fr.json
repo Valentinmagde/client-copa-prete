@@ -664,8 +664,62 @@
     "breadcrumb": "COPA / Éligibilité",
     "intro": {
       "highlight": "Comment participer ?",
-      "title": "Vérifiez votre éligibilité au COPA",
+      "title": "Vérifiez votre éligibilité",
       "description": "Le COPA est ouvert aux MPME répondant aux critères suivants. Vérifiez votre éligibilité avant de vous inscrire."
+    },
+    "criteria": {
+      "recevability": "Critères de recevabilité",
+      "eligibility": "Critères d'éligibilité",
+      "recevabilityItems": [
+        "La candidature a-t-elle été déposée dans les délais requis ?",
+        "Le candidat fournit-il la preuve de sa résidence au Burundi ?",
+        "Le candidat a-t-il rempli correctement le formulaire en ligne ?",
+        "Le candidat a-t-il fourni les documents requis dans l'appel à proposition ?",
+        "Le candidat se trouve-t-il dans un cas de conflit d'intérêt déclaré ?",
+        "Le candidat est-il lauréat d'une précédente cohorte du COPA ?"
+      ],
+      "eligibilityItems": [
+        {
+          "label": "Années d'expérience",
+          "desc": "1 an et plus."
+        },
+        {
+          "label": "Nombre d'employés",
+          "desc": "Égal ou inférieur à 100 employés."
+        },
+        {
+          "label": "Statut légal de la MPME ou de la Coopérative",
+          "desc": "Enregistrée au Registre de commerce (RC) ou à l'ANACOOP, ou disposant d'un NIF ou ayant une attestation de reconnaissance communale ou zonale attestant que l'entreprise a une durée de vie d'au moins un an révolu à la date de la candidature pour les entreprises informelles."
+        },
+        {
+          "label": "Moralité de la MPME ou de la Coopérative et/ou de ses dirigeants",
+          "desc": "L'entreprise et/ou son représentant légal ne doit pas avoir fait l'objet de condamnation pour infraction aux lois burundaises."
+        },
+        {
+          "label": "Secteurs d'activité",
+          "desc": "Agri-business, Agro-industrie (par exemple Lait, Volaille, Pisciculture, Fruits tropicaux et autres secteurs à fort potentiel), ii) Industrie minière et iii) services connexes à l'agri-business (y compris le tourisme et le numérique)."
+        },
+        {
+          "label": "Localisation de la MPME ou de la Coopérative",
+          "desc": "L'ensemble du territoire burundais."
+        },
+        {
+          "label": "Statut du porteur de projet",
+          "desc": "Le porteur de projet devra être le représentant légal de la MPME ou de la Coopérative."
+        },
+        {
+          "label": "Plafond de la subvention",
+          "desc": "La subvention demandée devrait être comprise entre 10 000 et 20 000 USD."
+        },
+        {
+          "label": "Prise en compte des questions environnementales et sociales",
+          "desc": "Les MPME ou les Coopératives ne devraient pas se retrouver dans une situation de violation du Code de l'Environnement et du décret n°100/22 du 7 octobre 2010 et du Cadre de Gestion Environnementale et Sociale (CGES) du projet PRETE. Un screening environnemental et social permettra de clarifier la situation de la MPME."
+        },
+        {
+          "label": "Absence de conflit d'intérêts",
+          "desc": "Le candidat ne devrait pas se trouver dans cas de conflit d'intérêt potentiel."
+        }
+      ]
     },
     "sections": {
       "enterprise": {

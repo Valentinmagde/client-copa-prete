@@ -1,24 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
 import RowBgImg from "../assets/img/row-bgimage-1.png";
+import about1 from "../assets/img/about/06.png";
+import about2 from "../assets/img/about/04.png";
+import about3 from "../assets/img/about/05.png";
 
 const EligibilityCriteria: React.FC = () => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<"eligible" | "excluded">(
-    "eligible",
-  );
 
-  const eligibleSectors = t("eligibilityCriteriaPage.sectors.eligibleList", {
-    returnObjects: true,
-  }) as Array<{ label: string; desc: string }>;
-
-  const excludedSectors = t("eligibilityCriteriaPage.sectors.excludedList", {
-    returnObjects: true,
-  }) as Array<{ label: string; desc: string }>;
+  // Get translated arrays
+  const recevabiliteItems = t(
+    "eligibilityCriteriaPage.criteria.recevabilityItems",
+    { returnObjects: true },
+  ) as string[];
+  const eligibiliteItems = t(
+    "eligibilityCriteriaPage.criteria.eligibilityItems",
+    { returnObjects: true },
+  ) as { label: string; desc: string }[];
 
   return (
     <div className="site-main">
@@ -30,13 +32,13 @@ const EligibilityCriteria: React.FC = () => {
 
       {/* criteria-section */}
       <section
-        className="ttm-row services-section bg-img1 bg-theme-GreyColor ttm-bg ttm-bgimage-yes clearfix"
+        className="ttm-row services-section bg-img1 bg-theme-WhiteColor ttm-bg ttm-bgimage-yes clearfix"
         style={{ backgroundImage: `url(${RowBgImg})` }}
       >
         <div className="container">
           {/* row */}
           <div className="row">
-            <div className="col-lg-11">
+            <div className="col-lg-10 offset-1">
               {/* section title */}
               <div className="section-title style2 mb-0">
                 <div className="title-header">
@@ -64,167 +66,76 @@ const EligibilityCriteria: React.FC = () => {
             </div>
           </div>
           {/* row end */}
-          <div className="row slick_slider slick-arrows-style2 pt-20 mb_10">
-            {/* Entreprise */}
-            <div className="col-lg-6 mb-30">
-              <div className="featured-imagebox featured-imagebox-services style1 h-100">
-                <div className="featured-content">
-                  <div className="featured-title">
-                    <h3>
-                      <Link to={"#"}>
-                        {t("eligibilityCriteriaPage.sections.enterprise.title")}
-                      </Link>
-                    </h3>
-                  </div>
-                  <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
-                    {(
-                      t("eligibilityCriteriaPage.sections.enterprise.items", {
-                        returnObjects: true,
-                      }) as string[]
-                    ).map((c, i) => (
-                      <li key={i} className="pb-10">
-                        <i className="far fa-check-circle"></i>
-                        <div className="ttm-list-li-content">{c}</div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <div className="row slick_slider slick-arrows-style5 mb_10">
+            <div className="ttm-row sidebar job-sidebar clearfix pt-20 pb-0">
+              <div className="container">
+                {/* row */}
+                <div className="row">
+                  <div className="col-lg-10 offset-1 content-area">
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12">
+                        {/* ── Recevabilité ── */}
+                        <div className="overview-box">
+                          <div className="title">
+                            <h5>
+                              {t(
+                                "eligibilityCriteriaPage.criteria.recevability",
+                              )}
+                            </h5>
+                          </div>
+                          <div className="desc">
+                            <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
+                              {recevabiliteItems.map((item, i) => (
+                                <li key={i} className="pb-10">
+                                  <i className="far fa-check-circle"></i>
+                                  <div className="ttm-list-li-content">
+                                    {item}
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
 
-            {/* Promoteur */}
-            <div className="col-lg-6 mb-30">
-              <div className="featured-imagebox featured-imagebox-services style1 h-100">
-                <div className="featured-content">
-                  <div className="featured-title">
-                    <h3>
-                      <Link to={"#"}>
-                        {t("eligibilityCriteriaPage.sections.promoter.title")}
-                      </Link>
-                    </h3>
-                  </div>
-                  <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
-                    {(
-                      t("eligibilityCriteriaPage.sections.promoter.items", {
-                        returnObjects: true,
-                      }) as string[]
-                    ).map((c, i) => (
-                      <li key={i} className="pb-10">
-                        <i className="far fa-check-circle"></i>
-                        <div className="ttm-list-li-content">{c}</div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+                        {/* ── Éligibilité ── */}
+                        <div className="overview-box">
+                          <div className="title">
+                            <h5>
+                              {t(
+                                "eligibilityCriteriaPage.criteria.eligibility",
+                              )}
+                            </h5>
+                          </div>
+                          <div className="desc">
+                            <ul className="ttm-list ttm-list-style-icon ttm-textcolor-darkgrey">
+                              {eligibiliteItems.map((item, i) => (
+                                <li key={i} className="pb-10">
+                                  <i className="ti ti-check-box"></i>
+                                  <div className="ttm-list-li-content">
+                                    <strong>{item.label} :</strong> {item.desc}
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
 
-      {/* sectors */}
-      <section className="ttm-row clearfix">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="section-title title-style-center_text">
-                <div className="title-header">
-                  <h3>
-                    {t("eligibilityCriteriaPage.sectors.title")
-                      .split(" ")
-                      .map((word: string, i: number) => (
-                        <span
-                          key={i}
-                          className={i >= 1 ? "text-theme-SkinColor" : ""}
-                        >
-                          {word}{" "}
-                        </span>
-                      ))}
-                  </h3>
-                  <h2 className="title">
-                    {t("eligibilityCriteriaPage.sectors.subtitle")}
-                  </h2>
-                </div>
-              </div>
-              {/* Tab buttons */}
-              <div
-                className="d-flex justify-content-center mb-30"
-                style={{ gap: "10px" }}
-              >
-                <button
-                  className={`ttm-btn ttm-btn-size-sm ttm-btn-shape-rounded ${activeTab === "eligible" ? "ttm-btn-style-fill ttm-btn-color-skincolor" : "ttm-btn-style-border ttm-btn-color-skincolor"}`}
-                  onClick={() => setActiveTab("eligible")}
-                >
-                  ✓ {t("eligibilityCriteriaPage.sectors.tabs.eligible")} (
-                  {eligibleSectors.length})
-                </button>
-                <button
-                  className={`ttm-btn ttm-btn-size-sm ttm-btn-shape-rounded ${activeTab === "excluded" ? "ttm-btn-style-fill ttm-btn-color-skincolor" : "ttm-btn-style-border ttm-btn-color-skincolor"}`}
-                  onClick={() => setActiveTab("excluded")}
-                >
-                  ✗ {t("eligibilityCriteriaPage.sectors.tabs.excluded")} (
-                  {excludedSectors.length})
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {activeTab === "eligible" && (
-            <div className="row row-equal-height mb_10">
-              {eligibleSectors.map((s, i) => (
-                <div key={i} className="col-lg-4 col-md-6 col-sm-6">
-                  {/* featured-icon-box */}
-                  <div
-                    className="featured-icon-box icon-align-before-title style3"
-                    style={{ background: "#f7f7f7" }}
-                  >
-                    <div className="featured-title">
-                      <h3>{s.label}</h3>
-                    </div>
-                    <div className="featured-content">
-                      <div className="featured-desc">
-                        <p>{s.desc}</p>
+                        <div className="col-lg-12">
+                          <div className="pt-30 m-auto text-center">
+                            <a
+                              className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                              href={"/register"}
+                            >
+                              {t("apply")}
+                            </a>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  {/* featured-icon-box end */}
                 </div>
-              ))}
-            </div>
-          )}
-
-          {activeTab === "excluded" && (
-            <div className="row justify-content-center">
-              {excludedSectors.map((s, i) => (
-                <div key={i} className="col-lg-4 col-md-6 col-sm-6">
-                  {/* featured-icon-box */}
-                  <div
-                    className="featured-icon-box icon-align-before-title style3"
-                    style={{ background: "#f7f7f7" }}
-                  >
-                    <div className="featured-title">
-                      <h3>{s.label}</h3>
-                    </div>
-                    <div className="featured-content">
-                      <div className="featured-desc">
-                        <p>{s.desc}</p>
-                      </div>
-                    </div>
-                  </div>
-                  {/* featured-icon-box end */}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div className="col-lg-12">
-            <div className="pt-30 m-auto text-center">
-              <a
-                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
-                href={"/register"}
-              >
-                {t("apply")}
-              </a>
+                {/* row end */}
+              </div>
             </div>
           </div>
         </div>
