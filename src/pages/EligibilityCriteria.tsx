@@ -84,10 +84,10 @@ const EligibilityCriteria: React.FC = () => {
                             </h5>
                           </div>
                           <div className="desc">
-                            <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
+                            <ul className="ttm-list ttm-list-style-icon">
                               {recevabiliteItems.map((item, i) => (
                                 <li key={i} className="pb-10">
-                                  <i className="far fa-check-circle"></i>
+                                  <i className="ti ti-check-box"></i>
                                   <div className="ttm-list-li-content">
                                     {item}
                                   </div>
