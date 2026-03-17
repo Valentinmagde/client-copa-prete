@@ -107,7 +107,7 @@ const EligibilityCriteria: React.FC = () => {
                             </h5>
                           </div>
                           <div className="desc">
-                            <ul className="ttm-list ttm-list-style-icon ttm-textcolor-darkgrey">
+                            <ul className="ttm-list ttm-list-style-icon ttm-textcolor-darkgrey text-justify">
                               {eligibiliteItems.map((item, i) => (
                                 <li key={i} className="pb-10">
                                   <i className="ti ti-check-box"></i>
