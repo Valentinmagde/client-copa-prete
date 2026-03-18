@@ -354,6 +354,22 @@ const Home: React.FC = () => {
                     </div>
                   </div>
                 </div>
+
+                <div className="featured-icon-box icon-align-before-content icon-ver_align-top style4">
+                  <div className="featured-icon">
+                    <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-grey ttm-icon_element-size-md ttm-icon_element-style-rounded">
+                      <i className="ttm-num ti-info"></i>
+                    </div>
+                  </div>
+                  <div className="featured-content ttm-bgcolor-grey">
+                    <div className="featured-title">
+                      <h3>{t("step5Title")}</h3>
+                    </div>
+                    <div className="featured-desc">
+                      <p>{t("step5Desc")}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="col-lg-6 col-md-10 col-11 m-auto">

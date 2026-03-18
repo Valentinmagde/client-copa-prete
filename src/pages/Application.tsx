@@ -558,7 +558,7 @@ const FL: React.FC<{ label: string; required?: boolean }> = ({
   </p>
 );
 
-const SectionTitle: React.FC<{ title: string }> = ({ title }) => (
+const SectionTitle: React.FC<{ title: string, subtitle?: string }> = ({ title, subtitle }) => (
   <div className="col-12 mt-20 mb-15">
     <p
       style={{
@@ -573,6 +573,23 @@ const SectionTitle: React.FC<{ title: string }> = ({ title }) => (
       }}
     >
       {title}
+      {subtitle && (
+        <>
+          <br />
+          <span 
+            style={{
+              fontSize: 14,
+              fontWeight: 400,
+              color: "#919191",
+              display: "flex",
+              alignItems: "center",
+              textTransform: "none",
+            }}>
+              <i className="ti ti-info-alt me-1"></i>
+            {subtitle}
+          </span>
+        </>
+      )}
     </p>
   </div>
 );
@@ -1992,7 +2009,7 @@ const Step1Fields: React.FC<any> = ({
       {errors.email && <span className="copa-error-msg">{errors.email}</span>}
     </div>
 
-    <SectionTitle title={t("eligibilitySection")} />
+    <SectionTitle title={t("eligibilitySection")} subtitle={t("eligibilitySectionSubtitle")} />
 
     {ELIGIBILITY_QUESTIONS.map(({ key, labelKey, icon }) => (
       <div
