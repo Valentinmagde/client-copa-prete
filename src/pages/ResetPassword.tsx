@@ -367,26 +367,6 @@ const ResetPassword: React.FC = () => {
                   <div className="bg-theme-GreyColor ttm-col-bgcolor-yes ttm-bg rounded p-50 p-lg-20">
                     <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
                     <div className="layer-content">
-                      {/* ========== ÉTAT LOADING ========== */}
-                      {state === "loading" && (
-                        <>
-                          <div className="text-center mb-20">
-                            <h3>{t("resetPassword.verifying")}</h3>
-                          </div>
-
-                          <div className="ttm-tabs ttm-tab-style-02">
-                            <div className="row">
-                              <div className="col-12 text-center py-5">
-                                <div className="copa-ring-spinner mx-auto mb-4" />
-                                <p style={{ color: "#777" }}>
-                                  {t("resetPassword.verifyingDesc")}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      )}
-
                       {/* ========== ÉTAT FORMULAIRE ========== */}
                       {state === "form" && (
                         <>
