@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
@@ -17,8 +22,8 @@ declare global {
 const Login: React.FC = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const [params]   = useSearchParams();
-  const email      = params.get("email");
+  const [params] = useSearchParams();
+  const email = params.get("email");
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -36,8 +41,7 @@ const Login: React.FC = () => {
 
   const location = useLocation();
 
-  const from =
-    (location.state as any)?.from?.pathname || "/application";
+  const from = (location.state as any)?.from?.pathname || "/application";
 
   useEffect(() => {
     if (!window.google) {
@@ -87,7 +91,7 @@ const Login: React.FC = () => {
 
       toast.success(t("loginSuccess"));
       // setInterval(() => {
-        navigate(from, { replace: true });
+      navigate(from, { replace: true });
       // }, 2000);
     } catch (err: any) {
       console.error("Login error:", err);
@@ -246,19 +250,27 @@ const Login: React.FC = () => {
                               }}
                               placeholder={t("passwordPlaceholder")}
                               autoComplete="current-password"
+                              // className="pe-5"
                             />
-                            {/* {!showPassword ? (
-                              <span>
+                            {/* 👁️ Toggle icon */}
+                            <span
+                              onClick={togglePasswordVisibility}
+                              style={{
+                                position: "absolute",
+                                right: "20px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                cursor: "pointer",
+                              }}
+                            >
                               <i
-                                className="fa fa-eye-slash"
-                                onClick={togglePasswordVisibility}
-                              /></span>
-                            ) : (
-                              <i
-                                className="fa fa-eye"
-                                onClick={togglePasswordVisibility}
+                                className={
+                                  showPassword
+                                    ? "far fa-eye"
+                                    : "far fa-eye-slash"
+                                }
                               />
-                            )} */}
+                            </span>
                           </label>
                           {errors.password && (
                             <span className="copa-error-msg">
@@ -297,7 +309,7 @@ const Login: React.FC = () => {
                               </div>
                               <div className="mt-15">
                                 <p>
-                                  <Link to="#" className="text-theme-SkinColor">
+                                  <Link to="/forgot-password" className="text-theme-SkinColor">
                                     {t("forgotPassword")}
                                   </Link>
                                 </p>
@@ -389,10 +401,7 @@ const Login: React.FC = () => {
 
                   <p className="text-center mb-0" style={{ fontSize: 13 }}>
                     {t("noAccount")}{" "}
-                    <Link
-                      to="/register"
-                      className="text-theme-SkinColor"
-                    >
+                    <Link to="/register" className="text-theme-SkinColor">
                       {t("registerFree")}
                     </Link>
                   </p>

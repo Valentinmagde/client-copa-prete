@@ -1185,5 +1185,74 @@
   "apply": "Soumettre ma candidature",
   "applicationForm": "Formulaire de candidature",
   "application": "Candidature",
-  "myApplication": "Ma candidature"
+  "myApplication": "Ma candidature",
+  "forgotPasswordPage": {
+    "title": "Mot de passe oublié",
+    "description": "Entrez votre email pour recevoir un lien de réinitialisation.",
+    "button": "Envoyer le lien",
+    "success": "Un lien de réinitialisation a été envoyé.",
+    "error": "Une erreur est survenue",
+    "sending": "Envoi en cours...",
+    "backToLogin": "Retour à la connexion"
+  },
+  "resetPassword": {
+    "pageTitle": "Réinitialisation du mot de passe",
+    "breadcrumb": "Réinitialisation",
+
+    "verifying": "Vérification en cours",
+    "verifyingDesc": "Nous vérifions la validité de votre lien de réinitialisation...",
+
+    "formTitle": "Nouveau mot de passe",
+    "formDesc": "Pour",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+
+    "submitting": "Réinitialisation en cours...",
+    "submit": "Réinitialiser mon mot de passe",
+
+    "successTitle": "Mot de passe modifié !",
+    "successDesc": "Votre mot de passe a été réinitialisé avec succès.",
+    "goToLogin": "Se connecter",
+
+    "errorTitle": "Échec de la réinitialisation",
+    "errorDesc": "Une erreur est survenue lors de la réinitialisation de votre mot de passe.",
+    "resendHint": "Le lien a peut-être expiré. Vous pouvez en demander un nouveau :",
+    "resending": "Envoi en cours...",
+    "resendIn": "Renvoi possible dans",
+    "resendEmail": "Renvoyer l'email",
+
+    "invalidTitle": "Lien invalide",
+    "invalidDesc": "Ce lien de réinitialisation est invalide ou a expiré.",
+    "requestNew": "Nouvelle demande",
+    "backToLogin": "Retour à la connexion",
+
+    "or": "ou",
+    "footerNote": "Pour des raisons de sécurité, ce lien expire après 1 heure.",
+
+    "strength": {
+      "label": "Force du mot de passe",
+      "weak": "Faible",
+      "medium": "Moyen",
+      "good": "Bon",
+      "strong": "Fort"
+    },
+
+    "requirements": {
+      "title": "Votre mot de passe doit contenir :",
+      "minLength": "Au moins 8 caractères",
+      "uppercase": "Une majuscule",
+      "lowercase": "Une minuscule",
+      "number": "Un chiffre",
+      "special": "Un caractère spécial (!@#$%^&*)"
+    },
+
+    "errors": {
+      "minLength": "Minimum 8 caractères",
+      "uppercase": "Une majuscule requise",
+      "lowercase": "Une minuscule requise",
+      "number": "Un chiffre requis",
+      "special": "Un caractère spécial requis (!@#$%^&*)",
+      "passwordMismatch": "Les mots de passe ne correspondent pas"
+    }
+  }
 }

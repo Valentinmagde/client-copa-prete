@@ -562,11 +562,11 @@ const SectionTitle: React.FC<{ title: string }> = ({ title }) => (
   <div className="col-12 mt-20 mb-15">
     <p
       style={{
-        fontSize: 11,
+        fontSize: 13,
         fontWeight: 700,
         textTransform: "uppercase",
         letterSpacing: "0.08em",
-        color: "#999",
+        color: "#1F4E79",
         margin: 0,
         borderBottom: "1px solid #e5e5e5",
         paddingBottom: 8,

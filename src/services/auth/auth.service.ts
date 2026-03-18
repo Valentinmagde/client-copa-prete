@@ -55,6 +55,55 @@ const AuthService = {
     return httpService.service().post(`auth/verify-email?lang=${lang}`, data);
   },
 
+  async forgotPassword(email: string, lang: string) {
+    return httpService.service().post(`/auth/forgot-password?lang=${lang}`, {
+      email,
+    });
+  },
+
+  /**
+   * Valide un token de réinitialisation
+   *
+   * @author Valentin magde <valentinmagde@gmail.com>
+   * @since 2024
+   *
+   * @param {Object} data - Les données de validation
+   * @param {string} data.token - Le token de réinitialisation
+   * @param {string} data.email - L'email de l'utilisateur
+   * @param {string} lang - La langue sélectionnée
+   * @returns {Promise<any>} Promise with the response
+   */
+  validateResetToken: async (
+    data: { token: string; email: string },
+    lang: string = "fr",
+  ): Promise<any> => {
+    return httpService
+      .service()
+      .post(`/auth/validate-reset-token?lang=${lang}`, data);
+  },
+
+  /**
+   * Réinitialise le mot de passe (Reset Password)
+   *
+   * @author Valentin magde <valentinmagde@gmail.com>
+   * @since 2024
+   *
+   * @param {Object} data - Les données de réinitialisation
+   * @param {string} data.token - Le token de réinitialisation
+   * @param {string} data.email - L'email de l'utilisateur
+   * @param {string} data.newPassword - Le nouveau mot de passe
+   * @param {string} lang - La langue sélectionnée
+   * @returns {Promise<any>} Promise with the response
+   */
+  resetPassword: async (
+    data: { token: string; email: string; newPassword: string },
+    lang: string = "fr",
+  ): Promise<any> => {
+    return httpService
+      .service()
+      .post(`/auth/reset-password?lang=${lang}`, data);
+  },
+
   /**
    * Logout
    *
