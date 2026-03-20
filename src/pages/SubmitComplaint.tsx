@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
-import About1 from "../assets/img/about/01.png";
-import About2 from "../assets/img/about/07.png";
-import SliderImg3 from "../assets/img/slider/03.png";
+import About1 from "../assets/img/about/05.jpg";
+import About2 from "../assets/img/about/06.jpg";
+import SliderImg3 from "../assets/img/slider/03.jpg";
 
 type ComplaintType =
   | "tech"

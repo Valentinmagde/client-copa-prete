@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
-import ContactImg from "../assets/img/contact/01.jpg";
+import ContactImg from "../assets/img/contact/02.jpg";
 import { toast } from "react-toastify";
 import NotificationService from "../services/notification/notification.service";
 

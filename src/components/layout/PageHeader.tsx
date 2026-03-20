@@ -1,5 +1,5 @@
 import React from "react";
-import BannerImg from "../../assets/img/banners/07.jpg";
+import BannerImg from "../../assets/img/banners/08.jpg";
 import { useTranslation } from "react-i18next";
 
 // Define props interface with proper types

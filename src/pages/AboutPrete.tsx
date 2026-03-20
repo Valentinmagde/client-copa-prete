@@ -5,7 +5,7 @@ import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import about1 from "../assets/img/about/06.png";
+import about1 from "../assets/img/about/04.jpg";
 import about2 from "../assets/img/about/04.png";
 import about3 from "../assets/img/about/05.png";
 
