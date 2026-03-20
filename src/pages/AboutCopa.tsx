@@ -85,7 +85,7 @@ const AboutCopa: React.FC = () => {
                   {t("aboutcopa.intro.buttons.eligibility")}
                 </Link>
                 <Link
-                  to="/how-to-participate"
+                  to="/eligibility-criteria#section-documents"
                   className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
                 >
                   {t("aboutcopa.intro.buttons.prepareDocuments")}

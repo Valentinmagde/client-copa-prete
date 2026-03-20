@@ -149,6 +149,7 @@ const EligibilityCriteria: React.FC = () => {
       <section
         className="ttm-row services-section bg-img1 bg-theme-GreyColor ttm-bg ttm-bgimage-yes clearfix"
         style={{ backgroundImage: `url(${RowBgImg})` }}
+        id="section-documents"
       >
         <div className="container">
           {/* section title */}

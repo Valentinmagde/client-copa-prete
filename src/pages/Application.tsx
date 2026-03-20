@@ -1197,7 +1197,6 @@ const Application: React.FC = () => {
             e.activityDescription = t("required");
           else if (form.activityDescription.length > 1000)
             e.activityDescription = t("descriptionMaxLength");
-          if (!form.employeeCount) e.employeeCount = t("required");
           if (form.companyStatus === "formal" && !form.legalStatus)
             e.legalStatus = t("required");
           if (form.companyStatus === "formal" && !form.nif)
@@ -1211,7 +1210,35 @@ const Application: React.FC = () => {
             if (!form.companyEmail) e.companyEmail = t("required");
           }
           if (!form.affiliatedToCGA) e.affiliatedToCGA = t("required");
+          if (form.totalEmployees == "") e.totalEmployees = t("required");
+          if (form.totalEmployees && form.totalEmployees > 0) {
+            if (form.employeeCount == "") e.employeeCount = t("required");
+            if (form.femaleEmployees == "") e.femaleEmployees = t("required");
+            if (form.maleEmployees == "") e.maleEmployees = t("required");
+            if (form.refugeeEmployees == "") e.refugeeEmployees = t("required");
+            if (form.batwaEmployees == "") e.batwaEmployees = t("required");
+            if (form.disabledEmployees == "")
+              e.disabledEmployees = t("required");
+          }
           if (!form.associatesCount) e.associatesCount = t("required");
+          if(form.associatesCount === "other") {
+            if (!form.associatesCountOther) e.associatesCountOther = t("required");
+          }
+
+          if(form.associatesCount && form.associatesCount !== "solo"){
+            if (form.femalePartners == "") e.femalePartners = t("required");
+            if (form.malePartners == "") e.malePartners = t("required");
+            if (form.refugeePartners == "") e.refugeePartners = t("required");
+            if (form.batwaPartners == "") e.batwaPartners = t("required");
+            if (form.disabledPartners == "") e.disabledPartners = t("required");
+          }
+
+          if(!form.annualRevenue) e.annualRevenue = t("required");
+          if(!form.hasBankAccount) e.hasBankAccount = t("required");
+          if(!form.hasBankCredit) e.hasBankCredit = t("required");
+          if(form.hasBankCredit === "yes") {
+            if(!form.bankCreditAmount) e.bankCreditAmount = t("required");
+          }
           const docList =
             form.companyStatus === "formal"
               ? FORMAL_DOCS
@@ -1266,6 +1293,7 @@ const Application: React.FC = () => {
       return;
     }
     if (!validateStep(currentStep)) {
+      console.log(JSON.stringify(errors));
       toast.error(t("contactPage.validation.checkErrors"));
       return;
     }
@@ -1454,6 +1482,7 @@ const Application: React.FC = () => {
 
   const goToNextStep = () => {
     if (!validateStep(currentStep)) {
+      console.log(JSON.stringify(errors));
       toast.error(t("contactPage.validation.checkErrors"));
       return;
     }
@@ -2249,7 +2278,7 @@ const Step2Fields: React.FC<any> = ({
                 }
                 onChange={([date]: Date[]) =>
                   onUpdateField(
-                    "birthDate",
+                    "creationYear",
                     date?.toISOString().split("T")[0] || "",
                   )
                 }
@@ -2574,7 +2603,7 @@ const Step2Fields: React.FC<any> = ({
                 },
               ].map(({ k, ph, ic }) => (
                 <div className="col-lg-6" key={k}>
-                  <FL label={t(ph)} required={k === "employeeCount" && form.totalEmployees > 0} />
+                  <FL label={t(ph)} required />
                   <label
                     className={(errors as any)[k] ? "copa-input-invalid" : ""}
                   >
@@ -2631,7 +2660,7 @@ const Step2Fields: React.FC<any> = ({
 
           {form.associatesCount === "other" && (
             <div className="col-12">
-              <FL label={t("specifyAssociatesCount")} />
+              <FL label={t("specifyAssociatesCount")} required/>
               <label>
                 <i className="fa fa-users" />
                 <input
@@ -2643,6 +2672,9 @@ const Step2Fields: React.FC<any> = ({
                   placeholder={t("specifyAssociatesCount")}
                 />
               </label>
+              {errors.associatesCountOther && (
+                <span className="copa-error-msg">{errors.associatesCountOther}</span>
+              )}
             </div>
           )}
 
@@ -2660,7 +2692,7 @@ const Step2Fields: React.FC<any> = ({
                   className={`${k === "disabledPartners" ? "col-12" : "col-lg-6"}`}
                   key={k}
                 >
-                  <FL label={t(ph)} />
+                  <FL label={t(ph)} required/>
                   <label>
                     <i className="fa fa-users" />
                     <input
@@ -2676,6 +2708,9 @@ const Step2Fields: React.FC<any> = ({
                       placeholder={t("enterValue")}
                     />
                   </label>
+                  {(errors as any)[k] && (
+                    <span className="copa-error-msg">{(errors as any)[k]}</span>
+                  )}
                 </div>
               ))}
             </>
@@ -2685,7 +2720,7 @@ const Step2Fields: React.FC<any> = ({
 
           {/* Chiffre d'affaires */}
           <div className="col-lg-6">
-            <FL label={t("annualRevenue")} />
+            <FL label={t("annualRevenue")} required />
             <label className="d-flex align-items-center">
               <i className="ti ti-fbu">FBu</i>
               <input
@@ -2702,11 +2737,14 @@ const Step2Fields: React.FC<any> = ({
                 placeholder={t("enterValue")}
               />
             </label>
+            {errors.annualRevenue && (
+              <span className="copa-error-msg">{errors.annualRevenue}</span>
+            )}
           </div>
 
           {/* Compte bancaire */}
           <div className="col-lg-6">
-            <FL label={t("hasBankAccountLabel")} />
+            <FL label={t("hasBankAccountLabel")} required />
             <label
               className={errors.hasBankAccount ? "copa-input-invalid" : ""}
             >
@@ -2731,7 +2769,7 @@ const Step2Fields: React.FC<any> = ({
 
           {/* Crédit bancaire */}
           <div className="col-lg-6">
-            <FL label={t("hasBankCreditLabel")} />
+            <FL label={t("hasBankCreditLabel")} required/>
             <label className={errors.hasBankCredit ? "copa-input-invalid" : ""}>
               <i className="fa fa-credit-card" />
               <select
@@ -2755,7 +2793,7 @@ const Step2Fields: React.FC<any> = ({
 
           {form.hasBankCredit === "yes" && (
             <div className="col-lg-6">
-              <FL label={t("bankCreditAmount")} />
+              <FL label={t("bankCreditAmount")} required/>
               <label>
                 <i className="fa ti-fbu">FBu</i>
                 <input
@@ -2772,6 +2810,9 @@ const Step2Fields: React.FC<any> = ({
                   placeholder={t("enterValue")}
                 />
               </label>
+              {errors.bankCreditAmount && (
+                <span className="copa-error-msg">{errors.bankCreditAmount}</span>
+              )}
             </div>
           )}
         </>
@@ -2851,7 +2892,7 @@ const Step3Fields: React.FC<any> = ({
       )}
     </div>
 
-    <SectionTitle title={`${t("projectSectors")} *`} />
+    <SectionTitle title={`${t("projectSectors")}`} />
     <CheckboxGroup
       items={PROJECT_SECTORS_LIST}
       selected={form.projectSectors}
