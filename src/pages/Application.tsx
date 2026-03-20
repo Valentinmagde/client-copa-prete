@@ -3037,7 +3037,7 @@ const Step3Fields: React.FC<any> = ({
     <SectionTitle title={t("plannedEmployees")} />
 
     <div className="col-lg-4">
-      <FL label={t("femaleEmployees")} />
+      <FL label={t("femaleEmployees")} required/>
       <label>
         <i className="fa fa-users" />
         <input
@@ -3055,7 +3055,7 @@ const Step3Fields: React.FC<any> = ({
       </label>
     </div>
     <div className="col-lg-4">
-      <FL label={t("maleEmployees")} />
+      <FL label={t("maleEmployees")} required/>
       <label>
         <i className="fa fa-users" />
         <input
@@ -3073,7 +3073,7 @@ const Step3Fields: React.FC<any> = ({
       </label>
     </div>
     <div className="col-lg-4">
-      <FL label={t("permanentEmployees")} />
+      <FL label={t("permanentEmployees")} required/>
       <label>
         <i className="fa fa-users" />
         <input
@@ -3093,7 +3093,7 @@ const Step3Fields: React.FC<any> = ({
 
     {/* Idée innovante */}
     <div className="col-12">
-      <FL label={t("isNewIdeaLabel")} />
+      <FL label={t("isNewIdeaLabel")} required/>
       <label className={errors.isNewIdea ? "copa-input-invalid" : ""}>
         <i className="ti ti-light-bulb" />
         <select
@@ -3152,7 +3152,7 @@ const Step3Fields: React.FC<any> = ({
     <div className="col-12">
       <FL label={t("hasEstimatedCostLabel")} required />
       <label className={errors.hasEstimatedCost ? "copa-input-invalid" : ""}>
-        <i className="ti ti-fbu">FBu</i>
+        <i className="ti ti-check"></i>
         <select
           value={form.hasEstimatedCost}
           className="pl-40"
