@@ -147,6 +147,7 @@ interface FormData {
   legalStatus: LegalStatusType;
   legalStatusOther: string;
   nif: string;
+  companyAddressIsDifferent: TriBool;
   affiliatedToCGA: TriBool;
   femaleEmployees: number | "";
   maleEmployees: number | "";
@@ -154,6 +155,7 @@ interface FormData {
   batwaEmployees: number | "";
   disabledEmployees: number | "";
   employeeCount: number | "";
+  totalEmployees: number | "";
   associatesCount: AssociatesCountType;
   associatesCountOther: string;
   femalePartners: number | "";
@@ -271,6 +273,7 @@ interface BeneficiaryData {
     permanentEmployees: number;
     revenueYearN1: number;
     companyType: string;
+    totalEmployees: string;
     address?: {
       neighborhood?: string;
       street?: string;
@@ -284,6 +287,7 @@ interface BeneficiaryData {
     legalStatus?: string;
     legalStatusOther?: string;
     registrationNumber?: string;
+    companyAddressIsDifferent: boolean;
     affiliatedToCGA?: boolean;
     femaleEmployees?: number;
     maleEmployees?: number;
@@ -349,6 +353,7 @@ const INITIAL_FORM: FormData = {
   legalStatus: "",
   legalStatusOther: "",
   nif: "",
+  companyAddressIsDifferent: "",
   affiliatedToCGA: "",
   femaleEmployees: "",
   maleEmployees: "",
@@ -356,6 +361,7 @@ const INITIAL_FORM: FormData = {
   batwaEmployees: "",
   disabledEmployees: "",
   employeeCount: "",
+  totalEmployees: "",
   associatesCount: "",
   associatesCountOther: "",
   femalePartners: "",
@@ -558,7 +564,10 @@ const FL: React.FC<{ label: string; required?: boolean }> = ({
   </p>
 );
 
-const SectionTitle: React.FC<{ title: string, subtitle?: string }> = ({ title, subtitle }) => (
+const SectionTitle: React.FC<{ title: string; subtitle?: string }> = ({
+  title,
+  subtitle,
+}) => (
   <div className="col-12 mt-20 mb-15">
     <p
       style={{
@@ -576,7 +585,7 @@ const SectionTitle: React.FC<{ title: string, subtitle?: string }> = ({ title, s
       {subtitle && (
         <>
           <br />
-          <span 
+          <span
             style={{
               fontSize: 14,
               fontWeight: 400,
@@ -584,8 +593,10 @@ const SectionTitle: React.FC<{ title: string, subtitle?: string }> = ({ title, s
               display: "flex",
               alignItems: "center",
               textTransform: "none",
-            }}>
-              <i className="ti ti-info-alt me-1"></i>
+              fontStyle: "italic",
+            }}
+          >
+            <i className="ti ti-info-alt me-1 fst-italic"></i>
             {subtitle}
           </span>
         </>
@@ -795,7 +806,8 @@ const FileUploadRow: React.FC<{
                 style={{ fontSize: 17, flexShrink: 0 }}
               />
               <span style={{ fontSize: 14, color: "#777" }}>
-                {t(labelKey)} <span style={{ color: "#dc3545", marginLeft: 2 }}>*</span>
+                {t(labelKey)}{" "}
+                <span style={{ color: "#dc3545", marginLeft: 2 }}>*</span>
                 <span
                   style={{
                     display: "block",
@@ -1045,6 +1057,7 @@ const Application: React.FC = () => {
           legalStatus: (d.company?.legalStatus as LegalStatusType) || "",
           legalStatusOther: d.company?.legalStatusOther || "",
           nif: d.company?.taxIdNumber || "",
+          companyAddressIsDifferent: tri(d.company?.companyAddressIsDifferent),
           affiliatedToCGA: tri(d.company?.affiliatedToCGA),
           femaleEmployees: d.company?.femaleEmployees ?? "",
           maleEmployees: d.company?.maleEmployees ?? "",
@@ -1052,6 +1065,7 @@ const Application: React.FC = () => {
           batwaEmployees: d.company?.batwaEmployees ?? "",
           disabledEmployees: d.company?.disabledEmployees ?? "",
           employeeCount: d.company?.permanentEmployees ?? "",
+          totalEmployees: d.company?.totalEmployees ?? "",
           associatesCount:
             (d.company?.associatesCount as AssociatesCountType) || "",
           associatesCountOther: d.company?.associatesCountOther || "",
@@ -1145,6 +1159,7 @@ const Application: React.FC = () => {
           e.otherEntrepreneurType = t("required");
         if (!form.lastName.trim()) e.lastName = t("required");
         if (!form.firstName.trim()) e.firstName = t("required");
+        if (!form.position.trim()) e.position = t("required");
         if (!form.gender) e.gender = t("required");
         if (!form.maritalStatus) e.maritalStatus = t("required");
         if (!form.educationLevel) e.educationLevel = t("required");
@@ -1180,11 +1195,22 @@ const Application: React.FC = () => {
           if (!form.sectorId) e.sectorId = t("required");
           if (!form.activityDescription.trim())
             e.activityDescription = t("required");
-          else if (form.activityDescription.length < 20)
-            e.activityDescription = t("descriptionMinLength");
+          else if (form.activityDescription.length > 1000)
+            e.activityDescription = t("descriptionMaxLength");
           if (!form.employeeCount) e.employeeCount = t("required");
           if (form.companyStatus === "formal" && !form.legalStatus)
             e.legalStatus = t("required");
+          if (form.companyStatus === "formal" && !form.nif)
+            e.nif = t("required");
+          if (!form.companyAddressIsDifferent)
+            e.companyAddressIsDifferent = t("required");
+          if (form.companyAddressIsDifferent === "yes") {
+            if (!form.companyProvinceId) e.companyProvinceId = t("required");
+            if (!form.companyCommuneId) e.companyCommuneId = t("required");
+            if (!form.companyPhone) e.companyPhone = t("required");
+            if (!form.companyEmail) e.companyEmail = t("required");
+          }
+          if (!form.affiliatedToCGA) e.affiliatedToCGA = t("required");
           if (!form.associatesCount) e.associatesCount = t("required");
           const docList =
             form.companyStatus === "formal"
@@ -1313,6 +1339,9 @@ const Application: React.FC = () => {
               legalStatus: form.legalStatus || undefined,
               legalStatusOther: cleanString(form.legalStatusOther),
               nif: cleanString(form.nif),
+              companyAddressIsDifferent: cleanBoolean(
+                form.companyAddressIsDifferent,
+              ),
               affiliatedToCGA: cleanBoolean(form.affiliatedToCGA),
               femaleEmployees: cleanNumber(form.femaleEmployees),
               maleEmployees: cleanNumber(form.maleEmployees),
@@ -1787,7 +1816,7 @@ const Step1Fields: React.FC<any> = ({
 
     {/* Fonction */}
     <div className="col-lg-6">
-      <FL label={t("roleInCompany")} />
+      <FL label={t("roleInCompany")} required />
       <label>
         <i className="ti ti-briefcase" />
         <input
@@ -1797,6 +1826,9 @@ const Step1Fields: React.FC<any> = ({
           placeholder={t("enterValue")}
         />
       </label>
+      {errors.position && (
+        <span className="copa-error-msg">{errors.position}</span>
+      )}
     </div>
 
     {/* Date de naissance */}
@@ -2009,7 +2041,10 @@ const Step1Fields: React.FC<any> = ({
       {errors.email && <span className="copa-error-msg">{errors.email}</span>}
     </div>
 
-    <SectionTitle title={t("eligibilitySection")} subtitle={t("eligibilitySectionSubtitle")} />
+    <SectionTitle
+      title={t("eligibilitySection")}
+      subtitle={t("eligibilitySectionSubtitle")}
+    />
 
     {ELIGIBILITY_QUESTIONS.map(({ key, labelKey, icon }) => (
       <div
@@ -2139,7 +2174,7 @@ const Step2Fields: React.FC<any> = ({
             <>
               {/* NIF */}
               <div className="col-lg-6">
-                <FL label={t("nif")} />
+                <FL label={t("nif")} required />
                 <label className={errors.nif ? "copa-input-invalid" : ""}>
                   <i className="ti ti-id-badge" />
                   <input
@@ -2208,7 +2243,25 @@ const Step2Fields: React.FC<any> = ({
             <FL label={t("creationYear")} required />
             <label className={errors.creationYear ? "copa-input-invalid" : ""}>
               <i className="ti ti-calendar" />
-              <input
+              <Flatpickr
+                value={
+                  form.creationYear ? new Date(form.creationYear) : undefined
+                }
+                onChange={([date]: Date[]) =>
+                  onUpdateField(
+                    "birthDate",
+                    date?.toISOString().split("T")[0] || "",
+                  )
+                }
+                placeholder={t("enterValue")}
+                options={{
+                  enableTime: false,
+                  dateFormat: "d-m-Y",
+                  locale: isKi ? (KirundiLocale as any) : French,
+                }}
+                style={{ height: "55px" }}
+              />
+              {/* <input
                 type="number"
                 value={String(form.creationYear)}
                 onChange={(e) =>
@@ -2220,7 +2273,7 @@ const Step2Fields: React.FC<any> = ({
                 placeholder={t("enterValue")}
                 min="1900"
                 max={new Date().getFullYear()}
-              />
+              /> */}
             </label>
             {errors.creationYear && (
               <span className="copa-error-msg">{errors.creationYear}</span>
@@ -2279,116 +2332,171 @@ const Step2Fields: React.FC<any> = ({
             )}
           </div>
 
-          <SectionTitle title={t("companyAddressIfDifferent")} />
+          <SectionTitle title={t("companyAddressSection")} />
 
-          <div className="col-lg-6">
-            <FL label={t("neighborhood")} />
-            <label>
-              <i className="ti ti-home" />
-              <input
-                type="text"
-                value={form.companyNeighborhood}
-                onChange={(e) =>
-                  onUpdateField("companyNeighborhood", e.target.value)
-                }
-                placeholder={t("enterValue")}
-              />
-            </label>
-          </div>
-          <div className="col-lg-6">
-            <FL label={t("zone")} />
-            <label>
-              <i className="ti ti-location-pin" />
-              <input
-                type="text"
-                value={form.companyZone}
-                onChange={(e) => onUpdateField("companyZone", e.target.value)}
-                placeholder={t("enterValue")}
-              />
-            </label>
-          </div>
-          <div className="col-lg-6">
-            <FL label={t("province")} />
-            <label>
-              <i className="ti ti-map" />
+          <div className="col-12">
+            <FL label={t("companyAddressIfDifferent")} required />
+            <label
+              className={
+                errors.companyAddressIsDifferent ? "copa-input-invalid" : ""
+              }
+            >
+              <i className="ti ti-check-box" />
               <select
-                value={String(form.companyProvinceId)}
+                value={form.companyAddressIsDifferent}
                 onChange={(e) =>
                   onUpdateField(
-                    "companyProvinceId",
-                    e.target.value ? +e.target.value : "",
+                    "companyAddressIsDifferent",
+                    e.target.value as TriBool,
                   )
                 }
               >
                 <option value="" disabled>
                   {t("selectOption")}
                 </option>
-                {provinces.map((p: any) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
+                <option value="yes">{t("yes")}</option>
+                <option value="no">{t("no")}</option>
               </select>
             </label>
+            {errors.companyAddressIsDifferent && (
+              <span className="copa-error-msg">
+                {errors.companyAddressIsDifferent}
+              </span>
+            )}
           </div>
-          <div className="col-lg-6">
-            <FL label={t("commune")} />
-            <label>
-              <i className="ti ti-map-alt" />
-              <select
-                value={String(form.companyCommuneId)}
-                onChange={(e) =>
-                  onUpdateField(
-                    "companyCommuneId",
-                    e.target.value ? +e.target.value : "",
-                  )
-                }
-                disabled={!form.companyProvinceId}
-              >
-                <option value="">
-                  {!form.companyProvinceId
-                    ? t("selectProvinceFirst")
-                    : t("selectOption")}
-                </option>
-                {companyCommunes.map((c: any) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <div className="col-lg-6">
-            <FL label={t("phoneNumber")} />
-            <label>
-              <PhoneInput
-                country="bi"
-                value={form.companyPhone}
-                onChange={(p: string) => onUpdateField("companyPhone", p)}
-                autoFormat
-                enableSearch
-                countryCodeEditable={false}
-                disableSearchIcon
-                placeholder={t("phoneNumber")}
-              />
-            </label>
-          </div>
-          <div className="col-lg-6">
-            <FL label={t("email")} />
-            <label>
-              <i className="ti ti-email" />
-              <input
-                type="email"
-                value={form.companyEmail}
-                onChange={(e) => onUpdateField("companyEmail", e.target.value)}
-                placeholder={t("email")}
-              />
-            </label>
-          </div>
+
+          {form.companyAddressIsDifferent === "yes" && (
+            <>
+              <div className="col-lg-6">
+                <FL label={t("neighborhood")} />
+                <label>
+                  <i className="ti ti-home" />
+                  <input
+                    type="text"
+                    value={form.companyNeighborhood}
+                    onChange={(e) =>
+                      onUpdateField("companyNeighborhood", e.target.value)
+                    }
+                    placeholder={t("enterValue")}
+                  />
+                </label>
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("zone")} />
+                <label>
+                  <i className="ti ti-location-pin" />
+                  <input
+                    type="text"
+                    value={form.companyZone}
+                    onChange={(e) =>
+                      onUpdateField("companyZone", e.target.value)
+                    }
+                    placeholder={t("enterValue")}
+                  />
+                </label>
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("province")} required />
+                <label>
+                  <i className="ti ti-map" />
+                  <select
+                    value={String(form.companyProvinceId)}
+                    onChange={(e) =>
+                      onUpdateField(
+                        "companyProvinceId",
+                        e.target.value ? +e.target.value : "",
+                      )
+                    }
+                  >
+                    <option value="" disabled>
+                      {t("selectOption")}
+                    </option>
+                    {provinces.map((p: any) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {errors.companyProvinceId && (
+                  <span className="copa-error-msg">
+                    {errors.companyProvinceId}
+                  </span>
+                )}
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("commune")} required />
+                <label>
+                  <i className="ti ti-map-alt" />
+                  <select
+                    value={String(form.companyCommuneId)}
+                    onChange={(e) =>
+                      onUpdateField(
+                        "companyCommuneId",
+                        e.target.value ? +e.target.value : "",
+                      )
+                    }
+                    disabled={!form.companyProvinceId}
+                  >
+                    <option value="">
+                      {!form.companyProvinceId
+                        ? t("selectProvinceFirst")
+                        : t("selectOption")}
+                    </option>
+                    {companyCommunes.map((c: any) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {errors.companyCommuneId && (
+                  <span className="copa-error-msg">
+                    {errors.companyCommuneId}
+                  </span>
+                )}
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("phoneNumber")} required />
+                <label>
+                  <PhoneInput
+                    country="bi"
+                    value={form.companyPhone}
+                    onChange={(p: string) => onUpdateField("companyPhone", p)}
+                    autoFormat
+                    enableSearch
+                    countryCodeEditable={false}
+                    disableSearchIcon
+                    placeholder={t("phoneNumber")}
+                  />
+                </label>
+                {errors.companyPhone && (
+                  <span className="copa-error-msg">{errors.companyPhone}</span>
+                )}
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("email")} required />
+                <label>
+                  <i className="ti ti-email" />
+                  <input
+                    type="email"
+                    value={form.companyEmail}
+                    onChange={(e) =>
+                      onUpdateField("companyEmail", e.target.value)
+                    }
+                    placeholder={t("email")}
+                  />
+                </label>
+                {errors.companyEmail && (
+                  <span className="copa-error-msg">{errors.companyEmail}</span>
+                )}
+              </div>
+            </>
+          )}
 
           {/* Affilié CGA */}
           <div className="col-12">
-            <FL label={t("affiliatedToCGALabel")} />
+            <FL label={t("affiliatedToCGALabel")} required />
             <label
               className={errors.affiliatedToCGA ? "copa-input-invalid" : ""}
             >
@@ -2411,46 +2519,86 @@ const Step2Fields: React.FC<any> = ({
             )}
           </div>
 
-          <SectionTitle title={t("employeesBreakdown")} />
+          <SectionTitle title={t("staff")} />
+          <div className="col-12">
+            <FL label={t("totalEmployees")} required />
+            <label
+              className={errors.totalEmployees ? "copa-input-invalid" : ""}
+            >
+              <i className="fa fa-users" />
+              <input
+                type="number"
+                min="0"
+                value={form.totalEmployees}
+                onChange={(e) =>
+                  onUpdateField("totalEmployees", e.target.value)
+                }
+                placeholder={t("enterValue")}
+              />
+            </label>
+            {errors.totalEmployees && (
+              <span className="copa-error-msg">{errors.totalEmployees}</span>
+            )}
+          </div>
 
-          {[
-            { k: "femaleEmployees", ph: "femaleEmployees", ic: "fa fa-users" },
-            { k: "maleEmployees", ph: "maleEmployees", ic: "fa fa-users" },
-            {
-              k: "refugeeEmployees",
-              ph: "refugeeEmployees",
-              ic: "fa fa-users",
-            },
-            { k: "batwaEmployees", ph: "batwaEmployees", ic: "fa fa-users" },
-            {
-              k: "disabledEmployees",
-              ph: "disabledEmployees",
-              ic: "fa fa-users",
-            },
-            { k: "employeeCount", ph: "permanentEmployees", ic: "fa fa-users" },
-          ].map(({ k, ph, ic }) => (
-            <div className="col-lg-6" key={k}>
-              <FL label={t(ph)} required={k === "employeeCount"} />
-              <label className={(errors as any)[k] ? "copa-input-invalid" : ""}>
-                <i className={ic} />
-                <input
-                  type="number"
-                  min="0"
-                  value={String((form as any)[k])}
-                  onChange={(e) =>
-                    onUpdateField(
-                      k as keyof FormData,
-                      e.target.value ? +e.target.value : ("" as any),
-                    )
-                  }
-                  placeholder={t("enterValue")}
-                />
-              </label>
-              {(errors as any)[k] && (
-                <span className="copa-error-msg">{(errors as any)[k]}</span>
-              )}
-            </div>
-          ))}
+          {form.totalEmployees > 0 && (
+            <>
+              <SectionTitle title={t("employeesBreakdown")} />
+
+              {[
+                {
+                  k: "femaleEmployees",
+                  ph: "femaleEmployees",
+                  ic: "fa fa-users",
+                },
+                { k: "maleEmployees", ph: "maleEmployees", ic: "fa fa-users" },
+                {
+                  k: "refugeeEmployees",
+                  ph: "refugeeEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "batwaEmployees",
+                  ph: "batwaEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "disabledEmployees",
+                  ph: "disabledEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "employeeCount",
+                  ph: "permanentEmployees",
+                  ic: "fa fa-users",
+                },
+              ].map(({ k, ph, ic }) => (
+                <div className="col-lg-6" key={k}>
+                  <FL label={t(ph)} required={k === "employeeCount" && form.totalEmployees > 0} />
+                  <label
+                    className={(errors as any)[k] ? "copa-input-invalid" : ""}
+                  >
+                    <i className={ic} />
+                    <input
+                      type="number"
+                      min="0"
+                      value={String((form as any)[k])}
+                      onChange={(e) =>
+                        onUpdateField(
+                          k as keyof FormData,
+                          e.target.value ? +e.target.value : ("" as any),
+                        )
+                      }
+                      placeholder={t("enterValue")}
+                    />
+                  </label>
+                  {(errors as any)[k] && (
+                    <span className="copa-error-msg">{(errors as any)[k]}</span>
+                  )}
+                </div>
+              ))}
+            </>
+          )}
 
           <SectionTitle title={t("associatesSection")} />
 

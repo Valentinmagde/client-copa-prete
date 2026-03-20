@@ -198,10 +198,10 @@ const EligibilityCriteria: React.FC = () => {
           >
             {documentsOptions.map((option, i) => (
               <div key={i} className="col-md-12">
-                <div className="featured-imagebox featured-imagebox-services style1">
-                  <div className="featured-content">
+                <div className="featured-imagebox featured-imagebox-services style1" style={{minHeight: 570}}>
+                  <div className="featured-content" style={{justifyContent: "flex-start"}}>
                     <div className="featured-title">
-                      <h3>{option.title}</h3>
+                      <h3 style={{WebkitLineClamp: "none"}}>{option.title}</h3>
                     </div>
                     <div className="featured-desc">
                       <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor mt-10">

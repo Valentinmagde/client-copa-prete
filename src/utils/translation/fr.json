@@ -209,7 +209,7 @@
   "admin": "Admin",
   "business": "business",
   "bannerTitle": "COPA – Concours de Plans d’Affaires",
-  "bannerDescription": "Transformer leurs ambitions en entreprises prospères. Le COPA nyunganira accompagne les MPME et Coopératives burundaises par des formations, un accompagnement personnalisé et des subventions compétitives pour concrétiser vos ambitions.",
+  "bannerDescription": "Transformez vos ambitions en entreprise prospère. Le COPA nyunganira accompagne les MPME et Coopératives burundaises par des formations, un accompagnement personnalisé et des subventions compétitives pour concrétiser leurs ambitions.",
   "bannerCall": "Appel à Manifestation d’Intérêt des MPME et Coopératives de la 1ère Cohorte",
   "bannerDeadline": "Candidatez jusqu’au <strong>02 avril 2026</strong>",
   "bannerParticipate": "Participez au COPA",
@@ -275,12 +275,12 @@
     "intro": {
       "title": "Le COPA",
       "subtitle": "Le Concours de Plans d'Affaires",
-      "description1": "Le COPA (Concours de Plans d'Affaires) est le mécanisme phare de la sous-composante 1.2 du PRETE. Il s'agit d'un programme complet d'accompagnement des entrepreneurs burundais, combinant <strong>formation, mentorat et financement</strong>.",
+      "description1": "Le COPA (Concours de Plans d'Affaires) est le mécanisme phare de la sous-composante 1.2 du PRETE. Il s'agit d'un programme complet d'accompagnement des entrepreneurs burundais, combinant <strong>formations, coaching, mentorat et financement</strong>.",
       "description2": "Le COPA offre aux porteurs de projets viables une opportunité unique de développer leurs compétences et d'accéder à un financement non remboursable pour concrétiser leur vision entrepreneuriale.",
       "buttons": {
-        "eligibility": "Vérifier mon éligibilité",
+        "eligibility": "Vérifiez votre éligibilité",
         "howTo": "Comment participer ?",
-        "prepareDocuments": "Préparer mes documents de candidature"
+        "prepareDocuments": "Préparer vos documents de candidature"
       },
       "whyParticipate": {
         "title": "Pourquoi participer ?",
@@ -699,18 +699,18 @@
     "intro": {
       "highlight": "Comment participer ?",
       "title": "Vérifiez votre éligibilité",
-      "description": "Le COPA est ouvert aux MPME répondant aux critères suivants. Vérifiez votre éligibilité avant de vous inscrire."
+      "description": "Le COPA est ouvert aux MPME et Coopératives répondant aux critères suivants. Vérifiez votre éligibilité avant de vous inscrire."
     },
     "criteria": {
       "recevability": "Critères de recevabilité",
       "eligibility": "Critères d'éligibilité",
       "recevabilityItems": [
         "La candidature a-t-elle été déposée dans les délais requis ?",
-        "Le candidat fournit-il la preuve de sa résidence au Burundi ?",
+        "La MPME ou la Coopérative fournit-elle la preuve de son établissement au Burundi ?",
         "Le candidat a-t-il rempli correctement le formulaire en ligne ?",
-        "Le candidat a-t-il fourni les documents requis dans l'appel à proposition ?",
-        "Le candidat se trouve-t-il dans un cas de conflit d'intérêt déclaré ?",
-        "Le candidat est-il lauréat d'une précédente cohorte du COPA ?"
+        "Le candidat a-t-il fourni les documents requis dans l’appel à proposition ?",
+        "Le candidat se trouve-t-il dans un cas de conflit d’intérêt déclaré ?",
+        "Le candidat est-il lauréat d’une précédente cohorte du COPA ?"
       ],
       "eligibilityItems": [
         {
@@ -751,7 +751,7 @@
         },
         {
           "label": "Absence de conflit d'intérêts",
-          "desc": "Le candidat ne devrait pas se trouver dans cas de conflit d'intérêt potentiel."
+          "desc": "Le candidat ne devrait pas se trouver dans un cas de conflit d'intérêt potentiel."
         }
       ]
     },
@@ -852,7 +852,7 @@
       ]
     },
     "documents": {
-      "title": "Préparer mes documents",
+      "title": "Préparer vos documents",
       "subtitle": "Pièces à fournir pour la candidature",
       "options": [
         {
@@ -867,7 +867,7 @@
           ]
         },
         {
-          "title": "Option 2 — Entreprise informelle",
+          "title": "Option 2 — Entreprise informelle (Une entreprise informelle est une entreprise qui n’est pas enregistrée au Registre de commerce pour les MPME ou à l’ANACOOP pour les Coopératives et qui est implantée et exerce sur le territoire national.)",
           "items": [
             "Formulaire de candidature en ligne dûment renseigné.",
             "Attestation de reconnaissance communale ou zonale attestant que l'entreprise a une durée de vie d'au moins un an révolu à la date de la candidature.",
@@ -1207,17 +1207,19 @@
   "legalStatus": "Statut légal de la MPME ou de la Coopérative",
   "snc": "Société en Nom Collectif (SNC)",
   "scs": "Société en Commandite Simple (SCS)",
-  "sprl": "SPRL",
+  "sprl": "Société de Personnes à Responsabilité Limitée (SPRL)",
   "su": "Société Unipersonnelle (SU)",
   "sa": "Société Anonyme (SA)",
   "coop": "Société Coopérative",
-  "creationYear": "Année de création",
+  "creationYear": "Date de création",
   "creationYearInvalid": "Année de création invalide",
   "selectSector": "Secteur d'activité principal",
-  "activityDescription": "Description de l'activité principale (min. 20 caractères)",
+  "activityDescription": "Description de l'activité principale (max. 1000 caractères)",
   "descriptionMinLength": "La description doit contenir au moins 20 caractères",
+  "descriptionMaxLength": "La description doit contenir maximum 1000 caractères",
 
-  "companyAddressIfDifferent": "Adresse de l'entreprise (si différente de celle du/de la Représentant/Représentante légal.e de la MPME ou de la Coopérative candidate)",
+  "companyAddressSection": "Adresse de l'entreprise et affiliation",
+  "companyAddressIfDifferent": "L'adresse de votre entreprise est-elle différente de celle du/de la Représentant/Représentante légal.e de la MPME ou de la Coopérative candidate ?",
   "affiliatedToCGALabel": "Entreprise affiliée à un Centre de Gestion Agréé (CGA) ?",
 
   "employeesBreakdown": "Répartition des employés",
@@ -1391,5 +1393,7 @@
       "special": "Un caractère spécial requis (!@#$%^&*)",
       "passwordMismatch": "Les mots de passe ne correspondent pas"
     }
-  }
+  },
+  "staff": "Le personnel de votre entreprise",
+   "totalEmployees": "Quel est le nombre total d’employés de votre entreprise ?"
 }

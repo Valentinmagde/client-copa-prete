@@ -826,7 +826,7 @@
     },
     "documents": {
       "title": "Tegura impapuro zisabwa",
-      "subtitle": "Ibikoresho bisabwa kugira usabe",
+      "subtitle": "Inyandiko zisabwa kugira uwiyandikishije yemererwe",
       "options": [
         {
           "title": "Amahitamo 1 — Isosiyete ifise amategeko",
@@ -840,7 +840,7 @@
           ]
         },
         {
-          "title": "Amahitamo 2 — Isosiyete itagira amategeko",
+          "title": "Amahitamo 2 — Isosiyete itagira amategeko (Ishirahamwe ritisunze amategeko n’ishirahamwe ritarandikishwa mu gitabo c’amategeko agenga amashirahamwe yikorera ivyayo (canke koperative itaremezwa n’ikigo ANACOOP gisanzwe kigenzura amakoperative ku rwego rw’igihugu) kandi rikaba rirangura ibikorwa vyayo aho ariho hose mu gihugu.)",
           "items": [
             "Ifishi yo gusaba ku rubuga yuzuye neza.",
             "Icyemezo cyemeza ko isosiyete imaze nibura umwaka umwe ku munsi wo gusaba.",
@@ -1181,7 +1181,7 @@
   "legalStatus": "Uko ishirahamwe MPME imbere y’amategeko",
   "snc": "Ishirahamwe rifise amanyamitahe babiri canke barenga(SNC)",
   "scs": "Ishirahamwe risangije amaryamitahe n’abakozi bariserukira  (SCS)",
-  "sprl": "SPRL",
+  "sprl": "Isosiyete y’abantu ifise inshingano zigarukira (SPRL)",
   "su": "Ishirahamwe rifise umutahe umwe (SU)",
   "sa": "Ishirahamwe rifise imitahe myinshi (SA)",
   "coop": "Ishirahamwe ry’amakoperative",
@@ -1189,9 +1189,11 @@
   "creationYear": "Umwaka ishirahamwe ryatanguriyeko",
   "creationYearInvalid": "Umwaka ishirahamwe ryatanguriyeko si wo",
   "selectSector": "Hitamwo igisata nyamukuru c’ibikorwa",
-  "activityDescription": "Insiguro y’igikorwa nyamukuru (nibura indome 20)",
+  "activityDescription": "Insiguro y’igikorwa nyamukuru (ntirenge indome 1000)",
   "descriptionMinLength": "Insiguro itegerezwa kuba ifise indome 20",
-  "companyAddressIfDifferent": "Aho ishirahamwe rikorera (asangwa hatandukanye n’aho urihagarariye aba)",
+  "descriptionMaxLength": "Insiguro ntishobora kurenza indome 1000",
+  "companyAddressSection": "Icicaro c'ishirahamwo n'amahuriro yaryo",
+  "companyAddressIfDifferent": "Icicaro c'ishirahamwe ryanyu coba gitandukanye naho uwuserukira ishirahamwe canke Koperative asanzwe aba ?",
   "affiliatedToCGALabel": "Ishirahamwe ryanyu ryoba rikorana na Centre de Gestion Agréé (CGA)?",
   "employeesBreakdown": "Igitigiri c’abakozi mu mice",
   "femaleEmployees": "Igitigiri c’abakenyezi",
@@ -1352,5 +1354,7 @@
       "special": "Izi ndome zidasanzwe  zirakenewe (!@#$%^&*)",
       "passwordMismatch": "Aya majambo y'ibanga ntabwo ahuye"
     }
-  }
+  },
+  "staff": "Le personnel de votre entreprise",
+  "totalEmployees": "Quel est le nombre total d’employés de votre entreprise ?"
 }

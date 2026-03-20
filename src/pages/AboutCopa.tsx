@@ -7,6 +7,9 @@ import Footer from "../components/layout/Footer";
 import Slider from "react-slick";
 import RowBgImg from "../assets/img/row-bgimage-1.png";
 import DottedShapeImg from "../assets/img/dotted_shape.png";
+import about1 from "../assets/img/about/copa/01.jpg";
+import about2 from "../assets/img/about/04.png";
+import about3 from "../assets/img/about/05.png";
 
 /* ─── données statiques ──────────────────────────────────────────────────── */
 const slick_slider = {
@@ -90,6 +93,19 @@ const AboutCopa: React.FC = () => {
               </div>
             </div>
             <div className="col-lg-6">
+              <div className="mr-30 mt-30 mt-lg-60 mb-lg-30">
+                <div className="d-flex">
+                  <img src={about1} className="img-fluid" alt="single_05" />
+                  <div className="flex-basis-auto ml_180 mr_30 mt_30 z-index_1">
+                    <img src={about2} className="img-fluid" alt="dot-pattern" />
+                  </div>
+                  <div className="d-flex justify-content-end flex-column ml_180 mr_30 mb_35 z-index_1">
+                    <img src={about3} className="img-fluid" alt="dot-pattern" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* <div className="col-lg-6">
               <div className="pl-30 pl-lg-0 mt-lg-30">
                 <div className="ttm-col-bgcolor-yes ttm-bg bg-theme-GreyColor p-40">
                   <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
@@ -108,7 +124,7 @@ const AboutCopa: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -276,7 +292,7 @@ const AboutCopa: React.FC = () => {
       {/* timeline end */}
 
       {/* ── process-section — piliers ── */}
-      <section className="ttm-row process-section bg-theme-GreyColor clearfix">
+      {/* <section className="ttm-row process-section bg-theme-GreyColor clearfix">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
@@ -336,11 +352,11 @@ const AboutCopa: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       {/* process-section end */}
 
       {/* ── services-section — cibles ── */}
-      <section
+      {/* <section
         className="ttm-row services-section bg-img1 bg-theme-WhiteColor ttm-bg ttm-bgimage-yes clearfix"
         style={{ backgroundImage: `url(${RowBgImg})` }}
       >
@@ -403,7 +419,7 @@ const AboutCopa: React.FC = () => {
             )}
           </Slider>
         </div>
-      </section>
+      </section> */}
       {/* services-section end */}
 
       {/* ── action-section ── */}
