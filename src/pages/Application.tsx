@@ -1077,9 +1077,7 @@ const Application: React.FC = () => {
           annualRevenue: d.company?.revenueYearN1
             ? Number(d.company.revenueYearN1)
             : "",
-          creationYear: d.company?.creationDate
-            ? new Date(d.company.creationDate).getFullYear()
-            : "",
+          creationYear: d.company?.creationDate,
           sectorId: d.company?.primarySectorId || "",
           activityDescription: d.company?.activityDescription || "",
           hasBankAccount: tri(d.company?.hasBankAccount),
@@ -1370,6 +1368,7 @@ const Application: React.FC = () => {
               companyAddressIsDifferent: cleanBoolean(
                 form.companyAddressIsDifferent,
               ),
+              totalEmployees: cleanNumber(form.totalEmployees),
               affiliatedToCGA: cleanBoolean(form.affiliatedToCGA),
               femaleEmployees: cleanNumber(form.femaleEmployees),
               maleEmployees: cleanNumber(form.maleEmployees),
@@ -1385,7 +1384,7 @@ const Application: React.FC = () => {
               batwaPartners: cleanNumber(form.batwaPartners),
               disabledPartners: cleanNumber(form.disabledPartners),
               annualRevenue: cleanNumber(form.annualRevenue),
-              creationYear: cleanNumber(form.creationYear),
+              creationYear: form.creationYear || undefined,
               sectorId: cleanNumber(form.sectorId),
               activityDescription: cleanString(form.activityDescription),
               hasBankAccount: cleanBoolean(form.hasBankAccount),
