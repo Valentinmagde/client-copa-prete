@@ -1208,14 +1208,14 @@ const Application: React.FC = () => {
             if (!form.companyEmail) e.companyEmail = t("required");
           }
           if (!form.affiliatedToCGA) e.affiliatedToCGA = t("required");
-          if (form.totalEmployees == "") e.totalEmployees = t("required");
+          if (form.totalEmployees == null) e.totalEmployees = t("required");
           if (form.totalEmployees && form.totalEmployees > 0) {
-            if (form.employeeCount == "") e.employeeCount = t("required");
-            if (form.femaleEmployees == "") e.femaleEmployees = t("required");
-            if (form.maleEmployees == "") e.maleEmployees = t("required");
-            if (form.refugeeEmployees == "") e.refugeeEmployees = t("required");
-            if (form.batwaEmployees == "") e.batwaEmployees = t("required");
-            if (form.disabledEmployees == "")
+            if (form.employeeCount == null) e.employeeCount = t("required");
+            if (form.femaleEmployees == null) e.femaleEmployees = t("required");
+            if (form.maleEmployees == null) e.maleEmployees = t("required");
+            if (form.refugeeEmployees == null) e.refugeeEmployees = t("required");
+            if (form.batwaEmployees == null) e.batwaEmployees = t("required");
+            if (form.disabledEmployees == null)
               e.disabledEmployees = t("required");
           }
           if (!form.associatesCount) e.associatesCount = t("required");
@@ -1224,11 +1224,11 @@ const Application: React.FC = () => {
           }
 
           if(form.associatesCount && form.associatesCount !== "solo"){
-            if (form.femalePartners == "") e.femalePartners = t("required");
-            if (form.malePartners == "") e.malePartners = t("required");
-            if (form.refugeePartners == "") e.refugeePartners = t("required");
-            if (form.batwaPartners == "") e.batwaPartners = t("required");
-            if (form.disabledPartners == "") e.disabledPartners = t("required");
+            if (form.femalePartners == null) e.femalePartners = t("required");
+            if (form.malePartners == null) e.malePartners = t("required");
+            if (form.refugeePartners == null) e.refugeePartners = t("required");
+            if (form.batwaPartners == null) e.batwaPartners = t("required");
+            if (form.disabledPartners == null) e.disabledPartners = t("required");
           }
 
           if(!form.annualRevenue) e.annualRevenue = t("required");
