@@ -41,7 +41,7 @@ const Menu: React.FC<MenuProps> = () => {
           </ul>
         </li>
 
-        <li className="mega-menu-item">
+        {/* <li className="mega-menu-item">
           <Link
             to="#"
             className="mega-menu-link"
@@ -58,11 +58,11 @@ const Menu: React.FC<MenuProps> = () => {
             <li>
               <Link to="/eligibility-criteria">{t("eligibilityCriteria")}</Link>
             </li>
-            {/* <li>
+            <li>
               <Link to="#">{t("previousEditions")}</Link>
-            </li> */}
+            </li>
           </ul>
-        </li>
+        </li> */}
 
         {/* <li className="mega-menu-item">
           <Link

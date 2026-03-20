@@ -35,6 +35,7 @@ const Banner: React.FC<BannerProps> = () => {
     autoplay: true,
     infinite: true,
     speed: 1000,
+    autoplaySpeed: 2000,
     slidesToShow: 1,
     slidesToScroll: 1,
     rows: 1,
@@ -90,6 +91,7 @@ const Banner: React.FC<BannerProps> = () => {
             <div className="row">
               <div className="col-lg-12">
                 <div className="slide__content--headings ttm-textcolor-white text-center">
+                  {/* <h3  data-animation="animate__fadeInDown">Candidatez jusqu’au 02 avril 2026 </h3> */}
                   <div className="d-flex align-items-center justify-content-center">
                     <h2 data-animation="animate__fadeInDown">
                       {t("bannerTitle")}
@@ -104,6 +106,15 @@ const Banner: React.FC<BannerProps> = () => {
                         >
                           {t("bannerDescription")}
                         </p>
+                        <br />
+                        <p
+                          data-animation="animate__fadeInDown"
+                          className="d-none d-md-block"
+                        >
+                          {t("bannerCall")}
+                          <br />
+                          <span dangerouslySetInnerHTML={{ __html: t("bannerDeadline") }} />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -114,12 +125,12 @@ const Banner: React.FC<BannerProps> = () => {
                     >
                       {t("bannerParticipate")}
                     </Link>
-                    <Link
+                    {/* <Link
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
                       to="/how-to-participate"
                     >
                       {t("bannerLearnMore")}
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               </div>
@@ -142,7 +153,9 @@ const Banner: React.FC<BannerProps> = () => {
                 <div className="slide__content--headings ttm-textcolor-white text-center">
                   <div className="d-flex align-items-center justify-content-center">
                     <h2 data-animation="animate__fadeInDown">
-                      {t("bannerTitle")}
+                      {/* {t("bannerTitle")} */}
+                      {/* Candidatez jusqu’au 02 avril 2026 */}
+                      Appel à Manifestation d’Intérêt des MPME et Coopératives de la 1ère Cohorte
                     </h2>
                   </div>
                   <div className="mt-20 mb-40 mb-md-15">
@@ -152,7 +165,8 @@ const Banner: React.FC<BannerProps> = () => {
                           data-animation="animate__fadeInDown"
                           className="d-none d-md-block"
                         >
-                          {t("bannerDescription")}
+                          {/* {t("bannerDescription")} */}
+                          Appel à Manifestation d’Intérêt des MPME et Coopératives de la 1ère Cohorte
                         </p>
                       </div>
                     </div>

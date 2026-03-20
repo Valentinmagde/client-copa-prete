@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useTranslation, Trans } from "react-i18next";
-import CountUp from "react-countup";
+import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
@@ -105,8 +104,15 @@ const AboutPrete: React.FC = () => {
                 </Tabs>
               </div>
 
-              {/* <div className="d-flex align-items-center mt-30">
-                <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-skincolor ttm-icon_element-size-sm ttm-icon_element-style-round mb-0">
+              <div className="d-flex align-items-center mt-30">
+                <Link
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark"
+                  to="https://prete.bi/mission/"
+                  target="_blank"
+                >
+                  {t("aboutprete.buttons.learnMoreAboutPrete")}
+                </Link>
+                {/* <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-skincolor ttm-icon_element-size-sm ttm-icon_element-style-round mb-0">
                   <i className="fa fa-university"></i>
                 </div>
                 <div className="pl-15">
@@ -114,8 +120,8 @@ const AboutPrete: React.FC = () => {
                   <p className="featured-desc mb-0 fw-bold">
                     {t("aboutprete.project.fundedByValue")}
                   </p>
-                </div>
-              </div> */}
+                </div> */}
+              </div>
 
               {/* <div className="ttm-horizontal_sep width-100 mt-20 mb-20"></div> */}
 

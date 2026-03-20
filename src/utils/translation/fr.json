@@ -209,7 +209,9 @@
   "admin": "Admin",
   "business": "business",
   "bannerTitle": "COPA – Concours de Plans d’Affaires",
-  "bannerDescription": "Transformez votre projet en entreprise prospère. Le COPA nyunganira accompagne les MPME et Coopératives burundaises par des formations, un accompagnement personnalisé et des subventions compétitives pour concrétiser vos ambitions.",
+  "bannerDescription": "Transformer leurs ambitions en entreprises prospères. Le COPA nyunganira accompagne les MPME et Coopératives burundaises par des formations, un accompagnement personnalisé et des subventions compétitives pour concrétiser vos ambitions.",
+  "bannerCall": "Appel à Manifestation d’Intérêt des MPME et Coopératives de la 1ère Cohorte",
+  "bannerDeadline": "Candidatez jusqu’au <strong>02 avril 2026</strong>",
   "bannerParticipate": "Participez au COPA",
   "bannerLearnMore": "En savoir plus",
   "aboutprete": {
@@ -258,6 +260,9 @@
         }
       ]
     },
+    "buttons": {
+      "learnMoreAboutPrete": "En savoir plus sur le PRETE"
+    },
     "cta": {
       "title": "Prêt à rejoindre le programme COPA ?",
       "description": "Inscrivez-vous dès maintenant et bénéficiez d'un accompagnement complet pour développer votre entreprise.",
@@ -265,7 +270,7 @@
     }
   },
   "aboutcopa": {
-    "pageTitle": "Présentation du COPA",
+    "pageTitle": "À propos du COPA",
     "breadcrumb": "COPA",
     "intro": {
       "title": "Le COPA",
@@ -274,7 +279,8 @@
       "description2": "Le COPA offre aux porteurs de projets viables une opportunité unique de développer leurs compétences et d'accéder à un financement non remboursable pour concrétiser leur vision entrepreneuriale.",
       "buttons": {
         "eligibility": "Vérifier mon éligibilité",
-        "howTo": "Comment participer ?"
+        "howTo": "Comment participer ?",
+        "prepareDocuments": "Préparer mes documents de candidature"
       },
       "whyParticipate": {
         "title": "Pourquoi participer ?",
@@ -288,6 +294,99 @@
         ]
       }
     },
+
+    "summary": {
+      "title": "En résumé",
+      "subtitle": "Présentation du COPA"
+    },
+
+    "copaInfo": [
+      {
+        "label": "Objectif général",
+        "value1": "L'Objectif général est le Soutien à l'amélioration des capacités des MPME"
+      },
+      {
+        "label": "Objectifs spécifiques",
+        "value1": [
+          "Formation de l'écosystème entreneurial local;",
+          "Recrutement des bénéficiaires;",
+          "Assistance technique aux bénéficiaires;",
+          "Le concours de plans d'affaires;",
+          "Suivi de mise en œuvre du plan d'affaires, y compris sur les aspects d'adaptation et de résilience aux aléas climatiques."
+        ]
+      },
+      {
+        "label": "Secteurs d'activités",
+        "value1": "Agri-business, Agro-industrie (par exemple les filières Lait, Volaille, Pisciculture, Fruits tropicaux et autres secteurs à fort potentiel), ii) Industrie minière et iii) services connexes à l’agri-business (y compris le tourisme et le numérique)."
+      },
+      {
+        "label": "Période de mise en œuvre",
+        "value1": "De janvier 2026 à décembre 2028."
+      },
+      {
+        "label": "Nombre de cohortes",
+        "value1": "6 cohortes avec un cycle de 12 à 18 mois par cohorte."
+      },
+      {
+        "label": "Bénéficiaires",
+        "value1": "MPME et Coopératives (formelles et informelles), écosystème de développement du secteur privé, soit:",
+        "value2": [
+          "Présélection: 1200 MPME et Coopératives (dont 50% de MPME dirigées par des femmes et 20% par des réfugiés)",
+          "Sélection: 600 MPME et Coopératives (dont 50% de MPME dirigées par des femmes et 6,6% par des réfugiés)"
+        ]
+      }
+    ],
+
+    "timeline": {
+      "sectionTitle": "Déroulement du programme",
+      "sectionSubtitle": "Le processus de mise en œuvre du COPA",
+      "description": "Le processus se déroule en deux phases : la présélection et la sélection.",
+      "phases": [
+        {
+          "num": "01",
+          "phase": "Appel à Candidatures ou Appel à Manifestation d’Intérêt(AMI)",
+          "description": "Les MPME et les Coopératives respectant les critères d’éligibilité et désireuses de candidater sont invitées à inscrire en ligne sur la plateforme digitale du COPA nyunganira : <a href='/eligibility-criteria'>www.copa-prete.bi</a>.",
+          "tag": "Phase 1 — Présélection"
+        },
+        {
+          "num": "02",
+          "phase": "Analyse des candidatures & proclamation des résultats",
+          "description": "A cette étape, les candidatures reçues sont analysées en tenant compte du respect des critères de recevabilité et d’éligibilité. <br /> Les résultats de présélection sont notifiés à l’ensemble des candidats (retenus ou non).  Les candidats retenus à cette étape sont admis au dispositif d’accompagnement et de formation au montage de plan d’affaires et les candidats non retenus pourront recandidater pour les prochaines cohortes s’ils respectent les critères d’éligibilité.",
+          "tag": "Phase 1 — Présélection"
+        },
+        {
+          "num": "03",
+          "phase": "Admission au dispositif d’accompagnement au montage de plans d’affaires",
+          "description": "Les candidats présélectionnés sont accompagnés au montage de leur plan d’affaires et sur les questions de digitalisation et de sauvegarde environnementale et sociale.",
+          "tag": "Phase 2 — Sélection"
+        },
+        {
+          "num": "04",
+          "phase": "Dépôt et évaluation des plans d’affaires",
+          "description": "La période de dépôt des plans d’affaires se fera juste après la phase d’accompagnement des candidats présélectionnés. Les plans d’affaires déposés seront évalués par un jury composé d’Experts évaluateurs indépendants.",
+          "tag": "Phase 2 — Sélection"
+        },
+        {
+          "num": "05",
+          "phase": "La sélection des lauréats par le Comité de sélection et proclamation des résultats",
+          "description": "A l’issue des évaluations des plans d’affaires, les meilleurs dossiers de candidature seront retenus et les lauréats, tout comme les candidats non retenus seront informés de leur résultat.",
+          "tag": "Phase 2 — Sélection"
+        },
+        {
+          "num": "06",
+          "phase": "Mise à disposition de la subvention",
+          "description": "La subvention qui est de 10 000 USD à 20 000 USD sera donnée sur la forme de kits technologiques (équipements, matériels, certification, etc.) et de coûts opérationnels (salaires, matières premières, autres dépenses en main-d'œuvre, loyers, électricité, frais d’entretien des équipements et matériels, etc.). <br /> Les lauréats et lauréates verront leurs plans d’affaires passer au screening E&S et les entreprises informelles devront se formaliser avant de disposer de leur subvention.",
+          "tag": "Phase 2 — Sélection"
+        },
+        {
+          "num": "07",
+          "phase": "Admission au dispositif d’accompagnement post financement",
+          "description": "Après l’obtention de la subvention, les lauréats et lauréates bénéficieront de formations en management d’entreprise, de formations spécifiques, d’un coaching personnalisé et d’un mentorat afin de réussir leur projet d’entreprise.",
+          "tag": "Phase 2 — Sélection"
+        }
+      ]
+    },
+
     "pillars": {
       "section": {
         "title": "Notre approche",
@@ -500,6 +599,11 @@
     },
     "buttons": {
       "readMore": "Lire la suite"
+    },
+    "empty": {
+      "title": "Aucun article disponible",
+      "description": "Aucun article n'a encore été publié. Revenez bientôt pour découvrir nos actualités.",
+      "cta": "Retour à l'accueil"
     }
   },
   "applicationSubmitted": {
@@ -590,7 +694,7 @@
     }
   },
   "eligibilityCriteriaPage": {
-    "pageTitle": "Critères d'éligibilité",
+    "pageTitle": "Critères d'éligibilité & Préparation des documents",
     "breadcrumb": "COPA / Éligibilité",
     "intro": {
       "highlight": "Comment participer ?",
@@ -746,6 +850,36 @@
           "desc": "Prêt d'argent à intérêt"
         }
       ]
+    },
+    "documents": {
+      "title": "Préparer mes documents",
+      "subtitle": "Pièces à fournir pour la candidature",
+      "options": [
+        {
+          "title": "Option 1 — Entreprise formelle",
+          "items": [
+            "Formulaire de candidature en ligne dûment renseigné.",
+            "Copie de la pièce d'identité ou de la carte de réfugié du représentant légal délivrée par les autorités burundaises et en cours de validité.",
+            "Casier judiciaire datant de moins de 3 mois du représentant légal de l'entreprise.",
+            "Acte de nomination du gérant si différent de celui qui se trouve dans le Registre de commerce.",
+            "Copie du Registre de commerce ou du certificat d'enregistrement de la coopérative ou du NIF de la MPME.",
+            "Relevés bancaires des 6 derniers mois de la MPME. Les relevés des comptes mobiles money et le registre des ventes sont aussi admis."
+          ]
+        },
+        {
+          "title": "Option 2 — Entreprise informelle",
+          "items": [
+            "Formulaire de candidature en ligne dûment renseigné.",
+            "Attestation de reconnaissance communale ou zonale attestant que l'entreprise a une durée de vie d'au moins un an révolu à la date de la candidature.",
+            "Copie de la pièce d'identité du représentant ou de la carte de réfugié délivrée par les autorités burundaises et en cours de validité.",
+            "Casier judiciaire datant de moins de 3 mois du représentant de l'entreprise.",
+            "Relevés bancaires des 6 derniers mois du représentant de l'entreprise. Les relevés des comptes mobiles money et le registre des ventes sont aussi admis."
+          ]
+        }
+      ]
+    },
+    "buttons": {
+      "callForInterest": "Appel à Manifestation d’Intérêt"
     },
     "cta": {
       "title": "Une question sur votre éligibilité ?",
@@ -1011,14 +1145,14 @@
 
   "specify": "Préciser",
   "selectOption": "Sélectionnez une option",
-  "statusSection": "Statut du/de la Représentant/Représentante légal.e de la MPME candidate",
+  "statusSection": "Statut du/de la Représentant/Représentante légal.e de la MPME ou de la Coopérative candidate",
   "selectYourStatus": "Sélectionnez votre statut",
   "burundianEntrepreneur": "Entrepreneur(e) burundais(e)",
   "refugeeEntrepreneur": "Entrepreneur(e) réfugié(e)",
   "otherStatus": "Autre statut",
   "enterYourStatus": "Saisissez votre statut",
 
-  "identitySection": "Identité du/de la Représentant/Représentante légal.e de la MPME candidate",
+  "identitySection": "Identité du/de la Représentant/Représentante légal.e de la MPME ou de la Coopérative candidate",
   "lastName": "Nom",
   "firstName": "Prénom(s)",
   "roleInCompany": "Fonction au sein de l'entreprise",
@@ -1038,7 +1172,7 @@
   "educationUniversity": "Universitaire",
   "birthDateInvalid": "Vous devez avoir au moins 18 ans",
 
-  "addressSection": "Adresse du/de la Représentant/Représentante légal.e de la MPME candidate",
+  "addressSection": "Adresse du/de la Représentant/Représentante légal.e de la MPME ou de la Coopérative candidate",
   "neighborhood": "Colline / Quartier",
   "zone": "Zone",
   "selectProvince": "Sélectionnez une province",
@@ -1061,7 +1195,7 @@
   "hasPreviousGrantLabel": "L'entreprise ou son/sa représentant/Représentante légal.e ont il déjà bénéficié d'une subvention similaire durant les 5 dernières années ? ",
   "previousGrantDetailsPlaceholder": "Précisez le projet ou l'organisme concerné",
 
-  "selectCompanyStatus": "Statut de l'entreprise",
+  "selectCompanyStatus": "Statut de la MPME ou de la Coopérative",
   "formalCompany": "Entreprise formelle (NIF ou registre de commerce)",
   "informalCompany": "Entreprise informelle (engagement à s'enregistrer avant la subvention)",
   "projectCompany": "Projet d'entreprise (pas encore créée)",
@@ -1070,7 +1204,7 @@
   "nifInvalid": "Numéro NIF invalide",
   "selectLegalStatus": "Statut juridique",
   "specifyLegalStatus": "Précisez le statut juridique",
-  "legalStatus": "Statut légal de la MPME",
+  "legalStatus": "Statut légal de la MPME ou de la Coopérative",
   "snc": "Société en Nom Collectif (SNC)",
   "scs": "Société en Commandite Simple (SCS)",
   "sprl": "SPRL",
@@ -1083,7 +1217,7 @@
   "activityDescription": "Description de l'activité principale (min. 20 caractères)",
   "descriptionMinLength": "La description doit contenir au moins 20 caractères",
 
-  "companyAddressIfDifferent": "Adresse de l'entreprise (si différente de celle du représentant)",
+  "companyAddressIfDifferent": "Adresse de l'entreprise (si différente de celle du/de la Représentant/Représentante légal.e de la MPME ou de la Coopérative candidate)",
   "affiliatedToCGALabel": "Entreprise affiliée à un Centre de Gestion Agréé (CGA) ?",
 
   "employeesBreakdown": "Répartition des employés",
@@ -1170,7 +1304,7 @@
   "doc_idCard": "Copie de la pièce d'identité ou de la carte de réfugié du représentant légal",
   "doc_criminalRecord": "Casier judiciaire datant de moins de 3 mois du représentant légal",
   "doc_managerAct": "Acte de nomination du gérant (si différent du registre de commerce)",
-  "doc_commerceRegister": "Copie du Registre de commerce ou du NIF de la MPME",
+  "doc_commerceRegister": "Copie du Registre de commerce ou du NIF de la MPME ou de la Coopérative",
   "doc_bankStatements": "Relevés bancaires / mobile money / registre des ventes des 6 derniers mois",
   "doc_communalAttestation": "Attestation de reconnaissance communale ou zonale (durée de vie ≥ 1 an)",
 

@@ -795,7 +795,7 @@ const FileUploadRow: React.FC<{
                 style={{ fontSize: 17, flexShrink: 0 }}
               />
               <span style={{ fontSize: 14, color: "#777" }}>
-                {t(labelKey)}
+                {t(labelKey)} <span style={{ color: "#dc3545", marginLeft: 2 }}>*</span>
                 <span
                   style={{
                     display: "block",

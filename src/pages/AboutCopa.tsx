@@ -1,56 +1,45 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
 import Slider from "react-slick";
 import RowBgImg from "../assets/img/row-bgimage-1.png";
+import DottedShapeImg from "../assets/img/dotted_shape.png";
 
+/* ─── données statiques ──────────────────────────────────────────────────── */
 const slick_slider = {
   dots: false,
   arrow: false,
-  autoplay: true,
+  autoplay: false,
   infinite: true,
   speed: 1000,
-  slidesToShow: 4,
+  slidesToShow: 2,
   slidesToScroll: 1,
   rows: 1,
-
   responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 3,
-        slidesToScroll: 3,
-      },
-    },
-    {
-      breakpoint: 778,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 2,
-      },
-    },
-    {
-      breakpoint: 575,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-      },
-    },
+    { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+    { breakpoint: 575,  settings: { slidesToShow: 1, slidesToScroll: 1 } },
   ],
 };
+
+/* ─── composant ─────────────────────────────────────────────────────────── */
 
 const AboutCopa: React.FC = () => {
   const { t } = useTranslation();
 
-  // Récupérer les données traduites
-  const pillars = t("aboutcopa.pillars.list", { returnObjects: true }) as any[];
-  const targets = t("aboutcopa.targets.list", { returnObjects: true }) as any[];
   const whyList = t("aboutcopa.intro.whyParticipate.list", {
     returnObjects: true,
   }) as string[];
+
+  const copaInfo = t("aboutcopa.copaInfo", {
+    returnObjects: true,
+  }) as any[];
+
+  const timelinePhases = t("aboutcopa.timeline.phases", {
+    returnObjects: true,
+  }) as any[];
 
   return (
     <div className="site-main">
@@ -60,7 +49,7 @@ const AboutCopa: React.FC = () => {
         breadcrumb={t("aboutcopa.breadcrumb")}
       />
 
-      {/* intro-section */}
+      {/* ── intro-section ── */}
       <section className="ttm-row about-section clearfix">
         <div className="container">
           <div className="row align-items-center">
@@ -77,8 +66,11 @@ const AboutCopa: React.FC = () => {
                   <h2 className="title">{t("aboutcopa.intro.subtitle")}</h2>
                 </div>
                 <div className="title-desc">
-                  <p dangerouslySetInnerHTML={{ __html: t("aboutcopa.intro.description1")}}>
-                  </p>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: t("aboutcopa.intro.description1"),
+                    }}
+                  />
                   <p className="mt-15">{t("aboutcopa.intro.description2")}</p>
                 </div>
               </div>
@@ -93,7 +85,7 @@ const AboutCopa: React.FC = () => {
                   to="/how-to-participate"
                   className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
                 >
-                  {t("aboutcopa.intro.buttons.howTo")}
+                  {t("aboutcopa.intro.buttons.prepareDocuments")}
                 </Link>
               </div>
             </div>
@@ -103,8 +95,7 @@ const AboutCopa: React.FC = () => {
                   <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
                   <div className="layer-content">
                     <h4 className="mb-20">
-                      {t("aboutcopa.intro.whyParticipate.title")}{" "}
-                      {/* <span className="text-theme-SkinColor">?</span> */}
+                      {t("aboutcopa.intro.whyParticipate.title")}
                     </h4>
                     <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
                       {whyList.map((item: string, i: number) => (
@@ -123,7 +114,168 @@ const AboutCopa: React.FC = () => {
       </section>
       {/* intro-section end */}
 
-      {/* process-section */}
+      {/* ── fiche COPA — slider style HowToParticipate ── */}
+      <section
+        className="ttm-row services-section bg-img1 bg-theme-GreyColor ttm-bg ttm-bgimage-yes clearfix"
+        style={{ backgroundImage: `url(${RowBgImg})` }}
+      >
+        <div className="container">
+          {/* row */}
+          <div className="row">
+            <div className="col-lg-11">
+              <div className="section-title title-style-center_text">
+                <div className="title-header">
+                  <h3>
+                    {t("aboutcopa.summary.title")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}
+                  </h3>
+                  <h2 className="title">{t("aboutcopa.summary.subtitle")}</h2>
+                </div>
+                {/* <div className="title-desc">
+                  <p>
+                    Le COPA est un concours de plans d'affaires destiné aux
+                    MPME et Coopératives du Burundi, financé dans le cadre du
+                    projet PRETE.
+                  </p>
+                </div> */}
+              </div>
+            </div>
+          </div>
+          {/* row end */}
+
+          {/* Slider */}
+          <Slider
+            className="row slick_slider slick-arrows-style2 mb_10"
+            {...slick_slider}
+            slidesToShow={2}
+            rows={3}
+            arrows={true}
+            autoplay={false}
+            responsive={[
+              { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+              { breakpoint: 575,  settings: { slidesToShow: 1, slidesToScroll: 1 } },
+            ]}
+          >
+            {copaInfo.map((item, i) => (
+              <div key={i} className="col-md-12">
+                <div className="featured-imagebox featured-imagebox-services style1">
+                  <div className="featured-content">
+                    <div className="featured-title">
+                      <h3>{item.label}</h3>
+                    </div>
+                    <div className="featured-desc">
+                      {Array.isArray(item.value1) ? (
+                        <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor mt-10">
+                          {item.value1.map(
+                            (val, j) => (
+                              <li key={j}>
+                                <i className="far fa-check-circle"></i>
+                                <div className="ttm-list-li-content">
+                                  {val}
+                                </div>
+                              </li>
+                            ),
+                          )}
+                        </ul>
+                      ): 
+                      <p>{item.value1}</p>
+                      }
+
+                      {item?.value2 && Array.isArray(item?.value2) ? (
+                        <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor mt-10">
+                          {item.value2.map(
+                            (val, j) => (
+                              <li key={j}>
+                                <i className="far fa-check-circle"></i>
+                                <div className="ttm-list-li-content">
+                                  {val}
+                                </div>
+                              </li>
+                            ),
+                          )}
+                        </ul>
+                      ): item?.value2 && <p>{item.value2}</p>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+          {/* Slider end */}
+        </div>
+      </section>
+      {/* fiche COPA end */}
+
+      {/* ── timeline — processus de mise en œuvre ── */}
+      <section className="ttm-row job-list-section ttm-bg clearfix">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="section-title title-style-center_text">
+                <div className="title-header">
+                  <h3>
+                    {t("aboutcopa.timeline.sectionTitle").split(" ").map((word: string, i: number) => (
+                      <span
+                        key={i}
+                        className={i >= 1 ? "text-theme-SkinColor" : ""}
+                      >
+                        {word}{" "}
+                      </span>
+                    ))}
+                  </h3>
+                  <h2 className="title">
+                    {t("aboutcopa.timeline.sectionSubtitle")}
+                  </h2>
+                  <p>
+                    {t("aboutcopa.timeline.description")}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-12">
+              <div id="timeline-story" className="timeline-story-wrapper">
+                <div className="timeline">
+                  {timelinePhases.map((phase, index) => (
+                    <div key={index} className="timeline-panel">
+                      <div className="timeline-shape">
+                        <span className="shape-circle"></span>
+                        <span className="shape-image">
+                          <img
+                            className="img-fluid"
+                            src={DottedShapeImg}
+                            alt="dotted shape"
+                          />
+                        </span>
+                      </div>
+                      <div className="timeline-body">
+                        <div className="timeline-date">{phase.tag}</div>
+                        <h3 className="title">
+                          {phase.num}. {phase.phase}
+                        </h3>
+                        <p style={{webkitLineClamp: "none"}} dangerouslySetInnerHTML={{__html: phase.description}} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* timeline end */}
+
+      {/* ── process-section — piliers ── */}
       <section className="ttm-row process-section bg-theme-GreyColor clearfix">
         <div className="container">
           <div className="row">
@@ -141,7 +293,7 @@ const AboutCopa: React.FC = () => {
                           >
                             {word}{" "}
                           </span>
-                        )) || ""}
+                        ))}
                     </span>
                   </h3>
                   <h2 className="title">
@@ -151,19 +303,19 @@ const AboutCopa: React.FC = () => {
               </div>
             </div>
           </div>
-          {/* row */}
           <div className="row">
             <div className="col-lg-12">
               <div className="featuredbox-number bg-theme-WhiteColor box-shadow p-30 mt-15">
                 <div className="row">
-                  {pillars.map((p: any, i: number) => (
+                  {(
+                    t("aboutcopa.pillars.list", { returnObjects: true }) as any[]
+                  ).map((p: any, i: number) => (
                     <div key={i} className="col-lg-4 col-md-4 col-sm-12">
                       <div className="featured-icon-box icon-align-top-content style6">
                         <div className="featured-icon">
                           <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-size-lg ttm-icon_element-color-grey ttm-icon_element-style-round">
                             <i className={p.icon}></i>
                             <span className="fea_num">
-                              {/* {p.num} */}
                               <i className="ttm-num ti-info"></i>
                             </span>
                           </div>
@@ -183,82 +335,18 @@ const AboutCopa: React.FC = () => {
               </div>
             </div>
           </div>
-          {/* row end */}
         </div>
       </section>
       {/* process-section end */}
 
-      {/* pillars-section */}
-      {/* <section className="ttm-row team-section bg-theme-GreyColor clearfix">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="section-title title-style-center_text">
-                <div className="title-header">
-                  <h3>
-                    {t("aboutcopa.pillars.section.title").split(" ")[0]}{" "}
-                    <span className="text-theme-SkinColor">
-                      {t("aboutcopa.pillars.section.title").split(" ")[1] || ""}
-                    </span>
-                  </h3>
-                  <h2 className="title">
-                    {t("aboutcopa.pillars.section.subtitle")}
-                  </h2>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            {pillars.map((p: any, i: number) => (
-              <div key={i} className="col-lg-4 col-md-6 mb-30">
-                <div
-                  className="featured-icon-box icon-align-top-content style3 text-center p-30"
-                  style={{
-                    background: "#fff",
-                    borderRadius: "4px",
-                    height: "100%",
-                    boxShadow: "0 2px 12px rgba(0,0,0,.06)",
-                  }}
-                >
-                  <div className="featured-icon mb-20">
-                    <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-size-lg ttm-icon_element-style-rounded ttm-icon_element-color-skincolor">
-                      <span
-                        style={{
-                          fontSize: "22px",
-                          fontWeight: 900,
-                          color: "var(--theme-SkinColor)",
-                        }}
-                      >
-                        {p.num}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="featured-content">
-                    <div className="featured-title">
-                      <h3>{p.title}</h3>
-                    </div>
-                    <div className="featured-desc">
-                      <p>{p.desc}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-      {/* pillars-section end */}
-
-      {/* services-section */}
+      {/* ── services-section — cibles ── */}
       <section
         className="ttm-row services-section bg-img1 bg-theme-WhiteColor ttm-bg ttm-bgimage-yes clearfix"
         style={{ backgroundImage: `url(${RowBgImg})` }}
       >
         <div className="container">
-          {/* row */}
           <div className="row">
             <div className="col-lg-11">
-              {/* section title */}
               <div className="section-title style2 mb-0">
                 <div className="title-header">
                   <h3>
@@ -271,7 +359,7 @@ const AboutCopa: React.FC = () => {
                         >
                           {word}{" "}
                         </span>
-                      )) || ""}
+                      ))}
                   </h3>
                   <h2 className="title">
                     {t("aboutcopa.targets.section.subtitle")}
@@ -281,11 +369,8 @@ const AboutCopa: React.FC = () => {
                   <p>{t("aboutcopa.targets.section.description")}</p>
                 </div>
               </div>
-              {/* section title end */}
             </div>
           </div>
-          {/* row end */}
-          {/* Slider */}
           <Slider
             className="row slick_slider slick-arrows-style2 pt-20 mb_10"
             {...slick_slider}
@@ -294,53 +379,34 @@ const AboutCopa: React.FC = () => {
             arrows={true}
             autoplay={false}
             responsive={[
-              {
-                breakpoint: 1024,
-                settings: { slidesToShow: 2, slidesToScroll: 2 },
-              },
-              {
-                breakpoint: 575,
-                settings: { slidesToShow: 1, slidesToScroll: 1 },
-              },
+              { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+              { breakpoint: 575,  settings: { slidesToShow: 1, slidesToScroll: 1 } },
             ]}
           >
-            {targets.map((t: any, i: number) => (
-              <div key={i} className="col-md-12">
-                <div className="featured-imagebox featured-imagebox-services style1">
-                  {/* featured-thumbnail */}
-                  {/* <div className="featured-thumbnail">
-                    <img
-                      className="img-fluid"
-                      src="https://via.placeholder.com/600x600?text=600x600+services-02.jpg"
-                      alt="image"
-                    />
-                  </div> */}
-                  <div className="featured-content">
-                    <div className="featured-title">
-                      <h3>
-                        <Link to={"#"}>{t.label}</Link>
-                      </h3>
+            {(t("aboutcopa.targets.list", { returnObjects: true }) as any[]).map(
+              (item: any, i: number) => (
+                <div key={i} className="col-md-12">
+                  <div className="featured-imagebox featured-imagebox-services style1">
+                    <div className="featured-content">
+                      <div className="featured-title">
+                        <h3>
+                          <Link to={"#"}>{item.label}</Link>
+                        </h3>
+                      </div>
+                      <div className="featured-desc">
+                        <p>{item.desc}</p>
+                      </div>
                     </div>
-                    <div className="featured-desc">
-                      <p>{t.desc}</p>
-                    </div>
-                    {/* <a
-                      className="ttm-btn btn-inline ttm-btn-size-md ttm-btn-color-darkgrey"
-                      href={"/services_details"}
-                    >
-                      read more!
-                    </a> */}
                   </div>
                 </div>
-              </div>
-            ))}
+              ),
+            )}
           </Slider>
-          {/* Slider end */}
         </div>
       </section>
       {/* services-section end */}
 
-      {/* action-section - à décommenter si nécessaire */}
+      {/* ── action-section ── */}
       <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">
         <div className="container">
           <div className="row">
@@ -353,18 +419,26 @@ const AboutCopa: React.FC = () => {
                     </div>
                   </div>
                   <div className="featured-content">
-                    <div className="featured-title"><h3>{t('aboutcopa.cta.title')}</h3></div>
-                    <div className="featured-desc"><p>{t('aboutcopa.cta.description')}</p></div>
+                    <div className="featured-title">
+                      <h3>{t("aboutcopa.cta.title")}</h3>
+                    </div>
+                    <div className="featured-desc">
+                      <p>{t("aboutcopa.cta.description")}</p>
+                    </div>
                   </div>
                 </div>
-                <Link to="/register" className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white">
-                  {t('aboutcopa.cta.button')}
+                <Link
+                  to="/register"
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
+                >
+                  {t("aboutcopa.cta.button")}
                 </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
+      {/* action-section end */}
 
       <Footer />
     </div>

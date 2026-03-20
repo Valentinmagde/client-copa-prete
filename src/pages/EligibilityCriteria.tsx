@@ -4,23 +4,40 @@ import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
+import Slider from "react-slick";
 import RowBgImg from "../assets/img/row-bgimage-1.png";
-import about1 from "../assets/img/about/06.png";
-import about2 from "../assets/img/about/04.png";
-import about3 from "../assets/img/about/05.png";
+
+const slick_slider = {
+  dots: false,
+  arrow: false,
+  autoplay: false,
+  infinite: false,
+  speed: 1000,
+  slidesToShow: 2,
+  slidesToScroll: 1,
+  rows: 1,
+  responsive: [
+    { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+    { breakpoint: 575, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+  ],
+};
 
 const EligibilityCriteria: React.FC = () => {
   const { t } = useTranslation();
 
-  // Get translated arrays
   const recevabiliteItems = t(
     "eligibilityCriteriaPage.criteria.recevabilityItems",
     { returnObjects: true },
   ) as string[];
+
   const eligibiliteItems = t(
     "eligibilityCriteriaPage.criteria.eligibilityItems",
     { returnObjects: true },
   ) as { label: string; desc: string }[];
+
+  const documentsOptions = t("eligibilityCriteriaPage.documents.options", {
+    returnObjects: true,
+  }) as { title: string; items: any[] }[];
 
   return (
     <div className="site-main">
@@ -30,16 +47,15 @@ const EligibilityCriteria: React.FC = () => {
         breadcrumb={t("eligibilityCriteriaPage.breadcrumb")}
       />
 
-      {/* criteria-section */}
+      {/* ── criteria-section ── */}
       <section
         className="ttm-row services-section bg-img1 bg-theme-WhiteColor ttm-bg ttm-bgimage-yes clearfix"
         style={{ backgroundImage: `url(${RowBgImg})` }}
       >
         <div className="container">
-          {/* row */}
+          {/* section title */}
           <div className="row">
             <div className="col-lg-10 offset-1">
-              {/* section title */}
               <div className="section-title style2 mb-0">
                 <div className="title-header">
                   <h3>
@@ -62,14 +78,13 @@ const EligibilityCriteria: React.FC = () => {
                   <p>{t("eligibilityCriteriaPage.intro.description")}</p>
                 </div>
               </div>
-              {/* section title end */}
             </div>
           </div>
-          {/* row end */}
+          {/* section title end */}
+
           <div className="row slick_slider slick-arrows-style5 mb_10">
             <div className="ttm-row sidebar job-sidebar clearfix pt-20 pb-0">
               <div className="container">
-                {/* row */}
                 <div className="row">
                   <div className="col-lg-10 offset-1 content-area">
                     <div className="row">
@@ -119,29 +134,128 @@ const EligibilityCriteria: React.FC = () => {
                             </ul>
                           </div>
                         </div>
-
-                        <div className="col-lg-12">
-                          <div className="pt-30 m-auto text-center">
-                            <a
-                              className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
-                              href={"/register"}
-                            >
-                              {t("apply")}
-                            </a>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                {/* row end */}
               </div>
             </div>
           </div>
         </div>
       </section>
+      {/* criteria-section end */}
 
-      {/* action-section */}
+      {/* ── documents-section ── */}
+      <section
+        className="ttm-row services-section bg-img1 bg-theme-GreyColor ttm-bg ttm-bgimage-yes clearfix"
+        style={{ backgroundImage: `url(${RowBgImg})` }}
+      >
+        <div className="container">
+          {/* section title */}
+          <div className="row">
+            <div className="col-lg-11">
+              <div className="section-title title-style-center_text">
+                <div className="title-header">
+                  <h3>
+                    {t("eligibilityCriteriaPage.documents.title")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}
+                  </h3>
+                  <h2 className="title">
+                    {t("eligibilityCriteriaPage.documents.subtitle")}
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* section title end */}
+
+          {/* Slider */}
+          <Slider
+            className="row slick_slider slick-arrows-style2 mb_10"
+            {...slick_slider}
+            slidesToShow={2}
+            rows={1}
+            arrows={true}
+            autoplay={false}
+            responsive={[
+              {
+                breakpoint: 1024,
+                settings: { slidesToShow: 2, slidesToScroll: 2 },
+              },
+              {
+                breakpoint: 575,
+                settings: { slidesToShow: 1, slidesToScroll: 1 },
+              },
+            ]}
+          >
+            {documentsOptions.map((option, i) => (
+              <div key={i} className="col-md-12">
+                <div className="featured-imagebox featured-imagebox-services style1">
+                  <div className="featured-content">
+                    <div className="featured-title">
+                      <h3>{option.title}</h3>
+                    </div>
+                    <div className="featured-desc">
+                      <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor mt-10">
+                        {option.items.map((item, j) => (
+                          <li key={j} className="pb-5">
+                            <i className="far fa-check-circle"></i>
+                            <div className="ttm-list-li-content">{item}</div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+          {/* Slider end */}
+
+          {/* CTA */}
+          <div className="row">
+            <div className="col-lg-12">
+              {/* <div className="pt-20 pb-10 text-center">
+                <a
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                  href="/register"
+                >
+                  {t("apply")}
+                </a>
+              </div> */}
+              <div
+                data-animation="animate__fadeInUp"
+                data-delay="1.4"
+                className="mt-80 text-center"
+              >
+                <Link
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor me-3"
+                  to="/register"
+                >
+                  {t("apply")}
+                </Link>
+                <Link
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
+                  to="#"
+                >
+                  {t("eligibilityCriteriaPage.buttons.callForInterest")}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* documents-section end */}
+
+      {/* ── action-section ── */}
       <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">
         <div className="container">
           <div className="row">
@@ -173,6 +287,7 @@ const EligibilityCriteria: React.FC = () => {
           </div>
         </div>
       </section>
+      {/* action-section end */}
 
       <Footer />
     </div>
