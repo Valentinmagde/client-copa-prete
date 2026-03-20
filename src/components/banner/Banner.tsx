@@ -35,7 +35,6 @@ const Banner: React.FC<BannerProps> = () => {
     autoplay: true,
     infinite: true,
     speed: 1000,
-    autoplaySpeed: 2000,
     slidesToShow: 1,
     slidesToScroll: 1,
     rows: 1,
@@ -139,7 +138,7 @@ const Banner: React.FC<BannerProps> = () => {
         </div>
       </div>
 
-      <div className="slide">
+      {/* <div className="slide">
         <div
           className="slide_img"
           style={{
@@ -153,9 +152,7 @@ const Banner: React.FC<BannerProps> = () => {
                 <div className="slide__content--headings ttm-textcolor-white text-center">
                   <div className="d-flex align-items-center justify-content-center">
                     <h2 data-animation="animate__fadeInDown">
-                      {/* {t("bannerTitle")} */}
-                      {/* Candidatez jusqu’au 02 avril 2026 */}
-                      Appel à Manifestation d’Intérêt des MPME et Coopératives de la 1ère Cohorte
+                      {t("bannerTitle")}
                     </h2>
                   </div>
                   <div className="mt-20 mb-40 mb-md-15">
@@ -165,8 +162,7 @@ const Banner: React.FC<BannerProps> = () => {
                           data-animation="animate__fadeInDown"
                           className="d-none d-md-block"
                         >
-                          {/* {t("bannerDescription")} */}
-                          Appel à Manifestation d’Intérêt des MPME et Coopératives de la 1ère Cohorte
+                          {t("bannerDescription")}
                         </p>
                       </div>
                     </div>
@@ -190,7 +186,7 @@ const Banner: React.FC<BannerProps> = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </Slider>
   );
 };

@@ -263,7 +263,7 @@ const AboutCopa: React.FC = () => {
                         <h3 className="title">
                           {phase.num}. {phase.phase}
                         </h3>
-                        <p style={{webkitLineClamp: "none"}} dangerouslySetInnerHTML={{__html: phase.description}} />
+                        <p style={{WebkitLineClamp: "none"}} dangerouslySetInnerHTML={{__html: phase.description}} />
                       </div>
                     </div>
                   ))}
