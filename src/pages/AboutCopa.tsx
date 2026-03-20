@@ -6,7 +6,7 @@ import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
 import Slider from "react-slick";
 import RowBgImg from "../assets/img/row-bgimage-1.png";
-import DottedShapeImg from "../assets/img/dotted_shape.png";
+import DottedShapeImg  from "../assets/img/dotted_shape.png";
 import about1 from "../assets/img/about/copa/01.jpg";
 import about2 from "../assets/img/about/04.png";
 import about3 from "../assets/img/about/05.png";
