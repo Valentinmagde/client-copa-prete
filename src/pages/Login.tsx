@@ -252,7 +252,7 @@ const Login: React.FC = () => {
                               autoComplete="current-password"
                               // className="pe-5"
                             />
-                            {/* 👁️ Toggle icon */}
+                            {/* Toggle icon */}
                             <span
                               onClick={togglePasswordVisibility}
                               style={{

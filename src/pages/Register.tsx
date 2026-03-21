@@ -40,6 +40,8 @@ const Register: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const navigate = useNavigate();
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
@@ -55,6 +57,14 @@ const Register: React.FC = () => {
     if (errors[k]) setErrors((p) => ({ ...p, [k]: undefined }));
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   // ── Validation ──
   const validate = () => {
     const e: typeof errors = {};
@@ -66,8 +76,8 @@ const Register: React.FC = () => {
     if (!form.phone) e.phone = t("required");
     if (!form.password) e.password = t("required");
     else if (form.password.length < 8) e.password = t("passwordMinLength");
-    else if (!/[A-Z]/.test(form.password)) e.password = t("passwordUppercase");
-    else if (!/\d/.test(form.password)) e.password = t("passwordNumber");
+    // else if (!/[A-Z]/.test(form.password)) e.password = t("passwordUppercase");
+    // else if (!/\d/.test(form.password)) e.password = t("passwordNumber");
     if (form.password !== form.confirmPassword)
       e.confirmPassword = t("passwordMismatch");
     if (!form.acceptTerms) e.acceptTerms = t("youMustAcceptTermsAndConditions");
@@ -249,17 +259,6 @@ const Register: React.FC = () => {
                               disableSearchIcon={true}
                             />
                           </label>
-                          {/* <label
-                            className={errors.phone ? "copa-input-invalid" : ""}
-                          >
-                            <i className="ti ti-mobile" />
-                            <input
-                              type="tel"
-                              value={form.phone}
-                              onChange={(e) => upd("phone", e.target.value)}
-                              placeholder={t("phoneNumber")}
-                            />
-                          </label> */}
                           {errors.phone && (
                             <span className="copa-error-msg">
                               {errors.phone}
@@ -275,11 +274,30 @@ const Register: React.FC = () => {
                           >
                             <i className="ti ti-lock" />
                             <input
-                              type="password"
+                              type={showPassword ? "text" : "password"}
                               value={form.password}
                               onChange={(e) => upd("password", e.target.value)}
                               placeholder={t("password")}
                             />
+                             {/* Toggle icon */}
+                            <span
+                              onClick={togglePasswordVisibility}
+                              style={{
+                                position: "absolute",
+                                right: "20px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <i
+                                className={
+                                  showPassword
+                                    ? "far fa-eye"
+                                    : "far fa-eye-slash"
+                                }
+                              />
+                            </span>
                           </label>
                           {errors.password && (
                             <span className="copa-error-msg">
@@ -296,13 +314,32 @@ const Register: React.FC = () => {
                           >
                             <i className="ti ti-lock" />
                             <input
-                              type="password"
+                              type={showConfirmPassword ? "text" : "password"}
                               value={form.confirmPassword}
                               onChange={(e) =>
                                 upd("confirmPassword", e.target.value)
                               }
                               placeholder={t("confirmPassword")}
                             />
+                             {/* Toggle icon */}
+                            <span
+                              onClick={toggleConfirmPasswordVisibility}
+                              style={{
+                                position: "absolute",
+                                right: "20px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <i
+                                className={
+                                  showConfirmPassword
+                                    ? "far fa-eye"
+                                    : "far fa-eye-slash"
+                                }
+                              />
+                            </span>
                           </label>
                           {errors.confirmPassword && (
                             <span className="copa-error-msg">

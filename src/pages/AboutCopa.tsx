@@ -80,16 +80,16 @@ const AboutCopa: React.FC = () => {
               <div className="mt-30">
                 <Link
                   to="/eligibility-criteria"
-                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor mr-15"
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor mr-15"
                 >
-                  {t("aboutcopa.intro.buttons.eligibility")}
+                  {t("eligibilityCriteriaPage.buttons.eligibility")}
                 </Link>
-                <Link
+                {/* <Link
                   to="/eligibility-criteria#section-documents"
                   className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
                 >
                   {t("aboutcopa.intro.buttons.prepareDocuments")}
-                </Link>
+                </Link> */}
               </div>
             </div>
             <div className="col-lg-6">

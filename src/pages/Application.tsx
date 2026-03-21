@@ -148,12 +148,15 @@ interface FormData {
   legalStatusOther: string;
   nif: string;
   companyAddressIsDifferent: TriBool;
-  affiliatedToCGA: TriBool;
+  supportService: TriBool;
   femaleEmployees: number | "";
   maleEmployees: number | "";
   refugeeEmployees: number | "";
   batwaEmployees: number | "";
   disabledEmployees: number | "";
+  albinosEmployees: number | "";
+  repatriatesEmployees: number | "";
+  partTimeEmployees: number | "";
   employeeCount: number | "";
   totalEmployees: number | "";
   associatesCount: AssociatesCountType;
@@ -163,9 +166,12 @@ interface FormData {
   refugeePartners: number | "";
   batwaPartners: number | "";
   disabledPartners: number | "";
+  albinosPartners: number | "";
+  repatriatesPartners: number | "";
   annualRevenue: number | "";
   creationYear: number | "";
   sectorId: number | "";
+  otherCompanySector: string;
   activityDescription: string;
   hasBankAccount: TriBool;
   hasBankCredit: TriBool;
@@ -184,7 +190,14 @@ interface FormData {
   plannedEmployeesFemale: number | "";
   plannedEmployeesMale: number | "";
   plannedPermanentEmployees: number | "";
+  plannedRefugeeEmployees: number | "";
+  plannedBatwaEmployees: number | "";
+  plannedDisabledEmployees: number | "";
+  plannedAlbinosEmployees: number | "";
+  plannedRepatriatesEmployees: number | "";
+  plannedPartTimeEmployees: number | "";
   isNewIdea: TriBool;
+  ideaTested: TriBool;
   climateActions: string;
   inclusionActions: string;
   hasEstimatedCost: TriBool;
@@ -238,7 +251,14 @@ interface BeneficiaryData {
   plannedEmployeesFemale?: number;
   plannedEmployeesMale?: number;
   plannedPermanentEmployees?: number;
+  plannedRefugeeEmployees?: number;
+  plannedBatwaEmployees?: number;
+  plannedDisabledEmployees?: number;
+  plannedAlbinosEmployees?: number;
+  plannedRepatriatesEmployees?: number;
+  plannedPartTimeEmployees?: number;
   isNewIdea?: boolean;
+  ideaTested?: boolean;
   climateActions?: string;
   inclusionActions?: string;
   hasEstimatedCost?: boolean;
@@ -274,6 +294,8 @@ interface BeneficiaryData {
     revenueYearN1: number;
     companyType: string;
     totalEmployees: string;
+    otherCompanySector: string;
+    companyStatus: string;
     address?: {
       neighborhood?: string;
       street?: string;
@@ -288,12 +310,16 @@ interface BeneficiaryData {
     legalStatusOther?: string;
     registrationNumber?: string;
     companyAddressIsDifferent: boolean;
-    affiliatedToCGA?: boolean;
+    supportService?: boolean;
     femaleEmployees?: number;
     maleEmployees?: number;
     refugeeEmployees?: number;
     batwaEmployees?: number;
     disabledEmployees?: number;
+    albinosEmployees?: number;
+    repatriatesEmployees?: number;
+    partTimeEmployees?: number;
+    employeeCount?: string;
     associatesCount?: string;
     associatesCountOther?: string;
     femalePartners?: number;
@@ -301,6 +327,10 @@ interface BeneficiaryData {
     refugeePartners?: number;
     batwaPartners?: number;
     disabledPartners?: number;
+    albinosPartners?: number;
+    repatriatesPartners?: number;
+    annualRevenue?: number;
+    creationYear?: number;
     hasBankAccount?: boolean;
     hasBankCredit?: boolean;
     bankCreditAmount?: number;
@@ -354,12 +384,15 @@ const INITIAL_FORM: FormData = {
   legalStatusOther: "",
   nif: "",
   companyAddressIsDifferent: "",
-  affiliatedToCGA: "",
+  supportService: "",
   femaleEmployees: "",
   maleEmployees: "",
   refugeeEmployees: "",
   batwaEmployees: "",
   disabledEmployees: "",
+  albinosEmployees: "",
+  repatriatesEmployees: "",
+  partTimeEmployees: "",
   employeeCount: "",
   totalEmployees: "",
   associatesCount: "",
@@ -369,9 +402,12 @@ const INITIAL_FORM: FormData = {
   refugeePartners: "",
   batwaPartners: "",
   disabledPartners: "",
+  albinosPartners: "",
+  repatriatesPartners: "",
   annualRevenue: "",
   creationYear: "",
   sectorId: "",
+  otherCompanySector: "",
   activityDescription: "",
   hasBankAccount: "",
   hasBankCredit: "",
@@ -390,7 +426,14 @@ const INITIAL_FORM: FormData = {
   plannedEmployeesFemale: "",
   plannedEmployeesMale: "",
   plannedPermanentEmployees: "",
+  plannedRefugeeEmployees: "",
+  plannedBatwaEmployees: "",
+  plannedDisabledEmployees: "",
+  plannedAlbinosEmployees: "",
+  plannedRepatriatesEmployees: "",
+  plannedPartTimeEmployees: "",
   isNewIdea: "",
+  ideaTested: "",
   climateActions: "",
   inclusionActions: "",
   hasEstimatedCost: "",
@@ -442,13 +485,13 @@ const CONSENT_OPTIONS = [
 
 export const FORMAL_DOCS = [
   { key: "idCard", labelKey: "doc_idCard", required: true, typeId: 1 },
-  {
-    key: "criminalRecord",
-    labelKey: "doc_criminalRecord",
-    required: true,
-    typeId: 2,
-  },
-  { key: "managerAct", labelKey: "doc_managerAct", required: false, typeId: 3 },
+  // {
+  //   key: "criminalRecord",
+  //   labelKey: "doc_criminalRecord",
+  //   required: true,
+  //   typeId: 2,
+  // },
+  // { key: "managerAct", labelKey: "doc_managerAct", required: false, typeId: 3 },
   {
     key: "commerceRegister",
     labelKey: "doc_commerceRegister",
@@ -471,12 +514,12 @@ export const INFORMAL_DOCS = [
     typeId: 7,
   },
   { key: "idCard", labelKey: "doc_idCard", required: true, typeId: 1 },
-  {
-    key: "criminalRecord",
-    labelKey: "doc_criminalRecord",
-    required: true,
-    typeId: 2,
-  },
+  // {
+  //   key: "criminalRecord",
+  //   labelKey: "doc_criminalRecord",
+  //   required: true,
+  //   typeId: 2,
+  // },
   {
     key: "bankStatements",
     labelKey: "doc_bankStatements",
@@ -486,13 +529,14 @@ export const INFORMAL_DOCS = [
 ];
 
 const PROJECT_SECTORS_LIST = [
+  { value: "agriculture", labelKey: "sectorAgriBusiness" },
   { value: "milk", labelKey: "sectorMilk" },
   { value: "poultry", labelKey: "sectorPoultry" },
   { value: "fish", labelKey: "sectorFish" },
   { value: "tropicalFruit", labelKey: "sectorFruit" },
+  { value: "otherAgro", labelKey: "sectorOtherAgro" },
   { value: "mining", labelKey: "sectorMining" },
   { value: "tourism", labelKey: "sectorTourism" },
-  { value: "digital", labelKey: "sectorDigital" },
   { value: "other", labelKey: "sectorOther" },
 ];
 
@@ -1058,12 +1102,15 @@ const Application: React.FC = () => {
           legalStatusOther: d.company?.legalStatusOther || "",
           nif: d.company?.taxIdNumber || "",
           companyAddressIsDifferent: tri(d.company?.companyAddressIsDifferent),
-          affiliatedToCGA: tri(d.company?.affiliatedToCGA),
+          supportService: tri(d.company?.supportService),
           femaleEmployees: d.company?.femaleEmployees ?? "",
           maleEmployees: d.company?.maleEmployees ?? "",
           refugeeEmployees: d.company?.refugeeEmployees ?? "",
           batwaEmployees: d.company?.batwaEmployees ?? "",
           disabledEmployees: d.company?.disabledEmployees ?? "",
+          albinosEmployees: d.company?.albinosEmployees ?? "",
+          repatriatesEmployees: d.company?.repatriatesEmployees ?? "",
+          partTimeEmployees: d.company?.partTimeEmployees ?? "",
           employeeCount: d.company?.permanentEmployees ?? "",
           totalEmployees: d.company?.totalEmployees ?? "",
           associatesCount:
@@ -1074,11 +1121,14 @@ const Application: React.FC = () => {
           refugeePartners: d.company?.refugeePartners ?? "",
           batwaPartners: d.company?.batwaPartners ?? "",
           disabledPartners: d.company?.disabledPartners ?? "",
+          albinosPartners: d.company?.albinosPartners ?? "",
+          repatriatesPartners: d.company?.repatriatesPartners ?? "",
           annualRevenue: d.company?.revenueYearN1
             ? Number(d.company.revenueYearN1)
             : "",
           creationYear: d.company?.creationDate,
-          sectorId: d.company?.primarySectorId || "",
+          sectorId: d.company?.primarySectorId || (!d.company?.primarySectorId && d.company?.otherCompanySector) ? -1 : "",
+          otherCompanySector: d.company?.otherCompanySector || "",
           activityDescription: d.company?.activityDescription || "",
           hasBankAccount: tri(d.company?.hasBankAccount),
           hasBankCredit: tri(d.company?.hasBankCredit),
@@ -1100,7 +1150,14 @@ const Application: React.FC = () => {
           plannedEmployeesFemale: d.plannedEmployeesFemale ?? "",
           plannedEmployeesMale: d.plannedEmployeesMale ?? "",
           plannedPermanentEmployees: d.plannedPermanentEmployees ?? "",
+          plannedRefugeeEmployees: d.plannedRefugeeEmployees ?? "",
+          plannedBatwaEmployees: d.plannedBatwaEmployees ?? "",
+          plannedDisabledEmployees: d.plannedDisabledEmployees ?? "",
+          plannedAlbinosEmployees: d.plannedAlbinosEmployees ?? "",
+          plannedRepatriatesEmployees: d.plannedRepatriatesEmployees ?? "",
+          plannedPartTimeEmployees: d.plannedPartTimeEmployees ?? "",
           isNewIdea: tri(d.isNewIdea),
+          ideaTested: tri(d.ideaTested),
           climateActions: d.climateActions || "",
           inclusionActions: d.inclusionActions || "",
           hasEstimatedCost: tri(d.hasEstimatedCost),
@@ -1148,6 +1205,10 @@ const Application: React.FC = () => {
     [docErrors],
   );
 
+  const isFieldEmpty = (value: any): boolean => {
+    return value === undefined || value === null || value === "";
+  };
+
   const validateStep = useCallback(
     (step: number): boolean => {
       const e: FormErrors = {};
@@ -1191,12 +1252,16 @@ const Application: React.FC = () => {
               e.creationYear = t("creationYearInvalid");
           }
           if (!form.sectorId) e.sectorId = t("required");
+          if (form.sectorId === -1 && !form.otherCompanySector)
+            e.otherCompanySector = t("required");
           if (!form.activityDescription.trim())
             e.activityDescription = t("required");
           else if (form.activityDescription.length > 1000)
             e.activityDescription = t("descriptionMaxLength");
           if (form.companyStatus === "formal" && !form.legalStatus)
             e.legalStatus = t("required");
+          if (form.legalStatus === "other" && !form.legalStatusOther)
+            e.legalStatusOther = t("required");
           if (form.companyStatus === "formal" && !form.nif)
             e.nif = t("required");
           if (!form.companyAddressIsDifferent)
@@ -1207,35 +1272,85 @@ const Application: React.FC = () => {
             if (!form.companyPhone) e.companyPhone = t("required");
             if (!form.companyEmail) e.companyEmail = t("required");
           }
-          if (!form.affiliatedToCGA) e.affiliatedToCGA = t("required");
+          if (!form.supportService) e.supportService = t("required");
           if (form.totalEmployees == null) e.totalEmployees = t("required");
           if (form.totalEmployees && form.totalEmployees > 0) {
-            if (form.employeeCount == null) e.employeeCount = t("required");
-            if (form.femaleEmployees == null) e.femaleEmployees = t("required");
-            if (form.maleEmployees == null) e.maleEmployees = t("required");
-            if (form.refugeeEmployees == null) e.refugeeEmployees = t("required");
-            if (form.batwaEmployees == null) e.batwaEmployees = t("required");
-            if (form.disabledEmployees == null)
+            if (isFieldEmpty(form.employeeCount))
+              e.employeeCount = t("required");
+            if (isFieldEmpty(form.femaleEmployees))
+              e.femaleEmployees = t("required");
+            if (isFieldEmpty(form.maleEmployees))
+              e.maleEmployees = t("required");
+            if (isFieldEmpty(form.refugeeEmployees))
+              e.refugeeEmployees = t("required");
+            if (isFieldEmpty(form.batwaEmployees))
+              e.batwaEmployees = t("required");
+            if (isFieldEmpty(form.disabledEmployees))
               e.disabledEmployees = t("required");
+            if (isFieldEmpty(form.albinosEmployees))
+              e.albinosEmployees = t("required");
+            if (isFieldEmpty(form.repatriatesEmployees))
+              e.repatriatesEmployees = t("required");
+            if (isFieldEmpty(form.partTimeEmployees))
+              e.partTimeEmployees = t("required");
           }
           if (!form.associatesCount) e.associatesCount = t("required");
-          if(form.associatesCount === "other") {
-            if (!form.associatesCountOther) e.associatesCountOther = t("required");
+          if (form.associatesCount === "other") {
+            if (!form.associatesCountOther)
+              e.associatesCountOther = t("required");
           }
 
-          if(form.associatesCount && form.associatesCount !== "solo"){
-            if (form.femalePartners == null) e.femalePartners = t("required");
-            if (form.malePartners == null) e.malePartners = t("required");
-            if (form.refugeePartners == null) e.refugeePartners = t("required");
-            if (form.batwaPartners == null) e.batwaPartners = t("required");
-            if (form.disabledPartners == null) e.disabledPartners = t("required");
+          if (form.associatesCount && form.associatesCount !== "solo") {
+            // 0 est valide, seule la valeur vide est interdite
+            if (
+              form.femalePartners === undefined ||
+              form.femalePartners === null ||
+              form.femalePartners === ""
+            )
+              e.femalePartners = t("required");
+            if (
+              form.malePartners === undefined ||
+              form.malePartners === null ||
+              form.malePartners === ""
+            )
+              e.malePartners = t("required");
+            if (
+              form.refugeePartners === undefined ||
+              form.refugeePartners === null ||
+              form.refugeePartners === ""
+            )
+              e.refugeePartners = t("required");
+            if (
+              form.batwaPartners === undefined ||
+              form.batwaPartners === null ||
+              form.batwaPartners === ""
+            )
+              e.batwaPartners = t("required");
+            if (
+              form.disabledPartners === undefined ||
+              form.disabledPartners === null ||
+              form.disabledPartners === ""
+            )
+              e.disabledPartners = t("required");
+            if (
+              form.albinosPartners === undefined ||
+              form.albinosPartners === null ||
+              form.albinosPartners === ""
+            )
+              e.albinosPartners = t("required");
+            if (
+              form.repatriatesPartners === undefined ||
+              form.repatriatesPartners === null ||
+              form.repatriatesPartners === ""
+            )
+              e.repatriatesPartners = t("required");
           }
 
-          if(!form.annualRevenue) e.annualRevenue = t("required");
-          if(!form.hasBankAccount) e.hasBankAccount = t("required");
-          if(!form.hasBankCredit) e.hasBankCredit = t("required");
-          if(form.hasBankCredit === "yes") {
-            if(!form.bankCreditAmount) e.bankCreditAmount = t("required");
+          if (!form.annualRevenue) e.annualRevenue = t("required");
+          if (!form.hasBankAccount) e.hasBankAccount = t("required");
+          if (!form.hasBankCredit) e.hasBankCredit = t("required");
+          if (form.hasBankCredit === "yes") {
+            if (!form.bankCreditAmount) e.bankCreditAmount = t("required");
           }
           const docList =
             form.companyStatus === "formal"
@@ -1262,9 +1377,12 @@ const Application: React.FC = () => {
         if (!form.projectSectors.length) e.projectSectors = t("required");
         if (!form.mainActivities.trim()) e.mainActivities = t("required");
         if (!form.productsServices.trim()) e.productsServices = t("required");
+        if (!form.businessIdea.trim()) e.businessIdea = t("required");
         if (!form.targetClients.trim()) e.targetClients = t("required");
         if (!form.clientScope.length) e.clientScope = t("required");
         if (!form.hasCompetitors) e.hasCompetitors = t("required");
+        if (form.hasCompetitors === "yes" && !form.competitorNames.trim())
+          e.competitorNames = t("required");
         if (!form.climateActions.trim()) e.climateActions = t("required");
         if (!form.inclusionActions.trim()) e.inclusionActions = t("required");
         if (!form.hasEstimatedCost) e.hasEstimatedCost = t("required");
@@ -1273,6 +1391,63 @@ const Application: React.FC = () => {
         if (form.hasEstimatedCost === "yes" && !form.requestedSubsidyAmount)
           e.requestedSubsidyAmount = t("required");
         if (!form.mainExpenses.trim()) e.mainExpenses = t("required");
+        if (!form.isNewIdea) e.isNewIdea = t("required");
+        if (form.isNewIdea === "yes" && !form.ideaTested)
+          e.ideaTested = t("required");
+        if (
+          form.plannedEmployeesFemale === undefined ||
+          form.plannedEmployeesFemale === null ||
+          form.plannedEmployeesFemale === ""
+        )
+          e.plannedEmployeesFemale = t("required");
+        if (
+          form.plannedEmployeesMale === undefined ||
+          form.plannedEmployeesMale === null ||
+          form.plannedEmployeesMale === ""
+        )
+          e.plannedEmployeesMale = t("required");
+        if (
+          form.plannedPermanentEmployees === undefined ||
+          form.plannedPermanentEmployees === null ||
+          form.plannedPermanentEmployees === ""
+        )
+          e.plannedPermanentEmployees = t("required");
+        if (
+          form.plannedRefugeeEmployees === undefined ||
+          form.plannedRefugeeEmployees === null ||
+          form.plannedRefugeeEmployees === ""
+        )
+          e.plannedRefugeeEmployees = t("required");
+        if (
+          form.plannedBatwaEmployees === undefined ||
+          form.plannedBatwaEmployees === null ||
+          form.plannedBatwaEmployees === ""
+        )
+          e.plannedBatwaEmployees = t("required");
+        if (
+          form.plannedDisabledEmployees === undefined ||
+          form.plannedDisabledEmployees === null ||
+          form.plannedDisabledEmployees === ""
+        )
+          e.plannedDisabledEmployees = t("required");
+        if (
+          form.plannedAlbinosEmployees === undefined ||
+          form.plannedAlbinosEmployees === null ||
+          form.plannedAlbinosEmployees === ""
+        )
+          e.plannedAlbinosEmployees = t("required");
+        if (
+          form.plannedRepatriatesEmployees === undefined ||
+          form.plannedRepatriatesEmployees === null ||
+          form.plannedRepatriatesEmployees === ""
+        )
+          e.plannedRepatriatesEmployees = t("required");
+        if (
+          form.plannedPartTimeEmployees === undefined ||
+          form.plannedPartTimeEmployees === null ||
+          form.plannedPartTimeEmployees === ""
+        )
+          e.plannedPartTimeEmployees = t("required");
       }
       if (step === 4) {
         if (!form.acceptTerms) e.acceptTerms = t("acceptTermsRequired");
@@ -1298,7 +1473,7 @@ const Application: React.FC = () => {
     setSavingStep(currentStep);
     try {
       const cleanNumber = (v: any) => {
-        if (v === "" || v == null) return undefined;
+        if (v === undefined || v === null || v === "") return undefined;
         const n = Number(v);
         return isNaN(n) ? undefined : n;
       };
@@ -1369,7 +1544,7 @@ const Application: React.FC = () => {
                 form.companyAddressIsDifferent,
               ),
               totalEmployees: cleanNumber(form.totalEmployees),
-              affiliatedToCGA: cleanBoolean(form.affiliatedToCGA),
+              supportService: cleanBoolean(form.supportService),
               femaleEmployees: cleanNumber(form.femaleEmployees),
               maleEmployees: cleanNumber(form.maleEmployees),
               refugeeEmployees: cleanNumber(form.refugeeEmployees),
@@ -1386,6 +1561,7 @@ const Application: React.FC = () => {
               annualRevenue: cleanNumber(form.annualRevenue),
               creationYear: form.creationYear || undefined,
               sectorId: cleanNumber(form.sectorId),
+              otherCompanySector: cleanString(form.otherCompanySector),
               activityDescription: cleanString(form.activityDescription),
               hasBankAccount: cleanBoolean(form.hasBankAccount),
               hasBankCredit: cleanBoolean(form.hasBankCredit),
@@ -1393,6 +1569,11 @@ const Application: React.FC = () => {
               isWomanLed: form.isWomanLed || false,
               isRefugeeLed: form.isRefugeeLed || false,
               hasClimateImpact: form.hasClimateImpact || false,
+              albinosEmployees: cleanNumber(form.albinosEmployees),
+              repatriatesEmployees: cleanNumber(form.repatriatesEmployees),
+              partTimeEmployees: cleanNumber(form.partTimeEmployees),
+              albinosPartners: cleanNumber(form.albinosPartners),
+              repatriatesPartners: cleanNumber(form.repatriatesPartners),
             }
           : undefined;
       const step3Data =
@@ -1419,6 +1600,7 @@ const Application: React.FC = () => {
                 form.plannedPermanentEmployees,
               ),
               isNewIdea: cleanBoolean(form.isNewIdea),
+              ideaTested: cleanBoolean(form.ideaTested),
               climateActions: cleanString(form.climateActions),
               inclusionActions: cleanString(form.inclusionActions),
               hasEstimatedCost: cleanBoolean(form.hasEstimatedCost),
@@ -1430,6 +1612,22 @@ const Application: React.FC = () => {
               certifyAccuracy: form.certifyAccuracy,
               optInNotifications: form.acceptNotifications,
               isProfileCompleted: isFinish,
+              plannedRefugeeEmployees: cleanNumber(
+                form.plannedRefugeeEmployees,
+              ),
+              plannedBatwaEmployees: cleanNumber(form.plannedBatwaEmployees),
+              plannedDisabledEmployees: cleanNumber(
+                form.plannedDisabledEmployees,
+              ),
+              plannedAlbinosEmployees: cleanNumber(
+                form.plannedAlbinosEmployees,
+              ),
+              plannedRepatriatesEmployees: cleanNumber(
+                form.plannedRepatriatesEmployees,
+              ),
+              plannedPartTimeEmployees: cleanNumber(
+                form.plannedPartTimeEmployees,
+              ),
             }
           : undefined;
       await BeneficiaryService.update(
@@ -2233,13 +2431,16 @@ const Step2Fields: React.FC<any> = ({
                     <option value="" disabled>
                       {t("selectOption")}
                     </option>
-                    <option value="snc">{t("snc")}</option>
-                    <option value="scs">{t("scs")}</option>
-                    <option value="sprl">{t("sprl")}</option>
+                    <option value="php">{t("physicalPerson")}</option>
                     <option value="su">{t("su")}</option>
+                    <option value="sprl">{t("sprl")}</option>
                     <option value="sa">{t("sa")}</option>
                     <option value="coop">{t("coop")}</option>
-                    <option value="other">{t("other")}</option>
+                    <option value="snc">{t("snc")}</option>
+                    <option value="scs">{t("scs")}</option>
+                    <option value="other">
+                      {t("other")} ({t("specify").toLowerCase()})
+                    </option>
                   </select>
                 </label>
                 {errors.legalStatus && (
@@ -2249,7 +2450,7 @@ const Step2Fields: React.FC<any> = ({
 
               {form.legalStatus === "other" && (
                 <div className="col-lg-6">
-                  <FL label={t("specifyLegalStatus")} />
+                  <FL label={t("specifyLegalStatus")} required />
                   <label>
                     <i className="ti ti-pencil" />
                     <input
@@ -2261,13 +2462,18 @@ const Step2Fields: React.FC<any> = ({
                       placeholder={t("enterValue")}
                     />
                   </label>
+                  {errors.legalStatusOther && (
+                    <span className="copa-error-msg">
+                      {errors.legalStatusOther}
+                    </span>
+                  )}
                 </div>
               )}
             </>
           )}
 
           {/* Année de création */}
-          <div className="col-lg-6">
+          <div className={form.legalStatus === "other" ? "col-12" : "col-lg-6"}>
             <FL label={t("creationYear")} required />
             <label className={errors.creationYear ? "copa-input-invalid" : ""}>
               <i className="ti ti-calendar" />
@@ -2309,7 +2515,7 @@ const Step2Fields: React.FC<any> = ({
           </div>
 
           {/* Secteur */}
-          <div className="col-12">
+          <div className={form.sectorId === -1 ? "col-lg-6" : "col-12"}>
             <FL label={t("sector")} required />
             <label className={errors.sectorId ? "copa-input-invalid" : ""}>
               <i className="ti ti-briefcase" />
@@ -2330,10 +2536,59 @@ const Step2Fields: React.FC<any> = ({
                     {isKi && s.nameRn ? s.nameRn : s.nameFr}
                   </option>
                 ))}
+                <option value={-1}>
+                  {t("other")} ({t("specify").toLowerCase()})
+                </option>
               </select>
             </label>
             {errors.sectorId && (
               <span className="copa-error-msg">{errors.sectorId}</span>
+            )}
+          </div>
+
+          {form.sectorId === -1 && (
+            <div className="col-lg-6">
+              <FL label={t("otherActivitySector")} required />
+              <label>
+                <i className="ti ti-briefcase" />
+                <input
+                  type="text"
+                  value={form.otherCompanySector}
+                  onChange={(e) =>
+                    onUpdateField("otherCompanySector", e.target.value)
+                  }
+                  placeholder={t("enterValue")}
+                />
+              </label>
+              {errors.otherCompanySector && (
+                <span className="copa-error-msg">
+                  {errors.otherCompanySector}
+                </span>
+              )}
+            </div>
+          )}
+
+          <div className="col-12">
+            <FL label={t("supportService")} required />
+            <label
+              className={errors.supportService ? "copa-input-invalid" : ""}
+            >
+              <i className="ti ti-check-box" />
+              <select
+                value={form.supportService}
+                onChange={(e) =>
+                  onUpdateField("supportService", e.target.value as TriBool)
+                }
+              >
+                <option value="" disabled>
+                  {t("selectOption")}
+                </option>
+                <option value="yes">{t("yes")}</option>
+                <option value="no">{t("no")}</option>
+              </select>
+            </label>
+            {errors.supportService && (
+              <span className="copa-error-msg">{errors.supportService}</span>
             )}
           </div>
 
@@ -2522,31 +2777,6 @@ const Step2Fields: React.FC<any> = ({
             </>
           )}
 
-          {/* Affilié CGA */}
-          <div className="col-12">
-            <FL label={t("affiliatedToCGALabel")} required />
-            <label
-              className={errors.affiliatedToCGA ? "copa-input-invalid" : ""}
-            >
-              <i className="ti ti-check-box" />
-              <select
-                value={form.affiliatedToCGA}
-                onChange={(e) =>
-                  onUpdateField("affiliatedToCGA", e.target.value as TriBool)
-                }
-              >
-                <option value="" disabled>
-                  {t("selectOption")}
-                </option>
-                <option value="yes">{t("yes")}</option>
-                <option value="no">{t("no")}</option>
-              </select>
-            </label>
-            {errors.affiliatedToCGA && (
-              <span className="copa-error-msg">{errors.affiliatedToCGA}</span>
-            )}
-          </div>
-
           <SectionTitle title={t("staff")} />
           <div className="col-12">
             <FL label={t("totalEmployees")} required />
@@ -2593,6 +2823,21 @@ const Step2Fields: React.FC<any> = ({
                 {
                   k: "disabledEmployees",
                   ph: "disabledEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "albinosEmployees",
+                  ph: "albinosEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "repatriatesEmployees",
+                  ph: "repatriatesEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "partTimeEmployees",
+                  ph: "partTimeEmployees",
                   ic: "fa fa-users",
                 },
                 {
@@ -2659,7 +2904,7 @@ const Step2Fields: React.FC<any> = ({
 
           {form.associatesCount === "other" && (
             <div className="col-12">
-              <FL label={t("specifyAssociatesCount")} required/>
+              <FL label={t("specifyAssociatesCount")} required />
               <label>
                 <i className="fa fa-users" />
                 <input
@@ -2672,7 +2917,9 @@ const Step2Fields: React.FC<any> = ({
                 />
               </label>
               {errors.associatesCountOther && (
-                <span className="copa-error-msg">{errors.associatesCountOther}</span>
+                <span className="copa-error-msg">
+                  {errors.associatesCountOther}
+                </span>
               )}
             </div>
           )}
@@ -2686,12 +2933,11 @@ const Step2Fields: React.FC<any> = ({
                 { k: "refugeePartners", ph: "refugeePartners" },
                 { k: "batwaPartners", ph: "batwaPartners" },
                 { k: "disabledPartners", ph: "disabledPartners" },
+                { k: "albinosPartners", ph: "albinosPartners" },
+                { k: "repatriatesPartners", ph: "repatriatesPartners" },
               ].map(({ k, ph }) => (
-                <div
-                  className={`${k === "disabledPartners" ? "col-12" : "col-lg-6"}`}
-                  key={k}
-                >
-                  <FL label={t(ph)} required/>
+                <div className="col-lg-6" key={k}>
+                  <FL label={t(ph)} required />
                   <label>
                     <i className="fa fa-users" />
                     <input
@@ -2767,8 +3013,8 @@ const Step2Fields: React.FC<any> = ({
           </div>
 
           {/* Crédit bancaire */}
-          <div className="col-lg-6">
-            <FL label={t("hasBankCreditLabel")} required/>
+          <div className={form.hasBankCredit === "yes" ? "col-lg-6" : "col-12"}>
+            <FL label={t("hasBankCreditLabel")} required />
             <label className={errors.hasBankCredit ? "copa-input-invalid" : ""}>
               <i className="fa fa-credit-card" />
               <select
@@ -2792,7 +3038,7 @@ const Step2Fields: React.FC<any> = ({
 
           {form.hasBankCredit === "yes" && (
             <div className="col-lg-6">
-              <FL label={t("bankCreditAmount")} required/>
+              <FL label={t("bankCreditAmount")} required />
               <label>
                 <i className="fa ti-fbu">FBu</i>
                 <input
@@ -2810,7 +3056,9 @@ const Step2Fields: React.FC<any> = ({
                 />
               </label>
               {errors.bankCreditAmount && (
-                <span className="copa-error-msg">{errors.bankCreditAmount}</span>
+                <span className="copa-error-msg">
+                  {errors.bankCreditAmount}
+                </span>
               )}
             </div>
           )}
@@ -2952,7 +3200,7 @@ const Step3Fields: React.FC<any> = ({
 
     {/* Origine de l'idée */}
     <div className="col-12">
-      <FL label={t("businessIdeaOrigin")} />
+      <FL label={t("businessIdeaOrigin")} required/>
       <label>
         <textarea
           rows={3}
@@ -2962,6 +3210,9 @@ const Step3Fields: React.FC<any> = ({
           style={{ paddingLeft: 15, lineHeight: 1.5 }}
         />
       </label>
+      {errors.businessIdea && (
+        <span className="copa-error-msg">{errors.businessIdea}</span>
+      )}
     </div>
 
     {/* Clients cibles */}
@@ -2981,7 +3232,7 @@ const Step3Fields: React.FC<any> = ({
       )}
     </div>
 
-    <SectionTitle title={`${t("clientScope")} *`} />
+    <SectionTitle title={t("market")} />
     <CheckboxGroup
       items={[
         { value: "local", labelKey: "scope_local" },
@@ -3021,7 +3272,7 @@ const Step3Fields: React.FC<any> = ({
 
     {form.hasCompetitors === "yes" && (
       <div className="col-12">
-        <FL label={t("competitorNamesPlaceholder")} />
+        <FL label={t("competitorNamesPlaceholder")} required/>
         <label>
           <textarea
             rows={2}
@@ -3031,13 +3282,15 @@ const Step3Fields: React.FC<any> = ({
             style={{ paddingLeft: 15, lineHeight: 1.5 }}
           />
         </label>
+        {errors.competitorNames && (
+          <span className="copa-error-msg">{errors.competitorNames}</span>
+        )}
       </div>
     )}
 
     <SectionTitle title={t("plannedEmployees")} />
-
-    <div className="col-lg-4">
-      <FL label={t("femaleEmployees")} required/>
+    {/* <div className="col-lg-6">
+      <FL label={t("femaleEmployees")} required />
       <label>
         <i className="fa fa-users" />
         <input
@@ -3054,8 +3307,8 @@ const Step3Fields: React.FC<any> = ({
         />
       </label>
     </div>
-    <div className="col-lg-4">
-      <FL label={t("maleEmployees")} required/>
+    <div className="col-lg-6">
+      <FL label={t("maleEmployees")} required />
       <label>
         <i className="fa fa-users" />
         <input
@@ -3072,8 +3325,8 @@ const Step3Fields: React.FC<any> = ({
         />
       </label>
     </div>
-    <div className="col-lg-4">
-      <FL label={t("permanentEmployees")} required/>
+    <div className="col-lg-6">
+      <FL label={t("permanentEmployees")} required />
       <label>
         <i className="fa fa-users" />
         <input
@@ -3089,11 +3342,78 @@ const Step3Fields: React.FC<any> = ({
           placeholder={t("enterValue")}
         />
       </label>
-    </div>
+    </div> */}
 
+    {[
+      {
+        k: "plannedEmployeesFemale",
+        ph: "femaleEmployees",
+        ic: "fa fa-users",
+      },
+      { k: "plannedEmployeesMale", ph: "maleEmployees", ic: "fa fa-users" },
+      {
+        k: "plannedRefugeeEmployees",
+        ph: "refugeeEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedBatwaEmployees",
+        ph: "batwaEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedDisabledEmployees",
+        ph: "disabledEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedAlbinosEmployees",
+        ph: "albinosEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedRepatriatesEmployees",
+        ph: "repatriatesEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedPartTimeEmployees",
+        ph: "partTimeEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedPermanentEmployees",
+        ph: "permanentEmployees",
+        ic: "fa fa-users",
+      },
+    ].map(({ k, ph, ic }) => (
+      <div className="col-lg-6" key={k}>
+        <FL label={t(ph)} required />
+        <label className={(errors as any)[k] ? "copa-input-invalid" : ""}>
+          <i className={ic} />
+          <input
+            type="number"
+            min="0"
+            value={String((form as any)[k])}
+            onChange={(e) =>
+              onUpdateField(
+                k as keyof FormData,
+                e.target.value ? +e.target.value : ("" as any),
+              )
+            }
+            placeholder={t("enterValue")}
+          />
+        </label>
+        {(errors as any)[k] && (
+          <span className="copa-error-msg">{(errors as any)[k]}</span>
+        )}
+      </div>
+    ))}
+
+    <SectionTitle title={t("additionalInfo")} />
     {/* Idée innovante */}
-    <div className="col-12">
-      <FL label={t("isNewIdeaLabel")} required/>
+    <div className={form.isNewIdea === "yes" ? "col-lg-6" : "col-12"}>
+      <FL label={t("newIdea")} required />
       <label className={errors.isNewIdea ? "copa-input-invalid" : ""}>
         <i className="ti ti-light-bulb" />
         <select
@@ -3114,6 +3434,30 @@ const Step3Fields: React.FC<any> = ({
       )}
     </div>
 
+    {form.isNewIdea === "yes" && (
+      <div className="col-lg-6">
+        <FL label={t("ideaTested")} required />
+        <label className={errors.isNewIdea ? "copa-input-invalid" : ""}>
+          <i className="ti ti-settings" />
+          <select
+            value={form.ideaTested}
+            onChange={(e) =>
+              onUpdateField("ideaTested", e.target.value as TriBool)
+            }
+          >
+            <option value="" disabled>
+              {t("selectOption")}
+            </option>
+            <option value="yes">{t("yes")}</option>
+            <option value="no">{t("no")}</option>
+          </select>
+        </label>
+        {errors.ideaTested && (
+          <span className="copa-error-msg">{errors.ideaTested}</span>
+        )}
+      </div>
+    )}
+
     {/* Actions climatiques */}
     <div className="col-12">
       <FL label={t("climateActionsPlaceholder")} required />
@@ -3133,7 +3477,7 @@ const Step3Fields: React.FC<any> = ({
 
     {/* Actions d'inclusion */}
     <div className="col-12">
-      <FL label={t("inclusionActionsPlaceholder")} required />
+      <FL label={t("inclusionHiring")} required />
       <label className={errors.inclusionActions ? "copa-input-invalid" : ""}>
         <textarea
           rows={3}
@@ -3152,7 +3496,7 @@ const Step3Fields: React.FC<any> = ({
     <div className="col-12">
       <FL label={t("hasEstimatedCostLabel")} required />
       <label className={errors.hasEstimatedCost ? "copa-input-invalid" : ""}>
-        <i className="ti ti-check"></i>
+        <i className="ti ti-check-box"></i>
         <select
           value={form.hasEstimatedCost}
           className="pl-40"
