@@ -124,14 +124,14 @@ const Footer: React.FC<FooterProps> = () => {
                 <ul className="widget-post ttm-recent-post-list">
                   <li className="pb-0 border-bottom-0">
                     <div className="post-detail">
-                      <Link to="/how-to-participate">
+                      <Link to="#">
                         {t("howToParticipate")}
                       </Link>
                     </div>
                   </li>
                   <li className="pb-0 border-bottom-0">
                     <div className="post-detail">
-                      <Link to="/edition-calendar">
+                      <Link to="#">
                         {t("editionCalendar")}
                       </Link>
                     </div>
