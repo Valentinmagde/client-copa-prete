@@ -4,17 +4,17 @@ import Header from "../components/layout/Header";
 import Banner from "../components/banner/Banner";
 import Footer from "../components/layout/Footer";
 import CountUp from "react-countup";
-import about1 from "../assets/img/about/01.png";
-import about2 from "../assets/img/about/02.png";
-import fourStep from "../assets/img/four-step2.png";
-import rowImage from "../assets/img/row-bgimage-4.jpg";
+import about1 from "../assets/img/about/01.jpg";
+import about2 from "../assets/img/about/02.jpg";
+import fourStep from "../assets/img/five-step.jpg";
+import rowImage from "../assets/img/row-bigimage-1.jpg";
 import brandLogo1 from "../assets/img/brand-logo/06.jpg";
 import brandLogo2 from "../assets/img/brand-logo/07.jpg";
 import brandLogo3 from "../assets/img/brand-logo/08.png";
 import brandLogo4 from "../assets/img/brand-logo/09.png";
-import testimonial1 from "../assets/img/testimonial/01.png";
+import testimonial1 from "../assets/img/testimonial/01.jpg";
 import profile1 from "../assets/img/testimonial/p01.png";
-import profile2 from "../assets/img/testimonial/p02.png";
+import profile2 from "../assets/img/testimonial/p01.jpg";
 import profile3 from "../assets/img/testimonial/p03.png";
 import blog1 from "../assets/img/blog/2.png";
 import blog2 from "../assets/img/blog/3.png";
@@ -212,8 +212,16 @@ const Home: React.FC = () => {
               <div className="section-title">
                 <div className="title-header">
                   <h3>
-                    {t("whatIsThe")}{" "}
-                    <span className="text-theme-SkinColor">COPA?</span>
+                    {t("aboutCopa")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}
                   </h3>
                   <h2 className="title">{t("aboutCopaTitle")}</h2>
                 </div>
@@ -258,8 +266,16 @@ const Home: React.FC = () => {
               <div className="section-title">
                 <div className="title-header">
                   <h3>
-                    {t("howDoesIt")}{" "}
-                    <span className="text-theme-SkinColor">{t("works")}</span>
+                    {t("howItWorks")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}{" "}
                   </h3>
                   <h2 className="title">{t("howItWorksTitle")}</h2>
                 </div>
@@ -268,7 +284,7 @@ const Home: React.FC = () => {
             <div className="col-lg-6 col-md-4">
               <Link
                 className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark mb-15"
-                to={"/how-to-participate"}
+                to={"/copa-presentation"}
               >
                 {t("discoverFullProcess")}
               </Link>
@@ -338,6 +354,22 @@ const Home: React.FC = () => {
                     </div>
                   </div>
                 </div>
+
+                <div className="featured-icon-box icon-align-before-content icon-ver_align-top style4">
+                  <div className="featured-icon">
+                    <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-grey ttm-icon_element-size-md ttm-icon_element-style-rounded">
+                      <i className="ttm-num ti-info"></i>
+                    </div>
+                  </div>
+                  <div className="featured-content ttm-bgcolor-grey">
+                    <div className="featured-title">
+                      <h3>{t("step5Title")}</h3>
+                    </div>
+                    <div className="featured-desc">
+                      <p>{t("step5Desc")}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="col-lg-6 col-md-10 col-11 m-auto">
@@ -366,10 +398,16 @@ const Home: React.FC = () => {
               <div className="section-title">
                 <div className="title-header">
                   <h3>
-                    {t("impactTitle")}{" "}
-                    <span className="text-theme-SkinColor">
-                      {t("impactSubtitle")}
-                    </span>
+                    {t("impactTitle")
+                      .split(" ")
+                      .map((word: string, i: number) => (
+                        <span
+                          key={i}
+                          className={i >= 1 ? "text-theme-SkinColor" : ""}
+                        >
+                          {word}{" "}
+                        </span>
+                      ))}{" "}
                   </h3>
                   <h2 className="title">{t("impactDesc")}</h2>
                 </div>
@@ -463,28 +501,51 @@ const Home: React.FC = () => {
                 <div className="col-sm-3">
                   <div className="client-box">
                     <div className="client-thumbnail">
-                      <img className="img-fluid" src={brandLogo1} alt="image" />
+                      <Link
+                        to="https://www.banquemondiale.org/ext/fr/home"
+                        target="_blank"
+                      >
+                        <img
+                          className="img-fluid"
+                          src={brandLogo1}
+                          alt="Banque mondiale"
+                        />
+                      </Link>
                     </div>
                   </div>
                 </div>
                 <div className="col-sm-3">
                   <div className="client-box">
                     <div className="client-thumbnail">
-                      <img className="img-fluid" src={brandLogo2} alt="image" />
+                      <Link to="https://presidence.gov.bi/" target="_blank">
+                        <img
+                          className="img-fluid"
+                          src={brandLogo2}
+                          alt="Gouvernement Burundi"
+                        />
+                      </Link>
                     </div>
                   </div>
                 </div>
                 <div className="col-sm-3">
                   <div className="client-box">
                     <div className="client-thumbnail">
-                      <img className="img-fluid" src={brandLogo3} alt="image" />
+                      <Link to="https://investburundi.bi/" target="_blank">
+                        <img className="img-fluid" src={brandLogo3} alt="ADB" />
+                      </Link>
                     </div>
                   </div>
                 </div>
                 <div className="col-sm-3">
                   <div className="client-box">
                     <div className="client-thumbnail">
-                      <img className="img-fluid" src={brandLogo4} alt="image" />
+                      <Link to="https://prete.bi/mission/" target="_blank">
+                        <img
+                          className="img-fluid"
+                          src={brandLogo4}
+                          alt="PRETE"
+                        />
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -494,7 +555,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="ttm-row padding_zero-section bg-theme-DarkColor bg-layer-equal-height mb-100 mb-lg-0 clearfix">
+      <section className="ttm-row padding_zero-section bg-theme-DarkColor bg-layer-equal-height mb-200 mb-lg-0 clearfix">
         <div className="container">
           <div className="row">
             <div className="col-lg-6">
@@ -519,9 +580,9 @@ const Home: React.FC = () => {
                   <div className="title-header">
                     <h3>
                       {t("testimonialsTitle")}{" "}
-                      <span className="text-theme-SkinColor">
+                      {/* <span className="text-theme-SkinColor">
                         {t("testimonialsHighlight")}
-                      </span>
+                      </span> */}
                     </h3>
                     <h2 className="title">{t("testimonialsDesc")}</h2>
                   </div>
@@ -553,7 +614,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="ttm-row blog-section bg-theme-GreyColor clearfix">
+      {/* <section className="ttm-row blog-section bg-theme-GreyColor clearfix">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
@@ -744,8 +805,20 @@ const Home: React.FC = () => {
               </div>
             </div>
           </Slider>
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="pt-30 m-auto text-center">
+                <Link
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                  to="/news"
+                >
+                  {t("allNews")}
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      </section> */}
 
       <Footer />
     </div>

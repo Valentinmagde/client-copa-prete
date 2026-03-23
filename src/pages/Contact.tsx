@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
-import ContactImg from "../assets/img/contact/01.jpg";
+import ContactImg from "../assets/img/contact/02.jpg";
 import { toast } from "react-toastify";
 import NotificationService from "../services/notification/notification.service";
 
@@ -230,7 +230,7 @@ const Contact: React.FC<ContactProps> = () => {
               </div>
             </div>
             <div className="col-lg-6">
-              <div className="ttm-col-bgcolor-yes ttm-bg bg-theme-WhiteColor z-index-2 p-40 p-lg-30 mt-15 mt-lg-30">
+              <div className="ttm-col-bgcolor-yes ttm-bg bg-theme-WhiteColor p-40 p-lg-30 mt-15 mt-lg-30">
                 <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
                 <div className="layer-content">
                   <form

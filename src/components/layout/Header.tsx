@@ -144,33 +144,36 @@ const Header: React.FC<HeaderProps> = () => {
                 <div className="ttm-bg ttm-col-bgcolor-yes ttm-right-span bg-theme-GreyColor pl-20 ms-auto">
                   <ul className="list-unstyled d-flex mb-0 gap-3">
                     <li>
-                      <a
-                        href="/"
+                      <Link
+                        to="https://www.facebook.com/profile.php?id=61580799924051"
                         className="text-decoration-none"
                         aria-label="Facebook"
+                        target="_blank"
                       >
                         <i className="ti ti-facebook"></i>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="/"
+                      <Link
+                        to="https://x.com/CopaNyunganira"
                         className="text-decoration-none"
                         aria-label="Twitter"
+                        target="_blank"
                       >
                         <i className="ti ti-twitter-alt"></i>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="/"
+                      <Link
+                        to="https://www.instagram.com/copa.nyunganira/"
                         className="text-decoration-none"
-                        aria-label="Google"
+                        aria-label="Instagram"
+                        target="_blank"
                       >
-                        <i className="ti ti-google"></i>
-                      </a>
+                        <i className="ti ti-instagram"></i>
+                      </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <a
                         href="/"
                         className="text-decoration-none"
@@ -178,7 +181,7 @@ const Header: React.FC<HeaderProps> = () => {
                       >
                         <i className="ti ti-linkedin"></i>
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>

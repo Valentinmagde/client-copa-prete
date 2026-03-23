@@ -90,6 +90,7 @@ const Banner: React.FC<BannerProps> = () => {
             <div className="row">
               <div className="col-lg-12">
                 <div className="slide__content--headings ttm-textcolor-white text-center">
+                  {/* <h3  data-animation="animate__fadeInDown">Candidatez jusqu’au 02 avril 2026 </h3> */}
                   <div className="d-flex align-items-center justify-content-center">
                     <h2 data-animation="animate__fadeInDown">
                       {t("bannerTitle")}
@@ -104,6 +105,15 @@ const Banner: React.FC<BannerProps> = () => {
                         >
                           {t("bannerDescription")}
                         </p>
+                        <br />
+                        <p
+                          data-animation="animate__fadeInDown"
+                          className="d-none d-md-block"
+                        >
+                          {t("bannerCall")}
+                          <br />
+                          <span dangerouslySetInnerHTML={{ __html: t("bannerDeadline") }} />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -114,12 +124,12 @@ const Banner: React.FC<BannerProps> = () => {
                     >
                       {t("bannerParticipate")}
                     </Link>
-                    <Link
+                    {/* <Link
                       className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-white"
                       to="/how-to-participate"
                     >
                       {t("bannerLearnMore")}
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               </div>
@@ -128,7 +138,7 @@ const Banner: React.FC<BannerProps> = () => {
         </div>
       </div>
 
-      <div className="slide">
+      {/* <div className="slide">
         <div
           className="slide_img"
           style={{
@@ -176,7 +186,7 @@ const Banner: React.FC<BannerProps> = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </Slider>
   );
 };

@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useTranslation, Trans } from "react-i18next";
-import CountUp from "react-countup";
+import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import about1 from "../assets/img/about/06.png";
+import about1 from "../assets/img/about/04.jpg";
 import about2 from "../assets/img/about/04.png";
 import about3 from "../assets/img/about/05.png";
 
@@ -19,10 +18,6 @@ const AboutPrete: React.FC = () => {
   const components = t("aboutprete.components.list", {
     returnObjects: true,
   }) as any[];
-  const stats = t("aboutprete.stats", { returnObjects: true }) as any[];
-  const copaStats = t("aboutprete.copa.stats.items", {
-    returnObjects: true,
-  }) as string[];
 
   return (
     <div className="site-main">
@@ -109,8 +104,15 @@ const AboutPrete: React.FC = () => {
                 </Tabs>
               </div>
 
-              {/* <div className="d-flex align-items-center mt-30">
-                <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-skincolor ttm-icon_element-size-sm ttm-icon_element-style-round mb-0">
+              <div className="d-flex align-items-center mt-30">
+                <Link
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark"
+                  to="https://prete.bi/mission/"
+                  target="_blank"
+                >
+                  {t("aboutprete.buttons.learnMoreAboutPrete")}
+                </Link>
+                {/* <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-color-skincolor ttm-icon_element-size-sm ttm-icon_element-style-round mb-0">
                   <i className="fa fa-university"></i>
                 </div>
                 <div className="pl-15">
@@ -118,8 +120,8 @@ const AboutPrete: React.FC = () => {
                   <p className="featured-desc mb-0 fw-bold">
                     {t("aboutprete.project.fundedByValue")}
                   </p>
-                </div>
-              </div> */}
+                </div> */}
+              </div>
 
               {/* <div className="ttm-horizontal_sep width-100 mt-20 mb-20"></div> */}
 
@@ -152,202 +154,6 @@ const AboutPrete: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Stats Section */}
-      {/* <section
-        className="ttm-row bg-theme-DarkColor text-theme-WhiteColor clearfix"
-        style={{ padding: "50px 0" }}
-      >
-        <div className="container">
-          <div className="row text-center">
-            {stats.map((stat, index) => (
-              <div key={index} className="col-lg-3 col-md-6 mb-30 mb-lg-0">
-                <div className="ttm-fid inside ttm-fid-view-topicon">
-                  <div className="ttm-fid-contents">
-                    <h4 className="text-theme-SkinColor">
-                      <CountUp
-                        start={0}
-                        end={
-                          index === 0
-                            ? 100
-                            : index === 1
-                              ? 5
-                              : index === 2
-                                ? 10000
-                                : 18
-                        }
-                        duration={3}
-                        delay={0.5}
-                      />
-                      {stat.suffix}
-                    </h4>
-                    <h3 className="ttm-fid-title">{stat.label}</h3>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-      {/* Components Section */}
-      {/* <section className="ttm-row team-section bg-theme-GreyColor clearfix">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="section-title title-style-center_text">
-                <div className="title-header">
-                  <h3>
-                    {t("aboutprete.components.title").split(" ")[0]}{" "}
-                    <span className="text-theme-SkinColor">
-                      {t("aboutprete.components.title").split(" ")[1]}
-                    </span>
-                  </h3>
-                  <h2 className="title">
-                    {t("aboutprete.components.subtitle")}
-                  </h2>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            {components.map((comp, index) => (
-              <div key={index} className="col-lg-6 col-md-6 mb-30">
-                <div
-                  className={`featured-icon-box icon-align-before-content ${index === 0 ? "bg-theme-SkinColor text-theme-WhiteColor" : "bg-theme-WhiteColor"}`}
-                  style={{
-                    padding: "30px",
-                    borderRadius: "4px",
-                    height: "100%",
-                    boxShadow: "0 2px 12px rgba(0,0,0,.06)",
-                  }}
-                >
-                  <div className="featured-icon">
-                    <div
-                      className={`ttm-icon ttm-icon_element-fill ttm-icon_element-size-md ttm-icon_element-style-rounded ${index === 0 ? "ttm-icon_element-color-white" : "ttm-icon_element-color-skincolor"}`}
-                    >
-                      <span style={{ fontSize: "20px", fontWeight: 900 }}>
-                        {comp.num}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="featured-content">
-                    <div className="featured-title">
-                      <h3 style={{ color: index === 0 ? "#fff" : "inherit" }}>
-                        {t("aboutprete.components.subtitle")} {comp.num}
-                      </h3>
-                      <h5
-                        className={
-                          index === 0 ? "text-white" : "text-theme-SkinColor"
-                        }
-                        style={{ fontSize: "14px", marginTop: "5px" }}
-                      >
-                        {comp.title}
-                      </h5>
-                    </div>
-                    <div className="featured-desc">
-                      <p
-                        style={{
-                          color:
-                            index === 0 ? "rgba(255,255,255,.85)" : "inherit",
-                        }}
-                      >
-                        {comp.desc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-      {/* COPA Highlight */}
-      {/* <section className="ttm-row clearfix">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-7">
-              <div className="section-title">
-                <div className="title-header">
-                  <h3>
-                    {t("aboutprete.copa.title")}{" "}
-                    <span className="text-theme-SkinColor">1.2</span>
-                  </h3>
-                  <h2 className="title">{t("aboutprete.copa.subtitle")}</h2>
-                </div>
-                <div className="title-desc">
-                  <p>
-                    <Trans i18nKey="aboutprete.copa.description">
-                      La sous-composante 1.2 « Amélioration des capacités des
-                      MPME » porte le
-                      <strong>Concours de Plans d'Affaires (COPA)</strong>, le
-                      mécanisme central d'appui aux entrepreneurs burundais.
-                    </Trans>
-                  </p>
-                  <p className="mt-15">{t("aboutprete.copa.description2")}</p>
-                </div>
-              </div>
-              <div className="mt-30">
-                <Link
-                  to="/copa/presentation"
-                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor mr-15"
-                >
-                  {t("aboutprete.copa.buttons.discover")}
-                </Link>
-                <Link
-                  to="/copa/comment-participer"
-                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
-                >
-                  {t("aboutprete.copa.buttons.participate")}
-                </Link>
-              </div>
-            </div>
-            <div className="col-lg-5">
-              <div
-                className="ttm-col-bgcolor-yes ttm-bg bg-theme-SkinColor text-theme-WhiteColor p-40 ml-30 ml-lg-0 mt-lg-30"
-                style={{ borderRadius: "4px" }}
-              >
-                <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
-                <div className="layer-content">
-                  <h4 className="text-white mb-20">
-                    {t("aboutprete.copa.stats.title")}
-                  </h4>
-                  <ul
-                    className="ttm-list ttm-list-style-icon"
-                    style={
-                      { "--list-icon-color": "#fff" } as React.CSSProperties
-                    }
-                  >
-                    {copaStats.map((item, index) => (
-                      <li key={index} className="pb-10">
-                        <span style={{ marginRight: "10px", fontSize: "16px" }}>
-                          {index === 0
-                            ? "🎯"
-                            : index === 1
-                              ? "💰"
-                              : index === 2
-                                ? "📚"
-                                : index === 3
-                                  ? "👥"
-                                  : "🌱"}
-                        </span>
-                        <div
-                          className="ttm-list-li-content"
-                          style={{ color: "rgba(255,255,255,.9)" }}
-                        >
-                          {item}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
 
       {/* CTA Section */}
       <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">

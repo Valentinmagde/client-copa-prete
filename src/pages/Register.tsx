@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
@@ -9,6 +9,9 @@ import AuthService from "@/services/auth/auth.service";
 import { toast } from "react-toastify";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import ReferenceService from "@/services/reference/reference.service";
+import ProfileLoader from "@/components/common/ProfileLoader";
+import useCopaPhases from "@/hooks/useCopaPhases";
 
 interface FormData {
   firstName: string;
@@ -40,6 +43,8 @@ const Register: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const navigate = useNavigate();
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
@@ -50,9 +55,19 @@ const Register: React.FC = () => {
   const lang = i18n.language;
   const from = "/application";
 
+  const { loading: phasesLoading, isRegistrationOpen, registrationPhase } = useCopaPhases(lang);
+
   const upd = <K extends keyof FormData>(k: K, v: FormData[K]) => {
     setForm((p) => ({ ...p, [k]: v }));
     if (errors[k]) setErrors((p) => ({ ...p, [k]: undefined }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   // ── Validation ──
@@ -66,8 +81,8 @@ const Register: React.FC = () => {
     if (!form.phone) e.phone = t("required");
     if (!form.password) e.password = t("required");
     else if (form.password.length < 8) e.password = t("passwordMinLength");
-    else if (!/[A-Z]/.test(form.password)) e.password = t("passwordUppercase");
-    else if (!/\d/.test(form.password)) e.password = t("passwordNumber");
+    // else if (!/[A-Z]/.test(form.password)) e.password = t("passwordUppercase");
+    // else if (!/\d/.test(form.password)) e.password = t("passwordNumber");
     if (form.password !== form.confirmPassword)
       e.confirmPassword = t("passwordMismatch");
     if (!form.acceptTerms) e.acceptTerms = t("youMustAcceptTermsAndConditions");
@@ -92,6 +107,7 @@ const Register: React.FC = () => {
           acceptCGU: form.acceptTerms,
           acceptPrivacyPolicy: form.acceptTerms,
           certifyAccuracy: form.acceptTerms,
+          copaEditionId: registrationPhase.copaEdition.id,
         },
         lang,
       );
@@ -148,6 +164,48 @@ const Register: React.FC = () => {
       setIsGoogleSubmitting(false);
     }
   };
+
+  if (phasesLoading) return <ProfileLoader />;
+  if (!isRegistrationOpen)
+    return (
+      <div className="site-main">
+        <Header />
+
+        {/* PageHeader */}
+        <PageHeader title={t("registration")} breadcrumb={t("register")} />
+        {/* PageHeader end */}
+        <div className="ttm-row register-section clearfix">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 text-center py-60">
+                {/* <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-size-xl ttm-icon_element-color-grey ttm-icon_element-style-round mx-auto mb-20">
+                  <i className="far fa-newspaper"></i>
+                </div> */}
+                <h3 className="mb-15">
+                  {t(
+                    "registrationPage.closed.title",
+                    "Inscriptions actuellement fermées",
+                  )}
+                </h3>
+                <p className="mb-30" style={{ color: "#777" }}>
+                  {t(
+                    "registrationPage.closed.description",
+                    "La phase d’inscription n’est pas encore ouverte ou est déjà terminée. Veuillez consulter les dates officielles ou revenir plus tard.",
+                  )}
+                </p>
+                <a
+                  href="/"
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                >
+                  {t("blog.empty.cta", "Retour à l'accueil")}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
 
   return (
     <div className="site-main">
@@ -249,17 +307,6 @@ const Register: React.FC = () => {
                               disableSearchIcon={true}
                             />
                           </label>
-                          {/* <label
-                            className={errors.phone ? "copa-input-invalid" : ""}
-                          >
-                            <i className="ti ti-mobile" />
-                            <input
-                              type="tel"
-                              value={form.phone}
-                              onChange={(e) => upd("phone", e.target.value)}
-                              placeholder={t("phoneNumber")}
-                            />
-                          </label> */}
                           {errors.phone && (
                             <span className="copa-error-msg">
                               {errors.phone}
@@ -275,11 +322,30 @@ const Register: React.FC = () => {
                           >
                             <i className="ti ti-lock" />
                             <input
-                              type="password"
+                              type={showPassword ? "text" : "password"}
                               value={form.password}
                               onChange={(e) => upd("password", e.target.value)}
                               placeholder={t("password")}
                             />
+                            {/* Toggle icon */}
+                            <span
+                              onClick={togglePasswordVisibility}
+                              style={{
+                                position: "absolute",
+                                right: "20px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <i
+                                className={
+                                  showPassword
+                                    ? "far fa-eye"
+                                    : "far fa-eye-slash"
+                                }
+                              />
+                            </span>
                           </label>
                           {errors.password && (
                             <span className="copa-error-msg">
@@ -296,13 +362,32 @@ const Register: React.FC = () => {
                           >
                             <i className="ti ti-lock" />
                             <input
-                              type="password"
+                              type={showConfirmPassword ? "text" : "password"}
                               value={form.confirmPassword}
                               onChange={(e) =>
                                 upd("confirmPassword", e.target.value)
                               }
                               placeholder={t("confirmPassword")}
                             />
+                            {/* Toggle icon */}
+                            <span
+                              onClick={toggleConfirmPasswordVisibility}
+                              style={{
+                                position: "absolute",
+                                right: "20px",
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <i
+                                className={
+                                  showConfirmPassword
+                                    ? "far fa-eye"
+                                    : "far fa-eye-slash"
+                                }
+                              />
+                            </span>
                           </label>
                           {errors.confirmPassword && (
                             <span className="copa-error-msg">

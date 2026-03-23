@@ -28,6 +28,8 @@ import PublicRoute from "./guards/PublicRoute";
 import HowToParticipate from "./pages/HowToParticipate";
 import EditionCalender from "./pages/EditionCalendar";
 import EligibilityCriteria from "./pages/EligibilityCriteria";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 const App: React.FC = () => {
   return (
@@ -79,6 +81,8 @@ const App: React.FC = () => {
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
       </Routes>
     </div>

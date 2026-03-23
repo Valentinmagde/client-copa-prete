@@ -26,6 +26,7 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
 import { French } from "flatpickr/dist/l10n/fr";
 import DocumentService from "@/services/document/document.service";
+import ProfileLoader from "@/components/common/ProfileLoader";
 
 const KirundiLocale = {
   weekdays: {
@@ -147,13 +148,18 @@ interface FormData {
   legalStatus: LegalStatusType;
   legalStatusOther: string;
   nif: string;
-  affiliatedToCGA: TriBool;
+  companyAddressIsDifferent: TriBool;
+  supportService: TriBool;
   femaleEmployees: number | "";
   maleEmployees: number | "";
   refugeeEmployees: number | "";
   batwaEmployees: number | "";
   disabledEmployees: number | "";
+  albinosEmployees: number | "";
+  repatriatesEmployees: number | "";
+  partTimeEmployees: number | "";
   employeeCount: number | "";
+  totalEmployees: number | "";
   associatesCount: AssociatesCountType;
   associatesCountOther: string;
   femalePartners: number | "";
@@ -161,9 +167,12 @@ interface FormData {
   refugeePartners: number | "";
   batwaPartners: number | "";
   disabledPartners: number | "";
+  albinosPartners: number | "";
+  repatriatesPartners: number | "";
   annualRevenue: number | "";
   creationYear: number | "";
   sectorId: number | "";
+  otherCompanySector: string;
   activityDescription: string;
   hasBankAccount: TriBool;
   hasBankCredit: TriBool;
@@ -182,7 +191,14 @@ interface FormData {
   plannedEmployeesFemale: number | "";
   plannedEmployeesMale: number | "";
   plannedPermanentEmployees: number | "";
+  plannedRefugeeEmployees: number | "";
+  plannedBatwaEmployees: number | "";
+  plannedDisabledEmployees: number | "";
+  plannedAlbinosEmployees: number | "";
+  plannedRepatriatesEmployees: number | "";
+  plannedPartTimeEmployees: number | "";
   isNewIdea: TriBool;
+  ideaTested: TriBool;
   climateActions: string;
   inclusionActions: string;
   hasEstimatedCost: TriBool;
@@ -236,7 +252,14 @@ interface BeneficiaryData {
   plannedEmployeesFemale?: number;
   plannedEmployeesMale?: number;
   plannedPermanentEmployees?: number;
+  plannedRefugeeEmployees?: number;
+  plannedBatwaEmployees?: number;
+  plannedDisabledEmployees?: number;
+  plannedAlbinosEmployees?: number;
+  plannedRepatriatesEmployees?: number;
+  plannedPartTimeEmployees?: number;
   isNewIdea?: boolean;
+  ideaTested?: boolean;
   climateActions?: string;
   inclusionActions?: string;
   hasEstimatedCost?: boolean;
@@ -271,6 +294,9 @@ interface BeneficiaryData {
     permanentEmployees: number;
     revenueYearN1: number;
     companyType: string;
+    totalEmployees: string;
+    otherCompanySector: string;
+    companyStatus: string;
     address?: {
       neighborhood?: string;
       street?: string;
@@ -284,12 +310,17 @@ interface BeneficiaryData {
     legalStatus?: string;
     legalStatusOther?: string;
     registrationNumber?: string;
-    affiliatedToCGA?: boolean;
+    companyAddressIsDifferent: boolean;
+    supportService?: boolean;
     femaleEmployees?: number;
     maleEmployees?: number;
     refugeeEmployees?: number;
     batwaEmployees?: number;
     disabledEmployees?: number;
+    albinosEmployees?: number;
+    repatriatesEmployees?: number;
+    partTimeEmployees?: number;
+    employeeCount?: string;
     associatesCount?: string;
     associatesCountOther?: string;
     femalePartners?: number;
@@ -297,6 +328,10 @@ interface BeneficiaryData {
     refugeePartners?: number;
     batwaPartners?: number;
     disabledPartners?: number;
+    albinosPartners?: number;
+    repatriatesPartners?: number;
+    annualRevenue?: number;
+    creationYear?: number;
     hasBankAccount?: boolean;
     hasBankCredit?: boolean;
     bankCreditAmount?: number;
@@ -349,13 +384,18 @@ const INITIAL_FORM: FormData = {
   legalStatus: "",
   legalStatusOther: "",
   nif: "",
-  affiliatedToCGA: "",
+  companyAddressIsDifferent: "",
+  supportService: "",
   femaleEmployees: "",
   maleEmployees: "",
   refugeeEmployees: "",
   batwaEmployees: "",
   disabledEmployees: "",
+  albinosEmployees: "",
+  repatriatesEmployees: "",
+  partTimeEmployees: "",
   employeeCount: "",
+  totalEmployees: "",
   associatesCount: "",
   associatesCountOther: "",
   femalePartners: "",
@@ -363,9 +403,12 @@ const INITIAL_FORM: FormData = {
   refugeePartners: "",
   batwaPartners: "",
   disabledPartners: "",
+  albinosPartners: "",
+  repatriatesPartners: "",
   annualRevenue: "",
   creationYear: "",
   sectorId: "",
+  otherCompanySector: "",
   activityDescription: "",
   hasBankAccount: "",
   hasBankCredit: "",
@@ -384,7 +427,14 @@ const INITIAL_FORM: FormData = {
   plannedEmployeesFemale: "",
   plannedEmployeesMale: "",
   plannedPermanentEmployees: "",
+  plannedRefugeeEmployees: "",
+  plannedBatwaEmployees: "",
+  plannedDisabledEmployees: "",
+  plannedAlbinosEmployees: "",
+  plannedRepatriatesEmployees: "",
+  plannedPartTimeEmployees: "",
   isNewIdea: "",
+  ideaTested: "",
   climateActions: "",
   inclusionActions: "",
   hasEstimatedCost: "",
@@ -435,14 +485,14 @@ const CONSENT_OPTIONS = [
 ];
 
 export const FORMAL_DOCS = [
-  { key: "idCard", labelKey: "doc_idCard", required: true, typeId: 1 },
-  {
-    key: "criminalRecord",
-    labelKey: "doc_criminalRecord",
-    required: true,
-    typeId: 2,
-  },
-  { key: "managerAct", labelKey: "doc_managerAct", required: false, typeId: 3 },
+  { key: "idCard", labelKey: "doc_idCard_formal", required: true, typeId: 1 },
+  // {
+  //   key: "criminalRecord",
+  //   labelKey: "doc_criminalRecord",
+  //   required: true,
+  //   typeId: 2,
+  // },
+  // { key: "managerAct", labelKey: "doc_managerAct", required: false, typeId: 3 },
   {
     key: "commerceRegister",
     labelKey: "doc_commerceRegister",
@@ -464,13 +514,13 @@ export const INFORMAL_DOCS = [
     required: true,
     typeId: 7,
   },
-  { key: "idCard", labelKey: "doc_idCard", required: true, typeId: 1 },
-  {
-    key: "criminalRecord",
-    labelKey: "doc_criminalRecord",
-    required: true,
-    typeId: 2,
-  },
+  { key: "idCard", labelKey: "doc_idCard_informal", required: true, typeId: 1 },
+  // {
+  //   key: "criminalRecord",
+  //   labelKey: "doc_criminalRecord",
+  //   required: true,
+  //   typeId: 2,
+  // },
   {
     key: "bankStatements",
     labelKey: "doc_bankStatements",
@@ -480,13 +530,14 @@ export const INFORMAL_DOCS = [
 ];
 
 const PROJECT_SECTORS_LIST = [
+  { value: "agriculture", labelKey: "sectorAgriBusiness" },
   { value: "milk", labelKey: "sectorMilk" },
   { value: "poultry", labelKey: "sectorPoultry" },
   { value: "fish", labelKey: "sectorFish" },
   { value: "tropicalFruit", labelKey: "sectorFruit" },
+  { value: "otherAgro", labelKey: "sectorOtherAgro" },
   { value: "mining", labelKey: "sectorMining" },
   { value: "tourism", labelKey: "sectorTourism" },
-  { value: "digital", labelKey: "sectorDigital" },
   { value: "other", labelKey: "sectorOther" },
 ];
 
@@ -558,21 +609,43 @@ const FL: React.FC<{ label: string; required?: boolean }> = ({
   </p>
 );
 
-const SectionTitle: React.FC<{ title: string }> = ({ title }) => (
+const SectionTitle: React.FC<{ title: string; subtitle?: string }> = ({
+  title,
+  subtitle,
+}) => (
   <div className="col-12 mt-20 mb-15">
     <p
       style={{
-        fontSize: 11,
+        fontSize: 13,
         fontWeight: 700,
         textTransform: "uppercase",
         letterSpacing: "0.08em",
-        color: "#999",
+        color: "#1F4E79",
         margin: 0,
         borderBottom: "1px solid #e5e5e5",
         paddingBottom: 8,
       }}
     >
       {title}
+      {subtitle && (
+        <>
+          <br />
+          <span
+            style={{
+              fontSize: 14,
+              fontWeight: 400,
+              color: "#919191",
+              display: "flex",
+              alignItems: "center",
+              textTransform: "none",
+              fontStyle: "italic",
+            }}
+          >
+            <i className="ti ti-info-alt me-1 fst-italic"></i>
+            {subtitle}
+          </span>
+        </>
+      )}
     </p>
   </div>
 );
@@ -778,7 +851,8 @@ const FileUploadRow: React.FC<{
                 style={{ fontSize: 17, flexShrink: 0 }}
               />
               <span style={{ fontSize: 14, color: "#777" }}>
-                {t(labelKey)}
+                {t(labelKey)}{" "}
+                <span style={{ color: "#dc3545", marginLeft: 2 }}>*</span>
                 <span
                   style={{
                     display: "block",
@@ -1028,13 +1102,18 @@ const Application: React.FC = () => {
           legalStatus: (d.company?.legalStatus as LegalStatusType) || "",
           legalStatusOther: d.company?.legalStatusOther || "",
           nif: d.company?.taxIdNumber || "",
-          affiliatedToCGA: tri(d.company?.affiliatedToCGA),
+          companyAddressIsDifferent: tri(d.company?.companyAddressIsDifferent),
+          supportService: tri(d.company?.supportService),
           femaleEmployees: d.company?.femaleEmployees ?? "",
           maleEmployees: d.company?.maleEmployees ?? "",
           refugeeEmployees: d.company?.refugeeEmployees ?? "",
           batwaEmployees: d.company?.batwaEmployees ?? "",
           disabledEmployees: d.company?.disabledEmployees ?? "",
+          albinosEmployees: d.company?.albinosEmployees ?? "",
+          repatriatesEmployees: d.company?.repatriatesEmployees ?? "",
+          partTimeEmployees: d.company?.partTimeEmployees ?? "",
           employeeCount: d.company?.permanentEmployees ?? "",
+          totalEmployees: d.company?.totalEmployees ?? "",
           associatesCount:
             (d.company?.associatesCount as AssociatesCountType) || "",
           associatesCountOther: d.company?.associatesCountOther || "",
@@ -1043,13 +1122,14 @@ const Application: React.FC = () => {
           refugeePartners: d.company?.refugeePartners ?? "",
           batwaPartners: d.company?.batwaPartners ?? "",
           disabledPartners: d.company?.disabledPartners ?? "",
+          albinosPartners: d.company?.albinosPartners ?? "",
+          repatriatesPartners: d.company?.repatriatesPartners ?? "",
           annualRevenue: d.company?.revenueYearN1
             ? Number(d.company.revenueYearN1)
             : "",
-          creationYear: d.company?.creationDate
-            ? new Date(d.company.creationDate).getFullYear()
-            : "",
-          sectorId: d.company?.primarySectorId || "",
+          creationYear: d.company?.creationDate,
+          sectorId: d.company?.primarySectorId || (!d.company?.primarySectorId && d.company?.otherCompanySector) ? -1 : "",
+          otherCompanySector: d.company?.otherCompanySector || "",
           activityDescription: d.company?.activityDescription || "",
           hasBankAccount: tri(d.company?.hasBankAccount),
           hasBankCredit: tri(d.company?.hasBankCredit),
@@ -1071,7 +1151,14 @@ const Application: React.FC = () => {
           plannedEmployeesFemale: d.plannedEmployeesFemale ?? "",
           plannedEmployeesMale: d.plannedEmployeesMale ?? "",
           plannedPermanentEmployees: d.plannedPermanentEmployees ?? "",
+          plannedRefugeeEmployees: d.plannedRefugeeEmployees ?? "",
+          plannedBatwaEmployees: d.plannedBatwaEmployees ?? "",
+          plannedDisabledEmployees: d.plannedDisabledEmployees ?? "",
+          plannedAlbinosEmployees: d.plannedAlbinosEmployees ?? "",
+          plannedRepatriatesEmployees: d.plannedRepatriatesEmployees ?? "",
+          plannedPartTimeEmployees: d.plannedPartTimeEmployees ?? "",
           isNewIdea: tri(d.isNewIdea),
+          ideaTested: tri(d.ideaTested),
           climateActions: d.climateActions || "",
           inclusionActions: d.inclusionActions || "",
           hasEstimatedCost: tri(d.hasEstimatedCost),
@@ -1119,6 +1206,10 @@ const Application: React.FC = () => {
     [docErrors],
   );
 
+  const isFieldEmpty = (value: any): boolean => {
+    return value === undefined || value === null || value === "";
+  };
+
   const validateStep = useCallback(
     (step: number): boolean => {
       const e: FormErrors = {};
@@ -1128,6 +1219,7 @@ const Application: React.FC = () => {
           e.otherEntrepreneurType = t("required");
         if (!form.lastName.trim()) e.lastName = t("required");
         if (!form.firstName.trim()) e.firstName = t("required");
+        if (!form.position.trim()) e.position = t("required");
         if (!form.gender) e.gender = t("required");
         if (!form.maritalStatus) e.maritalStatus = t("required");
         if (!form.educationLevel) e.educationLevel = t("required");
@@ -1161,14 +1253,106 @@ const Application: React.FC = () => {
               e.creationYear = t("creationYearInvalid");
           }
           if (!form.sectorId) e.sectorId = t("required");
+          if (form.sectorId === -1 && !form.otherCompanySector)
+            e.otherCompanySector = t("required");
           if (!form.activityDescription.trim())
             e.activityDescription = t("required");
-          else if (form.activityDescription.length < 20)
-            e.activityDescription = t("descriptionMinLength");
-          if (!form.employeeCount) e.employeeCount = t("required");
+          else if (form.activityDescription.length > 1000)
+            e.activityDescription = t("descriptionMaxLength");
           if (form.companyStatus === "formal" && !form.legalStatus)
             e.legalStatus = t("required");
+          if (form.legalStatus === "other" && !form.legalStatusOther)
+            e.legalStatusOther = t("required");
+          if (form.companyStatus === "formal" && !form.nif)
+            e.nif = t("required");
+          if (!form.companyAddressIsDifferent)
+            e.companyAddressIsDifferent = t("required");
+          if (form.companyAddressIsDifferent === "yes") {
+            if (!form.companyProvinceId) e.companyProvinceId = t("required");
+            if (!form.companyCommuneId) e.companyCommuneId = t("required");
+            if (!form.companyPhone) e.companyPhone = t("required");
+            if (!form.companyEmail) e.companyEmail = t("required");
+          }
+          if (!form.supportService) e.supportService = t("required");
+          if (form.totalEmployees == null) e.totalEmployees = t("required");
+          if (form.totalEmployees && form.totalEmployees > 0) {
+            if (isFieldEmpty(form.employeeCount))
+              e.employeeCount = t("required");
+            if (isFieldEmpty(form.femaleEmployees))
+              e.femaleEmployees = t("required");
+            if (isFieldEmpty(form.maleEmployees))
+              e.maleEmployees = t("required");
+            if (isFieldEmpty(form.refugeeEmployees))
+              e.refugeeEmployees = t("required");
+            if (isFieldEmpty(form.batwaEmployees))
+              e.batwaEmployees = t("required");
+            if (isFieldEmpty(form.disabledEmployees))
+              e.disabledEmployees = t("required");
+            if (isFieldEmpty(form.albinosEmployees))
+              e.albinosEmployees = t("required");
+            if (isFieldEmpty(form.repatriatesEmployees))
+              e.repatriatesEmployees = t("required");
+            if (isFieldEmpty(form.partTimeEmployees))
+              e.partTimeEmployees = t("required");
+          }
           if (!form.associatesCount) e.associatesCount = t("required");
+          if (form.associatesCount === "other") {
+            if (!form.associatesCountOther)
+              e.associatesCountOther = t("required");
+          }
+
+          if (form.associatesCount && form.associatesCount !== "solo") {
+            // 0 est valide, seule la valeur vide est interdite
+            if (
+              form.femalePartners === undefined ||
+              form.femalePartners === null ||
+              form.femalePartners === ""
+            )
+              e.femalePartners = t("required");
+            if (
+              form.malePartners === undefined ||
+              form.malePartners === null ||
+              form.malePartners === ""
+            )
+              e.malePartners = t("required");
+            if (
+              form.refugeePartners === undefined ||
+              form.refugeePartners === null ||
+              form.refugeePartners === ""
+            )
+              e.refugeePartners = t("required");
+            if (
+              form.batwaPartners === undefined ||
+              form.batwaPartners === null ||
+              form.batwaPartners === ""
+            )
+              e.batwaPartners = t("required");
+            if (
+              form.disabledPartners === undefined ||
+              form.disabledPartners === null ||
+              form.disabledPartners === ""
+            )
+              e.disabledPartners = t("required");
+            if (
+              form.albinosPartners === undefined ||
+              form.albinosPartners === null ||
+              form.albinosPartners === ""
+            )
+              e.albinosPartners = t("required");
+            if (
+              form.repatriatesPartners === undefined ||
+              form.repatriatesPartners === null ||
+              form.repatriatesPartners === ""
+            )
+              e.repatriatesPartners = t("required");
+          }
+
+          if (!form.annualRevenue) e.annualRevenue = t("required");
+          if (!form.hasBankAccount) e.hasBankAccount = t("required");
+          if (!form.hasBankCredit) e.hasBankCredit = t("required");
+          if (form.hasBankCredit === "yes") {
+            if (!form.bankCreditAmount) e.bankCreditAmount = t("required");
+          }
           const docList =
             form.companyStatus === "formal"
               ? FORMAL_DOCS
@@ -1194,9 +1378,12 @@ const Application: React.FC = () => {
         if (!form.projectSectors.length) e.projectSectors = t("required");
         if (!form.mainActivities.trim()) e.mainActivities = t("required");
         if (!form.productsServices.trim()) e.productsServices = t("required");
+        if (!form.businessIdea.trim()) e.businessIdea = t("required");
         if (!form.targetClients.trim()) e.targetClients = t("required");
         if (!form.clientScope.length) e.clientScope = t("required");
         if (!form.hasCompetitors) e.hasCompetitors = t("required");
+        if (form.hasCompetitors === "yes" && !form.competitorNames.trim())
+          e.competitorNames = t("required");
         if (!form.climateActions.trim()) e.climateActions = t("required");
         if (!form.inclusionActions.trim()) e.inclusionActions = t("required");
         if (!form.hasEstimatedCost) e.hasEstimatedCost = t("required");
@@ -1205,6 +1392,63 @@ const Application: React.FC = () => {
         if (form.hasEstimatedCost === "yes" && !form.requestedSubsidyAmount)
           e.requestedSubsidyAmount = t("required");
         if (!form.mainExpenses.trim()) e.mainExpenses = t("required");
+        if (!form.isNewIdea) e.isNewIdea = t("required");
+        if (form.isNewIdea === "yes" && !form.ideaTested)
+          e.ideaTested = t("required");
+        if (
+          form.plannedEmployeesFemale === undefined ||
+          form.plannedEmployeesFemale === null ||
+          form.plannedEmployeesFemale === ""
+        )
+          e.plannedEmployeesFemale = t("required");
+        if (
+          form.plannedEmployeesMale === undefined ||
+          form.plannedEmployeesMale === null ||
+          form.plannedEmployeesMale === ""
+        )
+          e.plannedEmployeesMale = t("required");
+        if (
+          form.plannedPermanentEmployees === undefined ||
+          form.plannedPermanentEmployees === null ||
+          form.plannedPermanentEmployees === ""
+        )
+          e.plannedPermanentEmployees = t("required");
+        if (
+          form.plannedRefugeeEmployees === undefined ||
+          form.plannedRefugeeEmployees === null ||
+          form.plannedRefugeeEmployees === ""
+        )
+          e.plannedRefugeeEmployees = t("required");
+        if (
+          form.plannedBatwaEmployees === undefined ||
+          form.plannedBatwaEmployees === null ||
+          form.plannedBatwaEmployees === ""
+        )
+          e.plannedBatwaEmployees = t("required");
+        if (
+          form.plannedDisabledEmployees === undefined ||
+          form.plannedDisabledEmployees === null ||
+          form.plannedDisabledEmployees === ""
+        )
+          e.plannedDisabledEmployees = t("required");
+        if (
+          form.plannedAlbinosEmployees === undefined ||
+          form.plannedAlbinosEmployees === null ||
+          form.plannedAlbinosEmployees === ""
+        )
+          e.plannedAlbinosEmployees = t("required");
+        if (
+          form.plannedRepatriatesEmployees === undefined ||
+          form.plannedRepatriatesEmployees === null ||
+          form.plannedRepatriatesEmployees === ""
+        )
+          e.plannedRepatriatesEmployees = t("required");
+        if (
+          form.plannedPartTimeEmployees === undefined ||
+          form.plannedPartTimeEmployees === null ||
+          form.plannedPartTimeEmployees === ""
+        )
+          e.plannedPartTimeEmployees = t("required");
       }
       if (step === 4) {
         if (!form.acceptTerms) e.acceptTerms = t("acceptTermsRequired");
@@ -1223,13 +1467,14 @@ const Application: React.FC = () => {
       return;
     }
     if (!validateStep(currentStep)) {
+      console.log(JSON.stringify(errors));
       toast.error(t("contactPage.validation.checkErrors"));
       return;
     }
     setSavingStep(currentStep);
     try {
       const cleanNumber = (v: any) => {
-        if (v === "" || v == null) return undefined;
+        if (v === undefined || v === null || v === "") return undefined;
         const n = Number(v);
         return isNaN(n) ? undefined : n;
       };
@@ -1296,7 +1541,11 @@ const Application: React.FC = () => {
               legalStatus: form.legalStatus || undefined,
               legalStatusOther: cleanString(form.legalStatusOther),
               nif: cleanString(form.nif),
-              affiliatedToCGA: cleanBoolean(form.affiliatedToCGA),
+              companyAddressIsDifferent: cleanBoolean(
+                form.companyAddressIsDifferent,
+              ),
+              totalEmployees: cleanNumber(form.totalEmployees),
+              supportService: cleanBoolean(form.supportService),
               femaleEmployees: cleanNumber(form.femaleEmployees),
               maleEmployees: cleanNumber(form.maleEmployees),
               refugeeEmployees: cleanNumber(form.refugeeEmployees),
@@ -1311,8 +1560,9 @@ const Application: React.FC = () => {
               batwaPartners: cleanNumber(form.batwaPartners),
               disabledPartners: cleanNumber(form.disabledPartners),
               annualRevenue: cleanNumber(form.annualRevenue),
-              creationYear: cleanNumber(form.creationYear),
+              creationYear: form.creationYear || undefined,
               sectorId: cleanNumber(form.sectorId),
+              otherCompanySector: cleanString(form.otherCompanySector),
               activityDescription: cleanString(form.activityDescription),
               hasBankAccount: cleanBoolean(form.hasBankAccount),
               hasBankCredit: cleanBoolean(form.hasBankCredit),
@@ -1320,6 +1570,11 @@ const Application: React.FC = () => {
               isWomanLed: form.isWomanLed || false,
               isRefugeeLed: form.isRefugeeLed || false,
               hasClimateImpact: form.hasClimateImpact || false,
+              albinosEmployees: cleanNumber(form.albinosEmployees),
+              repatriatesEmployees: cleanNumber(form.repatriatesEmployees),
+              partTimeEmployees: cleanNumber(form.partTimeEmployees),
+              albinosPartners: cleanNumber(form.albinosPartners),
+              repatriatesPartners: cleanNumber(form.repatriatesPartners),
             }
           : undefined;
       const step3Data =
@@ -1346,6 +1601,7 @@ const Application: React.FC = () => {
                 form.plannedPermanentEmployees,
               ),
               isNewIdea: cleanBoolean(form.isNewIdea),
+              ideaTested: cleanBoolean(form.ideaTested),
               climateActions: cleanString(form.climateActions),
               inclusionActions: cleanString(form.inclusionActions),
               hasEstimatedCost: cleanBoolean(form.hasEstimatedCost),
@@ -1357,6 +1613,22 @@ const Application: React.FC = () => {
               certifyAccuracy: form.certifyAccuracy,
               optInNotifications: form.acceptNotifications,
               isProfileCompleted: isFinish,
+              plannedRefugeeEmployees: cleanNumber(
+                form.plannedRefugeeEmployees,
+              ),
+              plannedBatwaEmployees: cleanNumber(form.plannedBatwaEmployees),
+              plannedDisabledEmployees: cleanNumber(
+                form.plannedDisabledEmployees,
+              ),
+              plannedAlbinosEmployees: cleanNumber(
+                form.plannedAlbinosEmployees,
+              ),
+              plannedRepatriatesEmployees: cleanNumber(
+                form.plannedRepatriatesEmployees,
+              ),
+              plannedPartTimeEmployees: cleanNumber(
+                form.plannedPartTimeEmployees,
+              ),
             }
           : undefined;
       await BeneficiaryService.update(
@@ -1408,6 +1680,7 @@ const Application: React.FC = () => {
 
   const goToNextStep = () => {
     if (!validateStep(currentStep)) {
+      console.log(JSON.stringify(errors));
       toast.error(t("contactPage.validation.checkErrors"));
       return;
     }
@@ -1770,7 +2043,7 @@ const Step1Fields: React.FC<any> = ({
 
     {/* Fonction */}
     <div className="col-lg-6">
-      <FL label={t("roleInCompany")} />
+      <FL label={t("roleInCompany")} required />
       <label>
         <i className="ti ti-briefcase" />
         <input
@@ -1780,6 +2053,9 @@ const Step1Fields: React.FC<any> = ({
           placeholder={t("enterValue")}
         />
       </label>
+      {errors.position && (
+        <span className="copa-error-msg">{errors.position}</span>
+      )}
     </div>
 
     {/* Date de naissance */}
@@ -1992,7 +2268,10 @@ const Step1Fields: React.FC<any> = ({
       {errors.email && <span className="copa-error-msg">{errors.email}</span>}
     </div>
 
-    <SectionTitle title={t("eligibilitySection")} />
+    <SectionTitle
+      title={t("eligibilitySection")}
+      subtitle={t("eligibilitySectionSubtitle")}
+    />
 
     {ELIGIBILITY_QUESTIONS.map(({ key, labelKey, icon }) => (
       <div
@@ -2122,7 +2401,7 @@ const Step2Fields: React.FC<any> = ({
             <>
               {/* NIF */}
               <div className="col-lg-6">
-                <FL label={t("nif")} />
+                <FL label={t("nif")} required />
                 <label className={errors.nif ? "copa-input-invalid" : ""}>
                   <i className="ti ti-id-badge" />
                   <input
@@ -2153,13 +2432,16 @@ const Step2Fields: React.FC<any> = ({
                     <option value="" disabled>
                       {t("selectOption")}
                     </option>
-                    <option value="snc">{t("snc")}</option>
-                    <option value="scs">{t("scs")}</option>
-                    <option value="sprl">{t("sprl")}</option>
+                    <option value="php">{t("physicalPerson")}</option>
                     <option value="su">{t("su")}</option>
+                    <option value="sprl">{t("sprl")}</option>
                     <option value="sa">{t("sa")}</option>
                     <option value="coop">{t("coop")}</option>
-                    <option value="other">{t("other")}</option>
+                    <option value="snc">{t("snc")}</option>
+                    <option value="scs">{t("scs")}</option>
+                    <option value="other">
+                      {t("other")} ({t("specify").toLowerCase()})
+                    </option>
                   </select>
                 </label>
                 {errors.legalStatus && (
@@ -2169,7 +2451,7 @@ const Step2Fields: React.FC<any> = ({
 
               {form.legalStatus === "other" && (
                 <div className="col-lg-6">
-                  <FL label={t("specifyLegalStatus")} />
+                  <FL label={t("specifyLegalStatus")} required />
                   <label>
                     <i className="ti ti-pencil" />
                     <input
@@ -2181,17 +2463,40 @@ const Step2Fields: React.FC<any> = ({
                       placeholder={t("enterValue")}
                     />
                   </label>
+                  {errors.legalStatusOther && (
+                    <span className="copa-error-msg">
+                      {errors.legalStatusOther}
+                    </span>
+                  )}
                 </div>
               )}
             </>
           )}
 
           {/* Année de création */}
-          <div className="col-lg-6">
+          <div className={form.legalStatus === "other" ? "col-12" : "col-lg-6"}>
             <FL label={t("creationYear")} required />
             <label className={errors.creationYear ? "copa-input-invalid" : ""}>
               <i className="ti ti-calendar" />
-              <input
+              <Flatpickr
+                value={
+                  form.creationYear ? new Date(form.creationYear) : undefined
+                }
+                onChange={([date]: Date[]) =>
+                  onUpdateField(
+                    "creationYear",
+                    date?.toISOString().split("T")[0] || "",
+                  )
+                }
+                placeholder={t("enterValue")}
+                options={{
+                  enableTime: false,
+                  dateFormat: "d-m-Y",
+                  locale: isKi ? (KirundiLocale as any) : French,
+                }}
+                style={{ height: "55px" }}
+              />
+              {/* <input
                 type="number"
                 value={String(form.creationYear)}
                 onChange={(e) =>
@@ -2203,7 +2508,7 @@ const Step2Fields: React.FC<any> = ({
                 placeholder={t("enterValue")}
                 min="1900"
                 max={new Date().getFullYear()}
-              />
+              /> */}
             </label>
             {errors.creationYear && (
               <span className="copa-error-msg">{errors.creationYear}</span>
@@ -2211,7 +2516,7 @@ const Step2Fields: React.FC<any> = ({
           </div>
 
           {/* Secteur */}
-          <div className="col-12">
+          <div className={form.sectorId === -1 ? "col-lg-6" : "col-12"}>
             <FL label={t("sector")} required />
             <label className={errors.sectorId ? "copa-input-invalid" : ""}>
               <i className="ti ti-briefcase" />
@@ -2232,10 +2537,59 @@ const Step2Fields: React.FC<any> = ({
                     {isKi && s.nameRn ? s.nameRn : s.nameFr}
                   </option>
                 ))}
+                <option value={-1}>
+                  {t("other")} ({t("specify").toLowerCase()})
+                </option>
               </select>
             </label>
             {errors.sectorId && (
               <span className="copa-error-msg">{errors.sectorId}</span>
+            )}
+          </div>
+
+          {form.sectorId === -1 && (
+            <div className="col-lg-6">
+              <FL label={t("otherActivitySector")} required />
+              <label>
+                <i className="ti ti-briefcase" />
+                <input
+                  type="text"
+                  value={form.otherCompanySector}
+                  onChange={(e) =>
+                    onUpdateField("otherCompanySector", e.target.value)
+                  }
+                  placeholder={t("enterValue")}
+                />
+              </label>
+              {errors.otherCompanySector && (
+                <span className="copa-error-msg">
+                  {errors.otherCompanySector}
+                </span>
+              )}
+            </div>
+          )}
+
+          <div className="col-12">
+            <FL label={t("supportService")} required />
+            <label
+              className={errors.supportService ? "copa-input-invalid" : ""}
+            >
+              <i className="ti ti-check-box" />
+              <select
+                value={form.supportService}
+                onChange={(e) =>
+                  onUpdateField("supportService", e.target.value as TriBool)
+                }
+              >
+                <option value="" disabled>
+                  {t("selectOption")}
+                </option>
+                <option value="yes">{t("yes")}</option>
+                <option value="no">{t("no")}</option>
+              </select>
+            </label>
+            {errors.supportService && (
+              <span className="copa-error-msg">{errors.supportService}</span>
             )}
           </div>
 
@@ -2262,124 +2616,23 @@ const Step2Fields: React.FC<any> = ({
             )}
           </div>
 
-          <SectionTitle title={t("companyAddressIfDifferent")} />
+          <SectionTitle title={t("companyAddressSection")} />
 
-          <div className="col-lg-6">
-            <FL label={t("neighborhood")} />
-            <label>
-              <i className="ti ti-home" />
-              <input
-                type="text"
-                value={form.companyNeighborhood}
-                onChange={(e) =>
-                  onUpdateField("companyNeighborhood", e.target.value)
-                }
-                placeholder={t("enterValue")}
-              />
-            </label>
-          </div>
-          <div className="col-lg-6">
-            <FL label={t("zone")} />
-            <label>
-              <i className="ti ti-location-pin" />
-              <input
-                type="text"
-                value={form.companyZone}
-                onChange={(e) => onUpdateField("companyZone", e.target.value)}
-                placeholder={t("enterValue")}
-              />
-            </label>
-          </div>
-          <div className="col-lg-6">
-            <FL label={t("province")} />
-            <label>
-              <i className="ti ti-map" />
-              <select
-                value={String(form.companyProvinceId)}
-                onChange={(e) =>
-                  onUpdateField(
-                    "companyProvinceId",
-                    e.target.value ? +e.target.value : "",
-                  )
-                }
-              >
-                <option value="" disabled>
-                  {t("selectOption")}
-                </option>
-                {provinces.map((p: any) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <div className="col-lg-6">
-            <FL label={t("commune")} />
-            <label>
-              <i className="ti ti-map-alt" />
-              <select
-                value={String(form.companyCommuneId)}
-                onChange={(e) =>
-                  onUpdateField(
-                    "companyCommuneId",
-                    e.target.value ? +e.target.value : "",
-                  )
-                }
-                disabled={!form.companyProvinceId}
-              >
-                <option value="">
-                  {!form.companyProvinceId
-                    ? t("selectProvinceFirst")
-                    : t("selectOption")}
-                </option>
-                {companyCommunes.map((c: any) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <div className="col-lg-6">
-            <FL label={t("phoneNumber")} />
-            <label>
-              <PhoneInput
-                country="bi"
-                value={form.companyPhone}
-                onChange={(p: string) => onUpdateField("companyPhone", p)}
-                autoFormat
-                enableSearch
-                countryCodeEditable={false}
-                disableSearchIcon
-                placeholder={t("phoneNumber")}
-              />
-            </label>
-          </div>
-          <div className="col-lg-6">
-            <FL label={t("email")} />
-            <label>
-              <i className="ti ti-email" />
-              <input
-                type="email"
-                value={form.companyEmail}
-                onChange={(e) => onUpdateField("companyEmail", e.target.value)}
-                placeholder={t("email")}
-              />
-            </label>
-          </div>
-
-          {/* Affilié CGA */}
           <div className="col-12">
-            <FL label={t("affiliatedToCGALabel")} />
+            <FL label={t("companyAddressIfDifferent")} required />
             <label
-              className={errors.affiliatedToCGA ? "copa-input-invalid" : ""}
+              className={
+                errors.companyAddressIsDifferent ? "copa-input-invalid" : ""
+              }
             >
               <i className="ti ti-check-box" />
               <select
-                value={form.affiliatedToCGA}
+                value={form.companyAddressIsDifferent}
                 onChange={(e) =>
-                  onUpdateField("affiliatedToCGA", e.target.value as TriBool)
+                  onUpdateField(
+                    "companyAddressIsDifferent",
+                    e.target.value as TriBool,
+                  )
                 }
               >
                 <option value="" disabled>
@@ -2389,51 +2642,237 @@ const Step2Fields: React.FC<any> = ({
                 <option value="no">{t("no")}</option>
               </select>
             </label>
-            {errors.affiliatedToCGA && (
-              <span className="copa-error-msg">{errors.affiliatedToCGA}</span>
+            {errors.companyAddressIsDifferent && (
+              <span className="copa-error-msg">
+                {errors.companyAddressIsDifferent}
+              </span>
             )}
           </div>
 
-          <SectionTitle title={t("employeesBreakdown")} />
+          {form.companyAddressIsDifferent === "yes" && (
+            <>
+              <div className="col-lg-6">
+                <FL label={t("neighborhood")} />
+                <label>
+                  <i className="ti ti-home" />
+                  <input
+                    type="text"
+                    value={form.companyNeighborhood}
+                    onChange={(e) =>
+                      onUpdateField("companyNeighborhood", e.target.value)
+                    }
+                    placeholder={t("enterValue")}
+                  />
+                </label>
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("zone")} />
+                <label>
+                  <i className="ti ti-location-pin" />
+                  <input
+                    type="text"
+                    value={form.companyZone}
+                    onChange={(e) =>
+                      onUpdateField("companyZone", e.target.value)
+                    }
+                    placeholder={t("enterValue")}
+                  />
+                </label>
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("province")} required />
+                <label>
+                  <i className="ti ti-map" />
+                  <select
+                    value={String(form.companyProvinceId)}
+                    onChange={(e) =>
+                      onUpdateField(
+                        "companyProvinceId",
+                        e.target.value ? +e.target.value : "",
+                      )
+                    }
+                  >
+                    <option value="" disabled>
+                      {t("selectOption")}
+                    </option>
+                    {provinces.map((p: any) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {errors.companyProvinceId && (
+                  <span className="copa-error-msg">
+                    {errors.companyProvinceId}
+                  </span>
+                )}
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("commune")} required />
+                <label>
+                  <i className="ti ti-map-alt" />
+                  <select
+                    value={String(form.companyCommuneId)}
+                    onChange={(e) =>
+                      onUpdateField(
+                        "companyCommuneId",
+                        e.target.value ? +e.target.value : "",
+                      )
+                    }
+                    disabled={!form.companyProvinceId}
+                  >
+                    <option value="">
+                      {!form.companyProvinceId
+                        ? t("selectProvinceFirst")
+                        : t("selectOption")}
+                    </option>
+                    {companyCommunes.map((c: any) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {errors.companyCommuneId && (
+                  <span className="copa-error-msg">
+                    {errors.companyCommuneId}
+                  </span>
+                )}
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("phoneNumber")} required />
+                <label>
+                  <PhoneInput
+                    country="bi"
+                    value={form.companyPhone}
+                    onChange={(p: string) => onUpdateField("companyPhone", p)}
+                    autoFormat
+                    enableSearch
+                    countryCodeEditable={false}
+                    disableSearchIcon
+                    placeholder={t("phoneNumber")}
+                  />
+                </label>
+                {errors.companyPhone && (
+                  <span className="copa-error-msg">{errors.companyPhone}</span>
+                )}
+              </div>
+              <div className="col-lg-6">
+                <FL label={t("email")} required />
+                <label>
+                  <i className="ti ti-email" />
+                  <input
+                    type="email"
+                    value={form.companyEmail}
+                    onChange={(e) =>
+                      onUpdateField("companyEmail", e.target.value)
+                    }
+                    placeholder={t("email")}
+                  />
+                </label>
+                {errors.companyEmail && (
+                  <span className="copa-error-msg">{errors.companyEmail}</span>
+                )}
+              </div>
+            </>
+          )}
 
-          {[
-            { k: "femaleEmployees", ph: "femaleEmployees", ic: "fa fa-users" },
-            { k: "maleEmployees", ph: "maleEmployees", ic: "fa fa-users" },
-            {
-              k: "refugeeEmployees",
-              ph: "refugeeEmployees",
-              ic: "fa fa-users",
-            },
-            { k: "batwaEmployees", ph: "batwaEmployees", ic: "fa fa-users" },
-            {
-              k: "disabledEmployees",
-              ph: "disabledEmployees",
-              ic: "fa fa-users",
-            },
-            { k: "employeeCount", ph: "permanentEmployees", ic: "fa fa-users" },
-          ].map(({ k, ph, ic }) => (
-            <div className="col-lg-6" key={k}>
-              <FL label={t(ph)} required={k === "employeeCount"} />
-              <label className={(errors as any)[k] ? "copa-input-invalid" : ""}>
-                <i className={ic} />
-                <input
-                  type="number"
-                  min="0"
-                  value={String((form as any)[k])}
-                  onChange={(e) =>
-                    onUpdateField(
-                      k as keyof FormData,
-                      e.target.value ? +e.target.value : ("" as any),
-                    )
-                  }
-                  placeholder={t("enterValue")}
-                />
-              </label>
-              {(errors as any)[k] && (
-                <span className="copa-error-msg">{(errors as any)[k]}</span>
-              )}
-            </div>
-          ))}
+          <SectionTitle title={t("staff")} />
+          <div className="col-12">
+            <FL label={t("totalEmployees")} required />
+            <label
+              className={errors.totalEmployees ? "copa-input-invalid" : ""}
+            >
+              <i className="fa fa-users" />
+              <input
+                type="number"
+                min="0"
+                value={form.totalEmployees}
+                onChange={(e) =>
+                  onUpdateField("totalEmployees", e.target.value)
+                }
+                placeholder={t("enterValue")}
+              />
+            </label>
+            {errors.totalEmployees && (
+              <span className="copa-error-msg">{errors.totalEmployees}</span>
+            )}
+          </div>
+
+          {form.totalEmployees > 0 && (
+            <>
+              <SectionTitle title={t("employeesBreakdown")} />
+
+              {[
+                {
+                  k: "femaleEmployees",
+                  ph: "femaleEmployees",
+                  ic: "fa fa-users",
+                },
+                { k: "maleEmployees", ph: "maleEmployees", ic: "fa fa-users" },
+                {
+                  k: "refugeeEmployees",
+                  ph: "refugeeEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "batwaEmployees",
+                  ph: "batwaEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "disabledEmployees",
+                  ph: "disabledEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "albinosEmployees",
+                  ph: "albinosEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "repatriatesEmployees",
+                  ph: "repatriatesEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "partTimeEmployees",
+                  ph: "partTimeEmployees",
+                  ic: "fa fa-users",
+                },
+                {
+                  k: "employeeCount",
+                  ph: "permanentEmployees",
+                  ic: "fa fa-users",
+                },
+              ].map(({ k, ph, ic }) => (
+                <div className="col-lg-6" key={k}>
+                  <FL label={t(ph)} required />
+                  <label
+                    className={(errors as any)[k] ? "copa-input-invalid" : ""}
+                  >
+                    <i className={ic} />
+                    <input
+                      type="number"
+                      min="0"
+                      value={String((form as any)[k])}
+                      onChange={(e) =>
+                        onUpdateField(
+                          k as keyof FormData,
+                          e.target.value ? +e.target.value : ("" as any),
+                        )
+                      }
+                      placeholder={t("enterValue")}
+                    />
+                  </label>
+                  {(errors as any)[k] && (
+                    <span className="copa-error-msg">{(errors as any)[k]}</span>
+                  )}
+                </div>
+              ))}
+            </>
+          )}
 
           <SectionTitle title={t("associatesSection")} />
 
@@ -2466,7 +2905,7 @@ const Step2Fields: React.FC<any> = ({
 
           {form.associatesCount === "other" && (
             <div className="col-12">
-              <FL label={t("specifyAssociatesCount")} />
+              <FL label={t("specifyAssociatesCount")} required />
               <label>
                 <i className="fa fa-users" />
                 <input
@@ -2478,6 +2917,11 @@ const Step2Fields: React.FC<any> = ({
                   placeholder={t("specifyAssociatesCount")}
                 />
               </label>
+              {errors.associatesCountOther && (
+                <span className="copa-error-msg">
+                  {errors.associatesCountOther}
+                </span>
+              )}
             </div>
           )}
 
@@ -2490,12 +2934,11 @@ const Step2Fields: React.FC<any> = ({
                 { k: "refugeePartners", ph: "refugeePartners" },
                 { k: "batwaPartners", ph: "batwaPartners" },
                 { k: "disabledPartners", ph: "disabledPartners" },
+                { k: "albinosPartners", ph: "albinosPartners" },
+                { k: "repatriatesPartners", ph: "repatriatesPartners" },
               ].map(({ k, ph }) => (
-                <div
-                  className={`${k === "disabledPartners" ? "col-12" : "col-lg-6"}`}
-                  key={k}
-                >
-                  <FL label={t(ph)} />
+                <div className="col-lg-6" key={k}>
+                  <FL label={t(ph)} required />
                   <label>
                     <i className="fa fa-users" />
                     <input
@@ -2511,6 +2954,9 @@ const Step2Fields: React.FC<any> = ({
                       placeholder={t("enterValue")}
                     />
                   </label>
+                  {(errors as any)[k] && (
+                    <span className="copa-error-msg">{(errors as any)[k]}</span>
+                  )}
                 </div>
               ))}
             </>
@@ -2520,7 +2966,7 @@ const Step2Fields: React.FC<any> = ({
 
           {/* Chiffre d'affaires */}
           <div className="col-lg-6">
-            <FL label={t("annualRevenue")} />
+            <FL label={t("annualRevenue")} required />
             <label className="d-flex align-items-center">
               <i className="ti ti-fbu">FBu</i>
               <input
@@ -2537,11 +2983,14 @@ const Step2Fields: React.FC<any> = ({
                 placeholder={t("enterValue")}
               />
             </label>
+            {errors.annualRevenue && (
+              <span className="copa-error-msg">{errors.annualRevenue}</span>
+            )}
           </div>
 
           {/* Compte bancaire */}
           <div className="col-lg-6">
-            <FL label={t("hasBankAccountLabel")} />
+            <FL label={t("hasBankAccountLabel")} required />
             <label
               className={errors.hasBankAccount ? "copa-input-invalid" : ""}
             >
@@ -2565,8 +3014,8 @@ const Step2Fields: React.FC<any> = ({
           </div>
 
           {/* Crédit bancaire */}
-          <div className="col-lg-6">
-            <FL label={t("hasBankCreditLabel")} />
+          <div className={form.hasBankCredit === "yes" ? "col-lg-6" : "col-12"}>
+            <FL label={t("hasBankCreditLabel")} required />
             <label className={errors.hasBankCredit ? "copa-input-invalid" : ""}>
               <i className="fa fa-credit-card" />
               <select
@@ -2590,7 +3039,7 @@ const Step2Fields: React.FC<any> = ({
 
           {form.hasBankCredit === "yes" && (
             <div className="col-lg-6">
-              <FL label={t("bankCreditAmount")} />
+              <FL label={t("bankCreditAmount")} required />
               <label>
                 <i className="fa ti-fbu">FBu</i>
                 <input
@@ -2607,6 +3056,11 @@ const Step2Fields: React.FC<any> = ({
                   placeholder={t("enterValue")}
                 />
               </label>
+              {errors.bankCreditAmount && (
+                <span className="copa-error-msg">
+                  {errors.bankCreditAmount}
+                </span>
+              )}
             </div>
           )}
         </>
@@ -2686,7 +3140,7 @@ const Step3Fields: React.FC<any> = ({
       )}
     </div>
 
-    <SectionTitle title={`${t("projectSectors")} *`} />
+    <SectionTitle title={`${t("projectSectors")}`} />
     <CheckboxGroup
       items={PROJECT_SECTORS_LIST}
       selected={form.projectSectors}
@@ -2747,7 +3201,7 @@ const Step3Fields: React.FC<any> = ({
 
     {/* Origine de l'idée */}
     <div className="col-12">
-      <FL label={t("businessIdeaOrigin")} />
+      <FL label={t("businessIdeaOrigin")} required/>
       <label>
         <textarea
           rows={3}
@@ -2757,6 +3211,9 @@ const Step3Fields: React.FC<any> = ({
           style={{ paddingLeft: 15, lineHeight: 1.5 }}
         />
       </label>
+      {errors.businessIdea && (
+        <span className="copa-error-msg">{errors.businessIdea}</span>
+      )}
     </div>
 
     {/* Clients cibles */}
@@ -2776,7 +3233,7 @@ const Step3Fields: React.FC<any> = ({
       )}
     </div>
 
-    <SectionTitle title={`${t("clientScope")} *`} />
+    <SectionTitle title={t("market")} />
     <CheckboxGroup
       items={[
         { value: "local", labelKey: "scope_local" },
@@ -2816,7 +3273,7 @@ const Step3Fields: React.FC<any> = ({
 
     {form.hasCompetitors === "yes" && (
       <div className="col-12">
-        <FL label={t("competitorNamesPlaceholder")} />
+        <FL label={t("competitorNamesPlaceholder")} required/>
         <label>
           <textarea
             rows={2}
@@ -2826,13 +3283,15 @@ const Step3Fields: React.FC<any> = ({
             style={{ paddingLeft: 15, lineHeight: 1.5 }}
           />
         </label>
+        {errors.competitorNames && (
+          <span className="copa-error-msg">{errors.competitorNames}</span>
+        )}
       </div>
     )}
 
     <SectionTitle title={t("plannedEmployees")} />
-
-    <div className="col-lg-4">
-      <FL label={t("femaleEmployees")} />
+    {/* <div className="col-lg-6">
+      <FL label={t("femaleEmployees")} required />
       <label>
         <i className="fa fa-users" />
         <input
@@ -2849,8 +3308,8 @@ const Step3Fields: React.FC<any> = ({
         />
       </label>
     </div>
-    <div className="col-lg-4">
-      <FL label={t("maleEmployees")} />
+    <div className="col-lg-6">
+      <FL label={t("maleEmployees")} required />
       <label>
         <i className="fa fa-users" />
         <input
@@ -2867,8 +3326,8 @@ const Step3Fields: React.FC<any> = ({
         />
       </label>
     </div>
-    <div className="col-lg-4">
-      <FL label={t("permanentEmployees")} />
+    <div className="col-lg-6">
+      <FL label={t("permanentEmployees")} required />
       <label>
         <i className="fa fa-users" />
         <input
@@ -2884,11 +3343,78 @@ const Step3Fields: React.FC<any> = ({
           placeholder={t("enterValue")}
         />
       </label>
-    </div>
+    </div> */}
 
+    {[
+      {
+        k: "plannedEmployeesFemale",
+        ph: "femaleEmployees",
+        ic: "fa fa-users",
+      },
+      { k: "plannedEmployeesMale", ph: "maleEmployees", ic: "fa fa-users" },
+      {
+        k: "plannedRefugeeEmployees",
+        ph: "refugeeEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedBatwaEmployees",
+        ph: "batwaEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedDisabledEmployees",
+        ph: "disabledEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedAlbinosEmployees",
+        ph: "albinosEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedRepatriatesEmployees",
+        ph: "repatriatesEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedPartTimeEmployees",
+        ph: "partTimeEmployees",
+        ic: "fa fa-users",
+      },
+      {
+        k: "plannedPermanentEmployees",
+        ph: "permanentEmployees",
+        ic: "fa fa-users",
+      },
+    ].map(({ k, ph, ic }) => (
+      <div className="col-lg-6" key={k}>
+        <FL label={t(ph)} required />
+        <label className={(errors as any)[k] ? "copa-input-invalid" : ""}>
+          <i className={ic} />
+          <input
+            type="number"
+            min="0"
+            value={String((form as any)[k])}
+            onChange={(e) =>
+              onUpdateField(
+                k as keyof FormData,
+                e.target.value ? +e.target.value : ("" as any),
+              )
+            }
+            placeholder={t("enterValue")}
+          />
+        </label>
+        {(errors as any)[k] && (
+          <span className="copa-error-msg">{(errors as any)[k]}</span>
+        )}
+      </div>
+    ))}
+
+    <SectionTitle title={t("additionalInfo")} />
     {/* Idée innovante */}
-    <div className="col-12">
-      <FL label={t("isNewIdeaLabel")} />
+    <div className={form.isNewIdea === "yes" ? "col-lg-6" : "col-12"}>
+      <FL label={t("newIdea")} required />
       <label className={errors.isNewIdea ? "copa-input-invalid" : ""}>
         <i className="ti ti-light-bulb" />
         <select
@@ -2909,6 +3435,30 @@ const Step3Fields: React.FC<any> = ({
       )}
     </div>
 
+    {form.isNewIdea === "yes" && (
+      <div className="col-lg-6">
+        <FL label={t("ideaTested")} required />
+        <label className={errors.isNewIdea ? "copa-input-invalid" : ""}>
+          <i className="ti ti-settings" />
+          <select
+            value={form.ideaTested}
+            onChange={(e) =>
+              onUpdateField("ideaTested", e.target.value as TriBool)
+            }
+          >
+            <option value="" disabled>
+              {t("selectOption")}
+            </option>
+            <option value="yes">{t("yes")}</option>
+            <option value="no">{t("no")}</option>
+          </select>
+        </label>
+        {errors.ideaTested && (
+          <span className="copa-error-msg">{errors.ideaTested}</span>
+        )}
+      </div>
+    )}
+
     {/* Actions climatiques */}
     <div className="col-12">
       <FL label={t("climateActionsPlaceholder")} required />
@@ -2928,7 +3478,7 @@ const Step3Fields: React.FC<any> = ({
 
     {/* Actions d'inclusion */}
     <div className="col-12">
-      <FL label={t("inclusionActionsPlaceholder")} required />
+      <FL label={t("inclusionHiring")} required />
       <label className={errors.inclusionActions ? "copa-input-invalid" : ""}>
         <textarea
           rows={3}
@@ -2947,7 +3497,7 @@ const Step3Fields: React.FC<any> = ({
     <div className="col-12">
       <FL label={t("hasEstimatedCostLabel")} required />
       <label className={errors.hasEstimatedCost ? "copa-input-invalid" : ""}>
-        <i className="ti ti-fbu">FBu</i>
+        <i className="ti ti-check-box"></i>
         <select
           value={form.hasEstimatedCost}
           className="pl-40"
@@ -3097,79 +3647,5 @@ const Step4Fields: React.FC<any> = ({ form, errors, onUpdateField, t }) => (
     </div>
   </>
 );
-
-// ─── ProfileLoader ─────────────────────────────────────────────────────────────
-
-const ProfileLoader: React.FC = () => {
-  const { t } = useTranslation();
-  return (
-    <div className="site-main">
-      <Header />
-      <PageHeader title={t("applicationForm")} breadcrumb={t("application")} />
-      <div
-        style={{
-          minHeight: "70vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 32,
-          padding: "60px 24px",
-        }}
-      >
-        <div style={{ position: "relative", width: 72, height: 72 }}>
-          <svg
-            viewBox="0 0 72 72"
-            style={{
-              width: 72,
-              height: 72,
-              animation: "copa-spin 1.1s linear infinite",
-            }}
-          >
-            <circle
-              cx="36"
-              cy="36"
-              r="28"
-              fill="none"
-              stroke="#e8e8e8"
-              strokeWidth="5"
-            />
-            <circle
-              cx="36"
-              cy="36"
-              r="28"
-              fill="none"
-              stroke="var(--skin-color,#1F4E79)"
-              strokeWidth="5"
-              strokeDasharray="60 116"
-              strokeLinecap="round"
-              transform="rotate(-90 36 36)"
-            />
-          </svg>
-          <span
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <i
-              className="ti ti-user"
-              style={{
-                fontSize: 22,
-                color: "var(--skin-color,#1F4E79)",
-                opacity: 0.8,
-              }}
-            />
-          </span>
-        </div>
-      </div>
-      <style>{`@keyframes copa-spin { to { transform: rotate(360deg); } }`}</style>
-      <Footer />
-    </div>
-  );
-};
 
 export default Application;

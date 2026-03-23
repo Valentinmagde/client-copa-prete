@@ -1,24 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
+import Slider from "react-slick";
 import RowBgImg from "../assets/img/row-bgimage-1.png";
+
+const slick_slider = {
+  dots: false,
+  arrow: false,
+  autoplay: false,
+  infinite: false,
+  speed: 1000,
+  slidesToShow: 2,
+  slidesToScroll: 1,
+  rows: 1,
+  responsive: [
+    { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+    { breakpoint: 575, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+  ],
+};
 
 const EligibilityCriteria: React.FC = () => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<"eligible" | "excluded">(
-    "eligible",
-  );
 
-  const eligibleSectors = t("eligibilityCriteriaPage.sectors.eligibleList", {
-    returnObjects: true,
-  }) as Array<{ label: string; desc: string }>;
+  const recevabiliteItems = t(
+    "eligibilityCriteriaPage.criteria.recevabilityItems",
+    { returnObjects: true },
+  ) as string[];
 
-  const excludedSectors = t("eligibilityCriteriaPage.sectors.excludedList", {
+  const eligibiliteItems = t(
+    "eligibilityCriteriaPage.criteria.eligibilityItems",
+    { returnObjects: true },
+  ) as { label: string; desc: string }[];
+
+  const documentsOptions = t("eligibilityCriteriaPage.documents.options", {
     returnObjects: true,
-  }) as Array<{ label: string; desc: string }>;
+  }) as { title: string; items: any[] }[];
 
   return (
     <div className="site-main">
@@ -28,16 +47,15 @@ const EligibilityCriteria: React.FC = () => {
         breadcrumb={t("eligibilityCriteriaPage.breadcrumb")}
       />
 
-      {/* criteria-section */}
+      {/* ── criteria-section ── */}
       <section
-        className="ttm-row services-section bg-img1 bg-theme-GreyColor ttm-bg ttm-bgimage-yes clearfix"
+        className="ttm-row services-section bg-img1 bg-theme-WhiteColor ttm-bg ttm-bgimage-yes clearfix"
         style={{ backgroundImage: `url(${RowBgImg})` }}
       >
         <div className="container">
-          {/* row */}
+          {/* section title */}
           <div className="row">
-            <div className="col-lg-11">
-              {/* section title */}
+            <div className="col-lg-10 offset-1">
               <div className="section-title style2 mb-0">
                 <div className="title-header">
                   <h3>
@@ -60,77 +78,87 @@ const EligibilityCriteria: React.FC = () => {
                   <p>{t("eligibilityCriteriaPage.intro.description")}</p>
                 </div>
               </div>
-              {/* section title end */}
             </div>
           </div>
-          {/* row end */}
-          <div className="row slick_slider slick-arrows-style2 pt-20 mb_10">
-            {/* Entreprise */}
-            <div className="col-lg-6 mb-30">
-              <div className="featured-imagebox featured-imagebox-services style1 h-100">
-                <div className="featured-content">
-                  <div className="featured-title">
-                    <h3>
-                      <Link to={"#"}>
-                        {t("eligibilityCriteriaPage.sections.enterprise.title")}
-                      </Link>
-                    </h3>
-                  </div>
-                  <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
-                    {(
-                      t("eligibilityCriteriaPage.sections.enterprise.items", {
-                        returnObjects: true,
-                      }) as string[]
-                    ).map((c, i) => (
-                      <li key={i} className="pb-10">
-                        <i className="far fa-check-circle"></i>
-                        <div className="ttm-list-li-content">{c}</div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
+          {/* section title end */}
 
-            {/* Promoteur */}
-            <div className="col-lg-6 mb-30">
-              <div className="featured-imagebox featured-imagebox-services style1 h-100">
-                <div className="featured-content">
-                  <div className="featured-title">
-                    <h3>
-                      <Link to={"#"}>
-                        {t("eligibilityCriteriaPage.sections.promoter.title")}
-                      </Link>
-                    </h3>
+          <div className="row slick_slider slick-arrows-style5 mb_10">
+            <div className="ttm-row sidebar job-sidebar clearfix pt-20 pb-0">
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-10 offset-1 content-area">
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12">
+                        {/* ── Recevabilité ── */}
+                        <div className="overview-box">
+                          <div className="title">
+                            <h5>
+                              {t(
+                                "eligibilityCriteriaPage.criteria.recevability",
+                              )}
+                            </h5>
+                          </div>
+                          <div className="desc">
+                            <ul className="ttm-list ttm-list-style-icon">
+                              {recevabiliteItems.map((item, i) => (
+                                <li key={i} className="pb-10">
+                                  <i className="ti ti-check-box"></i>
+                                  <div className="ttm-list-li-content">
+                                    {item}
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* ── Éligibilité ── */}
+                        <div className="overview-box">
+                          <div className="title">
+                            <h5>
+                              {t(
+                                "eligibilityCriteriaPage.criteria.eligibility",
+                              )}
+                            </h5>
+                          </div>
+                          <div className="desc">
+                            <ul className="ttm-list ttm-list-style-icon ttm-textcolor-darkgrey text-justify">
+                              {eligibiliteItems.map((item, i) => (
+                                <li key={i} className="pb-10">
+                                  <i className="ti ti-check-box"></i>
+                                  <div className="ttm-list-li-content">
+                                    <strong>{item.label} :</strong> {item.desc}
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor">
-                    {(
-                      t("eligibilityCriteriaPage.sections.promoter.items", {
-                        returnObjects: true,
-                      }) as string[]
-                    ).map((c, i) => (
-                      <li key={i} className="pb-10">
-                        <i className="far fa-check-circle"></i>
-                        <div className="ttm-list-li-content">{c}</div>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+      {/* criteria-section end */}
 
-      {/* sectors */}
-      <section className="ttm-row clearfix">
+      {/* ── documents-section ── */}
+      <section
+        className="ttm-row services-section bg-img1 bg-theme-GreyColor ttm-bg ttm-bgimage-yes clearfix"
+        style={{ backgroundImage: `url(${RowBgImg})` }}
+        id="section-documents"
+      >
         <div className="container">
+          {/* section title */}
           <div className="row">
-            <div className="col-lg-12">
+            <div className="col-lg-11">
               <div className="section-title title-style-center_text">
                 <div className="title-header">
                   <h3>
-                    {t("eligibilityCriteriaPage.sectors.title")
+                    {t("eligibilityCriteriaPage.documents.title")
                       .split(" ")
                       .map((word: string, i: number) => (
                         <span
@@ -142,95 +170,93 @@ const EligibilityCriteria: React.FC = () => {
                       ))}
                   </h3>
                   <h2 className="title">
-                    {t("eligibilityCriteriaPage.sectors.subtitle")}
+                    {t("eligibilityCriteriaPage.documents.subtitle")}
                   </h2>
                 </div>
               </div>
-              {/* Tab buttons */}
-              <div
-                className="d-flex justify-content-center mb-30"
-                style={{ gap: "10px" }}
-              >
-                <button
-                  className={`ttm-btn ttm-btn-size-sm ttm-btn-shape-rounded ${activeTab === "eligible" ? "ttm-btn-style-fill ttm-btn-color-skincolor" : "ttm-btn-style-border ttm-btn-color-skincolor"}`}
-                  onClick={() => setActiveTab("eligible")}
-                >
-                  ✓ {t("eligibilityCriteriaPage.sectors.tabs.eligible")} (
-                  {eligibleSectors.length})
-                </button>
-                <button
-                  className={`ttm-btn ttm-btn-size-sm ttm-btn-shape-rounded ${activeTab === "excluded" ? "ttm-btn-style-fill ttm-btn-color-skincolor" : "ttm-btn-style-border ttm-btn-color-skincolor"}`}
-                  onClick={() => setActiveTab("excluded")}
-                >
-                  ✗ {t("eligibilityCriteriaPage.sectors.tabs.excluded")} (
-                  {excludedSectors.length})
-                </button>
-              </div>
             </div>
           </div>
+          {/* section title end */}
 
-          {activeTab === "eligible" && (
-            <div className="row row-equal-height mb_10">
-              {eligibleSectors.map((s, i) => (
-                <div key={i} className="col-lg-4 col-md-6 col-sm-6">
-                  {/* featured-icon-box */}
-                  <div
-                    className="featured-icon-box icon-align-before-title style3"
-                    style={{ background: "#f7f7f7" }}
-                  >
+          {/* Slider */}
+          <Slider
+            className="row slick_slider slick-arrows-style2 mb_10"
+            {...slick_slider}
+            slidesToShow={2}
+            rows={1}
+            arrows={true}
+            autoplay={false}
+            responsive={[
+              {
+                breakpoint: 1024,
+                settings: { slidesToShow: 2, slidesToScroll: 2 },
+              },
+              {
+                breakpoint: 575,
+                settings: { slidesToShow: 1, slidesToScroll: 1 },
+              },
+            ]}
+          >
+            {documentsOptions.map((option, i) => (
+              <div key={i} className="col-md-12">
+                <div className="featured-imagebox featured-imagebox-services style1" style={{minHeight: 590}}>
+                  <div className="featured-content" style={{justifyContent: "flex-start"}}>
                     <div className="featured-title">
-                      <h3>{s.label}</h3>
+                      <h3 style={{WebkitLineClamp: "none"}}>{option.title}</h3>
                     </div>
-                    <div className="featured-content">
-                      <div className="featured-desc">
-                        <p>{s.desc}</p>
-                      </div>
+                    <div className="featured-desc">
+                      <ul className="ttm-list ttm-list-style-icon ttm-list-icon-color-skincolor mt-10">
+                        {option.items.map((item, j) => (
+                          <li key={j} className="pb-5">
+                            <i className="far fa-check-circle"></i>
+                            <div className="ttm-list-li-content">{item}</div>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-                  {/* featured-icon-box end */}
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </Slider>
+          {/* Slider end */}
 
-          {activeTab === "excluded" && (
-            <div className="row justify-content-center">
-              {excludedSectors.map((s, i) => (
-                <div key={i} className="col-lg-4 col-md-6 col-sm-6">
-                  {/* featured-icon-box */}
-                  <div
-                    className="featured-icon-box icon-align-before-title style3"
-                    style={{ background: "#f7f7f7" }}
-                  >
-                    <div className="featured-title">
-                      <h3>{s.label}</h3>
-                    </div>
-                    <div className="featured-content">
-                      <div className="featured-desc">
-                        <p>{s.desc}</p>
-                      </div>
-                    </div>
-                  </div>
-                  {/* featured-icon-box end */}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div className="col-lg-12">
-            <div className="pt-30 m-auto text-center">
-              <a
-                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
-                href={"/register"}
+          {/* CTA */}
+          <div className="row">
+            <div className="col-lg-12">
+              {/* <div className="pt-20 pb-10 text-center">
+                <a
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                  href="/register"
+                >
+                  {t("apply")}
+                </a>
+              </div> */}
+              <div
+                data-animation="animate__fadeInUp"
+                data-delay="1.4"
+                className="mt-80 text-center"
               >
-                {t("apply")}
-              </a>
+                <Link
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor me-3"
+                  to="/register"
+                >
+                  {t("apply")}
+                </Link>
+                <Link
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
+                  to="#"
+                >
+                  {t("eligibilityCriteriaPage.buttons.callForInterest")}
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
+      {/* documents-section end */}
 
-      {/* action-section */}
+      {/* ── action-section ── */}
       <section className="ttm-row action-section bg-theme-SkinColor text-theme-WhiteColor clearfix">
         <div className="container">
           <div className="row">
@@ -262,6 +288,7 @@ const EligibilityCriteria: React.FC = () => {
           </div>
         </div>
       </section>
+      {/* action-section end */}
 
       <Footer />
     </div>
