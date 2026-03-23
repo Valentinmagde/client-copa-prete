@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
@@ -9,6 +9,9 @@ import AuthService from "@/services/auth/auth.service";
 import { toast } from "react-toastify";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import ReferenceService from "@/services/reference/reference.service";
+import ProfileLoader from "@/components/common/ProfileLoader";
+import useCopaPhases from "@/hooks/useCopaPhases";
 
 interface FormData {
   firstName: string;
@@ -51,6 +54,8 @@ const Register: React.FC = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
   const from = "/application";
+
+  const { loading: phasesLoading, isRegistrationOpen, registrationPhase } = useCopaPhases(lang);
 
   const upd = <K extends keyof FormData>(k: K, v: FormData[K]) => {
     setForm((p) => ({ ...p, [k]: v }));
@@ -102,6 +107,7 @@ const Register: React.FC = () => {
           acceptCGU: form.acceptTerms,
           acceptPrivacyPolicy: form.acceptTerms,
           certifyAccuracy: form.acceptTerms,
+          copaEditionId: registrationPhase.copaEdition.id,
         },
         lang,
       );
@@ -158,6 +164,48 @@ const Register: React.FC = () => {
       setIsGoogleSubmitting(false);
     }
   };
+
+  if (phasesLoading) return <ProfileLoader />;
+  if (!isRegistrationOpen)
+    return (
+      <div className="site-main">
+        <Header />
+
+        {/* PageHeader */}
+        <PageHeader title={t("registration")} breadcrumb={t("register")} />
+        {/* PageHeader end */}
+        <div className="ttm-row register-section clearfix">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 text-center py-60">
+                {/* <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-size-xl ttm-icon_element-color-grey ttm-icon_element-style-round mx-auto mb-20">
+                  <i className="far fa-newspaper"></i>
+                </div> */}
+                <h3 className="mb-15">
+                  {t(
+                    "registrationPage.closed.title",
+                    "Inscriptions actuellement fermées",
+                  )}
+                </h3>
+                <p className="mb-30" style={{ color: "#777" }}>
+                  {t(
+                    "registrationPage.closed.description",
+                    "La phase d’inscription n’est pas encore ouverte ou est déjà terminée. Veuillez consulter les dates officielles ou revenir plus tard.",
+                  )}
+                </p>
+                <a
+                  href="/"
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                >
+                  {t("blog.empty.cta", "Retour à l'accueil")}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
 
   return (
     <div className="site-main">
@@ -279,7 +327,7 @@ const Register: React.FC = () => {
                               onChange={(e) => upd("password", e.target.value)}
                               placeholder={t("password")}
                             />
-                             {/* Toggle icon */}
+                            {/* Toggle icon */}
                             <span
                               onClick={togglePasswordVisibility}
                               style={{
@@ -321,7 +369,7 @@ const Register: React.FC = () => {
                               }
                               placeholder={t("confirmPassword")}
                             />
-                             {/* Toggle icon */}
+                            {/* Toggle icon */}
                             <span
                               onClick={toggleConfirmPasswordVisibility}
                               style={{

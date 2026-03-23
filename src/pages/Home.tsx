@@ -284,7 +284,7 @@ const Home: React.FC = () => {
             <div className="col-lg-6 col-md-4">
               <Link
                 className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark mb-15"
-                to={"/how-to-participate"}
+                to={"/copa-presentation"}
               >
                 {t("discoverFullProcess")}
               </Link>
@@ -501,8 +501,15 @@ const Home: React.FC = () => {
                 <div className="col-sm-3">
                   <div className="client-box">
                     <div className="client-thumbnail">
-                      <Link to="https://www.banquemondiale.org/ext/fr/home" target="_blank">
-                        <img className="img-fluid" src={brandLogo1} alt="Banque mondiale" />
+                      <Link
+                        to="https://www.banquemondiale.org/ext/fr/home"
+                        target="_blank"
+                      >
+                        <img
+                          className="img-fluid"
+                          src={brandLogo1}
+                          alt="Banque mondiale"
+                        />
                       </Link>
                     </div>
                   </div>
@@ -511,7 +518,11 @@ const Home: React.FC = () => {
                   <div className="client-box">
                     <div className="client-thumbnail">
                       <Link to="https://presidence.gov.bi/" target="_blank">
-                        <img className="img-fluid" src={brandLogo2} alt="Gouvernement Burundi" />
+                        <img
+                          className="img-fluid"
+                          src={brandLogo2}
+                          alt="Gouvernement Burundi"
+                        />
                       </Link>
                     </div>
                   </div>
@@ -529,7 +540,11 @@ const Home: React.FC = () => {
                   <div className="client-box">
                     <div className="client-thumbnail">
                       <Link to="https://prete.bi/mission/" target="_blank">
-                        <img className="img-fluid" src={brandLogo4} alt="PRETE" />
+                        <img
+                          className="img-fluid"
+                          src={brandLogo4}
+                          alt="PRETE"
+                        />
                       </Link>
                     </div>
                   </div>
@@ -540,7 +555,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="ttm-row padding_zero-section bg-theme-DarkColor bg-layer-equal-height mb-100 mb-lg-0 clearfix">
+      <section className="ttm-row padding_zero-section bg-theme-DarkColor bg-layer-equal-height mb-200 mb-lg-0 clearfix">
         <div className="container">
           <div className="row">
             <div className="col-lg-6">
@@ -599,7 +614,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="ttm-row blog-section bg-theme-GreyColor clearfix">
+      {/* <section className="ttm-row blog-section bg-theme-GreyColor clearfix">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
@@ -607,9 +622,9 @@ const Home: React.FC = () => {
                 <div className="title-header">
                   <h3>
                     {t("blogTitle")}{" "}
-                    {/* <span className="text-theme-SkinColor">
+                    <span className="text-theme-SkinColor">
                       {t("blogHighlight")}
-                    </span> */}
+                    </span>
                   </h3>
                   <h2 className="title">{t("blogDesc")}</h2>
                 </div>
@@ -803,7 +818,7 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <Footer />
     </div>

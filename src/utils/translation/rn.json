@@ -43,7 +43,7 @@
   "createNewAccount": "Gutanguza ikonti nshasha",
   "creatingCopaAccount": " Ugutanguza ikonti muri COPA",
   "validation": "Kwemeza",
-  "submitApplication": "Kurungika igisabo",
+  "submitApplication": "Kwiyandikisha",
   "accountCreated": "Ikonti yuguruwe",
   "accountCreatedMessage": "Ikonti yawe yuguruwe neza. Ubu urashobora kwinjira.",
   "youAre": "Uri nde",
@@ -208,7 +208,7 @@
   "bannerTitle": "COPA - Ihiganwa ry’imigambi yo kwiteza imbere",
   "bannerDescription": "Hindura umugambi wawe ube ishirahamwe riteye imbere. COPA Nyunganira ifasha amashirahamwe akiri matomato (MPME) hamwe n’ama koperative yo mu Burundi biciye mu nyigisho, gukurikiranwa hamwe n’inyunganizi biciye mu mahiganwa kugira imigambi yanyu ishirwe mu ngiro.",
   "bannerCall": "Guhamagarira amashirahamwe mato mato n'ama Koperative kugaragaza icese ko bipfuza kuba mu mugwi wa mbere wa COPA",
-  "bannerDeadline": "Iyandikishe gushika itariki <strong>2 ndamukiza 2026</strong>",
+  "bannerDeadline": "Iyandikishe gushika itariki <strong>6 ndamukiza 2026</strong>",
   "bannerParticipate": "Injira mw’ihiganwa rya COPA",
   "bannerLearnMore": "Menya vyinshi ",
 
@@ -650,24 +650,24 @@
       "subtitle": "Inyandiko zisabwa kugira uwiyandikishije yemererwe",
       "options": [
         {
-          "title": "Amahitamo 1 — Isosiyete ifise amategeko",
+          "title": "Umugwi wa mbere — Ishirahamwe ryemewe n'amategeko",
           "items": [
             "Ifishi yo gusaba ku rubuga yujujwe neza.",
             "Kopi ya karangamuntu canke ikarita y’impunzi y’umuyobozi yemewe n’inzego z’Uburundi kandi itarata igihe.",
             "Urupapuro rw’amategeko rugaragaza ko umuyobozi w’isosiyete ata mananiza yagirizwa mu mezi atatu ashize.",
             "Ibaruwa yo gushiraho umuyobozi niba atandukanye n’uwanditswe mu Rwandiko rw’ubucuruzi.",
-            "Kopi y’Icyangombwa c’Ubucuruzi canke icyemezo cyo kwiyandikisha ca kooperatifi canke NIF ya MPME.",
+            "Kopi y’Icyangombwa c’Ubucuruzi canke icyemezo cyo kwiyandikisha ca kooperatifi canke NIF y'ishirahamwe ryikorera ivyaryo.",
             "Icegeranyo c’ubutunzi c’amezi 6 aheze ca MPME. Icegeranyo ca mobile money n’igitabo c’igurishwa birakirwa."
           ]
         },
         {
-          "title": "Amahitamwo 2 — Isosiyete itagira amategeko (Ishirahamwe ritisunze amategeko n’ishirahamwe ritanditswe mu gitabo c’amategeko agenga amashirahamwe yikorera ivyayo (canke koperative itaremezwa n’ikigo ANACOOP gisanzwe kigenzura amakoperative ku rwego rw’igihugu) kandi rikaba rirangura ibikorwa vyayo aho ariho hose mu gihugu.)",
+          "title": "Umugwi wa kabiri — Ishirahamwe ritaremerwa n'amategeko",
           "items": [
             "Ifishi yo gusaba ku rubuga yujujwe neza.",
-            "Icyemezo cyemeza ko isosiyete imaze n’iburiburi umwaka umwe ku munsi wo gusaba.",
+            "Icemezo cemeza ko ishirahamwe imaze n’imiburiburi umwaka umwe ku munsi wo gusaba.",
             "Kopi ya karangamuntu y’umuyobozi canke ikarita y’impunzi yemejwe n’inzego z’Uburundi kandi itarata igihe.",
-            "Urupapuro rw’amategeko rugaragaza ko uumuyobozi w’isosiyete ata mananiza yagirizwa mu mezi atatu aheze.",
-            "Icegeranyo c’ubutunzi c’amezi 6 aheze z’umuyobozi w’isosiyete. Icegeranyo ca mobile money n’igitabo c’igurishwa birakirwa."
+            "Urupapuro rw’amategeko rugaragaza ko umuyobozi w’ishirahamwe ata mananiza yagirizwa mu mezi atatu aheze.",
+            "Icegeranyo c’ubutunzi c’amezi 6 aheze z’umuyobozi w’ishirahamwe. Icegeranyo ca mobile money n’igitabo c’igurishwa birakirwa."
           ]
         }
       ]
@@ -677,7 +677,7 @@
       "eligibility": "Abemerewe  n'ibisabwa mukwiyandikisha"
     },
     "cta": {
-      "title": "Ufise ikibazo ku bisabwa?",
+      "title": "Ukeneye insiguro ku bisabwa?",
       "description": "Umugwi wacu uragufasha kumenya neza ibisabwa.",
       "button": "Twandikire"
     }
@@ -694,7 +694,7 @@
         "Ivyo washikirije bikurikiranwa mw’ibanga nta ngere.",
         "Bika inomero ndangakirego kugira ushobore gukurikirana aho kigeze."
       ],
-      "vbgNotification": "🆘 Ibibazo vya’ihohoterwa rifatiye ku gitsina VBG/EAS-HS bihabwa ikibanza ca mbere.",
+      "vbgNotification": "🆘 Ibibazo vy’ihohoterwa rifatiye ku gitsina VBG/EAS-HS bihabwa ikibanza ca mbere.",
       "buttons": {
         "home": "Subira ku ntango",
         "contact": "Twandikire"
@@ -987,6 +987,8 @@
   "documentsInfoInformal": "Mushire ku rubuga izi mpapuro zikurikira (formats zemerewe: PDF, JPG, PNG). Izifise akamenyetso * ni ngombwa.",
   "chooseFile": "Hitamwo dosiye",
   "doc_idCard": "Kopi y’ikarata karangamuntu canke ikarata y’impunzi y’uwuserukira ishirahamwe",
+  "doc_idCard_formal": "Ikarata karangamuntu canke ikarata y impunzi itarata ikiringo yatanzwe n ubutegetsi bwo mu Burundi bubijejwe ry'uwuserukira ishirahamwe canke koperative",
+  "doc_idCard_informal": "Ikarata karangamuntu canke ikarata y impunzi itarata ikiringo yatanzwe n'ubutegetsi bwo mu Burundi bubijejwe ry'uwuserukira ishirahamwe canke koperative",
   "doc_criminalRecord": "Indondavyaha y’uwuserukira ishirahamwe itarengeje amezi 3",
   "doc_managerAct": "Icegeranyo cemeza  umuyobozi (niba atandukanye n’uwo muri registre de commerce)",
   "doc_commerceRegister": "Ikopi ya registre de commerce canke NIF ya MPME",
@@ -1092,5 +1094,19 @@
   },
 
   "staff": "Abakozi b’ishirahamwe ryawe",
-  "totalEmployees": "Ni ikihe gitigiri c’abakozi ukoresha?"
+  "totalEmployees": "Ni ikihe gitigiri c’abakozi ukoresha?",
+  "registrationPage": {
+    "closed": {
+      "title": "Kwiyandikisha vyugawe muri iki gihe",
+      "description": "Igihe co kwiyandikisha ntikiratangura canke carangiye. Turagusavye kuraba amatariki yemewe canke ugaruke mu nyuma."
+    },
+    "notStarted": {
+      "title": "Kwiyandikisha ntibiratangura",
+      "description": "Igihe co kwiyandikisha ntikiratangura. Garuka mu nyuma."
+    },
+    "ended": {
+      "title": "Kwiyandikisha vyarangiye",
+      "description": "Igihe co kwiyandikisha carangiye kuri iri cohorte."
+    }
+  }
 }

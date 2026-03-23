@@ -211,7 +211,7 @@
   "bannerTitle": "COPA – Concours de Plans d’Affaires",
   "bannerDescription": "Transformez vos ambitions en entreprise prospère. Le COPA nyunganira accompagne les entreprises (MPME) et Coopératives burundaises par des formations, un accompagnement personnalisé et des subventions compétitives pour concrétiser leurs ambitions.",
   "bannerCall": "Appel à Manifestation d’Intérêt des entreprises (MPME) et Coopératives de la 1ère Cohorte",
-  "bannerDeadline": "Candidatez jusqu’au <strong>02 avril 2026</strong>",
+  "bannerDeadline": "Candidatez jusqu’au <strong>06 avril 2026</strong>",
   "bannerParticipate": "Participez au COPA",
   "bannerLearnMore": "En savoir plus",
   "aboutprete": {
@@ -1040,6 +1040,8 @@
   "chooseFile": "Choisir un fichier",
 
   "doc_idCard": "Copie de la pièce d'identité ou de la carte de réfugié du représentant légal",
+  "doc_idCard_formal": "Copie de la pièce d’identité ou de la carte de réfugié du représentant légal délivrée par les autorités burundaises et en cours de validité",
+  "doc_idCard_informal": "Copie de la pièce d’identité ou de la carte de réfugié délivrée par les autorités burundaises et en cours de validité du représentant de l’entreprise ou de la Coopérative",
   "doc_criminalRecord": "Casier judiciaire datant de moins de 3 mois du représentant légal",
   "doc_managerAct": "Acte de nomination du gérant (si différent du registre de commerce)",
   "doc_commerceRegister": "Copie du Registre de commerce ou du NIF de l'entreprise (MPME) ou de la Coopérative",
@@ -1144,5 +1146,19 @@
     }
   },
   "staff": "Le personnel de votre entreprise",
-  "totalEmployees": "Quel est le nombre total d’employés de votre entreprise ?"
+  "totalEmployees": "Quel est le nombre total d’employés de votre entreprise ?",
+  "registrationPage": {
+    "closed": {
+      "title": "Inscriptions actuellement fermées",
+      "description": "La phase d’inscription n’est pas encore ouverte ou est déjà terminée. Veuillez consulter les dates officielles ou revenir plus tard."
+    },
+    "notStarted": {
+      "title": "Les inscriptions ne sont pas encore ouvertes",
+      "description": "La phase d’inscription n’a pas encore commencé. Revenez plus tard."
+    },
+    "ended": {
+      "title": "Les inscriptions sont terminées",
+      "description": "La période d’inscription est clôturée pour cette cohorte."
+    }
+  }
 }

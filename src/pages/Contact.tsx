@@ -230,7 +230,7 @@ const Contact: React.FC<ContactProps> = () => {
               </div>
             </div>
             <div className="col-lg-6">
-              <div className="ttm-col-bgcolor-yes ttm-bg bg-theme-WhiteColor z-index-2 p-40 p-lg-30 mt-15 mt-lg-30">
+              <div className="ttm-col-bgcolor-yes ttm-bg bg-theme-WhiteColor p-40 p-lg-30 mt-15 mt-lg-30">
                 <div className="ttm-col-wrapper-bg-layer ttm-bg-layer"></div>
                 <div className="layer-content">
                   <form
