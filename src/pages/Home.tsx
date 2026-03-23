@@ -88,38 +88,38 @@ const Home: React.FC = () => {
         </div>
       ),
     },
-    {
-      id: 2,
-      description: (
-        <div className="col-lg-12">
-          <div
-            className="testimonials ttm-testimonial-box-view-style2"
-            role="group"
-          >
-            <div className="testimonial-top">
-              <div className="testimonial-avatar">
-                <div className="testimonial-img">
-                  <img
-                    className="img-fluid"
-                    src={profile2}
-                    alt="testimonial-img"
-                  />
-                </div>
-              </div>
-              <div className="testimonial-caption">
-                <label>{t("testimonial2Label")}</label>
-                <h3>{t("testimonial2Name")}</h3>
-              </div>
-            </div>
-            <div className="testimonial-content">
-              <blockquote className="testimonial-text">
-                {t("testimonial2Text")}
-              </blockquote>
-            </div>
-          </div>
-        </div>
-      ),
-    },
+    // {
+    //   id: 2,
+    //   description: (
+    //     <div className="col-lg-12">
+    //       <div
+    //         className="testimonials ttm-testimonial-box-view-style2"
+    //         role="group"
+    //       >
+    //         <div className="testimonial-top">
+    //           <div className="testimonial-avatar">
+    //             <div className="testimonial-img">
+    //               <img
+    //                 className="img-fluid"
+    //                 src={profile2}
+    //                 alt="testimonial-img"
+    //               />
+    //             </div>
+    //           </div>
+    //           <div className="testimonial-caption">
+    //             <label>{t("testimonial2Label")}</label>
+    //             <h3>{t("testimonial2Name")}</h3>
+    //           </div>
+    //         </div>
+    //         <div className="testimonial-content">
+    //           <blockquote className="testimonial-text">
+    //             {t("testimonial2Text")}
+    //           </blockquote>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   ),
+    // },
     {
       id: 3,
       description: (
@@ -501,22 +501,6 @@ const Home: React.FC = () => {
                 <div className="col-sm-3">
                   <div className="client-box">
                     <div className="client-thumbnail">
-                      <Link
-                        to="https://www.banquemondiale.org/ext/fr/home"
-                        target="_blank"
-                      >
-                        <img
-                          className="img-fluid"
-                          src={brandLogo1}
-                          alt="Banque mondiale"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-3">
-                  <div className="client-box">
-                    <div className="client-thumbnail">
                       <Link to="https://presidence.gov.bi/" target="_blank">
                         <img
                           className="img-fluid"
@@ -544,6 +528,22 @@ const Home: React.FC = () => {
                           className="img-fluid"
                           src={brandLogo4}
                           alt="PRETE"
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-sm-3">
+                  <div className="client-box">
+                    <div className="client-thumbnail">
+                      <Link
+                        to="https://www.banquemondiale.org/ext/fr/home"
+                        target="_blank"
+                      >
+                        <img
+                          className="img-fluid"
+                          src={brandLogo1}
+                          alt="Banque mondiale"
                         />
                       </Link>
                     </div>
