@@ -102,7 +102,8 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
                   {t("home")}
                 </Link>
               </MDBDropdownToggle>
-              <MDBDropdownMenu />
+              <MDBDropdownMenu><MDBDropdownItem>
+                </MDBDropdownItem></MDBDropdownMenu>
             </MDBDropdown>
           </MDBNavItem>
 
@@ -131,7 +132,8 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
               {t("news")}
             </Link>
               </MDBDropdownToggle>
-              <MDBDropdownMenu />
+              <MDBDropdownMenu> <MDBDropdownItem>
+                </MDBDropdownItem></MDBDropdownMenu>
             </MDBDropdown>
           </MDBNavItem>
 
@@ -195,7 +197,7 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
       {!isAuthenticated ? (
         <>
           <MDBDropdownItem
-            tag={Link}
+            // tag={Link}
             to="/eligibility-criteria"
             onClick={closeMenu}
           >
@@ -203,7 +205,7 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
           </MDBDropdownItem>
 
           <MDBDropdownItem
-            tag={Link}
+            // tag={Link}
             to="/login"
             onClick={closeMenu}
           >
@@ -213,7 +215,7 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
       ) : (
         <>
           <MDBDropdownItem
-            tag={Link}
+            // tag={Link}
             to="/application"
             onClick={closeMenu}
           >
