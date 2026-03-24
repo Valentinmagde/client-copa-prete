@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
@@ -7,22 +7,8 @@ import Footer from "../components/layout/Footer";
 import Slider from "react-slick";
 import RowBgImg from "../assets/img/row-bgimage-1.png";
 
-const slick_slider = {
-  dots: false,
-  arrow: false,
-  autoplay: false,
-  infinite: false,
-  speed: 1000,
-  slidesToShow: 2,
-  slidesToScroll: 1,
-  rows: 1,
-  responsive: [
-    { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
-    { breakpoint: 575, settings: { slidesToShow: 1, slidesToScroll: 1 } },
-  ],
-};
-
 const EligibilityCriteria: React.FC = () => {
+  const [slidesToShow, setSlidesToShow] = useState(2);
   const { t } = useTranslation();
 
   const recevabiliteItems = t(
@@ -38,6 +24,37 @@ const EligibilityCriteria: React.FC = () => {
   const documentsOptions = t("eligibilityCriteriaPage.documents.options", {
     returnObjects: true,
   }) as { title: string; items: any[] }[];
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 575) {
+        setSlidesToShow(1);
+      } else if (window.innerWidth < 1024) {
+        setSlidesToShow(2);
+      } else {
+        setSlidesToShow(2);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const slick_slider = {
+  dots: false,
+  arrow: false,
+  autoplay: false,
+  infinite: false,
+  speed: 1000,
+  slidesToShow: slidesToShow,
+  slidesToScroll: 1,
+  rows: slidesToShow === 1 ? 2: 1,
+  responsive: [
+    { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+    { breakpoint: 575, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+  ],
+};
 
   return (
     <div className="site-main">
@@ -55,7 +72,7 @@ const EligibilityCriteria: React.FC = () => {
         <div className="container">
           {/* section title */}
           <div className="row">
-            <div className="col-lg-10 offset-1">
+            <div className="col-lg-10 offset-lg-1">
               <div className="section-title style2 mb-0">
                 <div className="title-header">
                   <h3>
@@ -86,7 +103,7 @@ const EligibilityCriteria: React.FC = () => {
             <div className="ttm-row sidebar job-sidebar clearfix pt-20 pb-0">
               <div className="container">
                 <div className="row">
-                  <div className="col-lg-10 offset-1 content-area">
+                  <div className="col-lg-10 offset-lg-1 content-area">
                     <div className="row">
                       <div className="col-lg-12 col-md-12">
                         {/* ── Recevabilité ── */}
@@ -182,20 +199,6 @@ const EligibilityCriteria: React.FC = () => {
           <Slider
             className="row slick_slider slick-arrows-style2 mb_10"
             {...slick_slider}
-            slidesToShow={2}
-            rows={1}
-            arrows={true}
-            autoplay={false}
-            responsive={[
-              {
-                breakpoint: 1024,
-                settings: { slidesToShow: 2, slidesToScroll: 2 },
-              },
-              {
-                breakpoint: 575,
-                settings: { slidesToShow: 1, slidesToScroll: 1 },
-              },
-            ]}
           >
             {documentsOptions.map((option, i) => (
               <div key={i} className="col-md-12">
@@ -235,11 +238,13 @@ const EligibilityCriteria: React.FC = () => {
               <div
                 data-animation="animate__fadeInUp"
                 data-delay="1.4"
-                className="mt-80 text-center"
+                className="mt-80 text-center d-md-flex justify-content-center"
+                style={{gap: 10, display: 'grid'}}
               >
                 <Link
-                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor me-3"
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
                   to="/register"
+                  style={{minWidth: 250}}
                 >
                   {t("apply")}
                 </Link>
