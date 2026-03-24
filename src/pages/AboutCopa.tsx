@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Header from "../components/layout/Header";
@@ -11,25 +11,11 @@ import about1 from "../assets/img/about/copa/02.jpg";
 import about2 from "../assets/img/about/04.png";
 import about3 from "../assets/img/about/05.png";
 
-/* ─── données statiques ──────────────────────────────────────────────────── */
-const slick_slider = {
-  dots: false,
-  arrow: false,
-  autoplay: false,
-  infinite: true,
-  speed: 1000,
-  slidesToShow: 2,
-  slidesToScroll: 1,
-  rows: 1,
-  responsive: [
-    { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
-    { breakpoint: 575,  settings: { slidesToShow: 1, slidesToScroll: 1 } },
-  ],
-};
-
 /* ─── composant ─────────────────────────────────────────────────────────── */
 
 const AboutCopa: React.FC = () => {
+  const [slidesToShow, setSlidesToShow] = useState(2);
+
   const { t } = useTranslation();
 
   const whyList = t("aboutcopa.intro.whyParticipate.list", {
@@ -43,6 +29,37 @@ const AboutCopa: React.FC = () => {
   const timelinePhases = t("aboutcopa.timeline.phases", {
     returnObjects: true,
   }) as any[];
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 575) {
+        setSlidesToShow(1);
+      } else if (window.innerWidth < 1024) {
+        setSlidesToShow(2);
+      } else {
+        setSlidesToShow(2);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const slick_slider = {
+  dots: false,
+  arrow: false,
+  autoplay: false,
+  infinite: true,
+  speed: 1000,
+  slidesToShow: slidesToShow,
+  slidesToScroll: 1,
+  rows: slidesToShow === 1 ? 6: 3,
+  responsive: [
+    { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+    { breakpoint: 575,  settings: { slidesToShow: 1, slidesToScroll: 1 } },
+  ],
+};
 
   return (
     <div className="site-main">
@@ -171,14 +188,14 @@ const AboutCopa: React.FC = () => {
           <Slider
             className="row slick_slider slick-arrows-style2 mb_10"
             {...slick_slider}
-            slidesToShow={2}
-            rows={3}
-            arrows={true}
-            autoplay={false}
-            responsive={[
-              { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
-              { breakpoint: 575,  settings: { slidesToShow: 1, slidesToScroll: 1 } },
-            ]}
+            // slidesToShow={2}
+            // rows={6}
+            // arrows={true}
+            // autoplay={false}
+            // responsive={[
+            //   { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 2 } },
+            //   { breakpoint: 575,  settings: { slidesToShow: 2, slidesToScroll: 1 } },
+            // ]}
           >
             {copaInfo.map((item, i) => (
               <div key={i} className="col-md-12">

@@ -34,8 +34,8 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 
   // Language options
   const languages: LanguageOption[] = [
-    { code: "fr", name: "Français", flag: "🇫🇷" },
     { code: "rn", name: "Kirundi", flag: "🇧🇮" },
+    { code: "fr", name: "Français", flag: "🇫🇷" },
   ];
 
   // Find current language details
