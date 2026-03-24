@@ -75,7 +75,7 @@ const Home: React.FC = () => {
                 </div>
               </div>
               <div className="testimonial-caption">
-                <label>{t("testimonial1Label")}</label>
+                {/* <label>{t("testimonial1Label")}</label> */}
                 <h3>{t("testimonial1Name")}</h3>
               </div>
             </div>
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
                 </div>
               </div>
               <div className="testimonial-caption">
-                <label>{t("testimonial3Label")}</label>
+                {/* <label>{t("testimonial3Label")}</label> */}
                 <h3>{t("testimonial3Name")}</h3>
               </div>
             </div>
@@ -225,13 +225,13 @@ const Home: React.FC = () => {
                   </h3>
                   <h2 className="title">{t("aboutCopaTitle")}</h2>
                 </div>
-                <div className="title-desc">
+                <div className="title-desc text-justify">
                   <p>{t("aboutCopaDesc1")}</p>
                   <p>{t("aboutCopaDesc2")}</p>
                 </div>
               </div>
               <Link
-                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark"
+                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-dark mb-20"
                 to="/copa-presentation"
               >
                 {t("learnMore")}

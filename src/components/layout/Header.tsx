@@ -204,7 +204,7 @@ const Header: React.FC<HeaderProps> = () => {
                     <Logo />
                   </div>
 
-                  <div className="border-box-block ms-auto mr-20">
+                  <div className="border-box-block ms-auto">
                     <div className="d-flex align-items-center justify-content-between">
                       <Menu />
                       <div className="mobile-menu">

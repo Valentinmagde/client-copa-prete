@@ -1,225 +1,108 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MDBNavbar,
   MDBNavbarNav,
   MDBNavItem,
-  MDBNavLink,
   MDBCollapse,
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
-  MDBHamburgerToggler,
+  MDBNavbarToggler,
 } from "mdbreact";
 import { useTranslation } from "react-i18next";
+import { setLocale } from "@/utils/storage";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  isAuthenticatedCs,
+  getUser,
+  clearLocalAuthData,
+  getAccessTokenCs,
+} from "../../utils/storage";
 
-// Define props interface (empty but can be extended)
 interface MobileMenuProps {}
 
 const MobileMenu: React.FC<MobileMenuProps> = () => {
   const [collapse1, setCollapse1] = useState<boolean>(false);
-  const [collapseID, setCollapseID] = useState<string>("");
-  const { t } = useTranslation();
-
-  const toggleCollapse = (collapseID: string) => () => {
-    setCollapseID((prev) => (prev !== collapseID ? collapseID : ""));
-  }
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<any>(null);
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   const toggleSingleCollapse = (collapseId: string): void => {
     if (collapseId === "collapse1") {
       setCollapse1(!collapse1);
     }
-    // Handle other collapses if needed
-  }
+  };
+
+  const handleLanguageChange = (langCode: string) => {
+    i18n.changeLanguage(langCode);
+    setLocale(langCode, { sameSite: "None", secure: true });
+    setCollapse1(false);
+  };
+
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleLogout = () => {
+    clearLocalAuthData();
+    setIsAuthenticated(false);
+    setUser(null);
+    setCollapse1(false);
+    setDropdownOpen(false);
+    navigate("/login");
+  };
+
+  // Vérifier l'authentification au chargement
+  const checkAuth = () => {
+    const auth = isAuthenticatedCs();
+    setIsAuthenticated(auth);
+
+    if (auth) {
+      const userData = getUser();
+      setUser(userData);
+    } else {
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+
+    // Écouter les changements de stockage
+    const handleStorageChange = () => {
+      checkAuth();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  // Fermer le menu quand on clique sur un lien
+  const closeMenu = () => {
+    setCollapse1(false);
+    setDropdownOpen(false);
+  };
 
   return (
-    // <MDBNavbar>
-    //   <MDBHamburgerToggler
-    //     id="hamburger1"
-    //     onClick={() => toggleSingleCollapse("collapse1")}
-    //   />
-    //   <MDBCollapse isOpen={collapse1} navbar>
-    //     <MDBNavbarNav left>
-    //       <MDBNavItem>
-    //         <MDBDropdown>
-    //           <MDBDropdownToggle nav caret>
-    //             Home
-    //           </MDBDropdownToggle>
-    //           <MDBDropdownMenu>
-    //             <MDBDropdownItem href={import.meta.env.PUBLIC_URL + "/"}>
-    //               Homepage 1
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem href={import.meta.env.PUBLIC_URL + "/Home2"}>
-    //               Homepage 2
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem href={import.meta.env.PUBLIC_URL + "/Home3"}>
-    //               Homepage 3
-    //             </MDBDropdownItem>
-    //           </MDBDropdownMenu>
-    //         </MDBDropdown>
-    //       </MDBNavItem>
-
-    //       <MDBNavItem>
-    //         <MDBDropdown>
-    //           <MDBDropdownToggle nav caret>
-    //             Pages
-    //           </MDBDropdownToggle>
-    //           <MDBDropdownMenu>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/about_us"}
-    //             >
-    //               About Us
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/services"}
-    //             >
-    //               Services
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/services_details"}
-    //             >
-    //               Services Details
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/carrer_01"}
-    //             >
-    //               Carrer
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem href={import.meta.env.PUBLIC_URL + "/login"}>
-    //               Login
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/register"}
-    //             >
-    //               Register
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/error_404"}
-    //             >
-    //               Error 404
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/error_405"}
-    //             >
-    //               Error 405
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/contact_01"}
-    //             >
-    //               Contact us 01
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/contact_02"}
-    //             >
-    //               Contact us 02
-    //             </MDBDropdownItem>
-    //           </MDBDropdownMenu>
-    //         </MDBDropdown>
-    //       </MDBNavItem>
-
-    //       <MDBNavItem>
-    //         <MDBDropdown>
-    //           <MDBDropdownToggle nav caret>
-    //             Jobs
-    //           </MDBDropdownToggle>
-    //           <MDBDropdownMenu>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/job_list"}
-    //             >
-    //               Job List
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/job_details"}
-    //             >
-    //               Job Details
-    //             </MDBDropdownItem>
-    //           </MDBDropdownMenu>
-    //         </MDBDropdown>
-    //       </MDBNavItem>
-
-    //       <MDBNavItem>
-    //         <MDBDropdown>
-    //           <MDBDropdownToggle nav caret>
-    //             Employers
-    //           </MDBDropdownToggle>
-    //           <MDBDropdownMenu>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/employers_list"}
-    //             >
-    //               Employers List
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/employers_details"}
-    //             >
-    //               Employers Details
-    //             </MDBDropdownItem>
-    //           </MDBDropdownMenu>
-    //         </MDBDropdown>
-    //       </MDBNavItem>
-
-    //       <MDBNavItem>
-    //         <MDBDropdown>
-    //           <MDBDropdownToggle nav caret>
-    //             Candidates
-    //           </MDBDropdownToggle>
-    //           <MDBDropdownMenu>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/candidate_list"}
-    //             >
-    //               Candidate List
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/candidate_details"}
-    //             >
-    //               Candidate Details
-    //             </MDBDropdownItem>
-    //           </MDBDropdownMenu>
-    //         </MDBDropdown>
-    //       </MDBNavItem>
-
-    //       <MDBNavItem>
-    //         <MDBDropdown>
-    //           <MDBDropdownToggle nav caret>
-    //             Blog
-    //           </MDBDropdownToggle>
-    //           <MDBDropdownMenu>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/blog_classic"}
-    //             >
-    //               Blog Classic
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/blog_grid"}
-    //             >
-    //               Blog Grid
-    //             </MDBDropdownItem>
-    //             <MDBDropdownItem
-    //               href={import.meta.env.PUBLIC_URL + "/blog_details"}
-    //             >
-    //               Blog Details
-    //             </MDBDropdownItem>
-    //           </MDBDropdownMenu>
-    //         </MDBDropdown>
-    //       </MDBNavItem>
-    //     </MDBNavbarNav>
-    //   </MDBCollapse>
-    // </MDBNavbar>
     <MDBNavbar>
-      <MDBHamburgerToggler
-        id="hamburger1"
-        onClick={() => toggleSingleCollapse("collapse1")}
-      />
+      <MDBNavbarToggler onClick={() => toggleSingleCollapse("collapse1")} />
       <MDBCollapse isOpen={collapse1} navbar>
         <MDBNavbarNav left>
           {/* Home */}
           <MDBNavItem>
             <MDBDropdown>
               <MDBDropdownToggle nav>
-                {t("home")}
+                <Link to="/" className="">
+                  {t("home")}
+                </Link>
               </MDBDropdownToggle>
-              <MDBDropdownMenu>
-                <MDBDropdownItem href="/">{t("homePage")}</MDBDropdownItem>
-              </MDBDropdownMenu>
+              <MDBDropdownMenu />
             </MDBDropdown>
           </MDBNavItem>
 
@@ -230,31 +113,11 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
                 {t("about")}
               </MDBDropdownToggle>
               <MDBDropdownMenu>
-                <MDBDropdownItem href="/prete-presentation">
+                <MDBDropdownItem href="/prete-presentation" onClick={closeMenu}>
                   {t("pretePresentation")}
                 </MDBDropdownItem>
-                <MDBDropdownItem href="/copa-presentation">
+                <MDBDropdownItem href="/copa-presentation" onClick={closeMenu}>
                   {t("copaPresentation")}
-                </MDBDropdownItem>
-              </MDBDropdownMenu>
-            </MDBDropdown>
-          </MDBNavItem>
-
-          {/* COPA */}
-          <MDBNavItem>
-            <MDBDropdown>
-              <MDBDropdownToggle nav caret>
-                {t("copa")}
-              </MDBDropdownToggle>
-              <MDBDropdownMenu>
-                <MDBDropdownItem href="/how-to-participate">
-                  {t("howToParticipate")}
-                </MDBDropdownItem>
-                <MDBDropdownItem href="/edition-calender">
-                  {t("editionCalendar")}
-                </MDBDropdownItem>
-                <MDBDropdownItem href="/eligibility-criteria">
-                  {t("eligibilityCriteria")}
                 </MDBDropdownItem>
               </MDBDropdownMenu>
             </MDBDropdown>
@@ -263,9 +126,12 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
           {/* News */}
           <MDBNavItem>
             <MDBDropdown>
-              <MDBDropdownToggle nav>
-                {t("news")}
+              <MDBDropdownToggle nav caret>
+                <Link to="/news">
+              {t("news")}
+            </Link>
               </MDBDropdownToggle>
+              <MDBDropdownMenu />
             </MDBDropdown>
           </MDBNavItem>
 
@@ -276,15 +142,96 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
                 {t("contact")}
               </MDBDropdownToggle>
               <MDBDropdownMenu>
-                <MDBDropdownItem href="/contact-us">
+                <MDBDropdownItem href="/contact-us" onClick={closeMenu}>
                   {t("contactForm")}
                 </MDBDropdownItem>
-                <MDBDropdownItem href="/submit-complaint">
+                <MDBDropdownItem href="/submit-complaint" onClick={closeMenu}>
                   {t("submitComplaint")}
                 </MDBDropdownItem>
               </MDBDropdownMenu>
             </MDBDropdown>
           </MDBNavItem>
+
+          <MDBDropdownItem divider />
+
+          {/* Language */}
+          <MDBNavItem>
+            <MDBDropdown>
+              <MDBDropdownToggle nav caret>
+                <div className="d-flex align-items-center">
+                  <i className="ti ti-world me-2"></i>
+                  {i18n.language === "fr" ? "Français" : "Kirundi"}
+                </div>
+              </MDBDropdownToggle>
+              <MDBDropdownMenu>
+                <MDBDropdownItem onClick={() => handleLanguageChange("fr")}>
+                  Français
+                </MDBDropdownItem>
+                <MDBDropdownItem onClick={() => handleLanguageChange("rn")}>
+                  Kirundi
+                </MDBDropdownItem>
+              </MDBDropdownMenu>
+            </MDBDropdown>
+          </MDBNavItem>
+
+          {/* Auth */}
+          <MDBNavItem>
+  <MDBDropdown>
+    <MDBDropdownToggle nav caret>
+      {!isAuthenticated ? (
+        <div className="d-flex align-items-center">
+          <i className="ti ti-user me-2"></i>
+          {t("account")}
+        </div>
+      ) : (
+        <div className="d-flex align-items-center">
+          <i className="ti ti-user me-2"></i>
+          {user?.firstName} {user?.lastName}
+        </div>
+      )}
+    </MDBDropdownToggle>
+
+    <MDBDropdownMenu>
+      {!isAuthenticated ? (
+        <>
+          <MDBDropdownItem
+            tag={Link}
+            to="/eligibility-criteria"
+            onClick={closeMenu}
+          >
+            {t("signup")}
+          </MDBDropdownItem>
+
+          <MDBDropdownItem
+            tag={Link}
+            to="/login"
+            onClick={closeMenu}
+          >
+            {t("login")}
+          </MDBDropdownItem>
+        </>
+      ) : (
+        <>
+          <MDBDropdownItem
+            tag={Link}
+            to="/application"
+            onClick={closeMenu}
+          >
+            <i className="ti ti-medall me-2"></i>
+            {t("myApplication")}
+          </MDBDropdownItem>
+
+          <MDBDropdownItem divider />
+
+          <MDBDropdownItem onClick={handleLogout}>
+            <i className="ti ti-power-off me-2"></i>
+            {t("logout")}
+          </MDBDropdownItem>
+        </>
+      )}
+    </MDBDropdownMenu>
+  </MDBDropdown>
+</MDBNavItem>
         </MDBNavbarNav>
       </MDBCollapse>
     </MDBNavbar>

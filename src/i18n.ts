@@ -13,7 +13,7 @@ i18n
       fr: { translation: fr },
     },
     debug: true,
-    fallbackLng: "fr",
+    fallbackLng: "rn",
     // lag: "en",
     nonExplicitSupportedLngs: true,
     interpolation: {

@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useRef,
-} from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
@@ -18,7 +12,7 @@ import ReferenceService from "@/services/reference/reference.service";
 import { toast } from "react-toastify";
 import BeneficiaryService from "@/services/beneficiary/beneficiary.service";
 import { getUser } from "@/utils/storage";
-import { validateEmail, validateNif } from "@/utils/validators";
+import { validateEmail } from "@/utils/validators";
 import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -78,7 +72,7 @@ const KirundiLocale = {
 
 type EntrepreneurType = "burundian" | "refugee" | "other" | "";
 type GenderType = "M" | "F" | "";
-type CompanyStatusType = "formal" | "informal" | "project" | "";
+type CompanyStatusType = "formal" | "informal" | "";
 type MaritalStatusType = "single" | "married" | "divorced" | "widowed" | "";
 type EducationLevelType = "none" | "primary" | "secondary" | "university" | "";
 type LegalStatusType =
@@ -170,7 +164,7 @@ interface FormData {
   albinosPartners: number | "";
   repatriatesPartners: number | "";
   annualRevenue: number | "";
-  creationYear: number | "";
+  creationYear: string;
   sectorId: number | "";
   otherCompanySector: string;
   activityDescription: string;
@@ -331,7 +325,7 @@ interface BeneficiaryData {
     albinosPartners?: number;
     repatriatesPartners?: number;
     annualRevenue?: number;
-    creationYear?: number;
+    creationYear?: string;
     hasBankAccount?: boolean;
     hasBankCredit?: boolean;
     bankCreditAmount?: number;
@@ -949,6 +943,7 @@ const Application: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(true);
   const [savingStep, setSavingStep] = useState<number | null>(null);
+  const [goToNext, setGoToNext] = useState(false);
   const [documents, setDocuments] = useState<DocumentFiles>({});
   const [docErrors, setDocErrors] = useState<FormErrors>({});
 
@@ -968,9 +963,11 @@ const Application: React.FC = () => {
   useEffect(() => {
     loadReferenceData();
   }, []);
+
   useEffect(() => {
     if (user?.id) loadBeneficiaryData();
   }, [user?.id]);
+
   useEffect(() => {
     if (!form.provinceId) {
       setCommunes([]);
@@ -978,6 +975,7 @@ const Application: React.FC = () => {
     }
     loadCommunes(form.provinceId, setCommunes);
   }, [form.provinceId]);
+
   useEffect(() => {
     if (!form.companyProvinceId) {
       setCompanyCommunes([]);
@@ -985,6 +983,18 @@ const Application: React.FC = () => {
     }
     loadCommunes(form.companyProvinceId, setCompanyCommunes);
   }, [form.companyProvinceId]);
+
+  // useEffect(() => {
+  //   localStorage.setItem(`copa_form_${user?.id}`, JSON.stringify(form));
+  // }, [form]);
+
+  // // Au chargement, restaurer si le serveur n'a pas de données
+  // useEffect(() => {
+  //   const saved = localStorage.getItem(`copa_form_${user?.id}`);
+  //   if (saved && !beneficiary?.company) {
+  //     setForm(JSON.parse(saved));
+  //   }
+  // }, []);
 
   const loadReferenceData = async () => {
     setLoadingStates((p) => ({ ...p, provinces: true, sectors: true }));
@@ -1002,8 +1012,8 @@ const Application: React.FC = () => {
     }
   };
 
-  const loadBeneficiaryData = async () => {
-    setLoading(true);
+  const loadBeneficiaryData = async (nextStep: boolean = false) => {
+    if (!nextStep) setLoading(true);
     try {
       const res: any = await BeneficiaryService.getByUserId(user.id, lang);
       if (res) {
@@ -1128,7 +1138,11 @@ const Application: React.FC = () => {
             ? Number(d.company.revenueYearN1)
             : "",
           creationYear: d.company?.creationDate,
-          sectorId: d.company?.primarySectorId || (!d.company?.primarySectorId && d.company?.otherCompanySector) ? -1 : "",
+          sectorId: d.company?.primarySectorId
+            ? d.company.primarySectorId
+            : d.company?.otherCompanySector
+              ? -1
+              : "",
           otherCompanySector: d.company?.otherCompanySector || "",
           activityDescription: d.company?.activityDescription || "",
           hasBankAccount: tri(d.company?.hasBankAccount),
@@ -1243,7 +1257,7 @@ const Application: React.FC = () => {
       if (step === 2) {
         if (!form.companyStatus) {
           e.companyStatus = t("required");
-        } else if (form.companyStatus !== "project") {
+        } else {
           if (!form.companyName.trim()) e.companyName = t("required");
           if (!form.creationYear) {
             e.creationYear = t("required");
@@ -1461,33 +1475,42 @@ const Application: React.FC = () => {
     [form, documents, t],
   );
 
-  const saveCurrentStep = async (isFinish = false) => {
+  const saveCurrentStep = async (
+    isFinish: boolean = false,
+    saving: boolean = true,
+  ) => {
     if (!beneficiary?.id) {
       toast.error(t("beneficiaryNotFound"));
       return;
     }
+
     if (!validateStep(currentStep)) {
       console.log(JSON.stringify(errors));
       toast.error(t("contactPage.validation.checkErrors"));
       return;
     }
+
     setSavingStep(currentStep);
+
     try {
       const cleanNumber = (v: any) => {
         if (v === undefined || v === null || v === "") return undefined;
         const n = Number(v);
         return isNaN(n) ? undefined : n;
       };
+
       const cleanBoolean = (v: any) => {
         if (v === "" || v == null) return undefined;
         if (v === "yes") return true;
         if (v === "no") return false;
         return Boolean(v);
       };
+
       const cleanString = (v: any) => {
         if (v === "" || v == null) return undefined;
         return String(v).trim();
       };
+
       const step1Data =
         currentStep === 1 || isFinish
           ? {
@@ -1530,7 +1553,7 @@ const Application: React.FC = () => {
         currentStep === 2 || isFinish
           ? {
               companyStatus: form.companyStatus || undefined,
-              companyExists: form.companyStatus !== "project" ? "yes" : "no",
+              companyExists: "yes",
               companyName: cleanString(form.companyName),
               companyNeighborhood: cleanString(form.companyNeighborhood),
               companyZone: cleanString(form.companyZone),
@@ -1636,6 +1659,7 @@ const Application: React.FC = () => {
         { step1: step1Data, step2: step2Data, step3: step3Data },
         lang,
       );
+
       if (currentStep === 2) {
         const docList =
           form.companyStatus === "formal"
@@ -1647,48 +1671,56 @@ const Application: React.FC = () => {
           .filter((doc) => documents[doc.key])
           .map(async (doc) => {
             if (documents[doc.key] instanceof File) {
-              try {
-                return await DocumentService.uploadFormDocument(
-                  documents[doc.key] as any,
-                  {
-                    entityId: beneficiary.id,
-                    entityType: "beneficiary",
-                    documentKey: doc.key,
-                    documentTypeId: doc.typeId,
-                    formStep: "STEP4",
-                  },
-                );
-              } catch (error) {
-                throw error;
-              }
+              // try {
+              return await DocumentService.uploadFormDocument(
+                documents[doc.key] as any,
+                {
+                  entityId: beneficiary.id,
+                  entityType: "beneficiary",
+                  documentKey: doc.key,
+                  documentTypeId: doc.typeId,
+                  formStep: "STEP4",
+                },
+              );
+              // } catch (error) {
+              //   throw error;
+              // }
             }
           });
         if (uploadPromises.length > 0) await Promise.all(uploadPromises);
       }
-      await loadBeneficiaryData();
-      toast.success(
-        currentStep === 4
-          ? t("profileUpdated")
-          : t("stepSaved", { step: currentStep }),
-      );
+
+      await loadBeneficiaryData(!saving);
+
+      if (isFinish || saving) {
+        toast.success(
+          currentStep === 4
+            ? t("profileUpdated")
+            : t("stepSaved", { step: currentStep }),
+        );
+      }
     } catch (err: any) {
       toast.error(err.response?.data?.message || t("errorSavingStep"));
     } finally {
       setSavingStep(null);
+      setGoToNext(false);
     }
   };
 
-  const goToNextStep = () => {
+  const goToNextStep = async () => {
     if (!validateStep(currentStep)) {
       console.log(JSON.stringify(errors));
       toast.error(t("contactPage.validation.checkErrors"));
       return;
     }
     if (currentStep < 4) {
+      setGoToNext(true);
+      await saveCurrentStep(false, false);
       setCurrentStep((p) => p + 1);
       window.scrollTo(0, 0);
     }
   };
+
   const goToPreviousStep = () => {
     if (currentStep > 1) {
       setCurrentStep((p) => p - 1);
@@ -1818,25 +1850,30 @@ const Application: React.FC = () => {
                         />
                       )}
                       <div className="col-12 mt-25">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <div>
+                        <div className="row g-2 d-md-flex justify-content-md-between align-items-md-center">
+                          
+                          {/* Previous */}
+                          <div className="col-12 col-md-auto">
                             {currentStep > 1 && (
                               <button
                                 type="button"
                                 onClick={goToPreviousStep}
-                                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
+                                className="ttm-btn w-100 ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor"
                               >
                                 ← {t("previous")}
                               </button>
                             )}
                           </div>
-                          <div className="d-flex" style={{ gap: 10 }}>
+
+                          {/* Actions */}
+                          <div className="col-12 col-md-auto d-md-flex" style={{ gap: 10, display: 'grid' }}>
+                            {/* Save */}
                             <button
                               type="submit"
                               disabled={savingStep === currentStep}
-                              className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor d-flex justify-content-center align-items-center"
+                              className="ttm-btn w-100 ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-btn-color-skincolor d-flex justify-content-center align-items-center"
                             >
-                              {savingStep === currentStep ? (
+                              {savingStep === currentStep && !goToNext ? (
                                 <>
                                   <span className="copa-spinner" />
                                   {t("saving")}...
@@ -1848,20 +1885,24 @@ const Application: React.FC = () => {
                                 </>
                               )}
                             </button>
+
+                            {/* Next */}
                             {currentStep < 4 && (
                               <button
                                 type="button"
                                 onClick={goToNextStep}
-                                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                                className="ttm-btn w-100 ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
                               >
                                 {t("next")} →
                               </button>
                             )}
+
+                            {/* Submit */}
                             {currentStep === 4 && (
                               <button
                                 type="button"
                                 onClick={() => saveCurrentStep(true)}
-                                className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                                className="ttm-btn w-100 ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor gap-4"
                               >
                                 ✓ {t("submit")}
                               </button>
@@ -2341,7 +2382,6 @@ const Step2Fields: React.FC<any> = ({
   loadingStates,
   canShowCompanyFields,
   onUpdateField,
-  toggleArray,
   documents,
   docErrors,
   onUpdateDocument,
@@ -2488,7 +2528,7 @@ const Step2Fields: React.FC<any> = ({
                     date?.toISOString().split("T")[0] || "",
                   )
                 }
-                placeholder={t("enterValue")}
+                placeholder={"dd-mm-yyyy"}
                 options={{
                   enableTime: false,
                   dateFormat: "d-m-Y",
@@ -3201,7 +3241,7 @@ const Step3Fields: React.FC<any> = ({
 
     {/* Origine de l'idée */}
     <div className="col-12">
-      <FL label={t("businessIdeaOrigin")} required/>
+      <FL label={t("businessIdeaOrigin")} required />
       <label>
         <textarea
           rows={3}
@@ -3273,7 +3313,7 @@ const Step3Fields: React.FC<any> = ({
 
     {form.hasCompetitors === "yes" && (
       <div className="col-12">
-        <FL label={t("competitorNamesPlaceholder")} required/>
+        <FL label={t("competitorNamesPlaceholder")} required />
         <label>
           <textarea
             rows={2}

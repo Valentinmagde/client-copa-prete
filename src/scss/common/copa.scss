@@ -802,3 +802,7 @@ span.flatpickr-weekday {
 .text-justify {
   text-align: justify;
 }
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}
