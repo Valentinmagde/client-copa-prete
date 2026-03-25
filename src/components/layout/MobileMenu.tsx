@@ -191,14 +191,14 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
           {user?.firstName} {user?.lastName}
         </div>
       )}
-    </MDBDropdownToggle>
+        </MDBDropdownToggle>
 
-    <MDBDropdownMenu>
-      {!isAuthenticated ? (
-        <>
-          <MDBDropdownItem
-            // tag={Link}
-            to="/eligibility-criteria"
+        <MDBDropdownMenu>
+          {!isAuthenticated ? (
+            <>
+              <MDBDropdownItem
+                // tag={Link}
+            href="/eligibility-criteria"
             onClick={closeMenu}
           >
             {t("signup")}
@@ -206,7 +206,7 @@ const MobileMenu: React.FC<MobileMenuProps> = () => {
 
           <MDBDropdownItem
             // tag={Link}
-            to="/login"
+          href="/login"
             onClick={closeMenu}
           >
             {t("login")}
