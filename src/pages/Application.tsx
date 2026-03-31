@@ -540,44 +540,44 @@ const ELIGIBILITY_QUESTIONS: {
   labelKey: string;
   icon?: string;
 }[] = [
-  {
-    key: "isPublicServant",
-    labelKey: "isPublicServantLabel",
-    icon: "ti-briefcase",
-  },
-  {
-    key: "isRelativeOfPublicServant",
-    labelKey: "isRelativeOfPublicServantLabel",
-    icon: "fa-venus",
-  },
-  { key: "isPublicIntern", labelKey: "isPublicInternLabel", icon: "fa-user" },
-  {
-    key: "isRelativeOfPublicIntern",
-    labelKey: "isRelativeOfPublicInternLabel",
-    icon: "fa-transgender-alt",
-  },
-  {
-    key: "wasHighOfficer",
-    labelKey: "wasHighOfficerLabel",
-    icon: "ti-flag-alt-2",
-  },
-  {
-    key: "isRelativeOfHighOfficer",
-    labelKey: "isRelativeOfHighOfficerLabel",
-    icon: "fa-transgender-alt",
-  },
-  { key: "hasProjectLink", labelKey: "hasProjectLinkLabel", icon: "ti-link" },
-  {
-    key: "isDirectSupplierToProject",
-    labelKey: "isDirectSupplierToProjectLabel",
-    icon: "fa-handshake",
-  },
-  {
-    key: "hasPreviousGrant",
-    labelKey: "hasPreviousGrantLabel",
-    icon: "fa-handshake",
-  },
-];
+    {
+      key: "isPublicServant",
+      labelKey: "isPublicServantLabel",
+      icon: "ti-briefcase",
+    },
+    {
+      key: "isRelativeOfPublicServant",
+      labelKey: "isRelativeOfPublicServantLabel",
+      icon: "fa-venus",
+    },
+    { key: "isPublicIntern", labelKey: "isPublicInternLabel", icon: "fa-user" },
+    {
+      key: "isRelativeOfPublicIntern",
+      labelKey: "isRelativeOfPublicInternLabel",
+      icon: "fa-transgender-alt",
+    },
+    {
+      key: "wasHighOfficer",
+      labelKey: "wasHighOfficerLabel",
+      icon: "ti-flag-alt-2",
+    },
+    {
+      key: "isRelativeOfHighOfficer",
+      labelKey: "isRelativeOfHighOfficerLabel",
+      icon: "fa-transgender-alt",
+    },
+    { key: "hasProjectLink", labelKey: "hasProjectLinkLabel", icon: "ti-link" },
+    {
+      key: "isDirectSupplierToProject",
+      labelKey: "isDirectSupplierToProjectLabel",
+      icon: "fa-handshake",
+    },
+    {
+      key: "hasPreviousGrant",
+      labelKey: "hasPreviousGrantLabel",
+      icon: "fa-handshake",
+    },
+  ];
 
 // ─── Shared UI atoms ──────────────────────────────────────────────────────────
 
@@ -1514,145 +1514,145 @@ const Application: React.FC = () => {
       const step1Data =
         currentStep === 1 || isFinish
           ? {
-              status:
-                form.entrepreneurType === "burundian" ? "burundais" : "refugie",
-              firstName: cleanString(form.firstName),
-              lastName: cleanString(form.lastName),
-              position: cleanString(form.position),
-              gender: form.gender || undefined,
-              birthDate: form.birthDate || undefined,
-              maritalStatus: form.maritalStatus || undefined,
-              educationLevel: form.educationLevel || undefined,
-              email: cleanString(form.email),
-              phone: cleanString(form.phone),
-              provinceId: cleanNumber(form.provinceId),
-              communeId: cleanNumber(form.communeId),
-              neighborhood: cleanString(form.neighborhood),
-              zone: cleanString(form.zone),
-              isPublicServant: cleanBoolean(form.isPublicServant),
-              isRelativeOfPublicServant: cleanBoolean(
-                form.isRelativeOfPublicServant,
-              ),
-              isPublicIntern: cleanBoolean(form.isPublicIntern),
-              isRelativeOfPublicIntern: cleanBoolean(
-                form.isRelativeOfPublicIntern,
-              ),
-              wasHighOfficer: cleanBoolean(form.wasHighOfficer),
-              isRelativeOfHighOfficer: cleanBoolean(
-                form.isRelativeOfHighOfficer,
-              ),
-              hasProjectLink: cleanBoolean(form.hasProjectLink),
-              isDirectSupplierToProject: cleanBoolean(
-                form.isDirectSupplierToProject,
-              ),
-              hasPreviousGrant: cleanBoolean(form.hasPreviousGrant),
-              previousGrantDetails: cleanString(form.previousGrantDetails),
-            }
+            status:
+              form.entrepreneurType === "burundian" ? "burundais" : "refugie",
+            firstName: cleanString(form.firstName),
+            lastName: cleanString(form.lastName),
+            position: cleanString(form.position),
+            gender: form.gender || undefined,
+            birthDate: form.birthDate || undefined,
+            maritalStatus: form.maritalStatus || undefined,
+            educationLevel: form.educationLevel || undefined,
+            email: cleanString(form.email),
+            phone: cleanString(form.phone),
+            provinceId: cleanNumber(form.provinceId),
+            communeId: cleanNumber(form.communeId),
+            neighborhood: cleanString(form.neighborhood),
+            zone: cleanString(form.zone),
+            isPublicServant: cleanBoolean(form.isPublicServant),
+            isRelativeOfPublicServant: cleanBoolean(
+              form.isRelativeOfPublicServant,
+            ),
+            isPublicIntern: cleanBoolean(form.isPublicIntern),
+            isRelativeOfPublicIntern: cleanBoolean(
+              form.isRelativeOfPublicIntern,
+            ),
+            wasHighOfficer: cleanBoolean(form.wasHighOfficer),
+            isRelativeOfHighOfficer: cleanBoolean(
+              form.isRelativeOfHighOfficer,
+            ),
+            hasProjectLink: cleanBoolean(form.hasProjectLink),
+            isDirectSupplierToProject: cleanBoolean(
+              form.isDirectSupplierToProject,
+            ),
+            hasPreviousGrant: cleanBoolean(form.hasPreviousGrant),
+            previousGrantDetails: cleanString(form.previousGrantDetails),
+          }
           : undefined;
       const step2Data =
         currentStep === 2 || isFinish
           ? {
-              companyStatus: form.companyStatus || undefined,
-              companyExists: "yes",
-              companyName: cleanString(form.companyName),
-              companyNeighborhood: cleanString(form.companyNeighborhood),
-              companyZone: cleanString(form.companyZone),
-              companyProvinceId: cleanNumber(form.companyProvinceId),
-              companyCommuneId: cleanNumber(form.companyCommuneId),
-              companyPhone: cleanString(form.companyPhone),
-              companyEmail: cleanString(form.companyEmail),
-              legalStatus: form.legalStatus || undefined,
-              legalStatusOther: cleanString(form.legalStatusOther),
-              nif: cleanString(form.nif),
-              companyAddressIsDifferent: cleanBoolean(
-                form.companyAddressIsDifferent,
-              ),
-              totalEmployees: cleanNumber(form.totalEmployees),
-              supportService: cleanBoolean(form.supportService),
-              femaleEmployees: cleanNumber(form.femaleEmployees),
-              maleEmployees: cleanNumber(form.maleEmployees),
-              refugeeEmployees: cleanNumber(form.refugeeEmployees),
-              batwaEmployees: cleanNumber(form.batwaEmployees),
-              disabledEmployees: cleanNumber(form.disabledEmployees),
-              employeeCount: cleanNumber(form.employeeCount),
-              associatesCount: form.associatesCount || undefined,
-              associatesCountOther: cleanString(form.associatesCountOther),
-              femalePartners: cleanNumber(form.femalePartners),
-              malePartners: cleanNumber(form.malePartners),
-              refugeePartners: cleanNumber(form.refugeePartners),
-              batwaPartners: cleanNumber(form.batwaPartners),
-              disabledPartners: cleanNumber(form.disabledPartners),
-              annualRevenue: cleanNumber(form.annualRevenue),
-              creationYear: form.creationYear || undefined,
-              sectorId: cleanNumber(form.sectorId),
-              otherCompanySector: cleanString(form.otherCompanySector),
-              activityDescription: cleanString(form.activityDescription),
-              hasBankAccount: cleanBoolean(form.hasBankAccount),
-              hasBankCredit: cleanBoolean(form.hasBankCredit),
-              bankCreditAmount: cleanNumber(form.bankCreditAmount),
-              isWomanLed: form.isWomanLed || false,
-              isRefugeeLed: form.isRefugeeLed || false,
-              hasClimateImpact: form.hasClimateImpact || false,
-              albinosEmployees: cleanNumber(form.albinosEmployees),
-              repatriatesEmployees: cleanNumber(form.repatriatesEmployees),
-              partTimeEmployees: cleanNumber(form.partTimeEmployees),
-              albinosPartners: cleanNumber(form.albinosPartners),
-              repatriatesPartners: cleanNumber(form.repatriatesPartners),
-            }
+            companyStatus: form.companyStatus || undefined,
+            companyExists: "yes",
+            companyName: cleanString(form.companyName),
+            companyNeighborhood: cleanString(form.companyNeighborhood),
+            companyZone: cleanString(form.companyZone),
+            companyProvinceId: cleanNumber(form.companyProvinceId),
+            companyCommuneId: cleanNumber(form.companyCommuneId),
+            companyPhone: cleanString(form.companyPhone),
+            companyEmail: cleanString(form.companyEmail),
+            legalStatus: form.legalStatus || undefined,
+            legalStatusOther: cleanString(form.legalStatusOther),
+            nif: cleanString(form.nif),
+            companyAddressIsDifferent: cleanBoolean(
+              form.companyAddressIsDifferent,
+            ),
+            totalEmployees: cleanNumber(form.totalEmployees),
+            supportService: cleanBoolean(form.supportService),
+            femaleEmployees: cleanNumber(form.femaleEmployees),
+            maleEmployees: cleanNumber(form.maleEmployees),
+            refugeeEmployees: cleanNumber(form.refugeeEmployees),
+            batwaEmployees: cleanNumber(form.batwaEmployees),
+            disabledEmployees: cleanNumber(form.disabledEmployees),
+            employeeCount: cleanNumber(form.employeeCount),
+            associatesCount: form.associatesCount || undefined,
+            associatesCountOther: cleanString(form.associatesCountOther),
+            femalePartners: cleanNumber(form.femalePartners),
+            malePartners: cleanNumber(form.malePartners),
+            refugeePartners: cleanNumber(form.refugeePartners),
+            batwaPartners: cleanNumber(form.batwaPartners),
+            disabledPartners: cleanNumber(form.disabledPartners),
+            annualRevenue: cleanNumber(form.annualRevenue),
+            creationYear: form.creationYear || undefined,
+            sectorId: cleanNumber(form.sectorId),
+            otherCompanySector: cleanString(form.otherCompanySector),
+            activityDescription: cleanString(form.activityDescription),
+            hasBankAccount: cleanBoolean(form.hasBankAccount),
+            hasBankCredit: cleanBoolean(form.hasBankCredit),
+            bankCreditAmount: cleanNumber(form.bankCreditAmount),
+            isWomanLed: form.isWomanLed || false,
+            isRefugeeLed: form.isRefugeeLed || false,
+            hasClimateImpact: form.hasClimateImpact || false,
+            albinosEmployees: cleanNumber(form.albinosEmployees),
+            repatriatesEmployees: cleanNumber(form.repatriatesEmployees),
+            partTimeEmployees: cleanNumber(form.partTimeEmployees),
+            albinosPartners: cleanNumber(form.albinosPartners),
+            repatriatesPartners: cleanNumber(form.repatriatesPartners),
+          }
           : undefined;
       const step3Data =
         currentStep === 3 || isFinish
           ? {
-              projectTitle: cleanString(form.projectTitle),
-              projectObjective: cleanString(form.projectObjective),
-              projectSectors: form.projectSectors?.length
-                ? form.projectSectors
-                : undefined,
-              otherSector: cleanString(form.otherSector),
-              mainActivities: cleanString(form.mainActivities),
-              productsServices: cleanString(form.productsServices),
-              businessIdea: cleanString(form.businessIdea),
-              targetClients: cleanString(form.targetClients),
-              clientScope: form.clientScope?.length
-                ? form.clientScope
-                : undefined,
-              hasCompetitors: cleanBoolean(form.hasCompetitors),
-              competitorNames: cleanString(form.competitorNames),
-              plannedEmployeesFemale: cleanNumber(form.plannedEmployeesFemale),
-              plannedEmployeesMale: cleanNumber(form.plannedEmployeesMale),
-              plannedPermanentEmployees: cleanNumber(
-                form.plannedPermanentEmployees,
-              ),
-              isNewIdea: cleanBoolean(form.isNewIdea),
-              ideaTested: cleanBoolean(form.ideaTested),
-              climateActions: cleanString(form.climateActions),
-              inclusionActions: cleanString(form.inclusionActions),
-              hasEstimatedCost: cleanBoolean(form.hasEstimatedCost),
-              totalProjectCost: cleanNumber(form.totalProjectCost),
-              requestedSubsidyAmount: cleanNumber(form.requestedSubsidyAmount),
-              mainExpenses: cleanString(form.mainExpenses),
-              acceptCGU: form.acceptTerms,
-              acceptPrivacyPolicy: form.acceptPrivacy,
-              certifyAccuracy: form.certifyAccuracy,
-              optInNotifications: form.acceptNotifications,
-              isProfileCompleted: isFinish,
-              plannedRefugeeEmployees: cleanNumber(
-                form.plannedRefugeeEmployees,
-              ),
-              plannedBatwaEmployees: cleanNumber(form.plannedBatwaEmployees),
-              plannedDisabledEmployees: cleanNumber(
-                form.plannedDisabledEmployees,
-              ),
-              plannedAlbinosEmployees: cleanNumber(
-                form.plannedAlbinosEmployees,
-              ),
-              plannedRepatriatesEmployees: cleanNumber(
-                form.plannedRepatriatesEmployees,
-              ),
-              plannedPartTimeEmployees: cleanNumber(
-                form.plannedPartTimeEmployees,
-              ),
-            }
+            projectTitle: cleanString(form.projectTitle),
+            projectObjective: cleanString(form.projectObjective),
+            projectSectors: form.projectSectors?.length
+              ? form.projectSectors
+              : undefined,
+            otherSector: cleanString(form.otherSector),
+            mainActivities: cleanString(form.mainActivities),
+            productsServices: cleanString(form.productsServices),
+            businessIdea: cleanString(form.businessIdea),
+            targetClients: cleanString(form.targetClients),
+            clientScope: form.clientScope?.length
+              ? form.clientScope
+              : undefined,
+            hasCompetitors: cleanBoolean(form.hasCompetitors),
+            competitorNames: cleanString(form.competitorNames),
+            plannedEmployeesFemale: cleanNumber(form.plannedEmployeesFemale),
+            plannedEmployeesMale: cleanNumber(form.plannedEmployeesMale),
+            plannedPermanentEmployees: cleanNumber(
+              form.plannedPermanentEmployees,
+            ),
+            isNewIdea: cleanBoolean(form.isNewIdea),
+            ideaTested: cleanBoolean(form.ideaTested),
+            climateActions: cleanString(form.climateActions),
+            inclusionActions: cleanString(form.inclusionActions),
+            hasEstimatedCost: cleanBoolean(form.hasEstimatedCost),
+            totalProjectCost: cleanNumber(form.totalProjectCost),
+            requestedSubsidyAmount: cleanNumber(form.requestedSubsidyAmount),
+            mainExpenses: cleanString(form.mainExpenses),
+            acceptCGU: form.acceptTerms,
+            acceptPrivacyPolicy: form.acceptPrivacy,
+            certifyAccuracy: form.certifyAccuracy,
+            optInNotifications: form.acceptNotifications,
+            isProfileCompleted: isFinish,
+            plannedRefugeeEmployees: cleanNumber(
+              form.plannedRefugeeEmployees,
+            ),
+            plannedBatwaEmployees: cleanNumber(form.plannedBatwaEmployees),
+            plannedDisabledEmployees: cleanNumber(
+              form.plannedDisabledEmployees,
+            ),
+            plannedAlbinosEmployees: cleanNumber(
+              form.plannedAlbinosEmployees,
+            ),
+            plannedRepatriatesEmployees: cleanNumber(
+              form.plannedRepatriatesEmployees,
+            ),
+            plannedPartTimeEmployees: cleanNumber(
+              form.plannedPartTimeEmployees,
+            ),
+          }
           : undefined;
       await BeneficiaryService.update(
         beneficiary.id,
@@ -1660,34 +1660,39 @@ const Application: React.FC = () => {
         lang,
       );
 
-      if (currentStep === 2) {
-        const docList =
-          form.companyStatus === "formal"
-            ? FORMAL_DOCS
-            : form.companyStatus === "informal"
-              ? INFORMAL_DOCS
-              : [];
-        const uploadPromises = docList
-          .filter((doc) => documents[doc.key])
-          .map(async (doc) => {
-            if (documents[doc.key] instanceof File) {
-              // try {
-              return await DocumentService.uploadFormDocument(
-                documents[doc.key] as any,
-                {
-                  entityId: beneficiary.id,
-                  entityType: "beneficiary",
-                  documentKey: doc.key,
-                  documentTypeId: doc.typeId,
-                  formStep: "STEP4",
-                },
-              );
-              // } catch (error) {
-              //   throw error;
-              // }
-            }
-          });
-        if (uploadPromises.length > 0) await Promise.all(uploadPromises);
+      try {
+        if (currentStep === 2) {
+          const docList =
+            form.companyStatus === "formal"
+              ? FORMAL_DOCS
+              : form.companyStatus === "informal"
+                ? INFORMAL_DOCS
+                : [];
+          const uploadPromises = docList
+            .filter((doc) => documents[doc.key])
+            .map(async (doc) => {
+              if (documents[doc.key] instanceof File) {
+                // try {
+                return await DocumentService.uploadFormDocument(
+                  documents[doc.key] as any,
+                  {
+                    entityId: beneficiary.id,
+                    entityType: "beneficiary",
+                    documentKey: doc.key,
+                    documentTypeId: doc.typeId,
+                    formStep: "STEP4",
+                  },
+                );
+                // } catch (error) {
+                //   throw error;
+                // }
+              }
+            });
+          if (uploadPromises.length > 0) await Promise.all(uploadPromises);
+        }
+      } catch (error) {
+        console.log(error);
+        throw error;
       }
 
       await loadBeneficiaryData(!saving);
@@ -1700,7 +1705,8 @@ const Application: React.FC = () => {
         );
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || t("errorSavingStep"));
+      toast.error(err || err.message || t("errorSavingStep"));
+      throw err;
     } finally {
       setSavingStep(null);
       setGoToNext(false);
@@ -1714,10 +1720,15 @@ const Application: React.FC = () => {
       return;
     }
     if (currentStep < 4) {
-      setGoToNext(true);
-      await saveCurrentStep(false, false);
-      setCurrentStep((p) => p + 1);
-      window.scrollTo(0, 0);
+      try {
+        setGoToNext(true);
+        await saveCurrentStep(false, false);
+        setCurrentStep((p) => p + 1);
+        window.scrollTo(0, 0);
+      } catch {
+        // toast.error(t("errorSavingStep"));
+        setGoToNext(false);
+      }
     }
   };
 
@@ -1851,7 +1862,7 @@ const Application: React.FC = () => {
                       )}
                       <div className="col-12 mt-25">
                         <div className="row g-2 d-md-flex justify-content-md-between align-items-md-center">
-                          
+
                           {/* Previous */}
                           <div className="col-12 col-md-auto">
                             {currentStep > 1 && (
