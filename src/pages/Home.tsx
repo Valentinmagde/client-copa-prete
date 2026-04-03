@@ -210,11 +210,11 @@ const Home: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      fetchStatsCards();
-    })()
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     fetchStatsCards();
+  //   })()
+  // }, []);
 
   return (
     <div className="site-main">
