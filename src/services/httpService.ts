@@ -4,7 +4,7 @@ import type { AxiosInstance, AxiosResponse, AxiosRequestConfig } from "axios";
 // TYPES
 import { EHttpMethod } from "@/types/enums/HttpMethod";
 import type { IParams } from "@/types/services/params";
-import { getAccessTokenCs, getRefreshTokenCs, setAccessToken } from "@/utils/storage";
+import { clearLocalAuthData, getAccessTokenCs, getRefreshTokenCs, setAccessToken } from "@/utils/storage";
 
 /**
  * The HttpService class is a service that provides a layer of abstraction over the axios
@@ -299,13 +299,14 @@ class HttpService {
           // authService.refreshToken();
           await axios
             .post(
-              `${this.baseURL}/${this.lang}/auth/refresh`,
+              `${this.baseURL}/auth/refresh?lang=${this.lang}`,
               { refreshToken: getRefreshTokenCs() },
               { headers: this.setupHeaders() }
             )
             .then((response: any) =>
               setAccessToken(response.data.data.accessToken)
             ).catch(() => {
+              clearLocalAuthData()
               // modalService.trigger("Votre session a expiré");
             });
 
