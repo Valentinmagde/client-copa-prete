@@ -1,4 +1,4 @@
-import React, { useState, type JSX } from "react";
+import React, { useEffect, useState, type JSX } from "react";
 import Slider from "react-slick";
 import Header from "../components/layout/Header";
 import Banner from "../components/banner/Banner";
@@ -22,6 +22,7 @@ import blog3 from "../assets/img/blog/4.png";
 import blog4 from "../assets/img/blog/5.png";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import DashboardService from "@/services/dashboard/dashboard.service";
 
 // Define types
 interface SliderElement {
@@ -54,6 +55,7 @@ interface SlickSettings {
 const Home: React.FC = () => {
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [statsCards, setStatsCards] = useState<any>({});
 
   const sliderElements: SliderElement[] = [
     {
@@ -198,6 +200,21 @@ const Home: React.FC = () => {
       },
     ],
   };
+
+  const fetchStatsCards = async () => {
+    try {
+      const response = await DashboardService.getStatsCards();
+      setStatsCards(response);
+    } catch (error) {
+      console.error("Error fetching stats cards:", error);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      fetchStatsCards();
+    })()
+  }, []);
 
   return (
     <div className="site-main">
@@ -420,7 +437,7 @@ const Home: React.FC = () => {
               <div className="ttm-fid inside ttm-fid-view-lefticon style3">
                 <div className="ttm-fid-contents">
                   <h4>
-                    <CountUp start={0} end={8705} duration={20} delay={2} />
+                    <CountUp start={0} end={statsCards?.totalMpme || 0} duration={20} delay={2} />
                   </h4>
                   <h3 className="ttm-fid-title">{t("statsBusinesses")}</h3>
                 </div>
@@ -430,7 +447,7 @@ const Home: React.FC = () => {
               <div className="ttm-fid inside ttm-fid-view-lefticon style3">
                 <div className="ttm-fid-contents">
                   <h4>
-                    <CountUp start={0} end={480} duration={20} delay={2} />
+                    <CountUp start={0} end={statsCards?.totalBusinessPlans || 0} duration={20} delay={2} />
                   </h4>
                   <h3 className="ttm-fid-title">{t("statsPlans")}</h3>
                 </div>
@@ -440,7 +457,7 @@ const Home: React.FC = () => {
               <div className="ttm-fid inside ttm-fid-view-lefticon style3">
                 <div className="ttm-fid-contents">
                   <h4>
-                    <CountUp start={0} end={6260} duration={20} delay={2} />
+                    <CountUp start={0} end={statsCards?.totalSubventionsAccordees || 0} duration={20} delay={2} />
                   </h4>
                   <h3 className="ttm-fid-title">{t("statsGrants")}</h3>
                 </div>
@@ -450,7 +467,7 @@ const Home: React.FC = () => {
               <div className="ttm-fid inside ttm-fid-view-lefticon style3">
                 <div className="ttm-fid-contents">
                   <h4>
-                    <CountUp start={0} end={9774} duration={20} delay={2} />
+                    <CountUp start={0} end={statsCards?.totalSubventionsDecessees || 0} duration={20} delay={2} />
                   </h4>
                   <h3 className="ttm-fid-title">{t("statsAmount")}</h3>
                 </div>
@@ -460,7 +477,7 @@ const Home: React.FC = () => {
               <div className="ttm-fid inside ttm-fid-view-lefticon style3">
                 <div className="ttm-fid-contents">
                   <h4>
-                    <CountUp start={0} end={80} duration={20} delay={2} />%
+                    <CountUp start={0} end={statsCards?.totalMpme ? (statsCards.totalWomen / statsCards.totalMpme) * 100 : 0}  duration={20} delay={2} />%
                   </h4>
                   <h3 className="ttm-fid-title">{t("statsWomen")}</h3>
                 </div>
@@ -470,7 +487,7 @@ const Home: React.FC = () => {
               <div className="ttm-fid inside ttm-fid-view-lefticon style3">
                 <div className="ttm-fid-contents">
                   <h4>
-                    <CountUp start={0} end={5936} duration={20} delay={2} />
+                    <CountUp start={0} end={statsCards?.emploisCrees || 0} duration={20} delay={2} />
                   </h4>
                   <h3 className="ttm-fid-title">{t("statsJobs")}</h3>
                 </div>

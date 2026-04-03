@@ -138,7 +138,7 @@ const AuthService = {
   ): Promise<any> => {
     return await httpService
       .service()
-      .post(`/v1/${lang}/auth/refresh`, { refreshToken })
+      .post(`/auth/refresh?lang=${lang}`, { refreshToken })
       .then((response: any) => {
         const data = response.data;
 
