@@ -21,6 +21,7 @@ import "flatpickr/dist/themes/material_green.css";
 import { French } from "flatpickr/dist/l10n/fr";
 import DocumentService from "@/services/document/document.service";
 import ProfileLoader from "@/components/common/ProfileLoader";
+import useCopaPhases from "@/hooks/useCopaPhases";
 
 const KirundiLocale = {
   weekdays: {
@@ -957,6 +958,7 @@ const Application: React.FC = () => {
     sectors: false,
   });
 
+  const { loading: phasesLoading, isRegistrationOpen, registrationPhase } = useCopaPhases(lang);
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() - 18);
 
@@ -1757,6 +1759,46 @@ const Application: React.FC = () => {
     navigate("/application-submitted", { replace: true });
     return null;
   }
+  if (!isRegistrationOpen)
+    return (
+      <div className="site-main">
+        <Header />
+
+        {/* PageHeader */}
+        <PageHeader title={t("registration")} breadcrumb={t("register")} />
+        {/* PageHeader end */}
+        <div className="ttm-row register-section clearfix">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 text-center py-60">
+                {/* <div className="ttm-icon ttm-icon_element-fill ttm-icon_element-size-xl ttm-icon_element-color-grey ttm-icon_element-style-round mx-auto mb-20">
+                  <i className="far fa-newspaper"></i>
+                </div> */}
+                <h3 className="mb-15">
+                  {t(
+                    "registrationPage.closed.title",
+                    "Inscriptions actuellement fermées",
+                  )}
+                </h3>
+                <p className="mb-30" style={{ color: "#777" }}>
+                  {t(
+                    "registrationPage.closed.description",
+                    "La phase d’inscription n’est pas encore ouverte ou est déjà terminée. Veuillez consulter les dates officielles ou revenir plus tard.",
+                  )}
+                </p>
+                <a
+                  href="/"
+                  className="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-fill ttm-btn-color-skincolor"
+                >
+                  {t("blog.empty.cta", "Retour à l'accueil")}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
 
   return (
     <div className="site-main">
