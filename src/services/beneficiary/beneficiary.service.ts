@@ -12,7 +12,7 @@ const BeneficiaryService = {
   },
 
   submitCorrection: async (id: number) => {
-    return httpService.service().patch(`beneficiaries/${id}/submit-correction`);
+    return httpService.service().patch(`beneficiaries/${id}/submit-correction`, {});
   },
 };
 
