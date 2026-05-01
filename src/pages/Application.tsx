@@ -958,7 +958,7 @@ const Application: React.FC = () => {
     sectors: false,
   });
 
-  const { loading: phasesLoading, isRegistrationOpen, registrationPhase } = useCopaPhases(lang);
+  const { loading: phasesLoading, isRegistrationOpen, isCandidatureSubmissionOpen, isApplicationFormOpen, registrationPhase, candidatureSubmissionPhase } = useCopaPhases(lang);
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() - 18);
 
@@ -1759,7 +1759,7 @@ const Application: React.FC = () => {
     navigate("/application-submitted", { replace: true });
     return null;
   }
-  if (!isRegistrationOpen)
+  if (!isApplicationFormOpen)
     return (
       <div className="site-main">
         <Header />

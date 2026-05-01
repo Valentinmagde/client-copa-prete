@@ -1,3 +1,4 @@
+import CorrectionDocumentsBanner from "@/components/espace-mpme/CorrectionDocumentsBanner";
 import ProfileHeader from "@/components/espace-mpme/ProfileHeader";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
@@ -481,6 +482,8 @@ class Dashboard extends Component {
                   </div>
                 </div>
                 {/* row end */}
+
+                <CorrectionDocumentsBanner />
 
                 <div className="row">
                   <div className="col-lg-12 col-md-12">

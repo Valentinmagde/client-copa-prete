@@ -10,6 +10,8 @@ import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
 import AuthService from "@/services/auth/auth.service";
+import BeneficiaryService from "@/services/beneficiary/beneficiary.service";
+import ReferenceService from "@/services/reference/reference.service";
 import { setAccessToken, setRefreshToken, setUser } from "@/utils/storage";
 import { toast } from "react-toastify";
 
@@ -27,16 +29,12 @@ const Login: React.FC = () => {
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [errors, setErrors] = useState<{
     identifier?: string;
     password?: string;
   }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
-  const [apiError, setApiError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const location = useLocation();
@@ -70,7 +68,6 @@ const Login: React.FC = () => {
     if (!validate()) return;
 
     setIsSubmitting(true);
-    setApiError(null);
 
     try {
       const response = await AuthService.signin(
@@ -90,33 +87,31 @@ const Login: React.FC = () => {
       }
 
       toast.success(t("loginSuccess"));
-      // setInterval(() => {
+
+      try {
+        const [beneficiary, phases] = await Promise.all([
+          BeneficiaryService.getByUserId(user.id, i18n.language),
+          ReferenceService.getCurrentCopaPhases(i18n.language),
+        ]);
+        const correctionAllowed = (beneficiary as any)?.documentCorrectionAllowed;
+        const submissionOpen = (phases as any[])?.some(
+          (p) => p.phaseCode === "CANDIDATURE_SUBMISSION",
+        );
+        if (correctionAllowed) {
+          navigate("/correction-documents", { replace: true });
+          return;
+        }
+        if (submissionOpen) {
+          navigate("/application", { replace: true });
+          return;
+        }
+      } catch {
+        // fallback to default redirect
+      }
+
       navigate(from, { replace: true });
-      // }, 2000);
     } catch (err: any) {
       console.error("Login error:", err);
-
-      // Gestion des erreurs selon la structure de votre API
-      const errorMessage = err;
-
-      // if (err.response?.status === 401) {
-      //   setApiError(t("invalidCredentials"));
-      // } else if (err.response?.status === 403) {
-      //   if (errorMessage?.includes("blocked")) {
-      //     setApiError(t("accountBlocked"));
-      //   } else if (
-      //     errorMessage?.includes("inactive") ||
-      //     errorMessage?.includes("verify")
-      //   ) {
-      //     setApiError(t("accountInactive"));
-      //   } else {
-      //     setApiError(t("accessDenied"));
-      //   }
-      // } else if (err.response?.status === 429) {
-      //   setApiError(t("tooManyAttempts"));
-      // } else {
-      //   setApiError(err || t("loginError"));
-      // }
 
       toast.error(err);
     } finally {
@@ -125,7 +120,7 @@ const Login: React.FC = () => {
   };
 
   const handleGoogleLogin = async () => {
-    setIsGoogleSubmitting(true);
+    setGoogleLoading(true);
 
     try {
       if (window.google) {
@@ -142,11 +137,10 @@ const Login: React.FC = () => {
                 navigate(from, { replace: false });
               } catch (err: any) {
                 console.error("Google login error:", err);
-                setApiError(t("googleLoginError"));
                 toast.error(t("googleLoginError"));
               }
             }
-            setIsGoogleSubmitting(false);
+            setGoogleLoading(false);
           },
         });
 
@@ -157,20 +151,9 @@ const Login: React.FC = () => {
       }
     } catch (err) {
       console.error("Google login error:", err);
-      setApiError(t("googleLoginError"));
       toast.error(t("googleLoginError"));
-      setIsGoogleSubmitting(false);
+      setGoogleLoading(false);
     }
-  };
-
-  // Déterminer si l'identifiant est un email ou un téléphone
-  const isEmail = (value: string): boolean => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  };
-
-  const getIdentifierType = (): string => {
-    if (!identifier) return "";
-    return isEmail(identifier) ? "email" : "phone";
   };
 
   const togglePasswordVisibility = () => {

@@ -10,6 +10,10 @@ const BeneficiaryService = {
   update: async (id: number, data: any, lang: string = "rn") => {
     return httpService.service().put(`beneficiaries/${id}?lang=${lang}`, data);
   },
+
+  submitCorrection: async (id: number) => {
+    return httpService.service().patch(`beneficiaries/${id}/submit-correction`);
+  },
 };
 
 export default BeneficiaryService;
