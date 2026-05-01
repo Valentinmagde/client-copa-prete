@@ -27,10 +27,32 @@ const useCopaPhases = (lang: string) => {
     return phases.some((phase) => phase.phaseCode === "REGISTRATION");
   }, [phases]);
 
+  const isCandidatureSubmissionOpen = useMemo(() => {
+    return phases.some((phase) => phase.phaseCode === "CANDIDATURE_SUBMISSION");
+  }, [phases]);
+
+  // True if the candidate can still access the application form (registration OR candidature submission)
+  const isApplicationFormOpen = useMemo(() => {
+    return isRegistrationOpen || isCandidatureSubmissionOpen;
+  }, [isRegistrationOpen, isCandidatureSubmissionOpen]);
+
   const registrationPhase = useMemo(() => {
     return phases.find((phase) => phase.phaseCode === "REGISTRATION");
   }, [phases]);
 
-  return { phases, loading, error, isRegistrationOpen, registrationPhase };
+  const candidatureSubmissionPhase = useMemo(() => {
+    return phases.find((phase) => phase.phaseCode === "CANDIDATURE_SUBMISSION");
+  }, [phases]);
+
+  return {
+    phases,
+    loading,
+    error,
+    isRegistrationOpen,
+    isCandidatureSubmissionOpen,
+    isApplicationFormOpen,
+    registrationPhase,
+    candidatureSubmissionPhase,
+  };
 };
 export default useCopaPhases;

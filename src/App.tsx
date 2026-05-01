@@ -23,6 +23,7 @@ import Ressources_FAQ from "./pages/FAQ";
 import AboutPrete from "./pages/AboutPrete";
 import Application from "./pages/Application";
 import ApplicationSubmitted from "./pages/ApplicationSubmitted";
+import CorrectionDocuments from "./pages/CorrectionDocuments";
 import ProtectedRoute from "./guards/ProtectedRoute";
 import PublicRoute from "./guards/PublicRoute";
 import HowToParticipate from "./pages/HowToParticipate";
@@ -76,6 +77,7 @@ const App: React.FC = () => {
           <Route path="/espace-mpme/mon-plan-affaires/soumission" element={<MonPlanAffairesSoumission />} />
           <Route path="/application" element={<Application />} />
           <Route path="/application-submitted" element={<ApplicationSubmitted />} />
+          <Route path="/correction-documents" element={<CorrectionDocuments />} />
         </Route>
         {/* Routes publiques */}
         <Route element={<PublicRoute />}>
