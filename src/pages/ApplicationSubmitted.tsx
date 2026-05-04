@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/layout/Header";
 import PageHeader from "../components/layout/PageHeader";
 import Footer from "../components/layout/Footer";
@@ -17,8 +17,9 @@ interface CandidateData {
 
 const ApplicationSubmitted: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const user = getUser(); // ✅ Utilisation directe
+  const user = getUser();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [candidateData, setCandidateData] = useState<CandidateData>({
     name: user?.firstName + " " + user?.lastName,
@@ -38,40 +39,37 @@ const ApplicationSubmitted: React.FC = () => {
   });
 
   useEffect(() => {
-    const fetchBeneficiaryNumber = async () => {
-      // Si on a déjà le code via location.state, l'utiliser
-      if (location.state?.beneficiaryNumber) {
-        setCandidateData((prev) => ({
-          ...prev,
-          beneficiaryNumber: location.state.beneficiaryNumber,
-          dossierNumber: location.state.dossierNumber || prev.dossierNumber,
-        }));
-        return;
-      }
+    if (!user?.id) return;
 
-      // Sinon, le récupérer depuis l'API
-      if (!user?.id) return;
-
+    const fetchBeneficiary = async () => {
       try {
         const response: any = await BeneficiaryService.getByUserId(
           user.id,
           i18n.language,
         );
-        if (response?.applicationCode) {
+        if (response?.documentCorrectionAllowed) {
+          navigate("/correction-documents", { replace: true });
+          return;
+        }
+        const beneficiaryNumber =
+          location.state?.beneficiaryNumber ?? response?.applicationCode;
+        const dossierNumber =
+          location.state?.dossierNumber ?? response?.applicationCode;
+        if (beneficiaryNumber) {
           setCandidateData((prev) => ({
             ...prev,
-            beneficiaryNumber: response.applicationCode,
-            dossierNumber: response.applicationCode,
-            user: response.user
+            beneficiaryNumber,
+            dossierNumber: dossierNumber || prev.dossierNumber,
+            user: response.user,
           }));
         }
       } catch (error) {
-        console.error("Erreur lors du chargement du code:", error);
+        console.error("Erreur lors du chargement du bénéficiaire:", error);
       }
     };
 
-    fetchBeneficiaryNumber();
-  }, [user?.id, i18n.language, location.state]);
+    fetchBeneficiary();
+  }, [user?.id, i18n.language, location.state, navigate]);
 
   return (
     <div className="site-main">

@@ -218,6 +218,7 @@ interface BeneficiaryData {
   profileCompletedAt: string | null;
   companyType: string;
   isProfileComplete?: boolean;
+  documentCorrectionAllowed?: boolean;
   beneficiaryNumber?: string;
   documentsByKey?: Record<string, any>;
   position?: string;
@@ -1756,7 +1757,11 @@ const Application: React.FC = () => {
 
   if (loading) return <ProfileLoader />;
   if (beneficiary?.isProfileComplete) {
-    navigate("/application-submitted", { replace: true });
+    if (beneficiary.documentCorrectionAllowed) {
+      navigate("/correction-documents", { replace: true });
+    } else {
+      navigate("/application-submitted", { replace: true });
+    }
     return null;
   }
   if (!isApplicationFormOpen)
