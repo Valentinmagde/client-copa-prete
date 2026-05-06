@@ -367,11 +367,7 @@ class HttpService {
       // instance of
       // http.ClientRequest in node.js
       if (error.code === "ERR_NETWORK") {
-        // Handle network error
-        return Promise.reject(`
-          ${error.message},
-          ${error.config.baseURL} server is down
-        `);
+        return Promise.reject("Network Error");
       }
     } else {
       // Something happened in setting up the request that triggered an Error

@@ -182,30 +182,31 @@ const CorrectionDocuments: React.FC = () => {
     if (!validate()) { toast.error(t("required")); return; }
     setSaving(true);
 
-    const results = await Promise.allSettled(
-      docList
-        .filter((doc) => files[doc.key])
-        .map((doc) =>
-          DocumentService.uploadFormDocument(files[doc.key]!, {
-            entityId: beneficiary.id,
-            entityType: "beneficiary",
-            documentKey: doc.key,
-            documentTypeId: doc.typeId,
-            formStep: "CORRECTION",
-          }).then(() => ({ key: doc.key, ok: true, message: "" }))
-           .catch((err: any) => ({ key: doc.key, ok: false, message: typeof err === "string" ? err : t("errorSavingStep") }))
-        )
-    );
+    const uploadResults: { key: string; ok: boolean; message: string }[] = [];
+    for (const doc of docList.filter((d) => files[d.key])) {
+      try {
+        await DocumentService.uploadFormDocument(files[doc.key]!, {
+          entityId: beneficiary.id,
+          entityType: "beneficiary",
+          documentKey: doc.key,
+          documentTypeId: doc.typeId,
+          formStep: "CORRECTION",
+        });
+        uploadResults.push({ key: doc.key, ok: true, message: "" });
+      } catch (err: any) {
+        const isNetwork = typeof err === "string" && err.toLowerCase().includes("network");
+        const message = isNetwork ? t("networkError") : (typeof err === "string" ? err : t("errorSavingStep"));
+        uploadResults.push({ key: doc.key, ok: false, message });
+      }
+    }
 
-    const failed = results
-      .map((r) => (r.status === "fulfilled" ? r.value : null))
-      .filter((r) => r && !r.ok);
+    const failed = uploadResults.filter((r) => !r.ok);
 
     if (failed.length > 0) {
       const errs: Record<string, string> = {};
-      failed.forEach((r) => { errs[r!.key] = r!.message; });
+      failed.forEach((r) => { errs[r.key] = r.message; });
       setErrors(errs);
-      toast.error(failed[0]!.message);
+      toast.error(failed[0].message);
       setSaving(false);
     } else {
       try {
