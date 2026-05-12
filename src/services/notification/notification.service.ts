@@ -15,7 +15,7 @@ const NotificationService = {
     subject: string;
     message: string;
     }) {
-        return httpService.service().post(`${baseUrl}/contact`, formData)
+        return httpService.service().post(`${baseUrl}/contact`, { ...formData, anonymous: false })
     }
 }
 
