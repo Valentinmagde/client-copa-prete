@@ -7,6 +7,7 @@ import Footer from "../components/layout/Footer";
 import About1 from "../assets/img/about/05.jpg";
 import About2 from "../assets/img/about/06.jpg";
 import SliderImg3 from "../assets/img/slider/03.jpg";
+import ComplaintService from "../services/complaint/complaint.service";
 
 type ComplaintType =
   | "tech"
@@ -39,9 +40,6 @@ const COMPLAINT_META: Record<
   other: { color: "#6B7A90", bg: "#F4F5F7", priority: "standard" },
 };
 
-const generateRef = () =>
-  "COPA-" + Date.now().toString(36).toUpperCase().slice(-6);
-
 const SubmitComplaint: React.FC = () => {
   const { t } = useTranslation();
   const [form, setForm] = useState<ComplaintForm>({
@@ -59,6 +57,7 @@ const SubmitComplaint: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [refNumber, setRefNumber] = useState("");
   const [fieldError, setFieldError] = useState("");
+  const [apiError, setApiError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const complaintTypes = t("submitComplaintPage.form.fields.type.options", {
@@ -90,11 +89,23 @@ const SubmitComplaint: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError(null);
+
     if (!form.type) {
       setFieldError(t("submitComplaintPage.validation.selectType"));
       return;
     }
-    if (!form.description.trim()) {
+    if (!form.anonymous) {
+      if (!form.name.trim()) {
+        setFieldError(t("submitComplaintPage.validation.nameRequired"));
+        return;
+      }
+      if (!form.contact.trim()) {
+        setFieldError(t("submitComplaintPage.validation.contactRequired"));
+        return;
+      }
+    }
+    if (form.description.trim().length < 30) {
       setFieldError(t("submitComplaintPage.validation.describeFacts"));
       return;
     }
@@ -104,10 +115,31 @@ const SubmitComplaint: React.FC = () => {
     }
 
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setSubmitting(false);
-    setRefNumber(generateRef());
-    setSubmitted(true);
+    try {
+      const result = await ComplaintService.submitComplaint(
+        {
+          anonymous: form.anonymous,
+          name: form.name || undefined,
+          contact: form.contact || undefined,
+          type: form.type,
+          date: form.date || undefined,
+          location: form.location || undefined,
+          description: form.description.trim(),
+        },
+        files,
+      );
+
+      setRefNumber(result.referenceNumber);
+      setSubmitted(true);
+    } catch (error) {
+      setApiError(
+        typeof error === "string"
+          ? error
+          : error?.message || "Une erreur est survenue lors de la soumission.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const selectedTypeMeta = form.type ? COMPLAINT_META[form.type] : null;
@@ -342,6 +374,22 @@ const SubmitComplaint: React.FC = () => {
                       </h2>
                     </div>
                   </div>
+
+                  {apiError && (
+                    <div
+                      style={{
+                        padding: "10px 14px",
+                        background: "#FDECEA",
+                        border: "1px solid rgba(192,57,43,.2)",
+                        borderRadius: "4px",
+                        marginBottom: "16px",
+                        fontSize: "13px",
+                        color: "#C0392B",
+                      }}
+                    >
+                      ⚠️ {apiError}
+                    </div>
+                  )}
 
                   {fieldError && (
                     <div
